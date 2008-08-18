@@ -123,17 +123,13 @@ class HttpRequest {
           echo '<pre>' . htmlspecialchars($raw_response) . '</pre>';
           echo '<pre>' . htmlspecialchars($response->to_string()) . '</pre>';
 */
-
-    if ( $cached_response && $response_code == 304) {
-      $cached_response->request = $this;
-      return $cached_response;
-    }
-
-
-
-
-
+    
     if ( defined('MORIARTY_HTTP_CACHE_DIR') ) {
+      if ( $cached_response && $response_code == 304) {
+        $cached_response->request = $this;
+        return $cached_response;
+      }
+
       if ( $this->method == 'GET' && $response->is_cacheable() ) {
         $cache->write($this, $response);
       }
