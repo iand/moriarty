@@ -8,16 +8,16 @@ class HttpRequest {
   var $headers = array();
   var $client;
   var $body;
-  var $auth;
+  var $credentials;
 
   function HttpRequest($method, $uri, $credentials = null) {
     $this->uri = $uri;
     $this->method = strtoupper($method);
     if ( $credentials != null ) {
-      $this->auth = $credentials->get_auth();
+      $this->credentials = $credentials;
     }
     else {
-       $this->auth = null;
+       $this->credentials = null;
     }
     
     $this->headers = array();
@@ -28,36 +28,6 @@ class HttpRequest {
 
 
   function execute($options=array()) {
-    $poster = curl_init($this->uri);
-
-    if ($this->auth != null) {
-      curl_setopt($poster, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-      curl_setopt($poster, CURLOPT_USERPWD, $this->auth);
-    }
-   // curl_setopt($poster, CURLOPT_VERBOSE, 1);
-
-
-    curl_setopt($poster, CURLOPT_FRESH_CONNECT,TRUE);
-
-    curl_setopt($poster, CURLOPT_RETURNTRANSFER,1);
-    curl_setopt($poster, CURLOPT_FOLLOWLOCATION, TRUE);
-    curl_setopt($poster, CURLOPT_CONNECTTIMEOUT, 5);
-    curl_setopt($poster, CURLOPT_TIMEOUT, 600);
-    curl_setopt($poster, CURLOPT_HEADER, 1);
-
-    if ( defined( 'MORIARTY_PROXY' ) ) {
-      curl_setopt($poster, CURLOPT_PROXY, MORIARTY_PROXY );
-    }
-
-    switch($this->method) {
-        case 'GET'  : break;
-        case 'POST' : curl_setopt($poster, CURLOPT_POST, 1); break;
-        default     : curl_setopt($poster, CURLOPT_CUSTOMREQUEST,strtoupper($this->method));
-    }
-
-    if ($this->body != null) {
-      curl_setopt($poster, CURLOPT_POSTFIELDS, $this->body);
-    }
 
     if ( defined('MORIARTY_HTTP_CACHE_DIR') ) {
       $cache = new HttpCache(MORIARTY_HTTP_CACHE_DIR);
@@ -70,7 +40,6 @@ class HttpRequest {
           return $cached_response;
         }
         else {
-          //  TODO: add if-none-match
           if ( isset($cached_response->headers['etag']) ) {
             $this->set_if_none_match($cached_response->headers['etag']);
           }
@@ -78,35 +47,146 @@ class HttpRequest {
       }
     }
 
-    curl_setopt($poster, CURLOPT_HTTPHEADER, $this->get_headers() );
 
 
-    $raw_response = curl_exec($poster);
-    $response_info = curl_getinfo($poster);
-    $response_error = curl_error($poster);
-    curl_close($poster);
+    if (class_exists('http_class') && class_exists('sasl_interact_class')) {
+      set_time_limit(0);
+      $http=new http_class;
+      $http->follow_redirect=1;
+      $http->redirection_limit=5;
+      $http->prefer_curl=0;
+      
+//  $http->debug=1;
+//  $http->html_debug=1;
+        
+      $error=$http->GetRequestArguments($this->uri,$arguments);
+      if ($error) {
+        echo htmlspecialchars($error);  
+      }
+      if ($this->credentials != null) {
+        $http->authentication_mechanism="Digest";
+        $arguments['AuthUser'] = $this->credentials->get_username();
+        $arguments['AuthPassword'] = $this->credentials->get_password();
+      }      
 
-    if ( $raw_response ) {
-      list($response_code,$response_headers,$response_body) = $this->parse_response($raw_response);
-      if ( defined('MORIARTY_HTTP_CACHE_DIR') && $cached_response && ! $cache->is_fresh($this, $cached_response) ) {
-        $cache->remove_from_cache($this); 
+
+      $arguments["RequestMethod"]=$this->method;
+
+      foreach ($this->headers as $k=>$v) {
+        $arguments["Headers"][$k] = $v;
+      }
+   
+      if ($this->body != null) {
+        $arguments["Body"] = $this->body;
+      }
+      $response_info = array();
+      $connect_error = '';
+            
+      $connect_error = $http->Open($arguments);
+      if (! $connect_error) {
+        $connect_error = $http->SendRequest($arguments);
+      }
+    
+      if ( ! $connect_error ) {
+        $response_headers=array();
+        $error = $http->ReadReplyHeaders($response_headers);
+        $response_code = $http->response_status;
+        $response_body = '';
+
+        for(;;) {
+          $error=$http->ReadReplyBody($body,1000);
+          if($error!="" || strlen($body)==0)
+            break;
+          $response_body .= $body;
+        }
+
+        if ( defined('MORIARTY_HTTP_CACHE_DIR') && $cached_response && ! $cache->is_fresh($this, $cached_response) ) {
+          $cache->remove_from_cache($this); 
+        }
+      }
+      else {
+        if ( defined('MORIARTY_HTTP_CACHE_DIR') && $cached_response) {
+          if ( defined('MORIARTY_HTTP_CACHE_USE_STALE_ON_FAILURE') ) {
+            $cached_response->request = $this;
+            return $cached_response;
+          }
+          else if ( !$cache->is_fresh($this, $cached_response) ) {
+            $cache->remove_from_cache($this); // cached response was definitely stale because we check above
+          }
+        }
+
+        $response_code = $response_info['http_code'];
+        $response_body = "Request failed: " . $response_error;
+        $response_headers = array();
       }
       
+      $http->Close();
+        
+
     }
     else {
-      if ( defined('MORIARTY_HTTP_CACHE_DIR') && $cached_response) {
-        if ( defined('MORIARTY_HTTP_CACHE_USE_STALE_ON_FAILURE') ) {
-          $cached_response->request = $this;
-          return $cached_response;
-        }
-        else if ( !$cache->is_fresh($this, $cached_response) ) {
-          $cache->remove_from_cache($this); // cached response was definitely stale because we check above
-        }
+    
+      $poster = curl_init($this->uri);
+
+      if ($this->credentials != null) {
+        curl_setopt($poster, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
+        curl_setopt($poster, CURLOPT_USERPWD, $this->credentials->get_auth());
+      }
+     // curl_setopt($poster, CURLOPT_VERBOSE, 1);
+
+
+      curl_setopt($poster, CURLOPT_FRESH_CONNECT,TRUE);
+
+      curl_setopt($poster, CURLOPT_RETURNTRANSFER,1);
+      curl_setopt($poster, CURLOPT_FOLLOWLOCATION, TRUE);
+      curl_setopt($poster, CURLOPT_CONNECTTIMEOUT, 5);
+      curl_setopt($poster, CURLOPT_TIMEOUT, 600);
+      curl_setopt($poster, CURLOPT_HEADER, 1);
+
+      if ( defined( 'MORIARTY_PROXY' ) ) {
+        curl_setopt($poster, CURLOPT_PROXY, MORIARTY_PROXY );
       }
 
-      $response_code = $response_info['http_code'];
-      $response_body = "Request failed: " . $response_error;
-      $response_headers = array();
+      switch($this->method) {
+          case 'GET'  : break;
+          case 'POST' : curl_setopt($poster, CURLOPT_POST, 1); break;
+          default     : curl_setopt($poster, CURLOPT_CUSTOMREQUEST,strtoupper($this->method));
+      }
+
+      if ($this->body != null) {
+        curl_setopt($poster, CURLOPT_POSTFIELDS, $this->body);
+      }
+
+      curl_setopt($poster, CURLOPT_HTTPHEADER, $this->get_headers() );
+
+
+      $raw_response = curl_exec($poster);
+      $response_info = curl_getinfo($poster);
+      $response_error = curl_error($poster);
+      curl_close($poster);
+
+      if ( $raw_response ) {
+        list($response_code,$response_headers,$response_body) = $this->parse_response($raw_response);
+        if ( defined('MORIARTY_HTTP_CACHE_DIR') && $cached_response && ! $cache->is_fresh($this, $cached_response) ) {
+          $cache->remove_from_cache($this); 
+        }
+        
+      }
+      else {
+        if ( defined('MORIARTY_HTTP_CACHE_DIR') && $cached_response) {
+          if ( defined('MORIARTY_HTTP_CACHE_USE_STALE_ON_FAILURE') ) {
+            $cached_response->request = $this;
+            return $cached_response;
+          }
+          else if ( !$cache->is_fresh($this, $cached_response) ) {
+            $cache->remove_from_cache($this); // cached response was definitely stale because we check above
+          }
+        }
+
+        $response_code = $response_info['http_code'];
+        $response_body = "Request failed: " . $response_error;
+        $response_headers = array();
+      }
     }
 
     $response = new HttpResponse();
@@ -116,14 +196,14 @@ class HttpRequest {
     $response->info = $response_info;
     $response->request = $this;
 
+
 /*    
-          echo '<p>The HTTP request sent was:</p>';
-          echo '<pre>' . htmlspecialchars($this->to_string()) . '</pre>';
-          echo '<p>The server response was:</p>';
-          echo '<pre>' . htmlspecialchars($raw_response) . '</pre>';
-          echo '<pre>' . htmlspecialchars($response->to_string()) . '</pre>';
+  echo '<p>The HTTP request sent was:</p>';
+  echo '<pre>' . htmlspecialchars($this->to_string()) . '</pre>';
+  echo '<p>The server response was:</p>';
+  echo '<pre>' . htmlspecialchars($response->to_string()) . '</pre>';
 */
-    
+      
     if ( defined('MORIARTY_HTTP_CACHE_DIR') ) {
       if ( $cached_response && $response_code == 304) {
         $cached_response->request = $this;
@@ -136,6 +216,7 @@ class HttpRequest {
     }
     
     return $response;
+
   }
 
   function get_headers() {
