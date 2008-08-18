@@ -22,5 +22,13 @@ class Credentials {
     return $this->username . ':' . $this->password;
   }
 
+  function get_username() {
+    return $this->username;
+  }
+
+  function get_password() {
+    return $this->password;
+  }
+
 }
 ?>
