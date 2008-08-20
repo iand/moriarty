@@ -47,8 +47,6 @@ class HttpRequest {
       }
     }
 
-
-
     if (class_exists('http_class') && class_exists('sasl_interact_class')) {
       set_time_limit(0);
       $http=new http_class;
