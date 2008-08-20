@@ -69,12 +69,6 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $g = new SimpleGraph();
     $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'literal');
 
-  function test_get_first_literal() {
-    $g = new SimpleGraph();
-    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'literal');
-
-    $this->assertEquals( "literal", $g->get_first_literal('http://example.org/subj', 'http://example.org/pred'));
-  }
     $triples = $g->get_triples();
     $this->assertTrue( isset($triples[0]['o_type']));
     $this->assertEquals( 'literal', $triples[0]['o_type']);

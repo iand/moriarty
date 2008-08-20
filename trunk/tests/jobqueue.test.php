@@ -143,7 +143,7 @@ class JobQueueTest extends PHPUnit_Framework_TestCase {
 
     $found_triple = false;
     foreach ($triples as $triple) {
-      if ($triple['p'] == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' && $triple['o_type'] == 'iri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#JobRequest') {
+      if ($triple['p'] == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' && $triple['o_type'] == 'uri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#JobRequest') {
         $found_triple = true;
         break;
       }
@@ -168,7 +168,7 @@ class JobQueueTest extends PHPUnit_Framework_TestCase {
 
     $found_triple = false;
     foreach ($triples as $triple) {
-      if ($triple['p'] == 'http://schemas.talis.com/2006/bigfoot/configuration#jobType' && $triple['o_type'] == 'iri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#ResetDataJob') {
+      if ($triple['p'] == 'http://schemas.talis.com/2006/bigfoot/configuration#jobType' && $triple['o_type'] == 'uri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#ResetDataJob') {
         $found_triple = true;
         break;
       }
@@ -386,7 +386,7 @@ class JobQueueTest extends PHPUnit_Framework_TestCase {
 
     $found_triple = false;
     foreach ($triples as $triple) {
-      if ($triple['p'] == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' && $triple['o_type'] == 'iri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#JobRequest') {
+      if ($triple['p'] == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' && $triple['o_type'] == 'uri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#JobRequest') {
         $found_triple = true;
         break;
       }
@@ -411,7 +411,7 @@ class JobQueueTest extends PHPUnit_Framework_TestCase {
 
     $found_triple = false;
     foreach ($triples as $triple) {
-      if ($triple['p'] == 'http://schemas.talis.com/2006/bigfoot/configuration#jobType' && $triple['o_type'] == 'iri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#SnapshotJob') {
+      if ($triple['p'] == 'http://schemas.talis.com/2006/bigfoot/configuration#jobType' && $triple['o_type'] == 'uri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#SnapshotJob') {
         $found_triple = true;
         break;
       }
@@ -628,7 +628,7 @@ class JobQueueTest extends PHPUnit_Framework_TestCase {
 
     $found_triple = false;
     foreach ($triples as $triple) {
-      if ($triple['p'] == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' && $triple['o_type'] == 'iri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#JobRequest') {
+      if ($triple['p'] == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' && $triple['o_type'] == 'uri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#JobRequest') {
         $found_triple = true;
         break;
       }
@@ -653,7 +653,7 @@ class JobQueueTest extends PHPUnit_Framework_TestCase {
 
     $found_triple = false;
     foreach ($triples as $triple) {
-      if ($triple['p'] == 'http://schemas.talis.com/2006/bigfoot/configuration#jobType' && $triple['o_type'] == 'iri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#ReindexJob') {
+      if ($triple['p'] == 'http://schemas.talis.com/2006/bigfoot/configuration#jobType' && $triple['o_type'] == 'uri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#ReindexJob') {
         $found_triple = true;
         break;
       }
@@ -870,7 +870,7 @@ class JobQueueTest extends PHPUnit_Framework_TestCase {
 
     $found_triple = false;
     foreach ($triples as $triple) {
-      if ($triple['p'] == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' && $triple['o_type'] == 'iri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#JobRequest') {
+      if ($triple['p'] == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' && $triple['o_type'] == 'uri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#JobRequest') {
         $found_triple = true;
         break;
       }
@@ -895,7 +895,7 @@ class JobQueueTest extends PHPUnit_Framework_TestCase {
 
     $found_triple = false;
     foreach ($triples as $triple) {
-      if ($triple['p'] == 'http://schemas.talis.com/2006/bigfoot/configuration#jobType' && $triple['o_type'] == 'iri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#RestoreJob') {
+      if ($triple['p'] == 'http://schemas.talis.com/2006/bigfoot/configuration#jobType' && $triple['o_type'] == 'uri' && $triple['o'] == 'http://schemas.talis.com/2006/bigfoot/configuration#RestoreJob') {
         $found_triple = true;
         break;
       }
@@ -992,7 +992,7 @@ class JobQueueTest extends PHPUnit_Framework_TestCase {
 
     $found_triple = false;
     foreach ($triples as $triple) {
-      if ($triple['p'] == 'http://schemas.talis.com/2006/bigfoot/configuration#snapshotUri' && $triple['o_type'] == 'iri' && $triple['o'] == 'http://example.org/snapshot') {
+      if ($triple['p'] == 'http://schemas.talis.com/2006/bigfoot/configuration#snapshotUri' && $triple['o_type'] == 'uri' && $triple['o'] == 'http://example.org/snapshot') {
         $found_triple = true;
         break;
       }

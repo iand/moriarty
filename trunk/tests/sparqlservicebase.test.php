@@ -117,10 +117,10 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $triples = $ss->describe_to_triple_list( 'http://example.org/subj' );
 
     $this->assertEquals( 1, count( $triples ) );
-    $this->assertEquals( 'iri', $triples[0]['s_type'] );
+    $this->assertEquals( 'uri', $triples[0]['s_type'] );
     $this->assertEquals( 'http://example.org/subj', $triples[0]['s'] );
     $this->assertEquals( 'http://example.org/pred', $triples[0]['p'] );
-    $this->assertEquals( 'iri', $triples[0]['o_type'] );
+    $this->assertEquals( 'uri', $triples[0]['o_type'] );
     $this->assertEquals( 'http://example.org/obj', $triples[0]['o'] );
 
   }
@@ -190,10 +190,10 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $triples = $ss->graph_to_triple_list( 'construct {?s ?p ?o } where { ?s ?p ?o .}' );
 
     $this->assertEquals( 1, count( $triples ) );
-    $this->assertEquals( 'iri', $triples[0]['s_type'] );
+    $this->assertEquals( 'uri', $triples[0]['s_type'] );
     $this->assertEquals( 'http://example.org/subj', $triples[0]['s'] );
     $this->assertEquals( 'http://example.org/pred', $triples[0]['p'] );
-    $this->assertEquals( 'iri', $triples[0]['o_type'] );
+    $this->assertEquals( 'uri', $triples[0]['o_type'] );
     $this->assertEquals( 'http://example.org/obj', $triples[0]['o']);
 
   }

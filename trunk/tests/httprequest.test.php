@@ -76,7 +76,8 @@ foo';
 
   function test_constructor_can_set_auth_from_credentials() {
     $req = new HttpRequest("GET", "http://example.org/", new FakeCredentials());
-    $this->assertEquals( "user:pwd", $req->auth );
+    $this->assertEquals( "user", $req->credentials->get_username() );
+    $this->assertEquals( "pwd", $req->credentials->get_password() );
   }
 
 

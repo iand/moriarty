@@ -120,7 +120,7 @@ class ChangeSet extends SimpleGraph {
     $this->add_resource_triple($removal, RDF_TYPE, RDF_STATEMENT);
     $this->add_resource_triple($removal, RDF_SUBJECT, $triple['s'] );
     $this->add_resource_triple($removal, RDF_PREDICATE, $triple['p'] );
-    if ( $triple['o_type'] == 'iri' || $triple['o_type'] == 'bnode') {
+    if ( $triple['o_type'] == 'uri' || $triple['o_type'] == 'bnode') {
       $this->add_resource_triple($removal, RDF_OBJECT, $triple['o'] );
     }
     else {
@@ -139,7 +139,7 @@ class ChangeSet extends SimpleGraph {
     $this->add_resource_triple($addition, RDF_TYPE, RDF_STATEMENT );
     $this->add_resource_triple($addition, RDF_SUBJECT, $triple['s'] );
     $this->add_resource_triple($addition, RDF_PREDICATE, $triple['p'] );
-    if ( $triple['o_type'] == 'iri' || $triple['o_type'] == 'bnode') {
+    if ( $triple['o_type'] == 'uri' || $triple['o_type'] == 'bnode') {
       $this->add_resource_triple($addition, RDF_OBJECT, $triple['o'] );
     }
     else {
