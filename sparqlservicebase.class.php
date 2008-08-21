@@ -17,12 +17,9 @@ class SparqlServiceBase {
       $this->request_factory = new HttpRequestFactory();
     }
 
-    $request = $this->request_factory->make( 'POST', $this->uri );
+    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
     $request->set_accept("application/rdf+xml");
     $request->set_content_type("application/x-www-form-urlencoded");
-    if  ($this->credentials != null) {
-      $request->set_auth( $this->credentials->get_auth() );
-    }
 
     if ( is_array( $uri ) ) {
       $request->set_body( "query=" . urlencode("DESCRIBE <" . implode('> <' , $uri) . ">") );
@@ -67,13 +64,11 @@ class SparqlServiceBase {
     if (! isset( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
-    $request = $this->request_factory->make( 'POST', $this->uri );
+    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
     $request->set_accept(MIME_RDFXML);
     $request->set_content_type(MIME_FORMENCODED);
     $request->set_body( "query=" . urlencode($query) );
-    if  ($this->credentials != null) {
-      $request->set_auth( $this->credentials->get_auth() );
-    }
+
     return $request->execute();
   }
 
@@ -118,13 +113,10 @@ class SparqlServiceBase {
       $this->request_factory = new HttpRequestFactory();
     }
 
-    $request = $this->request_factory->make( 'POST', $this->uri );
+    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
     $request->set_accept(MIME_SPARQLRESULTS);
     $request->set_content_type(MIME_FORMENCODED);
     $request->set_body( "query=" . urlencode($query) );
-    if  ($this->credentials != null) {
-      $request->set_auth( $this->credentials->get_auth() );
-    }
 
     return $request->execute();
   }

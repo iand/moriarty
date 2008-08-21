@@ -34,11 +34,8 @@ class NetworkResource extends SimpleGraph {
     }
     $uri = $this->uri;
 
-    $request = $this->request_factory->make( 'GET', $uri);
+    $request = $this->request_factory->make( 'GET', $uri, $this->credentials);
     $request->set_accept(MIME_RDFXML);
-    if  ($this->credentials != null) {
-      $request->set_auth( $this->credentials->get_auth() );
-    }
     
     $response = $request->execute();
 
@@ -55,14 +52,10 @@ class NetworkResource extends SimpleGraph {
     }
     $uri = $this->uri;
 
-    $request = $this->request_factory->make( 'PUT', $uri);
+    $request = $this->request_factory->make( 'PUT', $uri, $this->credentials);
     $request->set_content_type(MIME_RDFXML);
     $request->set_body( $this->to_rdfxml() );
-    
-    if  ($this->credentials != null) {
-      $request->set_auth( $this->credentials->get_auth() );
-    }
-
+   
     $response = $request->execute();
 
     return $response;

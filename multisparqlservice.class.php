@@ -18,13 +18,9 @@ class MultiSparqlService extends SparqlServiceBase {
       $this->request_factory = new HttpRequestFactory();
     }
 
-    $request = $this->request_factory->make( 'POST', $this->uri );
+    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
     $request->set_accept("application/rdf+xml");
     $request->set_content_type("application/x-www-form-urlencoded");
-    if  ($this->credentials != null) {
-      $request->set_auth( $this->credentials->get_auth() );
-    }
-
 
     if ( is_array( $uri ) ) {
       $query = "DESCRIBE <" . implode('> <' , $uri) . ">";
