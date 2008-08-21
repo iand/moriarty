@@ -65,6 +65,8 @@ class RollbackTest extends PHPUnit_Framework_TestCase
 	}
 	
 	function test_to_changeset(){
+		
+		
 		require_once MORIARTY_ARC_DIR.'/ARC2.php';
 		$ser = ARC2::getRDFXMLSerializer();
 		$actual = $this->rollback->to_changeset('_:cs1')->body;
@@ -80,6 +82,7 @@ class RollbackTest extends PHPUnit_Framework_TestCase
 		$expected = $this->expected;
 		
 		$actual = $this->rollback->revert_changes($changes);
+		
 		$this->assertEquals($expected, $actual);
 	}
 	
@@ -99,12 +102,13 @@ class FakeSparqlService {
 			$changes  = $r->changes;
 			$body  = $ser->getSerializedIndex($changes);
 	//	} else if(stristr($query, 'DESCRIBE ?cs ?statement')){
-			$r = new RollbackTest();
-			$changes  = $r->changes;
-			$body  = $ser->getSerializedIndex($changes);			
+			// $r = new RollbackTest();
+			// $changes  = $r->changes;
+			// $body  = $ser->getSerializedIndex($changes);			
 	//	}
-		$response->status_code == '200';
+		$response->status_code = '200';
 		$response->body = $body;
+
 		return $response;
 	}
 	
