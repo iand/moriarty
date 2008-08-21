@@ -56,13 +56,10 @@ class JobQueue {
     $uri = $this->uri;
     $mimetype = MIME_RDFXML;
 
-    $request = $this->request_factory->make( 'POST', $uri);
+    $request = $this->request_factory->make( 'POST', $uri, $this->credentials);
     $request->set_accept("*/*");
     $request->set_content_type($mimetype);
     $request->set_body( $body );
-    if  ($this->credentials != null) {
-      $request->set_auth( $this->credentials->get_auth() );
-    }
     return $request->execute();
   }
 

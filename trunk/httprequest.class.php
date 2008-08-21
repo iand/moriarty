@@ -310,9 +310,6 @@ function parse_response($response){
    return array($response_code,$response_header_array,$response_body);
   }
 
-  function set_auth($auth_string) {
-    $this->auth = $auth_string;
-  }
 
   function to_string() {
     $ret = strtoupper($this->method) . ' ' . $this->uri . "\n";

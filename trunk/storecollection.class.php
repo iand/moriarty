@@ -36,7 +36,7 @@ class StoreCollection extends SimpleGraph {
     $uri = $this->uri;
     $mimetype = MIME_RDFXML;
 
-    $request = $this->request_factory->make( 'POST', $uri);
+    $request = $this->request_factory->make( 'POST', $uri, $this->credentials);
     $request->set_accept("*/*");
     $request->set_content_type($mimetype);
 
@@ -46,9 +46,6 @@ class StoreCollection extends SimpleGraph {
 
 
     $request->set_body( $sr->to_rdfxml() );
-    if  ($this->credentials != null) {
-      $request->set_auth( $this->credentials->get_auth() );
-    }
     return $request->execute();
 
   }
