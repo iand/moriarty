@@ -34,6 +34,7 @@ require_once MORIARTY_TEST_DIR . 'storegroupconfig.test.php';
 require_once MORIARTY_TEST_DIR . 'httpcache.test.php';
 require_once MORIARTY_TEST_DIR . 'facetservice.test.php';
 require_once MORIARTY_TEST_DIR . 'rollback.test.php';
+require_once MORIARTY_TEST_DIR . 'snapshots.test.php';
 
 
 error_reporting(E_ALL );
@@ -91,6 +92,7 @@ class Moriarty_AllTests
         $suite->addTestSuite('StoreGroupConfigTest');
         $suite->addTestSuite('HttpCacheTest');
         $suite->addTestSuite('FacetServiceTest');
+        $suite->addTestSuite('SnapshotsTest');
         $suite->addTestSuite('RollbackTest');
 
         return $suite;

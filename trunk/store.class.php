@@ -8,6 +8,7 @@ require_once MORIARTY_DIR. 'contentbox.class.php';
 require_once MORIARTY_DIR. 'jobqueue.class.php';
 require_once MORIARTY_DIR. 'config.class.php';
 require_once MORIARTY_DIR. 'facetservice.class.php';
+require_once MORIARTY_DIR. 'snapshots.class.php';
 
 class Store {
   var $uri;
@@ -44,6 +45,9 @@ class Store {
 
   function get_facet_service() {
     return new FacetService($this->uri . '/services/facet', $this->credentials);
+  }
+  function get_snapshots() {
+	return new Snapshots($this->uri . '/snapshots', $this->credentials);
   }
 }
 ?>
