@@ -79,5 +79,15 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $store = new Store("http://example.org/store", $credentials);
     $this->assertEquals( $credentials, $store->get_facet_service()->credentials );
   }
+  function test_get_snapshots() {
+    $store = new Store("http://example.org/store");
+    $this->assertEquals( "http://example.org/store/snapshots", $store->get_snapshots()->uri );
+  }
+
+  function test_get_snapshots_sets_credentials() {
+    $credentials = new Credentials('scooby', 'shaggy');
+    $store = new Store("http://example.org/store", $credentials);
+    $this->assertEquals( $credentials, $store->get_snapshots()->credentials );
+  }
 }
 ?>
