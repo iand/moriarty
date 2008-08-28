@@ -1001,4 +1001,11 @@ class JobQueueTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( $found_triple);
   }
 
+	function test_get_item_uris(){
+
+		$queue = new JobQueue(dirname(__FILE__).DIRECTORY_SEPARATOR.'documents/jobs.rdf');
+		$expected = array("http://api.talis.com/stores/kwijibo-dev3/jobs/6c679df3-f137-4cd5-bf4c-3206ad1ecd29");
+		$actual = $queue->get_item_uris();
+		$this->assertEquals($expected, $actual);
+	}
 }

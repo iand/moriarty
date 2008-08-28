@@ -150,6 +150,32 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( "query=construct+%7B%3Fs+%3Fp+%3Fo+%7D+where+%7B+%3Fs+%3Fp+%3Fo+.%7D", $fake_request->get_body() );
   }
 
+  function test_query_posts_to_service_uri() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+
+    $ss = new SparqlService("http://example.org/store/services/sparql");
+    $ss->request_factory = $fake_request_factory;
+
+    $response = $ss->query( 'construct {?s ?p ?o } where { ?s ?p ?o .}' );
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+
+  function test_query_uri_posts_query() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+
+    $ss = new SparqlService("http://example.org/store/services/sparql");
+    $ss->request_factory = $fake_request_factory;
+
+    $response = $ss->query( 'construct {?s ?p ?o } where { ?s ?p ?o .}' );
+    $this->assertEquals( "query=construct+%7B%3Fs+%3Fp+%3Fo+%7D+where+%7B+%3Fs+%3Fp+%3Fo+.%7D", $fake_request->get_body() );
+  }
+
+
+
   function test_graph_to_triple_list() {
     $fake_response = new HttpResponse();
     $fake_response->status_code = 200;
