@@ -63,4 +63,21 @@ class JobQueue {
     return $request->execute();
   }
 
+
+	function get_item_uris(){
+		$parser = ARC2::getRDFXMLParser();
+		$parser->parse($this->uri);
+		$triples = $parser->getTriples();
+		$this->errors = $parser->getErrors();
+		$uris = array();
+		foreach($triples as $t)
+		{
+			if($t['p']=='http://schemas.talis.com/2006/bigfoot/configuration#job') $uris[]=$t['o'];
+		}
+		return $uris;
+		
+	}
+
+
+
 }

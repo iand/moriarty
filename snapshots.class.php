@@ -6,11 +6,12 @@ require_once MORIARTY_DIR . 'httprequestfactory.class.php';
 
 class Snapshots{
 
-	var $uri, $errors;
+	var $uri, $errors, $credentials;
 	
-	function __construct($uri)
+	function __construct($uri, $credentials=false)
 	{
 		$this->uri = $uri;
+		$this->credentials = $credentials;
 	}
 	/**
 	 * get_snapshots

@@ -60,6 +60,20 @@ class SparqlServiceBase {
     return $graph;
   }
 
+  function query($query, $mime=''){
+	
+    if (! isset( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
+    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
+	$request->set_accept($mime);
+    $request->set_content_type(MIME_FORMENCODED);
+    $request->set_body( "query=" . urlencode($query) );
+
+    return $request->execute();
+	
+  }
+
   function graph( $query ) {
     if (! isset( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
