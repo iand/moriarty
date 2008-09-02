@@ -66,6 +66,7 @@ class SparqlServiceBase {
       $this->request_factory = new HttpRequestFactory();
     }
     $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
+	if(empty($mime)) $mime = MIME_RDFXML.','.MIME_SPARQLRESULTS;
 	$request->set_accept($mime);
     $request->set_content_type(MIME_FORMENCODED);
     $request->set_body( "query=" . urlencode($query) );
