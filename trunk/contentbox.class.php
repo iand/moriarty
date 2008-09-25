@@ -14,17 +14,18 @@ class Contentbox {
     $this->credentials = $credentials;
   }
 
-  function make_search_uri( $query, $max=10, $offset=0) {
+  function make_search_uri( $query, $max=10, $offset=0, $sort=false) {
     $uri = $this->uri . '?query=' . urlencode($query) . '&max=' . urlencode($max) . '&offset=' . urlencode($offset);
+	$uri.= ($sort)? '&sort='.urlencode($sort) : '';
     return $uri;
   }
 
-  function search( $query, $max=10, $offset=0) {
+  function search( $query, $max=10, $offset=0, $sort=false) {
     if (! isset( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
 
-    $request = $this->request_factory->make( 'GET', $this->make_search_uri($query, $max, $offset), $this->credentials );
+    $request = $this->request_factory->make( 'GET', $this->make_search_uri($query, $max, $offset, $sort), $this->credentials );
     $request->set_accept(MIME_RSS);
 
     return $request->execute();
