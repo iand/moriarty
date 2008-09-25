@@ -86,6 +86,19 @@ class ContentboxTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( $fake_request->was_executed() );
   }
 
+  function test_search_passes_sort_parameter() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=45&offset=0&sort=title", $fake_request );
+
+    $cb = new Contentbox("http://example.org/store/items");
+    $cb->request_factory = $fake_request_factory;
+
+    $response = $cb->search( 'scooby', 45,0,'title');
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+
+
   function test_search_passes_offset_parameter() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
