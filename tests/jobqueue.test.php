@@ -1004,8 +1004,39 @@ class JobQueueTest extends PHPUnit_Framework_TestCase {
 	function test_get_item_uris(){
 
 		$queue = new JobQueue(dirname(__FILE__).DIRECTORY_SEPARATOR.'documents/jobs.rdf');
+		$queue->request_factory = new FakeJobsHTTPRequestFactory();
 		$expected = array("http://api.talis.com/stores/kwijibo-dev3/jobs/6c679df3-f137-4cd5-bf4c-3206ad1ecd29");
 		$actual = $queue->get_item_uris();
 		$this->assertEquals($expected, $actual);
+	}
+}
+
+
+class FakeJobsHTTPRequestFactory {
+	
+	function make($m, $u, $c){
+		return new FakeJobsHTTPRequest();
+	}
+}
+class FakeJobsHTTPRequest {
+	
+	function set_accept($mime){	}
+	
+	function execute(){
+		$request = new FakeJobsResponse();
+		$request->status_code == '200';
+		$request->body = file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'documents/jobs.rdf');
+		return $request;
+	}
+}
+class FakeJobsResponse{
+	var $body, $status_code;
+	function FakeJobsResponse(){
+		$this->body = file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'documents/jobs.rdf');
+		
+	}
+	
+	function is_success(){
+		return 1;
 	}
 }
