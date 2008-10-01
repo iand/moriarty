@@ -65,16 +65,30 @@ class JobQueue {
 
 
 	function get_item_uris(){
-		$parser = ARC2::getRDFXMLParser();
-		$parser->parse($this->uri);
-		$triples = $parser->getTriples();
-		$this->errors = $parser->getErrors();
-		$uris = array();
-		foreach($triples as $t)
-		{
-			if($t['p']=='http://schemas.talis.com/2006/bigfoot/configuration#job') $uris[]=$t['o'];
+		if (! isset( $this->request_factory) ) {
+	      $this->request_factory = new HttpRequestFactory();
+	    }
+
+	    $request = $this->request_factory->make( 'GET', $this->uri, $this->credentials);
+	    $request->set_accept("application/rdf+xml");
+	    $response =  $request->execute();
+	
+		if($response->is_success()){
+			
+			$parser = ARC2::getRDFXMLParser();
+			$parser->parse($this->uri, $response->body);
+			$triples = $parser->getTriples();
+			$this->errors = $parser->getErrors();
+			$uris = array();
+			foreach($triples as $t)
+			{
+				if($t['p']=='http://schemas.talis.com/2006/bigfoot/configuration#job') $uris[]=$t['o'];
+			}
+			return $uris;
+			
+		} else {
+			return array(); 
 		}
-		return $uris;
 		
 	}
 
