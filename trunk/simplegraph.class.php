@@ -32,6 +32,13 @@ class SimpleGraph {
                     'user' => 'http://schemas.talis.com/2005/user/schema#',
                     'sv' => 'http://schemas.talis.com/2005/service/schema#',
                   );
+                  
+  function __destruct(){
+    unset($this->_index);
+    unset($this);
+  }
+
+                  
   function set_namespace_mapping($prefix, $uri) {
     $this->_ns[$prefix] = $uri;
   }
@@ -170,6 +177,7 @@ class SimpleGraph {
       $parser = ARC2::getRDFXMLParser();
       $parser->parse($base, $rdfxml );
       $this->_add_arc2_triple_list($parser->getTriples());
+      unset($parser);
     }
   }
 
@@ -185,6 +193,7 @@ class SimpleGraph {
       $parser = ARC2::getTurtleParser();
       $parser->parse($base, $turtle );
       $this->_add_arc2_triple_list($parser->getTriples());
+      unset($parser);
     }
   }
 
@@ -210,6 +219,9 @@ class SimpleGraph {
       if ($obj['type'] == 'literal') {
         if ( isset( $t['o_dt'] ) && $t['o_dt'] ) {
           $obj['datatype'] = $t['o_dt'];
+        }
+        else if ( isset( $t['o_datatype'] ) && $t['o_datatype'] ) {
+          $obj['datatype'] = $t['o_datatype'];
         }
         if ( isset( $t['o_lang']) && $t['o_lang'])  {
           $obj['lang'] = $t['o_lang'];
@@ -285,7 +297,18 @@ class SimpleGraph {
     }
     return $values;
   }
-  
+    
+  function get_subject_property_values($s, $p) {
+    $values = array();
+    if (array_key_exists($s, $this->_index) ) {
+      if (array_key_exists($p, $this->_index[$s]) ) {
+        foreach ($this->_index[$s][$p] as $value) {
+          $values[] = $value;
+        }
+      }
+    }
+    return $values;
+  }      
   function subject_has_property($s, $p) {
     if (array_key_exists($s, $this->_index) ) {
       return (array_key_exists($p, $this->_index[$s]) );

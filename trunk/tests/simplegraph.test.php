@@ -294,5 +294,19 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     
   }
 
+  function test_from_turtle_parses_datatypes() {
+    
+    $g = new SimpleGraph();
+    $g->from_turtle('<http://example.org/subj> <http://example.org/pred> "1390"^^<http://www.w3.org/2001/XMLSchema#gYear> .');
+    $this->assertEquals( 1, count($g->get_triples()));
+
+    $index = $g->get_index();
+    $this->assertEquals("1390", $index['http://example.org/subj']['http://example.org/pred'][0]['value']);
+    $this->assertEquals("http://www.w3.org/2001/XMLSchema#gYear", $index['http://example.org/subj']['http://example.org/pred'][0]['datatype']);
+
+
+    
+  }
+
 }
 ?>
