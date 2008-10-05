@@ -283,6 +283,19 @@ class SimpleGraph {
     return false;
   }
 
+  function has_literal_triple($s, $p, $o) {
+    if (array_key_exists($s, $this->_index) ) {
+      if (array_key_exists($p, $this->_index[$s]) ) {
+        foreach ($this->_index[$s][$p] as $value) {
+          if ( ( $value['type'] == 'literal') && $value['value'] == $o) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  }
 
   function get_resource_triple_values($s, $p) {
     $values = array();
