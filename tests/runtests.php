@@ -35,6 +35,7 @@ require_once MORIARTY_TEST_DIR . 'httpcache.test.php';
 require_once MORIARTY_TEST_DIR . 'facetservice.test.php';
 require_once MORIARTY_TEST_DIR . 'rollback.test.php';
 require_once MORIARTY_TEST_DIR . 'snapshots.test.php';
+require_once MORIARTY_TEST_DIR . 'augmentservice.test.php';
 
 
 error_reporting(E_ALL );
@@ -94,6 +95,7 @@ class Moriarty_AllTests
         $suite->addTestSuite('FacetServiceTest');
         $suite->addTestSuite('SnapshotsTest');
         $suite->addTestSuite('RollbackTest');
+        $suite->addTestSuite('AugmentServiceTest');
 
         return $suite;
     }
