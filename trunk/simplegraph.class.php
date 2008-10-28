@@ -45,24 +45,39 @@ class SimpleGraph {
 
 
   function add_resource_triple($s, $p, $o) {
-    $triple = array( 's' => $s,'p' => $p,'o' => $o);
-    $triple['s_type'] = strpos($s, '_:' ) === 0 ? 'bnode' : 'uri';
-    $triple['o_type'] = strpos($o, '_:' ) === 0 ? 'bnode' : 'uri';
-    $triples = array( $triple );
-    $this->_add_arc2_triple_list( $triples );
+    $o_type = strpos($o, '_:' ) === 0 ? 'bnode' : 'uri';
+    $o_info = array('type' => $o_type, 'value' => $o);
+    return $this->_add_triple($s, $p, $o_info);
   }
 
   function add_literal_triple($s, $p, $o, $lang = null, $dt = null) {
-    $triple = array( 's' => $s,'p' => $p,'o' => $o, 'o_type' => 'literal');
-    $triple['s_type'] = strpos($s, '_:' ) === 0 ? 'bnode' : 'uri';
+    $o_info = array('type' => 'literal', 'value' => $o);
     if ( $lang != null ) {
-      $triple['o_lang'] = $lang;
+      $o_info['lang'] = $lang;
     }
     if ( $dt != null ) {
-      $triple['o_dt'] = $dt;
+      $o_info['datatype'] = $dt;
     }
-    $triples = array( $triple );
-    $this->_add_arc2_triple_list( $triples );
+    return $this->_add_triple($s, $p, $o_info);
+  }
+
+  function _add_triple($s, $p, $o_info) {
+    if (!isset($this->_index[$s])) { 
+      $this->_index[$s] = array();
+      $this->_index[$s][$p] = array( $o_info );
+      return true;
+    }
+    elseif (!isset($this->_index[$s][$p])) {
+      $this->_index[$s][$p] = array( $o_info);
+      return true;
+    }
+    else {          
+      if ( ! in_array( $o_info, $this->_index[$s][$p] ) ) {
+        $this->_index[$s][$p][] = $o_info;       
+        return true;
+      }
+    }
+    return false;  
   }
 
   function get_triples() {
@@ -107,17 +122,30 @@ class SimpleGraph {
       );
     return $serializer->getSerializedIndex($this->_to_arc_index($this->_index));
   }
+  
   function get_first_literal($s, $p, $default = null) {
-    if ( array_key_exists($s, $this->_index) && array_key_exists($p, $this->_index[$s]) ) {
-      foreach ($this->_index[$s][$p] as $value) {
-        if ($value['type'] == 'literal') {
-          return $value['value'];
+    if ( array_key_exists($s, $this->_index)) {
+      if (is_array($p)) {
+        foreach($p as $p_uri) {
+          if(array_key_exists($p_uri, $this->_index[$s]) ) {
+            foreach ($this->_index[$s][$p_uri] as $value) {
+              if ($value['type'] == 'literal') {
+                return $value['value'];
+              }
+            }
+          }         
+        }       
+      }
+      else if(array_key_exists($p, $this->_index[$s]) ) {
+        foreach ($this->_index[$s][$p] as $value) {
+          if ($value['type'] == 'literal') {
+            return $value['value'];
+          }
         }
       }
     }
-    else {
-      return $default;
-    }
+
+    return $default;
   }
 
   function get_first_resource($s, $p, $default = null) {
@@ -197,6 +225,21 @@ class SimpleGraph {
     }
   }
 
+
+  function add_graph($g) {
+    $triples_were_added = false;
+    $index = $g->get_index();
+    foreach ($index as $s => $p_list) {
+      foreach ($p_list as $p => $o_list) {
+        foreach ($o_list as $o_info) {
+          if ($this->_add_triple($s, $p, $o_info) ) {
+            $triples_were_added = true;
+          }
+        } 
+      } 
+    } 
+    return $triples_were_added;
+  }
 
   function _add_arc2_triple_list(&$triples) {
     foreach ($triples as $t) {
@@ -310,6 +353,34 @@ class SimpleGraph {
     }
     return $values;
   }
+  
+  function get_literal_triple_values($s, $p) {
+    $values = array();
+    if ( array_key_exists($s, $this->_index)) {
+      if (is_array($p)) {
+        foreach($p as $p_uri) {
+          if(array_key_exists($p_uri, $this->_index[$s]) ) {
+            foreach ($this->_index[$s][$p_uri] as $value) {
+              if ($value['type'] == 'literal') {
+                $values[] = $value['value'];
+              }
+            }
+          }         
+        }       
+      }
+      else if(array_key_exists($p, $this->_index[$s]) ) {
+        foreach ($this->_index[$s][$p] as $value) {
+          if ($value['type'] == 'literal') {
+            $values[] = $value['value'];
+          }
+        }
+      }
+    }
+
+    return $values;
+  }
+
+  
     
   function get_subject_property_values($s, $p) {
     $values = array();
