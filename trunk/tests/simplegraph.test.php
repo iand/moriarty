@@ -117,7 +117,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
 
     $this->assertEquals( "literal", $g->get_first_literal('http://example.org/subj', 'http://example.org/pred'));
   }
-  function test_get_first_literal_ignortes_resources() {
+  function test_get_first_literal_ignores_resources() {
     $g = new SimpleGraph();
     $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
     $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'literal');
@@ -207,7 +207,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( 0, count($g->get_triples()));
   }
 
-  function test_remove_property_values_removes_multiplr_values() {
+  function test_remove_property_values_removes_multiple_values() {
     $g = new SimpleGraph();
     $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
     $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj2');
