@@ -24,12 +24,17 @@ define('RDF_SUBJECT', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#subject');
 define('RDF_PREDICATE', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate');
 define('RDF_OBJECT', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#object');
 define('RDF_STATEMENT', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement');
+define('RDF_FIRST', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first');
+define('RDF_REST', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#rest');
+define('RDF_LIST', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#List');
+define('RDF_VALUE', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value');
 
 define('RDF_PROPERTY', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property');
 define('RDF_XMLLITERAL', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral');
 
 define('RDFS_LABEL', 'http://www.w3.org/2000/01/rdf-schema#label');
 define('RDFS_COMMENT', 'http://www.w3.org/2000/01/rdf-schema#comment');
+define('RDFS_ISDEFINEDBY', 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy');
 define('RDFS_DOMAIN', 'http://www.w3.org/2000/01/rdf-schema#domain');
 define('RDFS_RANGE', 'http://www.w3.org/2000/01/rdf-schema#range');
 define('RDFS_SEEALSO', 'http://www.w3.org/2000/01/rdf-schema#seeAlso');
@@ -39,6 +44,7 @@ define('RDFS_CLASS', 'http://www.w3.org/2000/01/rdf-schema#Class');
 define('RDFS_DATATYPE', 'http://www.w3.org/2000/01/rdf-schema#Datatype');
 define('RDFS_LITERAL', 'http://www.w3.org/2000/01/rdf-schema#Literal');
 define('RDFS_RESOURCE', 'http://www.w3.org/2000/01/rdf-schema#Resource');
+define('RDFS_MEMBER', 'http://www.w3.org/2000/01/rdf-schema#member');
 
 define('FOAF_DOCUMENT', 'http://xmlns.com/foaf/0.1/Document');
 define('FOAF_ISPRIMARYTOPICOF', 'http://xmlns.com/foaf/0.1/isPrimaryTopicOf');
@@ -119,14 +125,18 @@ define('ANALYZER_NOSTOPEN', 'http://schemas.talis.com/2007/bigfoot/analyzers#nos
 define('ANALYZER_NORMEN', 'http://schemas.talis.com/2007/bigfoot/analyzers#norm-en'); 
 
 define('OWL_CLASS', 'http://www.w3.org/2002/07/owl#Class');
+define('OWL_COMPLEMENTOF', 'http://www.w3.org/2002/07/owl#complementOf');
 define('OWL_EQUIVALENTCLASS', 'http://www.w3.org/2002/07/owl#equivalentClass');
 define('OWL_EQUIVALENTPROPERTY', 'http://www.w3.org/2002/07/owl#equivalentProperty');
 define('OWL_SAMEAS', 'http://www.w3.org/2002/07/owl#sameAs');
 define('OWL_INVERSEOF', 'http://www.w3.org/2002/07/owl#inverseOf');
 define('OWL_INVERSEFUNCTIONALPROPERTY', 'http://www.w3.org/2002/07/owl#InverseFunctionalProperty');
 define('OWL_FUNCTIONALPROPERTY', 'http://www.w3.org/2002/07/owl#FunctionalProperty');
+define('OWL_OBJECTPROPERTY', 'http://www.w3.org/2002/07/owl#ObjectProperty');
+define('OWL_DATATYPEPROPERTY', 'http://www.w3.org/2002/07/owl#DatatypeProperty');
 define('OWL_TRANSITIVEPROPERTY', 'http://www.w3.org/2002/07/owl#TransitiveProperty');
 define('OWL_SYMMETRICPROPERTY', 'http://www.w3.org/2002/07/owl#SymmetricProperty');
+define('OWL_ANNOTATIONPROPERTY', 'http://www.w3.org/2002/07/owl#AnnotationProperty');
 define('OWL_DISJOINTWITH', 'http://www.w3.org/2002/07/owl#disjointWith');
 
 define('OUTPUT_TYPE_RDF', 'rdf');
