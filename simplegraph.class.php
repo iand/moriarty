@@ -32,6 +32,7 @@ class SimpleGraph {
                     'dir' => 'http://schemas.talis.com/2005/dir/schema#',
                     'user' => 'http://schemas.talis.com/2005/user/schema#',
                     'sv' => 'http://schemas.talis.com/2005/service/schema#',
+                    'mo' => 'http://purl.org/ontology/mo/',
                   );
                   
   function __destruct(){
