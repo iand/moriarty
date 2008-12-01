@@ -24,6 +24,7 @@ class SimpleGraph {
                     'air' => 'http://www.daml.org/2001/10/html/airport-ont#',
                     'contact' => 'http://www.w3.org/2000/10/swap/pim/contact#',
                     'ical' => 'http://www.w3.org/2002/12/cal/ical#',
+                    'icaltzd' => 'http://www.w3.org/2002/12/cal/icaltzd#',
                     'frbr' => 'http://purl.org/vocab/frbr/core#',
 
                     'ad' => 'http://schemas.talis.com/2005/address/schema#',
