@@ -33,6 +33,8 @@ class SimpleGraph {
                     'user' => 'http://schemas.talis.com/2005/user/schema#',
                     'sv' => 'http://schemas.talis.com/2005/service/schema#',
                     'mo' => 'http://purl.org/ontology/mo/',
+                    'status' => 'http://www.w3.org/2003/06/sw-vocab-status/ns#',
+                    'label' => 'http://purl.org/net/vocab/2004/03/label#',
                   );
                   
   function __destruct(){
