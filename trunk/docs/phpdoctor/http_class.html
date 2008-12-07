@@ -1,0 +1,1188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+
+<meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
+<meta name="when" content="Sat, 06 Dec 2008 10:58:50 +0000">
+
+<link rel="stylesheet" type="text/css" href="../stylesheet.css">
+<link rel="start" href="../overview-summary.html">
+
+<title>http_class (PHPDoctor)</title>
+
+</head>
+<body id="definition" onload="parent.document.title=document.title;">
+
+<div class="header">
+<h1>Moriarty</h1>
+<ul>
+<li><a href="../overview-summary.html">Overview</a></li>
+<li><a href="../phpdoctor/package-summary.html">Package</a></li>
+<li class="active">Class</li>
+<li><a href="../phpdoctor/package-tree.html">Tree</a></li>
+<li><a href="../deprecated-list.html">Deprecated</a></li>
+<li><a href="../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../index.html" target="_top">Frames</a>
+<a href="../phpdoctor/http_class.html" target="_top">No frames</a>
+</div>
+<div class="small_links">
+Summary: <a href="#summary_field">Field</a> | <a href="#summary_method">Method</a> | <a href="#summary_constr">Constr</a>
+Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> | <a href="#summary_constr">Constr</a>
+</div>
+<hr>
+
+<div class="qualifiedName">PHPDoctor.http_class</div>
+
+<h1>Class http_class</h1>
+
+<pre class="tree"><strong>http_class</strong><br /></pre>
+
+<hr>
+
+<p class="signature">public  class <strong>http_class</strong></p>
+
+<hr>
+
+<table id="summary_field">
+<tr><th colspan="2">Field Summary</th></tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#authentication_mechanism">$authentication_mechanism</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#chunked">$chunked</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#connection">$connection</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#connection_close">$connection_close</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#content_length">$content_length</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#cookies">$cookies</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#data_timeout">$data_timeout</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#debug">$debug</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#debug_response_body">$debug_response_body</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#error">$error</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#exclude_address">$exclude_address</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#file_buffer_length">$file_buffer_length</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#follow_redirect">$follow_redirect</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#force_multipart_form_post">$force_multipart_form_post</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#host_name">$host_name</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#host_port">$host_port</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#html_debug">$html_debug</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#last_chunk_read">$last_chunk_read</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#months">$months</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#next_token">$next_token</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#password">$password</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#prefer_curl">$prefer_curl</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#protocol">$protocol</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#protocol_version">$protocol_version</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#proxy_authentication_mechanism">$proxy_authentication_mechanism</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#proxy_host_name">$proxy_host_name</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#proxy_host_port">$proxy_host_port</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#proxy_password">$proxy_password</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#proxy_realm">$proxy_realm</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#proxy_request_password">$proxy_request_password</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#proxy_request_realm">$proxy_request_realm</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#proxy_request_user">$proxy_request_user</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#proxy_request_workstation">$proxy_request_workstation</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#proxy_user">$proxy_user</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#proxy_workstation">$proxy_workstation</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#read_length">$read_length</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#read_response">$read_response</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#realm">$realm</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#redirection_level">$redirection_level</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#redirection_limit">$redirection_limit</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#remaining_chunk">$remaining_chunk</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#request">$request</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#request_arguments">$request_arguments</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#request_body">$request_body</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#request_headers">$request_headers</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#request_host">$request_host</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#request_method">$request_method</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#request_password">$request_password</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#request_realm">$request_realm</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#request_uri">$request_uri</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#request_user">$request_user</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#request_workstation">$request_workstation</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#response">$response</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#response_message">$response_message</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#response_status">$response_status</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#session">$session</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#socks_host_name">$socks_host_name</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#socks_host_port">$socks_host_port</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#socks_version">$socks_version</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#state">$state</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#support_cookies">$support_cookies</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#timeout">$timeout</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#use_curl">$use_curl</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#user">$user</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#user_agent">$user_agent</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#workstation">$workstation</a></p></td>
+</tr>
+</table>
+
+<table id="summary_method">
+<tr><th colspan="2">Method Summary</th></tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#Authenticate()">Authenticate</a>(mixed headers, mixed proxy, mixed proxy_authorization, mixed user, mixed password, mixed realm, mixed workstation)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#Close()">Close</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#Connect()">Connect</a>(mixed host_name, mixed host_port, mixed ssl, mixed server_type)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#ConnectFromProxy()">ConnectFromProxy</a>(mixed arguments, mixed headers)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#CookieEncode()">CookieEncode</a>(mixed value, mixed name)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#Disconnect()">Disconnect</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#EndOfInput()">EndOfInput</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#FlushData()">FlushData</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#GetFileDefinition()">GetFileDefinition</a>(mixed file, mixed definition)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#GetLine()">GetLine</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#GetPersistentCookies()">GetPersistentCookies</a>(mixed cookies, mixed domain, mixed secure_only)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#GetRequestArguments()">GetRequestArguments</a>(mixed url, mixed arguments)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#Open()">Open</a>(mixed arguments)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#OutputDebug()">OutputDebug</a>(mixed message)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#PickCookies()">PickCookies</a>(mixed cookies, mixed secure)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#PutData()">PutData</a>(mixed data)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#PutLine()">PutLine</a>(mixed line)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#ReadBytes()">ReadBytes</a>(mixed length)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#ReadChunkSize()">ReadChunkSize</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#ReadReplyBody()">ReadReplyBody</a>(mixed body, mixed length)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#ReadReplyHeaders()">ReadReplyHeaders</a>(mixed headers)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#ReadReplyHeadersResponse()">ReadReplyHeadersResponse</a>(mixed headers)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#Redirect()">Redirect</a>(mixed headers)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#Resolve()">Resolve</a>(mixed domain, mixed ip, mixed server_type)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#RestoreCookies()">RestoreCookies</a>(mixed cookies, mixed clear)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#SaveCookies()">SaveCookies</a>(mixed cookies, mixed domain, mixed secure_only, mixed persistent_only)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#SavePersistentCookies()">SavePersistentCookies</a>(mixed cookies, mixed domain, mixed secure_only)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#SendRequest()">SendRequest</a>(mixed arguments)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#SendRequestBody()">SendRequestBody</a>(mixed data, mixed end_of_data)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#SetCookie()">SetCookie</a>(mixed name, mixed value, mixed expires, mixed path, mixed domain, mixed secure, mixed verbatim)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#SetDataAccessError()">SetDataAccessError</a>(mixed error, mixed check_connection)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#SetError()">SetError</a>(mixed error)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#SetPHPError()">SetPHPError</a>(mixed error, mixed php_error_message)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#Tokenize()">Tokenize</a>(mixed string, mixed separator)</p></td>
+</tr>
+</table>
+
+<h2 id="detail_field">Field Detail</h2>
+<h3 id="authentication_mechanism">authentication_mechanism</h3>
+<code class="signature">public  mixed <strong>$authentication_mechanism</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="chunked">chunked</h3>
+<code class="signature">public  mixed <strong>$chunked</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="connection">connection</h3>
+<code class="signature">public  mixed <strong>$connection</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="connection_close">connection_close</h3>
+<code class="signature">public  mixed <strong>$connection_close</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="content_length">content_length</h3>
+<code class="signature">public  mixed <strong>$content_length</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="cookies">cookies</h3>
+<code class="signature">public  mixed <strong>$cookies</strong> = array()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="data_timeout">data_timeout</h3>
+<code class="signature">public  mixed <strong>$data_timeout</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="debug">debug</h3>
+<code class="signature">public  mixed <strong>$debug</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="debug_response_body">debug_response_body</h3>
+<code class="signature">public  mixed <strong>$debug_response_body</strong> = 1</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="error">error</h3>
+<code class="signature">public  mixed <strong>$error</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="exclude_address">exclude_address</h3>
+<code class="signature">public  mixed <strong>$exclude_address</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="file_buffer_length">file_buffer_length</h3>
+<code class="signature">public  mixed <strong>$file_buffer_length</strong> = 8000</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="follow_redirect">follow_redirect</h3>
+<code class="signature">public  mixed <strong>$follow_redirect</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="force_multipart_form_post">force_multipart_form_post</h3>
+<code class="signature">public  mixed <strong>$force_multipart_form_post</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="host_name">host_name</h3>
+<code class="signature">public  mixed <strong>$host_name</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="host_port">host_port</h3>
+<code class="signature">public  mixed <strong>$host_port</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="html_debug">html_debug</h3>
+<code class="signature">public  mixed <strong>$html_debug</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="last_chunk_read">last_chunk_read</h3>
+<code class="signature">public  mixed <strong>$last_chunk_read</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="months">months</h3>
+<code class="signature">public  mixed <strong>$months</strong> = array(
+		"Jan"=>"01"</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="next_token">next_token</h3>
+<code class="signature">public  mixed <strong>$next_token</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="password">password</h3>
+<code class="signature">public  mixed <strong>$password</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="prefer_curl">prefer_curl</h3>
+<code class="signature">public  mixed <strong>$prefer_curl</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="protocol">protocol</h3>
+<code class="signature">public  mixed <strong>$protocol</strong> = "http"</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="protocol_version">protocol_version</h3>
+<code class="signature">public  mixed <strong>$protocol_version</strong> = "1.1"</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="proxy_authentication_mechanism">proxy_authentication_mechanism</h3>
+<code class="signature">public  mixed <strong>$proxy_authentication_mechanism</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="proxy_host_name">proxy_host_name</h3>
+<code class="signature">public  mixed <strong>$proxy_host_name</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="proxy_host_port">proxy_host_port</h3>
+<code class="signature">public  mixed <strong>$proxy_host_port</strong> = 80</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="proxy_password">proxy_password</h3>
+<code class="signature">public  mixed <strong>$proxy_password</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="proxy_realm">proxy_realm</h3>
+<code class="signature">public  mixed <strong>$proxy_realm</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="proxy_request_password">proxy_request_password</h3>
+<code class="signature">public  mixed <strong>$proxy_request_password</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="proxy_request_realm">proxy_request_realm</h3>
+<code class="signature">public  mixed <strong>$proxy_request_realm</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="proxy_request_user">proxy_request_user</h3>
+<code class="signature">public  mixed <strong>$proxy_request_user</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="proxy_request_workstation">proxy_request_workstation</h3>
+<code class="signature">public  mixed <strong>$proxy_request_workstation</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="proxy_user">proxy_user</h3>
+<code class="signature">public  mixed <strong>$proxy_user</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="proxy_workstation">proxy_workstation</h3>
+<code class="signature">public  mixed <strong>$proxy_workstation</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="read_length">read_length</h3>
+<code class="signature">public  mixed <strong>$read_length</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="read_response">read_response</h3>
+<code class="signature">public  mixed <strong>$read_response</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="realm">realm</h3>
+<code class="signature">public  mixed <strong>$realm</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="redirection_level">redirection_level</h3>
+<code class="signature">public  mixed <strong>$redirection_level</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="redirection_limit">redirection_limit</h3>
+<code class="signature">public  mixed <strong>$redirection_limit</strong> = 5</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="remaining_chunk">remaining_chunk</h3>
+<code class="signature">public  mixed <strong>$remaining_chunk</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="request">request</h3>
+<code class="signature">public  mixed <strong>$request</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="request_arguments">request_arguments</h3>
+<code class="signature">public  mixed <strong>$request_arguments</strong> = array()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="request_body">request_body</h3>
+<code class="signature">public  mixed <strong>$request_body</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="request_headers">request_headers</h3>
+<code class="signature">public  mixed <strong>$request_headers</strong> = array()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="request_host">request_host</h3>
+<code class="signature">public  mixed <strong>$request_host</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="request_method">request_method</h3>
+<code class="signature">public  mixed <strong>$request_method</strong> = "GET"</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="request_password">request_password</h3>
+<code class="signature">public  mixed <strong>$request_password</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="request_realm">request_realm</h3>
+<code class="signature">public  mixed <strong>$request_realm</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="request_uri">request_uri</h3>
+<code class="signature">public  mixed <strong>$request_uri</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="request_user">request_user</h3>
+<code class="signature">public  mixed <strong>$request_user</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="request_workstation">request_workstation</h3>
+<code class="signature">public  mixed <strong>$request_workstation</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="response">response</h3>
+<code class="signature">public  mixed <strong>$response</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="response_message">response_message</h3>
+<code class="signature">public  mixed <strong>$response_message</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="response_status">response_status</h3>
+<code class="signature">public  mixed <strong>$response_status</strong> = ""</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="session">session</h3>
+<code class="signature">public  mixed <strong>$session</strong> = ''</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="socks_host_name">socks_host_name</h3>
+<code class="signature">public  mixed <strong>$socks_host_name</strong> = ''</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="socks_host_port">socks_host_port</h3>
+<code class="signature">public  mixed <strong>$socks_host_port</strong> = 1080</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="socks_version">socks_version</h3>
+<code class="signature">public  mixed <strong>$socks_version</strong> = '5'</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="state">state</h3>
+<code class="signature">public  mixed <strong>$state</strong> = "Disconnected"</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="support_cookies">support_cookies</h3>
+<code class="signature">public  mixed <strong>$support_cookies</strong> = 1</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="timeout">timeout</h3>
+<code class="signature">public  mixed <strong>$timeout</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="use_curl">use_curl</h3>
+<code class="signature">public  mixed <strong>$use_curl</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="user">user</h3>
+<code class="signature">public  mixed <strong>$user</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="user_agent">user_agent</h3>
+<code class="signature">public  mixed <strong>$user_agent</strong> = 'httpclient (http://www.phpclasses.org/httpclient $Revision: 1.76 $)'</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="workstation">workstation</h3>
+<code class="signature">public  mixed <strong>$workstation</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h2 id="detail_method">Method Detail</h2>
+<h3 id="Authenticate()">Authenticate</h3>
+<code class="signature">public  void <strong>Authenticate</strong>(mixed headers, mixed proxy, mixed proxy_authorization, mixed user, mixed password, mixed realm, mixed workstation)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="Close()">Close</h3>
+<code class="signature">public  void <strong>Close</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="Connect()">Connect</h3>
+<code class="signature">public  void <strong>Connect</strong>(mixed host_name, mixed host_port, mixed ssl, mixed server_type)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="ConnectFromProxy()">ConnectFromProxy</h3>
+<code class="signature">public  void <strong>ConnectFromProxy</strong>(mixed arguments, mixed headers)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="CookieEncode()">CookieEncode</h3>
+<code class="signature">public  void <strong>CookieEncode</strong>(mixed value, mixed name)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="Disconnect()">Disconnect</h3>
+<code class="signature">public  void <strong>Disconnect</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="EndOfInput()">EndOfInput</h3>
+<code class="signature">public  void <strong>EndOfInput</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="FlushData()">FlushData</h3>
+<code class="signature">public  void <strong>FlushData</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="GetFileDefinition()">GetFileDefinition</h3>
+<code class="signature">public  void <strong>GetFileDefinition</strong>(mixed file, mixed definition)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="GetLine()">GetLine</h3>
+<code class="signature">public  void <strong>GetLine</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="GetPersistentCookies()">GetPersistentCookies</h3>
+<code class="signature">public  void <strong>GetPersistentCookies</strong>(mixed cookies, mixed domain, mixed secure_only)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="GetRequestArguments()">GetRequestArguments</h3>
+<code class="signature">public  void <strong>GetRequestArguments</strong>(mixed url, mixed arguments)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="Open()">Open</h3>
+<code class="signature">public  void <strong>Open</strong>(mixed arguments)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="OutputDebug()">OutputDebug</h3>
+<code class="signature">public  void <strong>OutputDebug</strong>(mixed message)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="PickCookies()">PickCookies</h3>
+<code class="signature">public  void <strong>PickCookies</strong>(mixed cookies, mixed secure)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="PutData()">PutData</h3>
+<code class="signature">public  void <strong>PutData</strong>(mixed data)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="PutLine()">PutLine</h3>
+<code class="signature">public  void <strong>PutLine</strong>(mixed line)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="ReadBytes()">ReadBytes</h3>
+<code class="signature">public  void <strong>ReadBytes</strong>(mixed length)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="ReadChunkSize()">ReadChunkSize</h3>
+<code class="signature">public  void <strong>ReadChunkSize</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="ReadReplyBody()">ReadReplyBody</h3>
+<code class="signature">public  void <strong>ReadReplyBody</strong>(mixed body, mixed length)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="ReadReplyHeaders()">ReadReplyHeaders</h3>
+<code class="signature">public  void <strong>ReadReplyHeaders</strong>(mixed headers)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="ReadReplyHeadersResponse()">ReadReplyHeadersResponse</h3>
+<code class="signature">public  void <strong>ReadReplyHeadersResponse</strong>(mixed headers)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="Redirect()">Redirect</h3>
+<code class="signature">public  void <strong>Redirect</strong>(mixed headers)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="Resolve()">Resolve</h3>
+<code class="signature">public  void <strong>Resolve</strong>(mixed domain, mixed ip, mixed server_type)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="RestoreCookies()">RestoreCookies</h3>
+<code class="signature">public  void <strong>RestoreCookies</strong>(mixed cookies, mixed clear)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="SaveCookies()">SaveCookies</h3>
+<code class="signature">public  void <strong>SaveCookies</strong>(mixed cookies, mixed domain, mixed secure_only, mixed persistent_only)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="SavePersistentCookies()">SavePersistentCookies</h3>
+<code class="signature">public  void <strong>SavePersistentCookies</strong>(mixed cookies, mixed domain, mixed secure_only)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="SendRequest()">SendRequest</h3>
+<code class="signature">public  void <strong>SendRequest</strong>(mixed arguments)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="SendRequestBody()">SendRequestBody</h3>
+<code class="signature">public  void <strong>SendRequestBody</strong>(mixed data, mixed end_of_data)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="SetCookie()">SetCookie</h3>
+<code class="signature">public  void <strong>SetCookie</strong>(mixed name, mixed value, mixed expires, mixed path, mixed domain, mixed secure, mixed verbatim)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="SetDataAccessError()">SetDataAccessError</h3>
+<code class="signature">public  void <strong>SetDataAccessError</strong>(mixed error, mixed check_connection)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="SetError()">SetError</h3>
+<code class="signature">public  void <strong>SetError</strong>(mixed error)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="SetPHPError()">SetPHPError</h3>
+<code class="signature">public  void <strong>SetPHPError</strong>(mixed error, mixed php_error_message)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="Tokenize()">Tokenize</h3>
+<code class="signature">public  void <strong>Tokenize</strong>(mixed string, mixed separator)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<div class="header">
+<h1>Moriarty</h1>
+<ul>
+<li><a href="../overview-summary.html">Overview</a></li>
+<li><a href="../phpdoctor/package-summary.html">Package</a></li>
+<li class="active">Class</li>
+<li><a href="../phpdoctor/package-tree.html">Tree</a></li>
+<li><a href="../deprecated-list.html">Deprecated</a></li>
+<li><a href="../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../index.html" target="_top">Frames</a>
+<a href="../phpdoctor/http_class.html" target="_top">No frames</a>
+</div>
+<div class="small_links">
+Summary: <a href="#summary_field">Field</a> | <a href="#summary_method">Method</a> | <a href="#summary_constr">Constr</a>
+Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> | <a href="#summary_constr">Constr</a>
+</div>
+<hr>
+
+<p id="footer">This document was generated by <a href="http://phpdoctor.sourceforge.net/">PHPDoctor: The PHP Documentation Creator</a></p>
+
+</body>
+
+</html>
