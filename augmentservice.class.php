@@ -1,16 +1,39 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 
+/** 
+* Represents a store's augment service
+* @see http://n2.talis.com/wiki/Augment_Service
+*/
 class AugmentService {
+  /** 
+   * @access private 
+   */
   var $uri;
+  /** 
+   * @access private 
+   */
   var $request_factory;
+  /** 
+   * @access private 
+   */
   var $credentials;
 
+  /**
+   * Create a new instance of this class
+   * @param string uri URI of the augment service
+   * @param Credentials credentials the credentials to use for authenticated requests (optional)
+   */ 
   function __construct($uri, $credentials = null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
   }
 
+  /**
+   * 
+   * @param string $uri the URI of the RSS feed that the augment service will fetch and augment
+   * @return HttpResponse
+   */
   function augment($uri) {
     if (! isset( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
@@ -22,6 +45,11 @@ class AugmentService {
     return $request->execute();
   }
 
+  /**
+   * Warning - this method is incomplete
+   * @param SimpleGraph $graph an RDF graph that should be augmented
+   * @return HttpResponse
+   */
   function augment_graph($graph) {
     if (! isset( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();

@@ -4,22 +4,48 @@ require_once MORIARTY_ARC_DIR . "ARC2.php";
 require_once MORIARTY_DIR . 'httprequest.class.php';
 require_once MORIARTY_DIR . 'httprequestfactory.class.php';
 
+/**
+ * Represents a store's contentbox
+ * @see http://n2.talis.com/wiki/Contentbox
+ */
 class Contentbox {
+  /** 
+   * @access private 
+   */
   var $uri;
+  /** 
+   * @access private 
+   */
   var $request_factory;
+  /** 
+   * @access private 
+   */
   var $credentials;
 
-  function Contentbox($uri, $credentials = null) {
+  /**
+   * Create a new instance of this class
+   * @param string uri URI of the contentbox
+   * @param Credentials credentials the credentials to use for authenticated requests (optional)
+   */ 
+  function __construct($uri, $credentials = null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
   }
 
-  function make_search_uri( $query, $max=10, $offset=0, $sort=false) {
+  protected function make_search_uri( $query, $max=10, $offset=0, $sort=false) {
     $uri = $this->uri . '?query=' . urlencode($query) . '&max=' . urlencode($max) . '&offset=' . urlencode($offset);
-  $uri.= ($sort)? '&sort='.urlencode($sort) : '';
+    $uri.= ($sort)? '&sort='.urlencode($sort) : '';
     return $uri;
   }
 
+  /**
+   * Perform a search on the contentbox
+   * @param string query the query expression used to query the content box.
+   * @param int max maximum number of results for a search. (optional, defaults to 10)
+   * @param int offset an offset into search results. Use with max to implement paging. (optional, defaults to 0)
+   * @param string sort a comma separated list of field names that should be used to order the results.
+   * @return HttpResponse
+   */
   function search( $query, $max=10, $offset=0, $sort=false) {
     if (! isset( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
@@ -31,11 +57,15 @@ class Contentbox {
     return $request->execute();
   }
 
+  /**
+   * Perform a search on the contentbox
+   * @deprecated triple lists are deprecated
+   */
   function search_to_triple_list( $query, $max=10, $offset=0 ) {
     $triples = array();
 
     $response = $this->search( $query, $max, $offset );
-    $parser_args=array(
+   $parser_args=array(
       "bnode_prefix"=>"genid",
       "base"=> $this->uri
     );
@@ -49,6 +79,13 @@ class Contentbox {
     return $triples;
   }
 
+  /**
+   * Perform a search on the contentbox. This method returns an empty ResourceList if the HTTP request fails for any reason.
+   * @param string query the query expression used to query the content box.
+   * @param int max maximum number of results for a search. (optional, defaults to 10)
+   * @param int offset an offset into search results. Use with max to implement paging. (optional, defaults to 0)
+   * @return ResourceList
+   */
   function search_to_resource_list( $query, $max=10, $offset=0 ) {
     $triples = array();
     $uri = $this->make_search_uri($query, $max, $offset);
@@ -65,6 +102,12 @@ class Contentbox {
     }
   }
 
+  /**
+   * Parse the results of a search on the contentbox.
+   * @param string uri the URI used to obtain the search
+   * @param string xml the xml returned from a search request
+   * @return ResourceList
+   */
   function parse_results_xml($uri, $xml) {
     // fix up unprefixed rdf:resource in rss 1.0 otherwise ARC gets confused
     $xml = preg_replace("~rdf:li resource=~", "rdf:li rdf:resource=", $xml);
@@ -102,12 +145,39 @@ class Contentbox {
 
 }
 
+/**
+ * Represents a list of resources returned from a contentbox search
+ */
 class ResourceList {
+  /**
+   * The title of the search results
+   * @var string
+   */
   var $title;
+  /**
+   * The index of the first search result in the current set of search results. 
+   * @var int
+   */
   var $start_index;
+  /**
+   * The number of search results returned per page. 
+   * @var int
+   */
   var $items_per_page;
+  /**
+   * The total number of results matching the search terms
+   * @var int
+   */
   var $total_results;
+  /**
+   * The description of the search results
+   * @var string
+   */
   var $description;
+  /**
+   * An array of the search results as a list of triples
+   * @var array
+   */
   var $items;
 }
 

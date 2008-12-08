@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Sun, 07 Dec 2008 23:38:20 +0000">
+<meta name="when" content="Mon, 08 Dec 2008 00:53:17 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -46,110 +46,111 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <p class="signature">public  class <strong>Contentbox</strong></p>
 
-<hr>
+<div class="comment" id="overview_description"><p>
+Represents a store's contentbox</p></div>
 
-<table id="summary_field">
-<tr><th colspan="2">Field Summary</th></tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#credentials">$credentials</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#request_factory">$request_factory</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#uri">$uri</a></p></td>
-</tr>
-</table>
+<dl>
+<dt>See Also:</dt>
+<dd><a href="http://n2.talis.com/wiki/Contentbox">http://n2.talis.com/wiki/Contentbox</a></dd>
+</dl>
+<hr>
 
 <table id="summary_constr">
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
-<td class="description"><p class="name"><a href="#Contentbox()">Contentbox</a>(mixed uri, mixed credentials)</p></td>
+<td class="description"><p class="name"><a href="#Contentbox()">Contentbox</a>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</p><p class="description">
+Create a new instance of this class</p></td>
 </tr>
 </table>
 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
-<td class="type"> void</td>
+<td class="type">protected  void</td>
 <td class="description"><p class="name"><a href="#make_search_uri()">make_search_uri</a>(mixed query, mixed max, mixed offset, mixed sort)</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#parse_results_xml()">parse_results_xml</a>(mixed uri, mixed xml)</p></td>
+<td class="type"> <a href="../moriarty/resourcelist.html">ResourceList</a></td>
+<td class="description"><p class="name"><a href="#parse_results_xml()">parse_results_xml</a>(string uri, string xml)</p><p class="description">
+Parse the results of a search on the contentbox.</p></td>
+</tr>
+<tr>
+<td class="type"> <a href="../moriarty/httpresponse.html">HttpResponse</a></td>
+<td class="description"><p class="name"><a href="#search()">search</a>(string query, int max, int offset, string sort)</p><p class="description">
+Perform a search on the contentbox</p></td>
+</tr>
+<tr>
+<td class="type"> <a href="../moriarty/resourcelist.html">ResourceList</a></td>
+<td class="description"><p class="name"><a href="#search_to_resource_list()">search_to_resource_list</a>(string query, int max, int offset)</p><p class="description">
+Perform a search on the contentbox. </p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#search()">search</a>(mixed query, mixed max, mixed offset, mixed sort)</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#search_to_resource_list()">search_to_resource_list</a>(mixed query, mixed max, mixed offset)</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#search_to_triple_list()">search_to_triple_list</a>(mixed query, mixed max, mixed offset)</p></td>
+<td class="description"><p class="name"><a href="#search_to_triple_list()">search_to_triple_list</a>(mixed query, mixed max, mixed offset)</p><p class="description">
+Perform a search on the contentbox</p></td>
 </tr>
 </table>
 
-<h2 id="detail_field">Field Detail</h2>
-<h3 id="credentials">credentials</h3>
-<code class="signature">public  mixed <strong>$credentials</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
-<h3 id="request_factory">request_factory</h3>
-<code class="signature">public  mixed <strong>$request_factory</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
-<h3 id="uri">uri</h3>
-<code class="signature">public  mixed <strong>$uri</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
 <h2 id="detail_constr">Constructor Detail</h2>
 <h3 id="Contentbox()">Contentbox</h3>
-<code class="signature">public <strong>Contentbox</strong>(mixed uri, mixed credentials)</code>
+<code class="signature">public <strong>Contentbox</strong>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</code>
 <div class="details">
+<p>
+Create a new instance of this class</p><dl>
+<dt>Parameters:</dt>
+<dd>uri - URI of the contentbox</dd>
+<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+</dl>
 </div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
 <h3 id="make_search_uri()">make_search_uri</h3>
-<code class="signature">public  void <strong>make_search_uri</strong>(mixed query, mixed max, mixed offset, mixed sort)</code>
+<code class="signature">protected  void <strong>make_search_uri</strong>(mixed query, mixed max, mixed offset, mixed sort)</code>
 <div class="details">
 </div>
 
 <hr>
 
 <h3 id="parse_results_xml()">parse_results_xml</h3>
-<code class="signature">public  void <strong>parse_results_xml</strong>(mixed uri, mixed xml)</code>
+<code class="signature">public  <a href="../moriarty/resourcelist.html">ResourceList</a> <strong>parse_results_xml</strong>(string uri, string xml)</code>
 <div class="details">
+<p>
+Parse the results of a search on the contentbox.</p><dl>
+<dt>Parameters:</dt>
+<dd>uri - the URI used to obtain the search</dd>
+<dd>xml - the xml returned from a search request</dd>
+</dl>
 </div>
 
 <hr>
 
 <h3 id="search()">search</h3>
-<code class="signature">public  void <strong>search</strong>(mixed query, mixed max, mixed offset, mixed sort)</code>
+<code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>search</strong>(string query, int max, int offset, string sort)</code>
 <div class="details">
+<p>
+Perform a search on the contentbox</p><dl>
+<dt>Parameters:</dt>
+<dd>query - the query expression used to query the content box.</dd>
+<dd>max - maximum number of results for a search. (optional, defaults to 10)</dd>
+<dd>offset - an offset into search results. Use with max to implement paging. (optional, defaults to 0)</dd>
+<dd>sort - a comma separated list of field names that should be used to order the results.</dd>
+</dl>
 </div>
 
 <hr>
 
 <h3 id="search_to_resource_list()">search_to_resource_list</h3>
-<code class="signature">public  void <strong>search_to_resource_list</strong>(mixed query, mixed max, mixed offset)</code>
+<code class="signature">public  <a href="../moriarty/resourcelist.html">ResourceList</a> <strong>search_to_resource_list</strong>(string query, int max, int offset)</code>
 <div class="details">
+<p>
+Perform a search on the contentbox. This method returns an empty ResourceList if the HTTP request fails for any reason.</p><dl>
+<dt>Parameters:</dt>
+<dd>query - the query expression used to query the content box.</dd>
+<dd>max - maximum number of results for a search. (optional, defaults to 10)</dd>
+<dd>offset - an offset into search results. Use with max to implement paging. (optional, defaults to 0)</dd>
+</dl>
 </div>
 
 <hr>
@@ -157,6 +158,11 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <h3 id="search_to_triple_list()">search_to_triple_list</h3>
 <code class="signature">public  void <strong>search_to_triple_list</strong>(mixed query, mixed max, mixed offset)</code>
 <div class="details">
+<p>
+Perform a search on the contentbox</p><dl>
+<dt>Deprecated:</dt>
+<dd>triple lists are deprecated</dd>
+</dl>
 </div>
 
 <hr>

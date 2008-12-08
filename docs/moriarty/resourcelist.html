@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Sun, 07 Dec 2008 23:38:20 +0000">
+<meta name="when" content="Mon, 08 Dec 2008 00:53:17 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -46,76 +46,92 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <p class="signature">public  class <strong>ResourceList</strong></p>
 
+<div class="comment" id="overview_description"><p>
+Represents a list of resources returned from a contentbox search
+/</p></div>
+
 <hr>
 
 <table id="summary_field">
 <tr><th colspan="2">Field Summary</th></tr>
 <tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#description">$description</a></p></td>
+<td class="type"> string</td>
+<td class="description"><p class="name"><a href="#description">$description</a></p><p class="description">
+The description of the search results</p></td>
 </tr>
 <tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#items">$items</a></p></td>
+<td class="type"> array</td>
+<td class="description"><p class="name"><a href="#items">$items</a></p><p class="description">
+An array of the search results as a list of triples</p></td>
 </tr>
 <tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#items_per_page">$items_per_page</a></p></td>
+<td class="type"> int</td>
+<td class="description"><p class="name"><a href="#items_per_page">$items_per_page</a></p><p class="description">
+The number of search results returned per page. </p></td>
 </tr>
 <tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#start_index">$start_index</a></p></td>
+<td class="type"> int</td>
+<td class="description"><p class="name"><a href="#start_index">$start_index</a></p><p class="description">
+The index of the first search result in the current set of search results. </p></td>
 </tr>
 <tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#title">$title</a></p></td>
+<td class="type"> string</td>
+<td class="description"><p class="name"><a href="#title">$title</a></p><p class="description">
+The title of the search results</p></td>
 </tr>
 <tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#total_results">$total_results</a></p></td>
+<td class="type"> int</td>
+<td class="description"><p class="name"><a href="#total_results">$total_results</a></p><p class="description">
+The total number of results matching the search terms</p></td>
 </tr>
 </table>
 
 <h2 id="detail_field">Field Detail</h2>
 <h3 id="description">description</h3>
-<code class="signature">public  mixed <strong>$description</strong></code>
+<code class="signature">public  string <strong>$description</strong></code>
 <div class="details">
-</div>
+<p>
+The description of the search results</p></div>
 
 <hr>
 
 <h3 id="items">items</h3>
-<code class="signature">public  mixed <strong>$items</strong></code>
+<code class="signature">public  array <strong>$items</strong></code>
 <div class="details">
-</div>
+<p>
+An array of the search results as a list of triples</p></div>
 
 <hr>
 
 <h3 id="items_per_page">items_per_page</h3>
-<code class="signature">public  mixed <strong>$items_per_page</strong></code>
+<code class="signature">public  int <strong>$items_per_page</strong></code>
 <div class="details">
-</div>
+<p>
+The number of search results returned per page. </p></div>
 
 <hr>
 
 <h3 id="start_index">start_index</h3>
-<code class="signature">public  mixed <strong>$start_index</strong></code>
+<code class="signature">public  int <strong>$start_index</strong></code>
 <div class="details">
-</div>
+<p>
+The index of the first search result in the current set of search results. </p></div>
 
 <hr>
 
 <h3 id="title">title</h3>
-<code class="signature">public  mixed <strong>$title</strong></code>
+<code class="signature">public  string <strong>$title</strong></code>
 <div class="details">
-</div>
+<p>
+The title of the search results</p></div>
 
 <hr>
 
 <h3 id="total_results">total_results</h3>
-<code class="signature">public  mixed <strong>$total_results</strong></code>
+<code class="signature">public  int <strong>$total_results</strong></code>
 <div class="details">
-</div>
+<p>
+The total number of results matching the search terms</p></div>
 
 <hr>
 
