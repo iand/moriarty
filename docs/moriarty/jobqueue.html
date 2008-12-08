@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Mon, 08 Dec 2008 00:53:17 +0000">
+<meta name="when" content="Mon, 08 Dec 2008 10:20:11 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -46,139 +46,157 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <p class="signature">public  class <strong>JobQueue</strong></p>
 
-<hr>
+<div class="comment" id="overview_description"><p>
+Represents a store's job queue</p></div>
 
-<table id="summary_field">
-<tr><th colspan="2">Field Summary</th></tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#credentials">$credentials</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#request_factory">$request_factory</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#uri">$uri</a></p></td>
-</tr>
-</table>
+<dl>
+<dt>See Also:</dt>
+<dd><a href="http://n2.talis.com/wiki/Job_Queue">http://n2.talis.com/wiki/Job_Queue</a></dd>
+</dl>
+<hr>
 
 <table id="summary_constr">
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
-<td class="description"><p class="name"><a href="#JobQueue()">JobQueue</a>(mixed uri, mixed credentials)</p></td>
+<td class="description"><p class="name"><a href="#JobQueue()">JobQueue</a>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</p><p class="description">
+Create a new instance of this class</p></td>
 </tr>
 </table>
 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#get_item_uris()">get_item_uris</a>()</p></td>
+<td class="type"> array</td>
+<td class="description"><p class="name"><a href="#get_item_uris()">get_item_uris</a>()</p><p class="description">
+Get a list of URIs of jobs that have been scheduled. </p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#make_job_request()">make_job_request</a>(mixed jobtype, mixed time, mixed label)</p></td>
+<td class="type">private  void</td>
+<td class="description"><p class="name"><a href="#make_job_request()">make_job_request</a>(mixed jobtype, mixed time, mixed label)</p><p class="description"></p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#schedule_job()">schedule_job</a>(mixed job)</p></td>
+<td class="type">private  void</td>
+<td class="description"><p class="name"><a href="#schedule_job()">schedule_job</a>(mixed job)</p><p class="description"></p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#schedule_reindex()">schedule_reindex</a>(mixed time, mixed label)</p></td>
+<td class="type"> <a href="../moriarty/httpresponse.html">HttpResponse</a></td>
+<td class="description"><p class="name"><a href="#schedule_reindex()">schedule_reindex</a>(string time, string label)</p><p class="description">
+Schedule a reindex data job in the queue</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#schedule_reset_data()">schedule_reset_data</a>(mixed time, mixed label)</p></td>
+<td class="type"> <a href="../moriarty/httpresponse.html">HttpResponse</a></td>
+<td class="description"><p class="name"><a href="#schedule_reset_data()">schedule_reset_data</a>(string time, string label)</p><p class="description">
+Schedule a reset data job in the queue</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#schedule_restore()">schedule_restore</a>(mixed snapshot_uri, mixed time, mixed label)</p></td>
+<td class="type"> <a href="../moriarty/httpresponse.html">HttpResponse</a></td>
+<td class="description"><p class="name"><a href="#schedule_restore()">schedule_restore</a>(mixed snapshot_uri, string time, string label)</p><p class="description">
+Schedule a restore data job in the queue</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#schedule_snapshot()">schedule_snapshot</a>(mixed time, mixed label)</p></td>
+<td class="type"> <a href="../moriarty/httpresponse.html">HttpResponse</a></td>
+<td class="description"><p class="name"><a href="#schedule_snapshot()">schedule_snapshot</a>(string time, string label)</p><p class="description">
+Schedule a snaphot job in the queue</p></td>
 </tr>
 </table>
 
-<h2 id="detail_field">Field Detail</h2>
-<h3 id="credentials">credentials</h3>
-<code class="signature">public  mixed <strong>$credentials</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
-<h3 id="request_factory">request_factory</h3>
-<code class="signature">public  mixed <strong>$request_factory</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
-<h3 id="uri">uri</h3>
-<code class="signature">public  mixed <strong>$uri</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
 <h2 id="detail_constr">Constructor Detail</h2>
 <h3 id="JobQueue()">JobQueue</h3>
-<code class="signature">public <strong>JobQueue</strong>(mixed uri, mixed credentials)</code>
+<code class="signature">public <strong>JobQueue</strong>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</code>
 <div class="details">
+<p>
+Create a new instance of this class</p><dl>
+<dt>Parameters:</dt>
+<dd>uri - URI of the job queue</dd>
+<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+</dl>
 </div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
 <h3 id="get_item_uris()">get_item_uris</h3>
-<code class="signature">public  void <strong>get_item_uris</strong>()</code>
+<code class="signature">public  array <strong>get_item_uris</strong>()</code>
 <div class="details">
+<p>
+Get a list of URIs of jobs that have been scheduled. This returns an empty array if any HTTP errors occur.</p><dl>
+<dt>Returns:</dt>
+<dd>list of job URIs</dd>
+</dl>
 </div>
 
 <hr>
 
 <h3 id="make_job_request()">make_job_request</h3>
-<code class="signature">public  void <strong>make_job_request</strong>(mixed jobtype, mixed time, mixed label)</code>
+<code class="signature">private  void <strong>make_job_request</strong>(mixed jobtype, mixed time, mixed label)</code>
 <div class="details">
-</div>
+<p></p></div>
 
 <hr>
 
 <h3 id="schedule_job()">schedule_job</h3>
-<code class="signature">public  void <strong>schedule_job</strong>(mixed job)</code>
+<code class="signature">private  void <strong>schedule_job</strong>(mixed job)</code>
 <div class="details">
-</div>
+<p></p></div>
 
 <hr>
 
 <h3 id="schedule_reindex()">schedule_reindex</h3>
-<code class="signature">public  void <strong>schedule_reindex</strong>(mixed time, mixed label)</code>
+<code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>schedule_reindex</strong>(string time, string label)</code>
 <div class="details">
+<p>
+Schedule a reindex data job in the queue</p><dl>
+<dt>See Also:</dt>
+<dd><a href="http://n2.talis.com/wiki/Reindex_Job">http://n2.talis.com/wiki/Reindex_Job</a></dd>
+<dt>Parameters:</dt>
+<dd>time - the time at which the job should commence (optional, defaults to current date and time)</dd>
+<dd>label - a descriptive label to give the job (optional, defaults to boilerplate text)</dd>
+</dl>
 </div>
 
 <hr>
 
 <h3 id="schedule_reset_data()">schedule_reset_data</h3>
-<code class="signature">public  void <strong>schedule_reset_data</strong>(mixed time, mixed label)</code>
+<code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>schedule_reset_data</strong>(string time, string label)</code>
 <div class="details">
+<p>
+Schedule a reset data job in the queue</p><dl>
+<dt>See Also:</dt>
+<dd><a href="http://n2.talis.com/wiki/Reset_Data_Job">http://n2.talis.com/wiki/Reset_Data_Job</a></dd>
+<dt>Parameters:</dt>
+<dd>time - the time at which the job should commence (optional, defaults to current date and time)</dd>
+<dd>label - a descriptive label to give the job (optional, defaults to boilerplate text)</dd>
+</dl>
 </div>
 
 <hr>
 
 <h3 id="schedule_restore()">schedule_restore</h3>
-<code class="signature">public  void <strong>schedule_restore</strong>(mixed snapshot_uri, mixed time, mixed label)</code>
+<code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>schedule_restore</strong>(mixed snapshot_uri, string time, string label)</code>
 <div class="details">
+<p>
+Schedule a restore data job in the queue</p><dl>
+<dt>See Also:</dt>
+<dd><a href="http://n2.talis.com/wiki/Restore_Job">http://n2.talis.com/wiki/Restore_Job</a></dd>
+<dt>Parameters:</dt>
+<dd>time - the time at which the job should commence (optional, defaults to current date and time)</dd>
+<dd>label - a descriptive label to give the job (optional, defaults to boilerplate text)</dd>
+</dl>
 </div>
 
 <hr>
 
 <h3 id="schedule_snapshot()">schedule_snapshot</h3>
-<code class="signature">public  void <strong>schedule_snapshot</strong>(mixed time, mixed label)</code>
+<code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>schedule_snapshot</strong>(string time, string label)</code>
 <div class="details">
+<p>
+Schedule a snaphot job in the queue</p><dl>
+<dt>See Also:</dt>
+<dd><a href="http://n2.talis.com/wiki/Snapshot_Job">http://n2.talis.com/wiki/Snapshot_Job</a></dd>
+<dt>Parameters:</dt>
+<dd>time - the time at which the job should commence (optional, defaults to current date and time)</dd>
+<dd>label - a descriptive label to give the job (optional, defaults to boilerplate text)</dd>
+</dl>
 </div>
 
 <hr>
