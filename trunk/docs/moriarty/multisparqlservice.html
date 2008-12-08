@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Mon, 08 Dec 2008 00:53:17 +0000">
+<meta name="when" content="Mon, 08 Dec 2008 10:20:11 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -48,6 +48,10 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 </p>
 
+<div class="comment" id="overview_description"><p>
+Represents the base class for various sparql services
+/</p></div>
+
 <hr>
 
 <table id="summary_field">
@@ -66,10 +70,6 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </tr>
 </table>
 
-<table class="inherit">
-<tr><th colspan="2">Fields inherited from Moriarty.SparqlServiceBase</th></tr>
-<tr><td><a href="../moriarty/sparqlservicebase.html#credentials">credentials</a>, <a href="../moriarty/sparqlservicebase.html#request_factory">request_factory</a>, <a href="../moriarty/sparqlservicebase.html#uri">uri</a></td></tr></table>
-
 <table id="summary_constr">
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
@@ -80,18 +80,19 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#describe()">describe</a>(mixed uri, mixed graphs)</p></td>
+<td class="type"> <a href="../moriarty/httpresponse.html">HttpResponse</a></td>
+<td class="description"><p class="name"><a href="#describe()">describe</a>(mixed uri, mixed graphs)</p><p class="description">
+Obtain a bounded description of a given resource</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#describe_to_triple_list()">describe_to_triple_list</a>(mixed uri, mixed graphs)</p></td>
+<td class="description"><p class="name"><a href="#describe_to_triple_list()">describe_to_triple_list</a>(mixed uri, mixed graphs)</p><p class="description"></p></td>
 </tr>
 </table>
 
 <table class="inherit">
 <tr><th colspan="2">Methods inherited from Moriarty.SparqlServiceBase</th></tr>
-<tr><td><a href="../moriarty/sparqlservicebase.html#ask()">ask</a>, <a href="../moriarty/sparqlservicebase.html#construct_to_simple_graph()">construct_to_simple_graph</a>, <a href="../moriarty/sparqlservicebase.html#construct_to_triple_list()">construct_to_triple_list</a>, <a href="../moriarty/sparqlservicebase.html#describe()">describe</a>, <a href="../moriarty/sparqlservicebase.html#describe_to_simple_graph()">describe_to_simple_graph</a>, <a href="../moriarty/sparqlservicebase.html#describe_to_triple_list()">describe_to_triple_list</a>, <a href="../moriarty/sparqlservicebase.html#graph()">graph</a>, <a href="../moriarty/sparqlservicebase.html#graph_to_triple_list()">graph_to_triple_list</a>, <a href="../moriarty/sparqlservicebase.html#parse_ask_results()">parse_ask_results</a>, <a href="../moriarty/sparqlservicebase.html#parse_select_results()">parse_select_results</a>, <a href="../moriarty/sparqlservicebase.html#query()">query</a>, <a href="../moriarty/sparqlservicebase.html#select()">select</a>, <a href="../moriarty/sparqlservicebase.html#select_to_array()">select_to_array</a></td></tr></table>
+<tr><td><a href="../moriarty/sparqlservicebase.html#ask()">ask</a>, <a href="../moriarty/sparqlservicebase.html#construct_to_simple_graph()">construct_to_simple_graph</a>, <a href="../moriarty/sparqlservicebase.html#construct_to_triple_list()">construct_to_triple_list</a>, <a href="../moriarty/sparqlservicebase.html#describe()">describe</a>, <a href="../moriarty/sparqlservicebase.html#describe_to_simple_graph()">describe_to_simple_graph</a>, <a href="../moriarty/sparqlservicebase.html#describe_to_triple_list()">describe_to_triple_list</a>, <a href="../moriarty/sparqlservicebase.html#graph()">graph</a>, <a href="../moriarty/sparqlservicebase.html#graph_to_simple_graph()">graph_to_simple_graph</a>, <a href="../moriarty/sparqlservicebase.html#graph_to_triple_list()">graph_to_triple_list</a>, <a href="../moriarty/sparqlservicebase.html#parse_ask_results()">parse_ask_results</a>, <a href="../moriarty/sparqlservicebase.html#parse_select_results()">parse_select_results</a>, <a href="../moriarty/sparqlservicebase.html#query()">query</a>, <a href="../moriarty/sparqlservicebase.html#select()">select</a>, <a href="../moriarty/sparqlservicebase.html#select_to_array()">select_to_array</a></td></tr></table>
 
 <h2 id="detail_field">Field Detail</h2>
 <h3 id="credentials">credentials</h3>
@@ -125,8 +126,13 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <h2 id="detail_method">Method Detail</h2>
 <h3 id="describe()">describe</h3>
-<code class="signature">public  void <strong>describe</strong>(mixed uri, mixed graphs)</code>
+<code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>describe</strong>(mixed uri, mixed graphs)</code>
 <div class="details">
+<p>
+Obtain a bounded description of a given resource</p><dl>
+<dt>Parameters:</dt>
+<dd>uri - the URI of the resource to be described or an array of URIs</dd>
+</dl>
 </div>
 
 <hr>
@@ -134,6 +140,10 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <h3 id="describe_to_triple_list()">describe_to_triple_list</h3>
 <code class="signature">public  void <strong>describe_to_triple_list</strong>(mixed uri, mixed graphs)</code>
 <div class="details">
+<p></p><dl>
+<dt>Deprecated:</dt>
+<dd>triple lists are deprecated</dd>
+</dl>
 </div>
 
 <hr>
