@@ -2,9 +2,12 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 require_once MORIARTY_ARC_DIR . "ARC2.php";
 
+/**
+ * Represents an RDF graph and provides some simple functions for traversing and manipulating it
+ */
 class SimpleGraph {
-  var $_index = array();
-  var $_ns = array (
+  protected $_index = array();
+  protected $_ns = array (
                     'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
                     'owl' => 'http://www.w3.org/2002/07/owl#',
                     'cs' => 'http://purl.org/vocab/changeset/schema#',
@@ -35,6 +38,7 @@ class SimpleGraph {
                     'mo' => 'http://purl.org/ontology/mo/',
                     'status' => 'http://www.w3.org/2003/06/sw-vocab-status/ns#',
                     'label' => 'http://purl.org/net/vocab/2004/03/label#',
+                    'skos' => 'http://www.w3.org/2004/02/skos/core#',
                   );
                   
   function __destruct(){
@@ -42,18 +46,39 @@ class SimpleGraph {
     unset($this);
   }
 
-                  
+
+  /**
+   * Map a portion of a URI to a short prefix for use when serialising the graph
+   * @param string prefix the namespace prefix to associate with the URI
+   * @param string uri the URI to associate with the prefix
+   */                  
   function set_namespace_mapping($prefix, $uri) {
     $this->_ns[$prefix] = $uri;
   }
 
 
+  /**
+   * Adds a triple with a resource object to the graph
+   * @param string s the subject of the triple, either a URI or a blank node in the format _:name
+   * @param string p the predicate URI of the triple
+   * @param string o the object of the triple, either a URI or a blank node in the format _:name
+   * @return boolean true if the triple was new, false if it already existed in the graph
+   */
   function add_resource_triple($s, $p, $o) {
     $o_type = strpos($o, '_:' ) === 0 ? 'bnode' : 'uri';
     $o_info = array('type' => $o_type, 'value' => $o);
     return $this->_add_triple($s, $p, $o_info);
   }
 
+  /**
+   * Adds a triple with a literal object to the graph
+   * @param string s the subject of the triple, either a URI or a blank node in the format _:name
+   * @param string p the predicate of the triple as a URI
+   * @param string o the object of the triple as a string
+   * @param string lang the language code of the triple's object (optional)
+   * @param string dt the datatype URI of the triple's object (optional)
+   * @return boolean true if the triple was new, false if it already existed in the graph
+   */
   function add_literal_triple($s, $p, $o, $lang = null, $dt = null) {
     $o_info = array('type' => 'literal', 'value' => $o);
     if ( $lang != null ) {
@@ -65,7 +90,7 @@ class SimpleGraph {
     return $this->_add_triple($s, $p, $o_info);
   }
 
-  function _add_triple($s, $p, $o_info) {
+  private function _add_triple($s, $p, $o_info) {
     if (!isset($this->_index[$s])) { 
       $this->_index[$s] = array();
       $this->_index[$s][$p] = array( $o_info );
@@ -84,15 +109,26 @@ class SimpleGraph {
     return false;  
   }
 
+  /**
+   * @deprecated this is deprecated
+   */
   function get_triples() {
     return ARC2::getTriplesFromIndex($this->_to_arc_index($this->_index));
   }
 
+  /**
+   * Get a copy of the graph's triple index
+   * @see http://n2.talis.com/wiki/RDF_PHP_Specification
+   */
   function get_index() {
     return $this->_index;
   }
 
 
+  /**
+   * Serialise the graph to RDF/XML
+   * @return string the RDF/XML version of the graph
+   */
   function to_rdfxml() {
     $serializer = ARC2::getRDFXMLSerializer(
         array(
@@ -102,6 +138,11 @@ class SimpleGraph {
     return $serializer->getSerializedIndex($this->_to_arc_index($this->_index));
  }
 
+  /**
+   * Serialise the graph to Turtle
+   * @see http://www.dajobe.org/2004/01/turtle/
+   * @return string the Turtle version of the graph
+   */
   function to_turtle() {
     $serializer = ARC2::getTurtleSerializer(
         array(
@@ -111,13 +152,22 @@ class SimpleGraph {
     return $serializer->getSerializedIndex($this->_to_arc_index($this->_index));
   }
 
+  /**
+   * Serialise the graph to N-Triples
+   * @see http://www.w3.org/TR/rdf-testcases/#ntriples
+   * @return string the N-Triples version of the graph
+   */
   function to_ntriples() {
     $serializer = ARC2::getComponent('NTriplesSerializer', array());
     return $serializer->getSerializedIndex($this->_to_arc_index($this->_index));
   }
 
 
-
+  /**
+   * Serialise the graph to JSON
+   * @see http://n2.talis.com/wiki/RDF_JSON_Specification
+   * @return string the JSON version of the graph
+   */
   function to_json() {
     $serializer = ARC2::getRDFJSONSerializer(
         array(
@@ -127,6 +177,13 @@ class SimpleGraph {
     return $serializer->getSerializedIndex($this->_to_arc_index($this->_index));
   }
   
+  /**
+   * Fetch the first literal value for a given subject and predicate. If there are multiple possible values then one is selected at random. 
+   * @param string s the subject to search for
+   * @param string p the predicate to search for
+   * @param string default a default value to use if no literal values are found
+   * @return string the first literal value found or the supplied default if no values were found
+   */
   function get_first_literal($s, $p, $default = null) {
     if ( array_key_exists($s, $this->_index)) {
       if (is_array($p)) {
@@ -152,6 +209,13 @@ class SimpleGraph {
     return $default;
   }
 
+  /**
+   * Fetch the first resource value for a given subject and predicate. If there are multiple possible values then one is selected at random. 
+   * @param string s the subject to search for
+   * @param string p the predicate to search for
+   * @param string default a default value to use if no literal values are found
+   * @return string the first resource value found or the supplied default if no values were found
+   */
   function get_first_resource($s, $p, $default = null) {
     if ( array_key_exists($s, $this->_index) && array_key_exists($p, $this->_index[$s]) ) {
       foreach ($this->_index[$s][$p] as $value) {
@@ -165,6 +229,12 @@ class SimpleGraph {
     }
   }
 
+  /**
+   * Remove a triple with a resource object from the graph
+   * @param string s the subject of the triple, either a URI or a blank node in the format _:name
+   * @param string p the predicate URI of the triple
+   * @param string o the object of the triple, either a URI or a blank node in the format _:name
+   */
   function remove_resource_triple( $s, $p, $o) {
     for ($i = count($this->_index[$s][$p]) - 1; $i >= 0; $i--) {
       if (($this->_index[$s][$p][$i]['type'] == 'uri' || $this->_index[$s][$p][$i]['type'] == 'bnode') && $this->_index[$s][$p][$i]['value'] == $o)  {
@@ -181,11 +251,20 @@ class SimpleGraph {
 
   }
 
+  /**
+   * Remove all triples having the supplied subject
+   * @param string s the subject of the triple, either a URI or a blank node in the format _:name
+   */
   function remove_triples_about($s) {
     unset($this->_index[$s]);
   }
 
 
+  /**
+   * Replace the triples in the graph with those parsed from the supplied RDF/XML
+   * @param string rdfxml the RDF/XML to parse
+   * @param string base the base URI against which relative URIs in the RDF/XML document will be resolved
+   */
   function from_rdfxml($rdfxml, $base='') {
     if ($rdfxml) {
       $this->remove_all_triples();
@@ -193,17 +272,23 @@ class SimpleGraph {
     }
   }
   
-  function from_json($json, $base = '' ) {
+  /**
+   * Replace the triples in the graph with those parsed from the supplied JSON
+   * @see http://n2.talis.com/wiki/RDF_JSON_Specification
+   * @param string json the JSON to parse
+   */
+  function from_json($json) {
     if ($json) {
       $this->remove_all_triples();
       $this->_index = json_decode($json, true);
     }
   }
-  
 
-    
-  
-
+  /**
+   * Add the triples parsed from the supplied RDF/XML to the graph
+   * @param string rdfxml the RDF/XML to parse
+   * @param string base the base URI against which relative URIs in the RDF/XML document will be resolved
+   */
   function add_rdfxml($rdfxml, $base='') {
     if ($rdfxml) {
       $parser = ARC2::getRDFXMLParser();
@@ -213,6 +298,12 @@ class SimpleGraph {
     }
   }
 
+  /**
+   * Replace the triples in the graph with those parsed from the supplied Turtle
+   * @see http://www.dajobe.org/2004/01/turtle/
+   * @param string turtle the Turtle to parse
+   * @param string base the base URI against which relative URIs in the Turtle document will be resolved
+   */
   function from_turtle($turtle, $base='') {
     if ($turtle) {
       $this->remove_all_triples();
@@ -220,6 +311,12 @@ class SimpleGraph {
     }
   }
 
+  /**
+   * Add the triples parsed from the supplied Turtle to the graph
+   * @see http://www.dajobe.org/2004/01/turtle/
+   * @param string turtle the Turtle to parse
+   * @param string base the base URI against which relative URIs in the Turtle document will be resolved
+   */
   function add_turtle($turtle, $base='') {
     if ($turtle) {
       $parser = ARC2::getTurtleParser();
@@ -230,6 +327,10 @@ class SimpleGraph {
   }
 
 
+  /**
+   * Add the triples in the supplied graph to the current graph
+   * @param SimpleGraph g the graph to read
+   */
   function add_graph($g) {
     $triples_were_added = false;
     $index = $g->get_index();
@@ -245,7 +346,7 @@ class SimpleGraph {
     return $triples_were_added;
   }
 
-  function _add_arc2_triple_list(&$triples) {
+  private function _add_arc2_triple_list(&$triples) {
     foreach ($triples as $t) {
       $obj = array();
       $obj['value'] = $t['o'];
@@ -292,7 +393,7 @@ class SimpleGraph {
 
 
   // until ARC2 upgrades to support RDF/PHP we need to rename all types of "uri" to "iri"
-  function _to_arc_index(&$index) {
+  private function _to_arc_index(&$index) {
     $ret = array();
 
     foreach ($index as $s => $s_info) {
@@ -316,6 +417,13 @@ class SimpleGraph {
     return $ret;
   }
 
+  /**
+   * Tests whether the graph contains the given triple
+   * @param string s the subject of the triple, either a URI or a blank node in the format _:name
+   * @param string p the predicate URI of the triple
+   * @param string o the object of the triple, either a URI or a blank node in the format _:name
+   * @return boolean true if the triple exists in the graph, false otherwise
+   */
   function has_resource_triple($s, $p, $o) {
     if (array_key_exists($s, $this->_index) ) {
       if (array_key_exists($p, $this->_index[$s]) ) {
@@ -330,6 +438,13 @@ class SimpleGraph {
     return false;
   }
 
+  /**
+   * Tests whether the graph contains the given triple
+   * @param string s the subject of the triple, either a URI or a blank node in the format _:name
+   * @param string p the predicate URI of the triple
+   * @param string o the object of the triple as a literal value
+   * @return boolean true if the triple exists in the graph, false otherwise
+   */
   function has_literal_triple($s, $p, $o) {
     if (array_key_exists($s, $this->_index) ) {
       if (array_key_exists($p, $this->_index[$s]) ) {
@@ -344,6 +459,12 @@ class SimpleGraph {
     return false;
   }
 
+  /**
+   * Fetch the resource values for a given subject and predicate. 
+   * @param string s the subject to search for
+   * @param string p the predicate to search for
+   * @return array list of URIs and blank nodes that are the objects of triples with the supplied subject and predicate
+   */
   function get_resource_triple_values($s, $p) {
     $values = array();
     if (array_key_exists($s, $this->_index) ) {
@@ -358,6 +479,12 @@ class SimpleGraph {
     return $values;
   }
   
+  /**
+   * Fetch the literal values for a given subject and predicate. 
+   * @param string s the subject to search for
+   * @param string p the predicate to search for
+   * @return array list of literals that are the objects of triples with the supplied subject and predicate
+   */
   function get_literal_triple_values($s, $p) {
     $values = array();
     if ( array_key_exists($s, $this->_index)) {
@@ -385,7 +512,12 @@ class SimpleGraph {
   }
 
   
-    
+  /**
+   * Fetch the values for a given subject and predicate. 
+   * @param string s the subject to search for
+   * @param string p the predicate to search for
+   * @return array list of values of triples with the supplied subject and predicate
+   */
   function get_subject_property_values($s, $p) {
     $values = array();
     if (array_key_exists($s, $this->_index) ) {
@@ -397,6 +529,13 @@ class SimpleGraph {
     }
     return $values;
   }      
+  
+  /**
+   * Tests whether the graph contains a triple with the given subject and predicate
+   * @param string s the subject of the triple, either a URI or a blank node in the format _:name
+   * @param string p the predicate URI of the triple
+   * @return boolean true if a matching triple exists in the graph, false otherwise
+   */
   function subject_has_property($s, $p) {
     if (array_key_exists($s, $this->_index) ) {
       return (array_key_exists($p, $this->_index[$s]) );
@@ -404,15 +543,26 @@ class SimpleGraph {
     return false;
   }  
   
+  /**
+   * Removes all triples with the given subject and predicate
+   * @param string s the subject of the triple, either a URI or a blank node in the format _:name
+   * @param string p the predicate URI of the triple
+   */ 
   function remove_property_values($s, $p) {
     unset($this->_index[$s][$p]);
-
   }
 
+  /**
+   * Clears all triples out of the graph
+   */
   function remove_all_triples() {
     $this->_index = array();
   }
 
+  /**
+   * Tests whether the graph contains any triples
+   * @return boolean true if the graph contains no triples, false otherwise
+   */
   function is_empty() {
     return ( count($this->_index) == 0);
   }

@@ -1,31 +1,41 @@
 <?php
 /**
-The Talis Platform organises authentication into a number of capabilities. A user can have any or all of these capabilities assigned to them.
-Each service provided by the platform may require one of these capabilities to be used.
-This class can be passed to other platform classes to supply any necessary authentication information. The class can be constructed
-with a single username and password which will be used for all authentication requests. This is a the most normal mode of operation.
-However, the username and password for each type of capability can be overridden on an individual basis.
-
-See http://n2.talis.com/wiki/Capabilities for more information on Capabilities including which services require the user to
-have which capability.
-*/
+ * Represents a username and password pair for authenticating against secure services.
+ */
 class Credentials {
-  var $username;
-  var $password;
+  private $username;
+  private $password;
 
-  function Credentials($username, $password) {
+  /**
+   * Construct a new instance of this class
+   * @param string username the user name to use when authenticating
+   * @param string password the password to use when authenticating
+   */
+  function __construct($username, $password) {
     $this->username = $username;
     $this->password = $password;
   }
   
+  /**
+   * Obtain the username and password combined for authentication.
+   * @return string
+   */
   function get_auth() {
     return $this->username . ':' . $this->password;
   }
 
+  /**
+   * Obtain the username 
+   * @return string
+   */
   function get_username() {
     return $this->username;
   }
 
+  /**
+   * Obtain the password 
+   * @return string
+   */
   function get_password() {
     return $this->password;
   }

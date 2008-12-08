@@ -2,15 +2,42 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 require_once MORIARTY_DIR . 'httpcache.class.php';
 
+/**
+ * Represents an HTTP protocol request
+ */
 class HttpRequest {
+  /**
+   * @access private
+   */
   var $method;
+  /**
+   * @access private
+   */
   var $uri;
+  /**
+   * @access private
+   */
   var $headers = array();
+  /**
+   * @access private
+   */
   var $client;
+  /**
+   * @access private
+   */
   var $body;
+  /**
+   * @access private
+   */
   var $credentials;
 
-  function HttpRequest($method, $uri, $credentials = null) {
+  /**
+   * Create a new instance of this class
+   * @param string method the HTTP method to issue (i.e. GET, POST, PUT etc)
+   * @param string uri the URI to issue the request to
+   * @param Credentials credentials the credentials to use for secure requests (optional)
+   */
+  function __construct($method, $uri, $credentials = null) {
     $this->uri = $uri;
     $this->method = strtoupper($method);
     if ( $credentials != null ) {
@@ -27,7 +54,11 @@ class HttpRequest {
   }
 
 
-  function execute($options=array()) {
+  /**
+   * Issue the HTTP request
+   * @return HttpResponse
+   */
+  function execute() {
 
     if ( defined('MORIARTY_HTTP_CACHE_DIR') ) {
       $cache = new HttpCache(MORIARTY_HTTP_CACHE_DIR);
@@ -217,6 +248,10 @@ class HttpRequest {
 
   }
 
+  /**
+   * Obtain the HTTP headers to be sent with this request
+   * @return array headers in the format "name:value"
+   */
   function get_headers() {
     $flat_headers = array();
     foreach ($this->headers as $k=>$v) {
@@ -225,33 +260,58 @@ class HttpRequest {
     return $flat_headers;
   }
 
+  /**
+   * Set content to be sent with the request
+   * @param string val the content to be sent
+   */
   function set_body($val) {
     $this->body = $val;
-//    $this->headers['Content-Length'] = strlen($val);
   }
 
+  /**
+   * Get the content to be sent with the request
+   * @return string the content to be sent
+   */
   function get_body() {
     return $this->body;
   }
 
+  /**
+   * Set the HTTP accept header for the request
+   * @param string val the media types to be used as the accept header value
+   */
   function set_accept($val) {
     $this->headers['Accept'] = $val;
   }
 
+  /**
+   * Set the HTTP content-type header for the request
+   * @param string val the media type to be used as the content-type header value
+   */
   function set_content_type($val) {
     $this->headers['Content-Type'] = $val;
   }
 
+  /**
+   * Set the HTTP if-match header for the request
+   * @param string val the etag to be used as the if-match header value
+   */
   function set_if_match($val) {
     $this->headers['If-Match'] = $val;
   }
   
+  /**
+   * Set the HTTP if-none-match header for the request
+   * @param string val the etag to be used as the if-none-match header value
+   */
   function set_if_none_match($val) {
     $this->headers['If-None-Match'] = $val;
   }
    
-  
-function parse_response($response){
+  /**
+   * @access private
+   */
+  function parse_response($response){
    /*
    ***original code extracted from examples at
    ***http://www.webreference.com/programming
@@ -310,7 +370,10 @@ function parse_response($response){
    return array($response_code,$response_header_array,$response_body);
   }
 
-
+  /**
+   * Obtain a string representation of this request
+   * @return string
+   */
   function to_string() {
     $ret = strtoupper($this->method) . ' ' . $this->uri . "\n";
     foreach ($this->headers as $k=>$v) {
@@ -324,24 +387,65 @@ function parse_response($response){
 
 }
 
+/**
+ * Represents an HTTP protocol response
+ */
 class HttpResponse {
+  /**
+   * The HTTP status code of the response
+   * @var int
+   */
   var $status_code;
+  /**
+   * The HTTP headers returned with this response. This is an associative array whose keys are the header name and values are the header values.
+   * @var array
+   */
   var $headers = array();
+  /**
+   * Additional information about this response
+   * @var array
+   */
   var $info = array();
+  /**
+   * The entity body returned with the response
+   * @var string
+   */
   var $body;
+  /**
+   * The request that was responsible for generating this response
+   * @var HttpRequest
+   */
   var $request;
+  /** 
+   * @access private
+   */
   var $_is_cacheable;
+  /** 
+   * @access private
+   */
   var $_max_age;
   
+  /**
+   * Create a new instance of this class
+   * @param int status_code the status code of the response
+   */
   function __construct($status_code = null) {
     $this->status_code = $status_code;
   }
 
+  /**
+   * Tests whether the response indicates the request was successful
+   * @return boolean true if the status code is between 200 and 299 inclusive, false otherwise
+   */
   function is_success() {
     return $this->status_code >= 200 && $this->status_code < 300;
   }
 
 
+  /**
+   * Obtain a string representation of this response
+   * @return string
+   */
   function to_string() {
     $ret = $this->status_code . "\n";
     foreach ($this->headers as $k=>$v) {
@@ -353,6 +457,10 @@ class HttpResponse {
     return $ret;
   }
 
+  /**
+   * Tests whether this response is suitable for caching
+   * @return boolean true if the response can be cached, false otherwise
+   */
   function is_cacheable() {
     if (!isset($this->_is_cacheable)) {
       if ( isset($this->headers['cache-control'])) {

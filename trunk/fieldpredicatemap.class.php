@@ -2,12 +2,28 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 require_once MORIARTY_DIR . 'networkresource.class.php';
 
+/**
+ * Represents a field/predicate map
+ * @see http://n2.talis.com/wiki/Field_Predicate_Map
+ */
 class FieldPredicateMap extends NetworkResource {
 
+  /**
+   * Create a new instance of this class
+   * @param string uri URI of the field/predicate map
+   * @param Credentials credentials the credentials to use for authenticated requests (optional)
+   */ 
   function __construct($uri, $credentials = null) {
     parent::__construct($uri, $credentials);
   }
 
+  /**
+   * Add a mapping between a predicate URI and a short name. Returns the URI of the new mapping.
+   * @param string p the URI of the predicate to map
+   * @param string name the short name to assign to the predicate
+   * @param string analyzer the URI of the analyzer to apply to this predicate (optional)
+   * @return string
+   */
   function add_mapping($p, $name, $analyzer = null) {
     $mapping_uri = $this->uri . '#' . $name;
     $this->add_resource_triple( $this->uri, FRM_MAPPEDDATATYPEPROPERTY, $mapping_uri);
@@ -19,6 +35,11 @@ class FieldPredicateMap extends NetworkResource {
     return $mapping_uri;
   }
 
+  /**
+   * Remove a mapping between a predicate URI and a short name.
+   * @param string p the URI of the predicate being mapped
+   * @param string name the short name assigned to the predicate
+   */
   function remove_mapping($p, $name) {
     $index = $this->get_index();
     foreach ($index[$this->uri][FRM_MAPPEDDATATYPEPROPERTY] as $mapping) {
@@ -43,12 +64,12 @@ class FieldPredicateMap extends NetworkResource {
    * Any URIs that are prefixed by the source field/predicate map's URI will be converted to
    * be prefixed with this field/predicate map's URI
    *
-   * For example
-   *   http://example.org/source/fpmaps/1#name
-   * Would become
-   *   http://example.org/destination/fpmaps/1#name
+   * For example<br/>
+   *   http://example.org/source/fpmaps/1#name<br/>
+   * Would become<br/>
+   *   http://example.org/destination/fpmaps/1#name<br/>
    *
-   * @return A new FieldPredicateMap
+   * @return FieldPredicateMap
    * @author Ian Davis
    **/
   function copy_to($new_uri) {
