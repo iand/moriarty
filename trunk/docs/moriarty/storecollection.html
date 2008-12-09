@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Mon, 08 Dec 2008 10:20:11 +0000">
+<meta name="when" content="Tue, 09 Dec 2008 09:11:43 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -49,43 +49,34 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </p>
 
 <div class="comment" id="overview_description"><p>
-Represents an RDF graph and provides some simple functions for traversing and manipulating it
+Represents the collection of all platform stores.
 /</p></div>
 
 <hr>
 
-<table id="summary_field">
-<tr><th colspan="2">Field Summary</th></tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#credentials">$credentials</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#uri">$uri</a></p></td>
-</tr>
-</table>
-
 <table id="summary_constr">
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
-<td class="description"><p class="name"><a href="#StoreCollection()">StoreCollection</a>(mixed uri, mixed credentials)</p></td>
+<td class="description"><p class="name"><a href="#StoreCollection()">StoreCollection</a>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</p><p class="description">
+Create a new instance of this class</p></td>
 </tr>
 </table>
 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#create_store()">create_store</a>(mixed name, mixed template_uri)</p></td>
+<td class="type"> <a href="../moriarty/httprequest.html">HttpRequest</a></td>
+<td class="description"><p class="name"><a href="#create_store()">create_store</a>(string name, string template_uri)</p><p class="description">
+Create a new store on the platform. </p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#get_store_uris()">get_store_uris</a>()</p></td>
+<td class="type"> array</td>
+<td class="description"><p class="name"><a href="#get_store_uris()">get_store_uris</a>()</p><p class="description">
+Obtain the list of store URIs. </p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#retrieve()">retrieve</a>()</p></td>
+<td class="type">private  void</td>
+<td class="description"><p class="name"><a href="#retrieve()">retrieve</a>()</p><p class="description"></p></td>
 </tr>
 </table>
 
@@ -93,47 +84,49 @@ Represents an RDF graph and provides some simple functions for traversing and ma
 <tr><th colspan="2">Methods inherited from Moriarty.SimpleGraph</th></tr>
 <tr><td><a href="../moriarty/simplegraph.html#add_graph()">add_graph</a>, <a href="../moriarty/simplegraph.html#add_literal_triple()">add_literal_triple</a>, <a href="../moriarty/simplegraph.html#add_rdfxml()">add_rdfxml</a>, <a href="../moriarty/simplegraph.html#add_resource_triple()">add_resource_triple</a>, <a href="../moriarty/simplegraph.html#add_turtle()">add_turtle</a>, <a href="../moriarty/simplegraph.html#from_json()">from_json</a>, <a href="../moriarty/simplegraph.html#from_rdfxml()">from_rdfxml</a>, <a href="../moriarty/simplegraph.html#from_turtle()">from_turtle</a>, <a href="../moriarty/simplegraph.html#get_first_literal()">get_first_literal</a>, <a href="../moriarty/simplegraph.html#get_first_resource()">get_first_resource</a>, <a href="../moriarty/simplegraph.html#get_index()">get_index</a>, <a href="../moriarty/simplegraph.html#get_literal_triple_values()">get_literal_triple_values</a>, <a href="../moriarty/simplegraph.html#get_resource_triple_values()">get_resource_triple_values</a>, <a href="../moriarty/simplegraph.html#get_subject_property_values()">get_subject_property_values</a>, <a href="../moriarty/simplegraph.html#get_triples()">get_triples</a>, <a href="../moriarty/simplegraph.html#has_literal_triple()">has_literal_triple</a>, <a href="../moriarty/simplegraph.html#has_resource_triple()">has_resource_triple</a>, <a href="../moriarty/simplegraph.html#is_empty()">is_empty</a>, <a href="../moriarty/simplegraph.html#remove_all_triples()">remove_all_triples</a>, <a href="../moriarty/simplegraph.html#remove_property_values()">remove_property_values</a>, <a href="../moriarty/simplegraph.html#remove_resource_triple()">remove_resource_triple</a>, <a href="../moriarty/simplegraph.html#remove_triples_about()">remove_triples_about</a>, <a href="../moriarty/simplegraph.html#set_namespace_mapping()">set_namespace_mapping</a>, <a href="../moriarty/simplegraph.html#subject_has_property()">subject_has_property</a>, <a href="../moriarty/simplegraph.html#to_json()">to_json</a>, <a href="../moriarty/simplegraph.html#to_ntriples()">to_ntriples</a>, <a href="../moriarty/simplegraph.html#to_rdfxml()">to_rdfxml</a>, <a href="../moriarty/simplegraph.html#to_turtle()">to_turtle</a></td></tr></table>
 
-<h2 id="detail_field">Field Detail</h2>
-<h3 id="credentials">credentials</h3>
-<code class="signature">public  mixed <strong>$credentials</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
-<h3 id="uri">uri</h3>
-<code class="signature">public  mixed <strong>$uri</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
 <h2 id="detail_constr">Constructor Detail</h2>
 <h3 id="StoreCollection()">StoreCollection</h3>
-<code class="signature">public <strong>StoreCollection</strong>(mixed uri, mixed credentials)</code>
+<code class="signature">public <strong>StoreCollection</strong>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</code>
 <div class="details">
+<p>
+Create a new instance of this class</p><dl>
+<dt>Parameters:</dt>
+<dd>uri - URI of the store collection</dd>
+<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+</dl>
 </div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
 <h3 id="create_store()">create_store</h3>
-<code class="signature">public  void <strong>create_store</strong>(mixed name, mixed template_uri)</code>
+<code class="signature">public  <a href="../moriarty/httprequest.html">HttpRequest</a> <strong>create_store</strong>(string name, string template_uri)</code>
 <div class="details">
+<p>
+Create a new store on the platform. This is currently restricted to Talis administrators.</p><dl>
+<dt>Parameters:</dt>
+<dd>name - the name of the store</dd>
+<dd>template_uri - the URI of the store template to use</dd>
+</dl>
 </div>
 
 <hr>
 
 <h3 id="get_store_uris()">get_store_uris</h3>
-<code class="signature">public  void <strong>get_store_uris</strong>()</code>
+<code class="signature">public  array <strong>get_store_uris</strong>()</code>
 <div class="details">
-</div>
+<p>
+Obtain the list of store URIs. The retrieve method must be called first.</p></div>
 
 <hr>
 
 <h3 id="retrieve()">retrieve</h3>
-<code class="signature">public  void <strong>retrieve</strong>()</code>
+<code class="signature">private  void <strong>retrieve</strong>()</code>
 <div class="details">
+<p></p><dl>
+<dt>Deprecated:</dt>
+<dd>this should be compatible with NetworkResource</dd>
+</dl>
 </div>
 
 <hr>

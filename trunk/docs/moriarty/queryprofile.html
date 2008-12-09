@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Mon, 08 Dec 2008 10:20:11 +0000">
+<meta name="when" content="Tue, 09 Dec 2008 09:11:43 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -49,32 +49,29 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </p>
 
 <div class="comment" id="overview_description"><p>
-Represents an RDF graph and provides some simple functions for traversing and manipulating it
+Represents a store's query profile.
 /</p></div>
 
 <hr>
 
-<table class="inherit">
-<tr><th colspan="2">Fields inherited from Moriarty.NetworkResource</th></tr>
-<tr><td><a href="../moriarty/networkresource.html#credentials">credentials</a>, <a href="../moriarty/networkresource.html#uri">uri</a></td></tr></table>
-
 <table id="summary_constr">
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
-<td class="description"><p class="name"><a href="#QueryProfile()">QueryProfile</a>(mixed uri, mixed credentials)</p></td>
+<td class="description"><p class="name"><a href="#QueryProfile()">QueryProfile</a>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</p><p class="description">
+Create a new instance of this class</p></td>
 </tr>
 </table>
 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
-<td class="type"> URI</td>
+<td class="type"> string</td>
 <td class="description"><p class="name"><a href="#add_field_weight()">add_field_weight</a>(mixed name, mixed weight)</p><p class="description">
 Adds the field and weight to the query profile
 </p></td>
 </tr>
 <tr>
-<td class="type"> A</td>
+<td class="type"> <a href="../moriarty/queryprofile.html">QueryProfile</a></td>
 <td class="description"><p class="name"><a href="#copy_to()">copy_to</a>(mixed new_uri)</p><p class="description">
 Copies the field weights and other properties into new query profile.</p></td>
 </tr>
@@ -96,30 +93,34 @@ Removes the weight for the named field
 
 <h2 id="detail_constr">Constructor Detail</h2>
 <h3 id="QueryProfile()">QueryProfile</h3>
-<code class="signature">public <strong>QueryProfile</strong>(mixed uri, mixed credentials)</code>
+<code class="signature">public <strong>QueryProfile</strong>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</code>
 <div class="details">
+<p>
+Create a new instance of this class</p><dl>
+<dt>Parameters:</dt>
+<dd>uri - URI of the query profile</dd>
+<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+</dl>
 </div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
 <h3 id="add_field_weight()">add_field_weight</h3>
-<code class="signature">public  URI <strong>add_field_weight</strong>(mixed name, mixed weight)</code>
+<code class="signature">public  string <strong>add_field_weight</strong>(mixed name, mixed weight)</code>
 <div class="details">
 <p>
 Adds the field and weight to the query profile
 </p><dl>
 <dt>Returns:</dt>
-<dd>of the added field weight</dd>
-<dt>Author:</dt>
-<dd>Ian Davis</dd>
+<dd>URI of the added field weight</dd>
 </dl>
 </div>
 
 <hr>
 
 <h3 id="copy_to()">copy_to</h3>
-<code class="signature">public  A <strong>copy_to</strong>(mixed new_uri)</code>
+<code class="signature">public  <a href="../moriarty/queryprofile.html">QueryProfile</a> <strong>copy_to</strong>(mixed new_uri)</code>
 <div class="details">
 <p>
 Copies the field weights and other properties into new query profile.
@@ -130,13 +131,7 @@ For example
   http://example.org/source/queryprofile/1#name
 Would become
   http://example.org/destination/queryprofile/1#name
-</p><dl>
-<dt>Returns:</dt>
-<dd>new QueryProfile</dd>
-<dt>Author:</dt>
-<dd>Ian Davis</dd>
-</dl>
-</div>
+</p></div>
 
 <hr>
 

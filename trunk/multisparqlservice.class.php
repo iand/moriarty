@@ -3,25 +3,19 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 require_once MORIARTY_ARC_DIR . DIRECTORY_SEPARATOR . "ARC2.php";
 require_once MORIARTY_DIR . 'sparqlservicebase.class.php';
 
+/**
+ * Represents a store's multi sparql service
+ * @see http://n2.talis.com/wiki/Store_Multisparql_Service
+ */
 class MultiSparqlService extends SparqlServiceBase {
-  var $uri;
-  var $request_factory;
-  var $credentials;
 
-  function MultiSparqlService($uri, $credentials = null) {
-    $this->uri = $uri;
-    $this->credentials = $credentials;
-  }
-
+  /**
+   * Obtain a bounded description of a given resource
+   * @param mixed uri the URI of the resource to be described or an array of URIs
+   * @param array graphs the list of graph URIs the description should be drawn from
+   * @return HttpResponse
+   */
   function describe( $uri, $graphs=array() ) {
-    if (! isset( $this->request_factory) ) {
-      $this->request_factory = new HttpRequestFactory();
-    }
-
-    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
-    $request->set_accept("application/rdf+xml");
-    $request->set_content_type("application/x-www-form-urlencoded");
-
     if ( is_array( $uri ) ) {
       $query = "DESCRIBE <" . implode('> <' , $uri) . ">";
     }
@@ -33,11 +27,12 @@ class MultiSparqlService extends SparqlServiceBase {
       $query .= ' FROM <' . $graph_uri . '> ';
     }
 
-    $request->set_body( "query=" . urlencode($query) );
-
-    return $request->execute();
+    return $this->graph($query);
   }
 
+  /**
+   * @deprecated triple lists are deprecated
+   */
   function describe_to_triple_list( $uri, $graphs=array() ) {
     $triples = array();
 

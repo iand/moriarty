@@ -5,7 +5,7 @@ require_once MORIARTY_DIR . 'httprequest.class.php';
 require_once MORIARTY_DIR . 'httprequestfactory.class.php';
 
 /**
- * The base class for graphs in a store
+ * The base class for graphs in a store.
  */
 class Graph {
   /**

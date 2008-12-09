@@ -2,8 +2,16 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 require_once MORIARTY_DIR . 'networkresource.class.php';
 
+/**
+ * Represents a store's query profile.
+ */ 
 class QueryProfile extends NetworkResource {
 
+  /**
+   * Create a new instance of this class
+   * @param string uri URI of the query profile
+   * @param Credentials credentials the credentials to use for authenticated requests (optional)
+   */ 
   function __construct($uri, $credentials = null) {
     parent::__construct($uri, $credentials);
   }
@@ -12,8 +20,7 @@ class QueryProfile extends NetworkResource {
   /**
    * Adds the field and weight to the query profile
    *
-   * @return URI of the added field weight
-   * @author Ian Davis
+   * @return string URI of the added field weight
    **/
   function add_field_weight($name, $weight) {
     $field_weight_uri = $this->uri . '#' . $name;
@@ -54,8 +61,7 @@ class QueryProfile extends NetworkResource {
    * Would become
    *   http://example.org/destination/queryprofile/1#name
    *
-   * @return A new QueryProfile
-   * @author Ian Davis
+   * @return QueryProfile
    **/
   function copy_to($new_uri) {
     $qp = new QueryProfile($new_uri, $this->credentials);

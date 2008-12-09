@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Mon, 08 Dec 2008 10:20:11 +0000">
+<meta name="when" content="Tue, 09 Dec 2008 09:11:43 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -47,7 +47,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <p class="signature">public  class <strong>SparqlServiceBase</strong></p>
 
 <div class="comment" id="overview_description"><p>
-Represents the base class for various sparql services
+Represents the base class for various sparql services.
 /</p></div>
 
 <hr>
@@ -275,7 +275,8 @@ another associative array with the following keys:
 <li><em>value</em> => the value of the result binding</li>
 <li><em>lang</em> => the language code (if any) of the result binding</li>
 <li><em>datatype</em> => the datatype uri (if any) of the result binding</li>
-</ul></p><dl>
+</ul>
+For example: $results[2]['foo']['value'] will obtain the value of the foo variable for the third result</p><dl>
 <dt>Parameters:</dt>
 <dd>xml - the results XML to parse</dd>
 </dl>

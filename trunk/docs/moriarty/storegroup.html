@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Mon, 08 Dec 2008 10:20:11 +0000">
+<meta name="when" content="Tue, 09 Dec 2008 09:11:43 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -49,19 +49,16 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </p>
 
 <div class="comment" id="overview_description"><p>
-Represents an RDF graph and provides some simple functions for traversing and manipulating it
+Represents a group of stores.
 /</p></div>
 
 <hr>
 
-<table class="inherit">
-<tr><th colspan="2">Fields inherited from Moriarty.NetworkResource</th></tr>
-<tr><td><a href="../moriarty/networkresource.html#credentials">credentials</a>, <a href="../moriarty/networkresource.html#uri">uri</a></td></tr></table>
-
 <table id="summary_constr">
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
-<td class="description"><p class="name"><a href="#StoreGroup()">StoreGroup</a>(mixed uri, mixed credentials)</p></td>
+<td class="description"><p class="name"><a href="#StoreGroup()">StoreGroup</a>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</p><p class="description">
+Create a new instance of this class</p></td>
 </tr>
 </table>
 
@@ -69,23 +66,28 @@ Represents an RDF graph and provides some simple functions for traversing and ma
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#add_store_by_uri()">add_store_by_uri</a>(mixed store_uri)</p></td>
+<td class="description"><p class="name"><a href="#add_store_by_uri()">add_store_by_uri</a>(string store_uri)</p><p class="description">
+Add a store to this group. </p></td>
+</tr>
+<tr>
+<td class="type"> <a href="../moriarty/storegroupconfig.html">StoreGroupConfig</a></td>
+<td class="description"><p class="name"><a href="#get_config()">get_config</a>()</p><p class="description">
+Obtain a reference to this store group's configuration</p></td>
+</tr>
+<tr>
+<td class="type"> <a href="../moriarty/contentbox.html">Contentbox</a></td>
+<td class="description"><p class="name"><a href="#get_contentbox()">get_contentbox</a>()</p><p class="description">
+Obtain a reference to this store group's contentbox</p></td>
+</tr>
+<tr>
+<td class="type"> <a href="../moriarty/sparqlservice.html">SparqlService</a></td>
+<td class="description"><p class="name"><a href="#get_sparql_service()">get_sparql_service</a>()</p><p class="description">
+Obtain a reference to this store group's sparql service</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#get_config()">get_config</a>()</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#get_contentbox()">get_contentbox</a>()</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#get_sparql_service()">get_sparql_service</a>()</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#remove_all_stores()">remove_all_stores</a>()</p></td>
+<td class="description"><p class="name"><a href="#remove_all_stores()">remove_all_stores</a>()</p><p class="description">
+Remove all stores from this group. </p></td>
 </tr>
 </table>
 
@@ -99,37 +101,63 @@ Represents an RDF graph and provides some simple functions for traversing and ma
 
 <h2 id="detail_constr">Constructor Detail</h2>
 <h3 id="StoreGroup()">StoreGroup</h3>
-<code class="signature">public <strong>StoreGroup</strong>(mixed uri, mixed credentials)</code>
+<code class="signature">public <strong>StoreGroup</strong>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</code>
 <div class="details">
+<p>
+Create a new instance of this class</p><dl>
+<dt>Parameters:</dt>
+<dd>uri - URI of the store group</dd>
+<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+</dl>
 </div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
 <h3 id="add_store_by_uri()">add_store_by_uri</h3>
-<code class="signature">public  void <strong>add_store_by_uri</strong>(mixed store_uri)</code>
+<code class="signature">public  void <strong>add_store_by_uri</strong>(string store_uri)</code>
 <div class="details">
+<p>
+Add a store to this group. Save the changes by calling put_to_network.</p><dl>
+<dt>Parameters:</dt>
+<dd>store_uri - the URI of the store to add to this group.</dd>
+</dl>
 </div>
 
 <hr>
 
 <h3 id="get_config()">get_config</h3>
-<code class="signature">public  void <strong>get_config</strong>()</code>
+<code class="signature">public  <a href="../moriarty/storegroupconfig.html">StoreGroupConfig</a> <strong>get_config</strong>()</code>
 <div class="details">
+<p>
+Obtain a reference to this store group's configuration</p><dl>
+<dt>See Also:</dt>
+<dd><a href="http://n2.talis.com/wiki/Store_Configuration">http://n2.talis.com/wiki/Store_Configuration</a></dd>
+</dl>
 </div>
 
 <hr>
 
 <h3 id="get_contentbox()">get_contentbox</h3>
-<code class="signature">public  void <strong>get_contentbox</strong>()</code>
+<code class="signature">public  <a href="../moriarty/contentbox.html">Contentbox</a> <strong>get_contentbox</strong>()</code>
 <div class="details">
+<p>
+Obtain a reference to this store group's contentbox</p><dl>
+<dt>See Also:</dt>
+<dd><a href="http://n2.talis.com/wiki/Contentbox">http://n2.talis.com/wiki/Contentbox</a></dd>
+</dl>
 </div>
 
 <hr>
 
 <h3 id="get_sparql_service()">get_sparql_service</h3>
-<code class="signature">public  void <strong>get_sparql_service</strong>()</code>
+<code class="signature">public  <a href="../moriarty/sparqlservice.html">SparqlService</a> <strong>get_sparql_service</strong>()</code>
 <div class="details">
+<p>
+Obtain a reference to this store group's sparql service</p><dl>
+<dt>See Also:</dt>
+<dd><a href="http://n2.talis.com/wiki/Store_Sparql_Service">http://n2.talis.com/wiki/Store_Sparql_Service</a></dd>
+</dl>
 </div>
 
 <hr>
@@ -137,7 +165,9 @@ Represents an RDF graph and provides some simple functions for traversing and ma
 <h3 id="remove_all_stores()">remove_all_stores</h3>
 <code class="signature">public  void <strong>remove_all_stores</strong>()</code>
 <div class="details">
-</div>
+<p>
+Remove all stores from this group. Save the changes by calling put_to_network.
+/</p></div>
 
 <hr>
 

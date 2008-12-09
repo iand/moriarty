@@ -3,34 +3,57 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 require_once MORIARTY_DIR. 'fieldpredicatemap.class.php';
 require_once MORIARTY_DIR. 'queryprofile.class.php';
 
+/**
+ * A helper class to assist with configuring a store.
+ */
 class Config {
-
+  /**
+   * @access private
+   */
   var $uri;
+  /**
+   * @access private
+   */
   var $request_factory;
+  /**
+   * @access private
+   */
   var $credentials;
 
-  function Config($uri, $credentials = null) {
+  /**
+   * Create a new instance of this class.
+   * @param string uri URI of the store config
+   * @param Credentials credentials the credentials to use for authenticated requests (optional)
+   */ 
+  function __construct($uri, $credentials = null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
   }
 
+  /**
+   * Obtain a reference to the store's field/predicate map. This needs to be subsequently fetched using get_from_network
+   * @return FieldPredicateMap
+   */
   function get_first_fpmap() {
     return new FieldPredicateMap( $this->get_first_fpmap_uri(), $this->credentials);
   }
 
+  /**
+   * Obtain a reference to the store's query profile. This needs to be subsequently fetched using get_from_network
+   * @return QueryProfile
+   */
   function get_first_query_profile() {
     return new QueryProfile( $this->get_first_query_profile_uri(), $this->credentials);
   }
 
   /**
-   * Gets the URI of the first field/predicate map in the store
+   * Gets the URI of the first field/predicate map in the store.
    * This is much more complicated than first appears since a store
    * can be configured (by Talis) to hold its field/predicate map
    * anywhere. This method understands all the existing stores and their
    * URI layouts.
    *
    * @return string
-   * @author Ian Davis
    **/
   function get_first_fpmap_uri() {
     if (preg_match("/^http:\/\/api\.talis\.com\/stores\/([a-z][a-zA-Z0-9-]+)\/config$/", $this->uri, $matches) ) {
@@ -81,14 +104,13 @@ class Config {
 
   }
   /**
-   * Gets the URI of the first query profile in the store
+   * Gets the URI of the first query profile in the store.
    * This is much more complicated than first appears since a store
    * can be configured (by Talis) to hold its field/predicate map
    * anywhere. This method understands all the existing stores and their
    * URI layouts.
    *
    * @return string
-   * @author Ian Davis
    **/
   function get_first_query_profile_uri() {
 
