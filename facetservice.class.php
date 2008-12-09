@@ -1,16 +1,41 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 
+/**
+ * Represents a store's facet service.
+ * @see http://n2.talis.com/wiki/Facet_Service
+ */
 class FacetService {
+  /**
+   * @access private
+   */
   var $uri;
+  /**
+   * @access private
+   */
   var $request_factory;
+  /**
+   * @access private
+   */
   var $credentials;
 
+  /**
+   * Create a new instance of this class
+   * @param string uri URI of the facet service
+   * @param Credentials credentials the credentials to use for authenticated requests (optional)
+   */ 
   function __construct($uri, $credentials = null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
   }
 
+  /**
+   * Perform a facet query
+   * @param string query the query to execute
+   * @param array fields the list of fields to facet on
+   * @param in top the number of facet results to return
+   * @return HttpResponse
+   */
   function facets($query, $fields, $top = 10) {
     if (! isset( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
@@ -22,6 +47,13 @@ class FacetService {
     return $request->execute();
   }
 
+  /**
+   * Perform a facet query and return the results as an array. An empty array is returned if there are any HTTP errors.
+   * @param string query the query to execute
+   * @param array fields the list of fields to facet on
+   * @param in top the number of facet results to return
+   * @return array see parse_facet_xml for the structure of this array
+   */
   function facets_to_array($query, $fields, $top = 10) {
     $facets = array();
     $response = $this->facets($query, $fields, $top);
@@ -31,6 +63,17 @@ class FacetService {
     return $facets;
   }
 
+  /**
+   * Parse the response from a facet query into an array.
+   * This method returns an associative array where the keys correspond to field name and the values are
+   * associative arrays with two keys:
+   * <ul>
+   * <li><em>value</em> => the value of the field</li>
+   * <li><em>number</em> => the associated number returned by the facet service</li>
+   * </ul>
+   * @param string xml the facet response as an XML document
+   * @return array
+   */
   function parse_facet_xml($xml) {
     $facets = array();
 

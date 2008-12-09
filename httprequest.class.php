@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 require_once MORIARTY_DIR . 'httpcache.class.php';
 
 /**
- * Represents an HTTP protocol request
+ * Represents an HTTP protocol request.
  */
 class HttpRequest {
   /**
@@ -388,7 +388,7 @@ class HttpRequest {
 }
 
 /**
- * Represents an HTTP protocol response
+ * Represents an HTTP protocol response.
  */
 class HttpResponse {
   /**

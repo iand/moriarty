@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Mon, 08 Dec 2008 10:20:11 +0000">
+<meta name="when" content="Tue, 09 Dec 2008 09:11:43 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -46,95 +46,101 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <p class="signature">public  class <strong>FacetService</strong></p>
 
-<hr>
+<div class="comment" id="overview_description"><p>
+Represents a store's facet service.</p></div>
 
-<table id="summary_field">
-<tr><th colspan="2">Field Summary</th></tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#credentials">$credentials</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#request_factory">$request_factory</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#uri">$uri</a></p></td>
-</tr>
-</table>
+<dl>
+<dt>See Also:</dt>
+<dd><a href="http://n2.talis.com/wiki/Facet_Service">http://n2.talis.com/wiki/Facet_Service</a></dd>
+</dl>
+<hr>
 
 <table id="summary_constr">
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
-<td class="description"><p class="name"><a href="#FacetService()">FacetService</a>(mixed uri, mixed credentials)</p></td>
+<td class="description"><p class="name"><a href="#FacetService()">FacetService</a>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</p><p class="description">
+Create a new instance of this class</p></td>
 </tr>
 </table>
 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#facets()">facets</a>(mixed query, mixed fields, mixed top)</p></td>
+<td class="type"> <a href="../moriarty/httpresponse.html">HttpResponse</a></td>
+<td class="description"><p class="name"><a href="#facets()">facets</a>(string query, array fields, in top)</p><p class="description">
+Perform a facet query</p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#facets_to_array()">facets_to_array</a>(mixed query, mixed fields, mixed top)</p></td>
+<td class="type"> array</td>
+<td class="description"><p class="name"><a href="#facets_to_array()">facets_to_array</a>(string query, array fields, in top)</p><p class="description">
+Perform a facet query and return the results as an array. </p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#parse_facet_xml()">parse_facet_xml</a>(mixed xml)</p></td>
+<td class="type"> array</td>
+<td class="description"><p class="name"><a href="#parse_facet_xml()">parse_facet_xml</a>(string xml)</p><p class="description">
+Parse the response from a facet query into an array.</p></td>
 </tr>
 </table>
 
-<h2 id="detail_field">Field Detail</h2>
-<h3 id="credentials">credentials</h3>
-<code class="signature">public  mixed <strong>$credentials</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
-<h3 id="request_factory">request_factory</h3>
-<code class="signature">public  mixed <strong>$request_factory</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
-<h3 id="uri">uri</h3>
-<code class="signature">public  mixed <strong>$uri</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
 <h2 id="detail_constr">Constructor Detail</h2>
 <h3 id="FacetService()">FacetService</h3>
-<code class="signature">public <strong>FacetService</strong>(mixed uri, mixed credentials)</code>
+<code class="signature">public <strong>FacetService</strong>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</code>
 <div class="details">
+<p>
+Create a new instance of this class</p><dl>
+<dt>Parameters:</dt>
+<dd>uri - URI of the facet service</dd>
+<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+</dl>
 </div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
 <h3 id="facets()">facets</h3>
-<code class="signature">public  void <strong>facets</strong>(mixed query, mixed fields, mixed top)</code>
+<code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>facets</strong>(string query, array fields, in top)</code>
 <div class="details">
+<p>
+Perform a facet query</p><dl>
+<dt>Parameters:</dt>
+<dd>query - the query to execute</dd>
+<dd>fields - the list of fields to facet on</dd>
+<dd>top - the number of facet results to return</dd>
+</dl>
 </div>
 
 <hr>
 
 <h3 id="facets_to_array()">facets_to_array</h3>
-<code class="signature">public  void <strong>facets_to_array</strong>(mixed query, mixed fields, mixed top)</code>
+<code class="signature">public  array <strong>facets_to_array</strong>(string query, array fields, in top)</code>
 <div class="details">
+<p>
+Perform a facet query and return the results as an array. An empty array is returned if there are any HTTP errors.</p><dl>
+<dt>Parameters:</dt>
+<dd>query - the query to execute</dd>
+<dd>fields - the list of fields to facet on</dd>
+<dd>top - the number of facet results to return</dd>
+<dt>Returns:</dt>
+<dd>see parse_facet_xml for the structure of this array</dd>
+</dl>
 </div>
 
 <hr>
 
 <h3 id="parse_facet_xml()">parse_facet_xml</h3>
-<code class="signature">public  void <strong>parse_facet_xml</strong>(mixed xml)</code>
+<code class="signature">public  array <strong>parse_facet_xml</strong>(string xml)</code>
 <div class="details">
+<p>
+Parse the response from a facet query into an array.
+This method returns an associative array where the keys correspond to field name and the values are
+associative arrays with two keys:
+<ul>
+<li><em>value</em> => the value of the field</li>
+<li><em>number</em> => the associated number returned by the facet service</li>
+</ul></p><dl>
+<dt>Parameters:</dt>
+<dd>xml - the facet response as an XML document</dd>
+</dl>
 </div>
 
 <hr>

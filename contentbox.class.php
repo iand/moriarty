@@ -146,7 +146,7 @@ class Contentbox {
 }
 
 /**
- * Represents a list of resources returned from a contentbox search
+ * Represents a list of resources returned from a contentbox search.
  */
 class ResourceList {
   /**

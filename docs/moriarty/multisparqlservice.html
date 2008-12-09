@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Mon, 08 Dec 2008 10:20:11 +0000">
+<meta name="when" content="Tue, 09 Dec 2008 09:11:43 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -49,39 +49,19 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </p>
 
 <div class="comment" id="overview_description"><p>
-Represents the base class for various sparql services
-/</p></div>
+Represents a store's multi sparql service</p></div>
 
+<dl>
+<dt>See Also:</dt>
+<dd><a href="http://n2.talis.com/wiki/Store_Multisparql_Service">http://n2.talis.com/wiki/Store_Multisparql_Service</a></dd>
+</dl>
 <hr>
-
-<table id="summary_field">
-<tr><th colspan="2">Field Summary</th></tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#credentials">$credentials</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#request_factory">$request_factory</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#uri">$uri</a></p></td>
-</tr>
-</table>
-
-<table id="summary_constr">
-<tr><th colspan="2">Constructor Summary</th></tr>
-<tr>
-<td class="description"><p class="name"><a href="#MultiSparqlService()">MultiSparqlService</a>(mixed uri, mixed credentials)</p></td>
-</tr>
-</table>
 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> <a href="../moriarty/httpresponse.html">HttpResponse</a></td>
-<td class="description"><p class="name"><a href="#describe()">describe</a>(mixed uri, mixed graphs)</p><p class="description">
+<td class="description"><p class="name"><a href="#describe()">describe</a>(mixed uri, array graphs)</p><p class="description">
 Obtain a bounded description of a given resource</p></td>
 </tr>
 <tr>
@@ -94,44 +74,15 @@ Obtain a bounded description of a given resource</p></td>
 <tr><th colspan="2">Methods inherited from Moriarty.SparqlServiceBase</th></tr>
 <tr><td><a href="../moriarty/sparqlservicebase.html#ask()">ask</a>, <a href="../moriarty/sparqlservicebase.html#construct_to_simple_graph()">construct_to_simple_graph</a>, <a href="../moriarty/sparqlservicebase.html#construct_to_triple_list()">construct_to_triple_list</a>, <a href="../moriarty/sparqlservicebase.html#describe()">describe</a>, <a href="../moriarty/sparqlservicebase.html#describe_to_simple_graph()">describe_to_simple_graph</a>, <a href="../moriarty/sparqlservicebase.html#describe_to_triple_list()">describe_to_triple_list</a>, <a href="../moriarty/sparqlservicebase.html#graph()">graph</a>, <a href="../moriarty/sparqlservicebase.html#graph_to_simple_graph()">graph_to_simple_graph</a>, <a href="../moriarty/sparqlservicebase.html#graph_to_triple_list()">graph_to_triple_list</a>, <a href="../moriarty/sparqlservicebase.html#parse_ask_results()">parse_ask_results</a>, <a href="../moriarty/sparqlservicebase.html#parse_select_results()">parse_select_results</a>, <a href="../moriarty/sparqlservicebase.html#query()">query</a>, <a href="../moriarty/sparqlservicebase.html#select()">select</a>, <a href="../moriarty/sparqlservicebase.html#select_to_array()">select_to_array</a></td></tr></table>
 
-<h2 id="detail_field">Field Detail</h2>
-<h3 id="credentials">credentials</h3>
-<code class="signature">public  mixed <strong>$credentials</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
-<h3 id="request_factory">request_factory</h3>
-<code class="signature">public  mixed <strong>$request_factory</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
-<h3 id="uri">uri</h3>
-<code class="signature">public  mixed <strong>$uri</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
-<h2 id="detail_constr">Constructor Detail</h2>
-<h3 id="MultiSparqlService()">MultiSparqlService</h3>
-<code class="signature">public <strong>MultiSparqlService</strong>(mixed uri, mixed credentials)</code>
-<div class="details">
-</div>
-
-<hr>
-
 <h2 id="detail_method">Method Detail</h2>
 <h3 id="describe()">describe</h3>
-<code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>describe</strong>(mixed uri, mixed graphs)</code>
+<code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>describe</strong>(mixed uri, array graphs)</code>
 <div class="details">
 <p>
 Obtain a bounded description of a given resource</p><dl>
 <dt>Parameters:</dt>
 <dd>uri - the URI of the resource to be described or an array of URIs</dd>
+<dd>graphs - the list of graph URIs the description should be drawn from</dd>
 </dl>
 </div>
 

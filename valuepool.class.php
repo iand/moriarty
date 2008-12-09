@@ -2,6 +2,10 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 require_once MORIARTY_DIR. 'store.class.php';
 
+/**
+ * Deprecated
+ * @deprecated this class is deprecated
+ */
 class ValuePool {
   var $bigfootSparqlService;
   var $bigfootMetabox;

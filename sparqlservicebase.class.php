@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 require_once MORIARTY_ARC_DIR . DIRECTORY_SEPARATOR . "ARC2.php";
 
 /**
- * Represents the base class for various sparql services
+ * Represents the base class for various sparql services.
  */
 class SparqlServiceBase {
   /**
@@ -215,6 +215,7 @@ class SparqlServiceBase {
    * <li><em>lang</em> => the language code (if any) of the result binding</li>
    * <li><em>datatype</em> => the datatype uri (if any) of the result binding</li>
    * </ul>
+   * For example: $results[2]['foo']['value'] will obtain the value of the foo variable for the third result
    * @param string xml the results XML to parse
    * @return array
    */

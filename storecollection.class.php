@@ -3,15 +3,38 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 require_once MORIARTY_DIR. 'simplegraph.class.php';
 require_once MORIARTY_DIR. 'httprequestfactory.class.php';
 
+/**
+ * Represents the collection of all platform stores.
+ */
 class StoreCollection extends SimpleGraph {
+  /**
+   * @access private
+   */
   var $uri;
+  /**
+   * @access private
+   */
+  var $request_factory;
+  /**
+   * @access private
+   */
   var $credentials;
 
-  function StoreCollection($uri, $credentials = null) {
+
+  /**
+   * Create a new instance of this class
+   * @param string uri URI of the store collection
+   * @param Credentials credentials the credentials to use for authenticated requests (optional)
+   */ 
+  function __construct($uri, $credentials = null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
   }
 
+  /**
+   * @access private
+   * @deprecated this should be compatible with NetworkResource
+   */
   function retrieve() {
     if (! isset( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
@@ -28,6 +51,12 @@ class StoreCollection extends SimpleGraph {
     }
   }
 
+  /**
+   * Create a new store on the platform. This is currently restricted to Talis administrators.
+   * @param string name the name of the store
+   * @param string template_uri the URI of the store template to use
+   * @return HttpRequest
+   */
   function create_store($name, $template_uri) {
     if (! isset( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
@@ -50,6 +79,10 @@ class StoreCollection extends SimpleGraph {
 
   }
 
+  /**
+   * Obtain the list of store URIs. The retrieve method must be called first.
+   * @return array
+   */ 
   function get_store_uris() {
     $list = array();
     foreach ($this->_index[$this->uri][BF_STORE] as $store_resource) {

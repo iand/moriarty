@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Mon, 08 Dec 2008 10:20:11 +0000">
+<meta name="when" content="Tue, 09 Dec 2008 09:11:43 +0000">
 
 <link rel="stylesheet" type="text/css" href="stylesheet.css">
 <link rel="start" href="overview-summary.html">
@@ -72,6 +72,8 @@ Add the triples parsed from the supplied RDF/XML to the graph</dd>
 <dd>
 Adds a triple with a resource object to the graph</dd>
 <dt><a href="moriarty/storegroup.html#add_store_by_uri()">add_store_by_uri()</a> - Method in class <a href="moriarty/storegroup.html">Moriarty.StoreGroup</a></dt>
+<dd>
+Add a store to this group. </dd>
 <dt><a href="moriarty/simplegraph.html#add_turtle()">add_turtle()</a> - Method in class <a href="moriarty/simplegraph.html">Moriarty.SimpleGraph</a></dt>
 <dd>
 Add the triples parsed from the supplied Turtle to the graph</dd>
@@ -142,6 +144,9 @@ Represents a changeset. </dd>
 <dd>
 Represents a batch of changesets. </dd>
 <dt><a href="moriarty/config.html">Config()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
+<dd>
+A helper class to assist with configuring a store.
+</dd>
 <dt><a href="moriarty/sparqlservicebase.html#construct_to_simple_graph()">construct_to_simple_graph()</a> - Method in class <a href="moriarty/sparqlservicebase.html">Moriarty.SparqlServiceBase</a></dt>
 <dd></dd>
 <dt><a href="moriarty/sparqlservicebase.html#construct_to_triple_list()">construct_to_triple_list()</a> - Method in class <a href="moriarty/sparqlservicebase.html">Moriarty.SparqlServiceBase</a></dt>
@@ -153,6 +158,8 @@ Represents a store's contentbox</dd>
 <dd>
 Copies the field weights and other properties into new query profile.</dd>
 <dt><a href="moriarty/storecollection.html#create_store()">create_store()</a> - Method in class <a href="moriarty/storecollection.html">Moriarty.StoreCollection</a></dt>
+<dd>
+Create a new store on the platform. </dd>
 <dt><a href="moriarty/credentials.html">Credentials()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
 Represents a username and password pair for authenticating against secure services.</dd>
@@ -173,6 +180,8 @@ Represents a username and password pair for authenticating against secure servic
 <dt><a href="moriarty/package-globals.html#DCT_ABSTRACT">DCT_ABSTRACT()</a> - Global in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dt><a href="moriarty/package-globals.html#DCT_PROVENANCE">DCT_PROVENANCE()</a> - Global in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dt><a href="moriarty/networkresource.html#delete_from_network()">delete_from_network()</a> - Method in class <a href="moriarty/networkresource.html">Moriarty.NetworkResource</a></dt>
+<dd>
+Issue an HTTP DELETE to the resource's URI</dd>
 <dt><a href="moriarty/sparqlservicebase.html#describe()">describe()</a> - Method in class <a href="moriarty/sparqlservicebase.html">Moriarty.SparqlServiceBase</a></dt>
 <dd>
 Obtain a bounded description of a given resource</dd>
@@ -191,8 +200,14 @@ Issue the HTTP request</dd>
 <h1 id="letterF">F</h1>
 <dl>
 <dt><a href="moriarty/facetservice.html#facets()">facets()</a> - Method in class <a href="moriarty/facetservice.html">Moriarty.FacetService</a></dt>
+<dd>
+Perform a facet query</dd>
 <dt><a href="moriarty/facetservice.html#facets_to_array()">facets_to_array()</a> - Method in class <a href="moriarty/facetservice.html">Moriarty.FacetService</a></dt>
+<dd>
+Perform a facet query and return the results as an array. </dd>
 <dt><a href="moriarty/facetservice.html">FacetService()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
+<dd>
+Represents a store's facet service.</dd>
 <dt><a href="moriarty/fieldpredicatemap.html">FieldPredicateMap()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
 Represents a field/predicate map</dd>
@@ -234,8 +249,14 @@ Get the content to be sent with the request</dd>
 <dd>
 Returns the list of changesets constructed from the input graphs</dd>
 <dt><a href="moriarty/networkresource.html#get_comment()">get_comment()</a> - Method in class <a href="moriarty/networkresource.html">Moriarty.NetworkResource</a></dt>
+<dd>
+Obtain the value of the resource's comment property</dd>
 <dt><a href="moriarty/storegroup.html#get_config()">get_config()</a> - Method in class <a href="moriarty/storegroup.html">Moriarty.StoreGroup</a></dt>
+<dd>
+Obtain a reference to this store group's configuration</dd>
 <dt><a href="moriarty/storegroup.html#get_contentbox()">get_contentbox()</a> - Method in class <a href="moriarty/storegroup.html">Moriarty.StoreGroup</a></dt>
+<dd>
+Obtain a reference to this store group's contentbox</dd>
 <dt><a href="moriarty/snapshots.html#get_errors()">get_errors()</a> - Method in class <a href="moriarty/snapshots.html">Moriarty.Snapshots</a></dt>
 <dd>
 get_errors
@@ -244,26 +265,28 @@ get_errors
 <dd>
 Obtain a reference to this store's facet service</dd>
 <dt><a href="moriarty/config.html#get_first_fpmap()">get_first_fpmap()</a> - Method in class <a href="moriarty/config.html">Moriarty.Config</a></dt>
+<dd>
+Obtain a reference to the store's field/predicate map. </dd>
 <dt><a href="moriarty/config.html#get_first_fpmap_uri()">get_first_fpmap_uri()</a> - Method in class <a href="moriarty/config.html">Moriarty.Config</a></dt>
 <dd>
-Gets the URI of the first field/predicate map in the store
-This is much more complicated than first appears since a store
-can be configured (by Talis) to hold its field/predicate map
-anywhere. </dd>
+Gets the URI of the first field/predicate map in the store.
+</dd>
 <dt><a href="moriarty/simplegraph.html#get_first_literal()">get_first_literal()</a> - Method in class <a href="moriarty/simplegraph.html">Moriarty.SimpleGraph</a></dt>
 <dd>
 Fetch the first literal value for a given subject and predicate. </dd>
 <dt><a href="moriarty/storegroupconfig.html#get_first_query_profile()">get_first_query_profile()</a> - Method in class <a href="moriarty/storegroupconfig.html">Moriarty.StoreGroupConfig</a></dt>
+<dd>
+Obtain a reference to the store group's query profile. </dd>
 <dt><a href="moriarty/config.html#get_first_query_profile_uri()">get_first_query_profile_uri()</a> - Method in class <a href="moriarty/config.html">Moriarty.Config</a></dt>
 <dd>
-Gets the URI of the first query profile in the store
-This is much more complicated than first appears since a store
-can be configured (by Talis) to hold its field/predicate map
-anywhere. </dd>
+Gets the URI of the first query profile in the store.
+</dd>
 <dt><a href="moriarty/simplegraph.html#get_first_resource()">get_first_resource()</a> - Method in class <a href="moriarty/simplegraph.html">Moriarty.SimpleGraph</a></dt>
 <dd>
 Fetch the first resource value for a given subject and predicate. </dd>
 <dt><a href="moriarty/networkresource.html#get_from_network()">get_from_network()</a> - Method in class <a href="moriarty/networkresource.html">Moriarty.NetworkResource</a></dt>
+<dd>
+Perform an HTTP GET on the resource's URI to obtain an RDF/XML document containing data associated with the resource</dd>
 <dt><a href="moriarty/httprequest.html#get_headers()">get_headers()</a> - Method in class <a href="moriarty/httprequest.html">Moriarty.HttpRequest</a></dt>
 <dd>
 Obtain the HTTP headers to be sent with this request</dd>
@@ -278,6 +301,8 @@ get_snapshots
 <dd>
 Obtain a reference to this store's job queue</dd>
 <dt><a href="moriarty/networkresource.html#get_label()">get_label()</a> - Method in class <a href="moriarty/networkresource.html">Moriarty.NetworkResource</a></dt>
+<dd>
+Obtain the value of the resource's label property</dd>
 <dt><a href="moriarty/simplegraph.html#get_literal_triple_values()">get_literal_triple_values()</a> - Method in class <a href="moriarty/simplegraph.html">Moriarty.SimpleGraph</a></dt>
 <dd>
 Fetch the literal values for a given subject and predicate. </dd>
@@ -297,7 +322,11 @@ Fetch the resource values for a given subject and predicate. </dd>
 <dd>
 Obtain a reference to this store's snapshot collection</dd>
 <dt><a href="moriarty/storegroup.html#get_sparql_service()">get_sparql_service()</a> - Method in class <a href="moriarty/storegroup.html">Moriarty.StoreGroup</a></dt>
+<dd>
+Obtain a reference to this store group's sparql service</dd>
 <dt><a href="moriarty/storecollection.html#get_store_uris()">get_store_uris()</a> - Method in class <a href="moriarty/storecollection.html">Moriarty.StoreCollection</a></dt>
+<dd>
+Obtain the list of store URIs. </dd>
 <dt><a href="moriarty/simplegraph.html#get_subject_property_values()">get_subject_property_values()</a> - Method in class <a href="moriarty/simplegraph.html">Moriarty.SimpleGraph</a></dt>
 <dd>
 Fetch the values for a given subject and predicate. </dd>
@@ -312,8 +341,7 @@ Obtain the username </dd>
 Execute a graph type sparql query, i.e. </dd>
 <dt><a href="moriarty/graph.html">Graph()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-The base class for graphs in a store
-/</dd>
+The base class for graphs in a store.</dd>
 <dt><a href="moriarty/sparqlservicebase.html#graph_to_simple_graph()">graph_to_simple_graph()</a> - Method in class <a href="moriarty/sparqlservicebase.html">Moriarty.SparqlServiceBase</a></dt>
 <dd>
 Execute a graph type sparql query and obtain the result as a SimpleGraph. </dd>
@@ -337,15 +365,13 @@ Tests whether the graph contains the given triple</dd>
 <dt><a href="moriarty/httpcache.html">HttpCache()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dt><a href="moriarty/httprequest.html">HttpRequest()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-Represents an HTTP protocol request
-/</dd>
+Represents an HTTP protocol request.</dd>
 <dt><a href="moriarty/httprequestfactory.html">HttpRequestFactory()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
 A factory for creating instances of HttpRequests. </dd>
 <dt><a href="moriarty/httpresponse.html">HttpResponse()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-Represents an HTTP protocol response
-/</dd>
+Represents an HTTP protocol response.</dd>
 </dl>
 <h1 id="letterI">I</h1>
 <dl>
@@ -382,8 +408,7 @@ Represents a store's job queue</dd>
 <dt><a href="moriarty/contentbox.html#make_search_uri()">make_search_uri()</a> - Method in class <a href="moriarty/contentbox.html">Moriarty.Contentbox</a></dt>
 <dt><a href="moriarty/metabox.html">Metabox()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-Represents a store's metabox 
-/</dd>
+Represents a store's metabox.</dd>
 <dt><a href="moriarty/package-globals.html#MIME_FORMENCODED">MIME_FORMENCODED()</a> - Global in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dt><a href="moriarty/package-globals.html#MIME_RDFXML">MIME_RDFXML()</a> - Global in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dt><a href="moriarty/package-globals.html#MIME_RSS">MIME_RSS()</a> - Global in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
@@ -395,15 +420,14 @@ Represents a store's metabox
 <dt><a href="moriarty/package-globals.html#MORIARTY_TEST_DIR">MORIARTY_TEST_DIR()</a> - Global in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dt><a href="moriarty/multisparqlservice.html">MultiSparqlService()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-Represents the base class for various sparql services
-/</dd>
+Represents a store's multi sparql service</dd>
 </dl>
 <h1 id="letterN">N</h1>
 <dl>
 <dt><a href="moriarty/networkresource.html">NetworkResource()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-Represents an RDF graph and provides some simple functions for traversing and manipulating it
-/</dd>
+Represents a simple data resource that exists on the network.
+</dd>
 </dl>
 <h1 id="letterO">O</h1>
 <dl>
@@ -437,6 +461,8 @@ Represents an RDF graph and provides some simple functions for traversing and ma
 <dd>
 Parse the SPARQL XML results format from an ask query. </dd>
 <dt><a href="moriarty/facetservice.html#parse_facet_xml()">parse_facet_xml()</a> - Method in class <a href="moriarty/facetservice.html">Moriarty.FacetService</a></dt>
+<dd>
+Parse the response from a facet query into an array.</dd>
 <dt><a href="moriarty/httprequest.html#parse_response()">parse_response()</a> - Method in class <a href="moriarty/httprequest.html">Moriarty.HttpRequest</a></dt>
 <dd></dd>
 <dt><a href="moriarty/contentbox.html#parse_results_xml()">parse_results_xml()</a> - Method in class <a href="moriarty/contentbox.html">Moriarty.Contentbox</a></dt>
@@ -447,9 +473,10 @@ Parse the results of a search on the contentbox.</dd>
 Parse the SPARQL XML results format into an array. </dd>
 <dt><a href="moriarty/privategraph.html">PrivateGraph()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-The base class for graphs in a store
-/</dd>
+Represents a private graph in a store.</dd>
 <dt><a href="moriarty/networkresource.html#put_to_network()">put_to_network()</a> - Method in class <a href="moriarty/networkresource.html">Moriarty.NetworkResource</a></dt>
+<dd>
+Construct an RDF/XML document containing data associated with the resource and send it using HTTP PUT to the resource's URI</dd>
 </dl>
 <h1 id="letterQ">Q</h1>
 <dl>
@@ -458,8 +485,7 @@ The base class for graphs in a store
 Execute an arbitrary query on the sparql service</dd>
 <dt><a href="moriarty/queryprofile.html">QueryProfile()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-Represents an RDF graph and provides some simple functions for traversing and manipulating it
-/</dd>
+Represents a store's query profile.</dd>
 </dl>
 <h1 id="letterR">R</h1>
 <dl>
@@ -488,6 +514,8 @@ Represents an RDF graph and provides some simple functions for traversing and ma
 <dt><a href="moriarty/package-globals.html#RDFS_SUBCLASSOF">RDFS_SUBCLASSOF()</a> - Global in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dt><a href="moriarty/package-globals.html#RDFS_SUBPROPERTYOF">RDFS_SUBPROPERTYOF()</a> - Global in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dt><a href="moriarty/storegroup.html#remove_all_stores()">remove_all_stores()</a> - Method in class <a href="moriarty/storegroup.html">Moriarty.StoreGroup</a></dt>
+<dd>
+Remove all stores from this group. </dd>
 <dt><a href="moriarty/simplegraph.html#remove_all_triples()">remove_all_triples()</a> - Method in class <a href="moriarty/simplegraph.html">Moriarty.SimpleGraph</a></dt>
 <dd>
 Clears all triples out of the graph
@@ -515,9 +543,9 @@ resource_to_date
 </dd>
 <dt><a href="moriarty/resourcelist.html">ResourceList()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-Represents a list of resources returned from a contentbox search
-/</dd>
+Represents a list of resources returned from a contentbox search.</dd>
 <dt><a href="moriarty/storecollection.html#retrieve()">retrieve()</a> - Method in class <a href="moriarty/storecollection.html">Moriarty.StoreCollection</a></dt>
+<dd></dd>
 <dt><a href="moriarty/rollback.html#revert_changes()">revert_changes()</a> - Method in class <a href="moriarty/rollback.html">Moriarty.Rollback</a></dt>
 <dt><a href="moriarty/rollback.html">Rollback()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dt><a href="moriarty/package-globals.html#RSS_DESCRIPTION">RSS_DESCRIPTION()</a> - Global in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
@@ -565,6 +593,8 @@ Set the HTTP accept header for the request</dd>
 <dd>
 Set content to be sent with the request</dd>
 <dt><a href="moriarty/networkresource.html#set_comment()">set_comment()</a> - Method in class <a href="moriarty/networkresource.html">Moriarty.NetworkResource</a></dt>
+<dd>
+Set the value of the resource's comment property</dd>
 <dt><a href="moriarty/httprequest.html#set_content_type()">set_content_type()</a> - Method in class <a href="moriarty/httprequest.html">Moriarty.HttpRequest</a></dt>
 <dd>
 Set the HTTP content-type header for the request</dd>
@@ -575,35 +605,36 @@ Set the HTTP if-match header for the request</dd>
 <dd>
 Set the HTTP if-none-match header for the request</dd>
 <dt><a href="moriarty/networkresource.html#set_label()">set_label()</a> - Method in class <a href="moriarty/networkresource.html">Moriarty.NetworkResource</a></dt>
+<dd>
+Set the value of the resource's label property</dd>
 <dt><a href="moriarty/simplegraph.html#set_namespace_mapping()">set_namespace_mapping()</a> - Method in class <a href="moriarty/simplegraph.html">Moriarty.SimpleGraph</a></dt>
 <dd>
 Map a portion of a URI to a short prefix for use when serialising the graph</dd>
 <dt><a href="moriarty/simplegraph.html">SimpleGraph()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-Represents an RDF graph and provides some simple functions for traversing and manipulating it
-/</dd>
+Represents an RDF graph and provides some simple functions for traversing and manipulating it.
+</dd>
 <dt><a href="moriarty/snapshots.html">Snapshots()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dt><a href="moriarty/sparqlservice.html">SparqlService()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-Represents the base class for various sparql services
-/</dd>
+Represents a store's sparql service</dd>
 <dt><a href="moriarty/sparqlservicebase.html">SparqlServiceBase()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-Represents the base class for various sparql services
-/</dd>
+Represents the base class for various sparql services.</dd>
 <dt><a href="moriarty/store.html">Store()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-Represents a platform store
-/</dd>
+Represents a platform store.</dd>
 <dt><a href="moriarty/storecollection.html">StoreCollection()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-Represents an RDF graph and provides some simple functions for traversing and manipulating it
-/</dd>
+Represents the collection of all platform stores.
+</dd>
 <dt><a href="moriarty/storegroup.html">StoreGroup()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
 <dd>
-Represents an RDF graph and provides some simple functions for traversing and manipulating it
-/</dd>
+Represents a group of stores.</dd>
 <dt><a href="moriarty/storegroupconfig.html">StoreGroupConfig()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
+<dd>
+A helper class to assist with configuring store groups.
+</dd>
 <dt><a href="moriarty/simplegraph.html#subject_has_property()">subject_has_property()</a> - Method in class <a href="moriarty/simplegraph.html">Moriarty.SimpleGraph</a></dt>
 <dd>
 Tests whether the graph contains a triple with the given subject and predicate</dd>
@@ -637,6 +668,8 @@ Serialise the graph to Turtle</dd>
 <h1 id="letterV">V</h1>
 <dl>
 <dt><a href="moriarty/valuepool.html">ValuePool()</a> - Class in package <a href="moriarty/package-summary.html">Moriarty</a></dt>
+<dd>
+Deprecated</dd>
 </dl>
 <h1 id="letterW">W</h1>
 <dl>

@@ -12,7 +12,7 @@ require_once MORIARTY_DIR. 'snapshots.class.php';
 require_once MORIARTY_DIR. 'augmentservice.class.php';
 
 /**
-* Represents a platform store
+* Represents a platform store.
 */
 class Store {
   /** 
