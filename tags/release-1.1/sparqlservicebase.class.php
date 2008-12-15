@@ -1,0 +1,367 @@
+<?php
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
+require_once MORIARTY_ARC_DIR . DIRECTORY_SEPARATOR . "ARC2.php";
+
+/**
+ * Represents the base class for various sparql services.
+ */
+class SparqlServiceBase {
+  /**
+   * @access private
+   */
+  var $uri;
+  /**
+   * @access private
+   */
+  var $request_factory;
+  /**
+   * @access private
+   */
+  var $credentials;
+
+  /**
+   * Create a new instance of this class
+   * @param string uri URI of the sparql service
+   * @param Credentials credentials the credentials to use for authenticated requests (optional)
+   */ 
+  function __construct($uri, $credentials = null) {
+    $this->uri = $uri;
+    $this->credentials = $credentials;
+  }
+
+  /**
+   * Obtain a bounded description of a given resource
+   * @param mixed uri the URI of the resource to be described or an array of URIs
+   * @return HttpResponse
+   */
+  function describe( $uri ) {
+    if ( is_array( $uri ) ) {
+      $query="DESCRIBE <" . implode('> <' , $uri) . ">";
+    }
+    else {
+      $query="DESCRIBE <$uri>";
+    }
+    return $this->graph($query);
+  }
+
+  /**
+   * @deprecated triple lists are deprecated
+   */
+  function describe_to_triple_list( $uri ) {
+    $triples = array();
+
+    $response = $this->describe( $uri );
+    $parser_args=array(
+      "bnode_prefix"=>"genid",
+      "base"=> $this->uri
+    );
+    $parser = ARC2::getRDFXMLParser($parser_args);
+
+    if ( $response->body ) {
+      $parser->parse($this->uri, $response->body );
+      $triples = $parser->getTriples();
+    }
+
+    return $triples;
+  }
+
+  /**
+   * Obtain a bounded description of a given resource as a SimpleGraph. An empty SimpleGraph is returned if any HTTP errors occur.
+   * @param mixed uri the URI of the resource to be described or an array of URIs
+   * @return SimpleGraph
+   */
+  function describe_to_simple_graph( $uri ) {
+    $graph = new SimpleGraph();
+
+    $response = $this->describe( $uri );
+
+    if ( $response->is_success() ) {
+      $graph->from_rdfxml( $response->body );
+    }
+
+    return $graph;
+  }
+
+  /**
+   * Execute an arbitrary query on the sparql service
+   * @param string query the query to execute
+   * @param string mime the media type of the expected response (optional, defaults to RDF/XML and SPARQL results XML)
+   * @return HttpResponse
+   */
+  function query($query, $mime=''){
+  
+    if (! isset( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
+    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
+    if(empty($mime)) $mime = MIME_RDFXML.','.MIME_SPARQLRESULTS;
+    $request->set_accept($mime);
+    $request->set_content_type(MIME_FORMENCODED);
+    $request->set_body( "query=" . urlencode($query) );
+
+    return $request->execute();
+  
+  }
+
+  /**
+   * Execute a graph type sparql query, i.e. a describe or a construct
+   * @param string query the describe or construct query to execute
+   * @return HttpResponse
+   */
+  function graph( $query ) {
+    if (! isset( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
+    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
+    $request->set_accept(MIME_RDFXML);
+    $request->set_content_type(MIME_FORMENCODED);
+    $request->set_body( "query=" . urlencode($query) );
+
+    return $request->execute();
+  }
+
+  /**
+   * @deprecated triple lists are deprecated
+   */
+  function graph_to_triple_list($query ) {
+    $triples = array();
+    $response = $this->graph( $query );
+
+    $parser_args=array(
+      "bnode_prefix"=>"genid",
+      "base"=> $this->uri
+    );
+    $parser = ARC2::getRDFXMLParser($parser_args);
+
+    if ( $response->body ) {
+      $parser->parse($this->uri, $response->body );
+      $triples = $parser->getTriples();
+    }
+
+    return $triples;
+  }
+
+  /**
+   * @deprecated triple lists are deprecated
+   */
+  function construct_to_triple_list($query ) {
+    return $this->graph_to_triple_list($query );
+  }
+
+  /**
+   * Execute a graph type sparql query and obtain the result as a SimpleGraph. An empty SimpleGraph is returned if any HTTP errors occur.
+   * @param string query the describe or construct query to execute
+   * @return SimpleGraph
+   */
+  function graph_to_simple_graph( $query ) {
+    $graph = new SimpleGraph();
+
+    $response = $this->graph( $query );
+
+    if ( $response->is_success() ) {
+      $graph->from_rdfxml( $response->body );
+    }
+
+    return $graph;
+  }
+
+  /**
+   * @deprecated use graph_to_simple_graph
+   */
+  function construct_to_simple_graph( $query ) {
+    return $this->graph_to_simple_graph($query);
+  }
+
+
+  /**
+   * Execute a select sparql query
+   * @param string query the select query to execute
+   * @return HttpResponse
+   */
+  function select( $query ) {
+    if (! isset( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
+
+    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
+    $request->set_accept(MIME_SPARQLRESULTS);
+    $request->set_content_type(MIME_FORMENCODED);
+    $request->set_body( "query=" . urlencode($query) );
+
+    return $request->execute();
+  }
+
+  /**
+   * Execute a select sparql query and return the results as an array. An empty array is returned if any HTTP errors occur.
+   * @param string query the select query to execute
+   * @return array parsed results in format returned by parse_select_results method
+   */
+  function select_to_array( $query ) {
+    $results = array();
+    $response = $this->select( $query );
+    if ( $response->is_success() ) {
+      $results = $this->parse_select_results( $response->body );
+    }
+    return $results;
+  }
+
+  /**
+   * Parse the SPARQL XML results format into an array. The array consist of one element per result. 
+   * Each element is an associative array where the keys correspond to the variable name and the values are
+   * another associative array with the following keys:
+   * <ul>
+   * <li><em>type</em> => the type of the result binding, one of 'uri', 'literal' or 'bnode'</li>
+   * <li><em>value</em> => the value of the result binding</li>
+   * <li><em>lang</em> => the language code (if any) of the result binding</li>
+   * <li><em>datatype</em> => the datatype uri (if any) of the result binding</li>
+   * </ul>
+   * For example: $results[2]['foo']['value'] will obtain the value of the foo variable for the third result
+   * @param string xml the results XML to parse
+   * @return array
+   */
+  function parse_select_results( $xml ) {
+    $results = array();
+    $reader = new XMLReader();
+    $reader->XML($xml);
+
+    $result = array();
+    $bindingName = null;
+    $binding = array();
+    while ($reader->read()) {
+      if ( $reader->name == 'result') {
+
+        if ( $reader->nodeType == XMLReader::ELEMENT) {
+          $result = array();
+        }
+        elseif ( $reader->nodeType == XMLReader::END_ELEMENT) {
+          array_push( $results, $result);
+          $result = array();
+        }
+      }
+      elseif ( $reader->name == 'binding') {
+        if ( $reader->nodeType == XMLReader::ELEMENT) {
+          $bindingName = $reader->getAttribute("name");
+          $binding = array();
+        }
+        elseif ( $reader->nodeType == XMLReader::END_ELEMENT) {
+          $result[ $bindingName ] = $binding;
+          $bindingName = null;
+          $binding = array();
+        }
+      }
+      elseif ( $reader->name == 'uri' && $reader->nodeType == XMLReader::ELEMENT) {
+        $binding['type'] = 'uri';
+        $value = '';
+        while ($reader->read()) {
+          if ($reader->nodeType == XMLReader::TEXT
+            || $reader->nodeType == XMLReader::CDATA
+            || $reader->nodeType == XMLReader::WHITESPACE
+            || $reader->nodeType == XMLReader::SIGNIFICANT_WHITESPACE) {
+             $value .= $reader->value;
+          }
+          else if ($reader->nodeType == XMLReader::END_ELEMENT) {
+            break;
+          }
+        }
+        $binding['value'] = $value;
+      }
+      elseif ( $reader->name == 'literal' && $reader->nodeType == XMLReader::ELEMENT) {
+        $binding['type'] = 'literal';
+        $datatype = $reader->getAttribute("datatype");
+        if ( $datatype ) {
+          $binding['datatype'] = $datatype;
+        }
+        $lang = $reader->getAttribute("xml:lang");
+        if ( $lang ) {
+          $binding['lang'] = $lang;
+        }
+        $value = '';
+        while ($reader->read()) {
+          if ($reader->nodeType == XMLReader::TEXT
+            || $reader->nodeType == XMLReader::CDATA
+            || $reader->nodeType == XMLReader::WHITESPACE
+            || $reader->nodeType == XMLReader::SIGNIFICANT_WHITESPACE) {
+             $value .= $reader->value;
+          }
+          else if ($reader->nodeType == XMLReader::END_ELEMENT) {
+            break;
+          }
+        }
+        $binding['value'] = $value;
+      }
+      elseif ( $reader->name == 'bnode' && $reader->nodeType == XMLReader::ELEMENT) {
+        $binding['type'] = 'bnode';
+        $value = '';
+        while ($reader->read()) {
+          if ($reader->nodeType == XMLReader::TEXT
+            || $reader->nodeType == XMLReader::CDATA
+            || $reader->nodeType == XMLReader::WHITESPACE
+            || $reader->nodeType == XMLReader::SIGNIFICANT_WHITESPACE) {
+             $value .= $reader->value;
+          }
+          else if ($reader->nodeType == XMLReader::END_ELEMENT) {
+            break;
+          }
+        }
+        $binding['value'] = $value;
+      }
+    }
+    $reader->close();
+    return $results;
+  }
+
+  /**
+   * Execute an ask sparql query
+   * @param string query the ask query to execute
+   * @return HttpResponse
+   */
+  function ask( $query ) {
+    if (! isset( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
+
+    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
+    $request->set_accept(MIME_SPARQLRESULTS);
+    $request->set_content_type(MIME_FORMENCODED);
+    $request->set_body( "query=" . urlencode($query) );
+
+    return $request->execute();
+  }
+
+  /**
+   * Parse the SPARQL XML results format from an ask query. 
+   * @param string xml the results XML to parse
+   * @return array true if the query result was true, false otherwise
+   */
+  function parse_ask_results( $xml ) {
+    $reader = new XMLReader();
+    $reader->XML($xml);
+
+    $result = false;
+    $bindingName = null;
+    $binding = array();
+    while ($reader->read()) {
+      if ( $reader->name == 'boolean') {
+        $value = '';
+        while ($reader->read()) {
+          if ($reader->nodeType == XMLReader::TEXT
+            || $reader->nodeType == XMLReader::CDATA
+            || $reader->nodeType == XMLReader::WHITESPACE
+            || $reader->nodeType == XMLReader::SIGNIFICANT_WHITESPACE) {
+             $value .= $reader->value;
+          }
+          else if ($reader->nodeType == XMLReader::END_ELEMENT) {
+            break;
+          }
+        }
+        $reader->close();
+        return ( strtolower(trim($value)) == 'true' );
+      }
+    }
+
+    return false;
+  }
+
+
+}
+?>
