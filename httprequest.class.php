@@ -129,8 +129,10 @@ class HttpRequest {
           $response_body .= $body;
         }
 
-        if ( defined('MORIARTY_HTTP_CACHE_DIR') && $cached_response && ! $cache->is_fresh($this, $cached_response) ) {
-          $cache->remove_from_cache($this); 
+        if ( defined('MORIARTY_HTTP_CACHE_DIR') ) {
+          if ( $cached_response && ! $cache->is_fresh($this, $cached_response) ) {
+            $cache->remove_from_cache($this); 
+          }
         }
       }
       else {
