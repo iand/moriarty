@@ -41,6 +41,7 @@ class SimpleGraph {
                     'skos' => 'http://www.w3.org/2004/02/skos/core#',
                   );
                   
+                  
   function __destruct(){
     unset($this->_index);
     unset($this);
@@ -56,6 +57,45 @@ class SimpleGraph {
     $this->_ns[$prefix] = $uri;
   }
 
+  /**
+   * Convert a QName to a URI using registered namespace prefixes
+   * @param string qname the QName to convert
+   * @return string the URI corresponding to the QName if a suitable prefix exists, null otherwise
+   */                  
+  function qname_to_uri($qname) {
+    if (preg_match("~^(.+):(.+)$~", $qname, $m)) {
+      if ( isset($this->_ns[$m[1]])) {
+        return $this->_ns[$m[1]] . $m[2]; 
+      }
+    }  
+    
+    return null;
+  }
+
+  /**
+   * Convert a URI to a QName using registered namespace prefixes
+   * @param string uri the URI to convert
+   * @return string the QName corresponding to the URI if a suitable prefix exists, null otherwise
+   */                  
+  function uri_to_qname($uri) {
+    if (preg_match('~^(.*[\/\#])([a-z0-9\-\_]+)$~i', $uri, $m)) {
+      $prefix = array_search($m[1], $this->_ns);
+      if ( $prefix != null && $prefix !== FALSE) {
+        return $prefix . ':' . $m[2]; 
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Constructs an array containing the type of the resource and its value
+   * @param string resource a URI or blank node identifier (prefixed with _: e.g. _:name)
+   * @return array an associative array with two keys: 'type' and 'value'. Type is either bnode or uri
+   */
+  function make_resource_array($resource) {
+    $resource_type = strpos($resource, '_:' ) === 0 ? 'bnode' : 'uri';
+    return array('type' => $resource_type, 'value' => $resource);
+  }
 
   /**
    * Adds a triple with a resource object to the graph
@@ -65,9 +105,7 @@ class SimpleGraph {
    * @return boolean true if the triple was new, false if it already existed in the graph
    */
   function add_resource_triple($s, $p, $o) {
-    $o_type = strpos($o, '_:' ) === 0 ? 'bnode' : 'uri';
-    $o_info = array('type' => $o_type, 'value' => $o);
-    return $this->_add_triple($s, $p, $o_info);
+    return $this->_add_triple($s, $p, $this->make_resource_array($o));
   }
 
   /**
@@ -528,7 +566,25 @@ class SimpleGraph {
       }
     }
     return $values;
+  }    
+  
+  
+  
+  /**
+   * Fetch the properties of a given subject and predicate. 
+   * @param string s the subject to search for
+   * @return array list of property URIs
+   */
+  function get_subject_properties($s) {
+    $values = array();
+    if (array_key_exists($s, $this->_index) ) {
+      foreach ($this->_index[$s] as $prop => $prop_values ) {
+        $values[] = $prop;
+      }
+    }
+    return $values;
   }      
+      
   
   /**
    * Tests whether the graph contains a triple with the given subject and predicate
@@ -542,6 +598,16 @@ class SimpleGraph {
     }
     return false;
   }  
+  
+  /**
+   * Tests whether the graph contains a triple with the given subject
+   * @param string s the subject of the triple, either a URI or a blank node in the format _:name
+   * @return boolean true if the graph contains any triples with the specified subject, false otherwise
+   */
+  function has_triples_about($s) {
+    return array_key_exists($s, $this->_index);
+  }  
+    
   
   /**
    * Removes all triples with the given subject and predicate
