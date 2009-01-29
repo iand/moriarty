@@ -303,9 +303,36 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $index = $g->get_index();
     $this->assertEquals("1390", $index['http://example.org/subj']['http://example.org/pred'][0]['value']);
     $this->assertEquals("http://www.w3.org/2001/XMLSchema#gYear", $index['http://example.org/subj']['http://example.org/pred'][0]['datatype']);
+  }
+  
+  function test_qname_to_uri() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $this->assertEquals("http://example.org/foo", $g->qname_to_uri('ex:foo'));
+  }
 
+  function test_qname_to_uri_returns_null_if_no_match() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $this->assertEquals(null, $g->qname_to_uri('bar:foo'));
+  }
 
-    
+  function test_uri_to_qname() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $this->assertEquals("ex:foo", $g->uri_to_qname('http://example.org/foo'));
+  }
+
+  function test_uri_to_qname_returns_null_if_no_match() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $this->assertEquals(null, $g->uri_to_qname('http://example.blah/'));
+  }
+
+  function test_uri_to_qname_returns_null_if_uri_not_representable_as_qname() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $this->assertEquals(null, $g->uri_to_qname('http://example.org/foo/'));
   }
 
 }
