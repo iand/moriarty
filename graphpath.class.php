@@ -19,20 +19,13 @@ class GraphPath {
    * @return array nodes that match the path
    */
   function match(&$g, $trace = FALSE) {
-    if ($trace) print "\nPath is " . $this->to_string() . "\n";
-    $selected = array();
+    if ($trace) print "ResourceSelector: Selecting all subjects in graph\n";
+    $candidates = array();
     $index = $g->get_index();
-    
-    $subjects = array_keys($index);
-    if ($trace) print "GraphPath: Iterating through all subjects\n";
-    foreach ($subjects as $subject) {
-      if ($trace) print "GraphPath: Testing " . $subject . "\n";
-      $candidate = $g->make_resource_array($subject);
-      $selected  = array_merge($selected, $this->_path->select($candidate, $g, $trace));
-      if ($trace) print "GraphPath: Number selected so far is " . count($selected) . "\n";
+    foreach (array_keys($index) as $subject) {
+      $candidates[] = $g->make_resource_array($subject);
     }
-
-    return $selected;
+    return $this->_path->select($candidates, $g, $trace);
   }
 
 
@@ -67,6 +60,7 @@ class GraphPath {
         }
       }
     }
+
     return array(new Path($steps), $v);
   } 
 
@@ -74,19 +68,25 @@ class GraphPath {
     if ((list($r, $v) = $this->m_test($v)) && $r) {
       return array($r, $v);
     }
+    if ((list($r, $v) = $this->m_literal($v)) && $r) {
+      return array($r, $v);
+    }
+    if ((list($r, $v) = $this->m_textfunction($v)) && $r) {
+      return array($r, $v);
+    }   
     return array(false, $v);
   }
 
   function m_test($v) {
     list($axis, $v) = $this->m_axis($v);
     
-    $test = '';
+    $selector= '';
     if ($r = $this->m('(\*)', $v)) {
-      $test = '*';
+      $selector = new WildCardMatcher();
       $v = $r[2];
     }
     else if ($r = $this->m('([a-z0-9_]+:[a-z0-9_]+)', $v)) {
-      $test = $r[1];
+      $selector = new TypeMatcher($r[1]);
       $v = $r[2];
     }
     else {
@@ -101,7 +101,7 @@ class GraphPath {
       list($r_br, $v) = $this->m_closebracket($v);
     }
     
-    return array(new TestExpr($test, $axis, $filters), $v);    
+    return array(new StepMatcher($selector, $axis, $filters), $v);    
   }
 
   function m_orexpr($v) {
@@ -137,7 +137,16 @@ class GraphPath {
 
   function m_compexpr($v) {
     if ((list($r, $v) = $this->m_unaryexpr($v)) && $r) {
-      return array(new CompExpr($r), $v);
+      $left = $r;
+      if ((list($r, $v) = $this->m_operator($v)) && $r) {
+        $op = $r;
+        if ((list($r, $v) = $this->m_unaryexpr($v)) && $r) {
+          return array(new CompExpr($left, $op, $r), $v);
+        }
+      }
+      else {
+        return array(new CompExpr($left), $v);
+      }
     }
     return array(false, $v);
   }
@@ -149,11 +158,48 @@ class GraphPath {
     if ((list($r, $v) = $this->m_number($v)) && $r) {
       return array($r, $v);
     }
+    if ((list($r, $v) = $this->m_LiteralGenerator($v)) && $r) {
+      return array($r, $v);
+    }
     if ((list($r, $v) = $this->m_locationpath($v)) && $r) {
       return array($r, $v);
     }
     return array(false, $v);
   }
+
+
+  function m_LiteralGenerator($v) {
+    if ((list($r, $v) = $this->m_split('"(.*)"', $v)) && $r) {
+      return array(new LiteralGenerator($r), $v);
+    }
+    if ((list($r, $v) = $this->m_split('\\\'(.*)\\\'', $v)) && $r) {
+      return array(new LiteralGenerator($r), $v);
+    }
+    return array(false, $v);
+   }
+
+
+  function m_literal($v) {
+    if ((list($r, $v) = $this->m_split('"(.*)"', $v)) && $r) {
+      return array(new LiteralMatcher($r), $v);
+    }
+    if ((list($r, $v) = $this->m_split('\\\'(.*)\\\'', $v)) && $r) {
+      return array(new LiteralMatcher($r), $v);
+    }
+    return array(false, $v);
+   }
+
+  function m_textfunction($v) {
+    if ((list($r, $v) = $this->m_split('(text\(\))', $v)) && $r) {
+      return array(new AnyLiteralMatcher($r), $v);
+    }
+    return array(false, $v);
+   }
+
+  function m_operator($v) {
+    return $this->m_split('(=)', $v);
+  }
+
 
   function m_functioncall($v) {
     return array(false, $v);
@@ -189,6 +235,133 @@ class GraphPath {
 }
 
 
+
+
+class TypeMatcher {
+  var $_type = null;
+  function __construct($type) {
+    $this->_type = $type; 
+  }
+  
+  function matches($candidate, &$g, $trace = FALSE) {
+    if ($trace) print "TypeMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
+
+    $matches = FALSE;
+
+    $test_uri = $g->qname_to_uri($this->_type);
+    if ( $test_uri != null) {
+
+      if (isset($candidate['node'])) {
+        // We are testing an arc  
+        if ($trace) print "TypeMatcher: Testing to see if " . $candidate['value'] . " is same as " . $test_uri . "\n";
+        if ($candidate['value'] == $test_uri) {
+          $matches = TRUE;
+        }
+      }
+      else {
+        // We are testing a node
+        if ($trace) print "TypeMatcher: Testing to see if " . $candidate['value'] . " has type of " . $test_uri . "\n";
+        if ($g->has_resource_triple($candidate['value'], RDF_TYPE, $test_uri) ) {
+          $matches = TRUE;
+        }
+      }
+    }
+    if ($trace) print "TypeMatcher: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
+
+    return $matches;
+
+  }
+  
+
+  function to_string() {
+    return $this->_type; 
+  } 
+  
+}
+
+class WildCardMatcher {
+
+  function matches($candidate, &$g, $trace = FALSE) {
+    if ($trace) print "WildCardMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
+    return TRUE;
+  }
+  
+  function to_string() {
+    return '*'; 
+  } 
+}
+
+class LiteralMatcher {
+  var $_text = '';
+  var $_dt = '';
+  function __construct($text,$dt = null) {
+    $this->_text = $text;
+    $this->_dt = $dt;
+  } 
+  
+  function matches($candidate, &$g, $trace = FALSE) {
+    if ($trace) print "LiteralMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
+    $matches = FALSE;
+
+    if ($trace) print "LiteralMatcher: Testing to see if " . $candidate['value'] . " is same as " . $this->_text . "\n";
+    if ($candidate['type'] == 'literal' && $candidate['value'] == $this->_text) {
+      if ($trace) print "LiteralMatcher: It is, adding " . $candidate['value'] . " to selected queue\n";
+      $matches = TRUE; 
+    }
+
+    if ($trace) print "LiteralMatcher: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
+    return $matches;
+  }
+
+  function to_string() {
+    $ret = "'" . $this->_text. "'"; 
+    return $ret;
+  }
+}
+
+class AnyLiteralMatcher {
+  function __construct() {
+
+  } 
+  
+  function matches($candidate, &$g, $trace = FALSE) {
+    if ($trace) print "AnyLiteralMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
+    $matches = FALSE;
+
+    if ($candidate['type'] == 'literal') {
+      $matches = TRUE; 
+    }
+
+    if ($trace) print "AnyLiteralMatcher: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
+    return $matches;
+  }
+
+  function to_string() {
+    $ret = "text()"; 
+    return $ret;
+  }
+}
+
+
+class LiteralGenerator {
+  var $_text = '';
+  var $_dt = '';
+  function __construct($text,$dt = null) {
+    $this->_text = $text;
+    $this->_dt = $dt;
+  } 
+  
+  function select($candidates, &$g, $trace = FALSE) {
+    return array( array('type'=>'literal', 'value'=>$this->_text));
+  }
+
+  function to_string() {
+    $ret = "'" . $this->_text. "'"; 
+    return $ret;
+  }
+}
+
+
 class Path {
   var $_steps = array();
 
@@ -196,45 +369,46 @@ class Path {
     $this->_steps = $steps;  
   }
     
-  function select(&$resource, &$g, $trace = FALSE) {
-    if ($trace) print "Does " . $resource['value'] . " match " . $this->_steps[0]->to_string() . "\n";
-  
-    if (! $this->_steps[0]->matches($resource, $g, $trace)) {
-      if ($trace) print "NO MATCH of " . $resource['value'] . " against " . $this->_steps[0]->to_string() . "\n";
-      return array();
-    }
-    else {
-      if ($trace) print "MATCH of " . $resource['value'] . " against " . $this->_steps[0]->to_string() . "\n";
-    }
-    
-    $selected = array();
-    $candidates = array($resource);
-    for ($i = 1; $i < count($this->_steps); $i++) {
+  function select($candidates, &$g, $trace = FALSE) {
+    if ($trace) print "Path: " . $this->to_string() ."\n";
+   
+    for ($i = 0; $i < count($this->_steps); $i++) {
+      $selected = array();
       $step = $this->_steps[$i];
+      if ($trace) print "Path: Filtering " . count($candidates) . " candidates using " . $step->to_string() . "\n";
       foreach ($candidates as $candidate) {
-        if (isset($candidate['node'])) {
-          if ($trace) print "Selecting nodes that are values of " . $candidate['value'] . "\n";
-          $cand_resources = $this->get_nodes($candidate, $g);  
-        }
-        else {
-          if ($trace) print "Selecting arcs that are properties of " . $candidate['value'] . "\n";
-          $cand_resources = $this->get_arcs($candidate, $g); 
-        }
-        foreach ($cand_resources as $cand_resource) {
-          if ($trace) print "Path: Testing " . $cand_resource['value'] . " against " . $step->to_string() . " so adding to selected list\n"; 
-          if ($step->matches($cand_resource, $g, $trace)) {
-            if ($trace) print "Path: " . $cand_resource['value'] . " matched " . $step->to_string() . " so adding to selected list\n"; 
-            $selected[] = $cand_resource;  
-          }
+        if ( $step->matches($candidate, $g, $trace) ) {
+          $selected[] = $candidate; 
         }
       }
-      $candidates = $selected;
-      $selected = array();
+      if ($trace) print "Path: " . count($selected) . " resources passed the filter\n";
+      $candidates = $this->get_candidates($selected, $g, $trace);
     }    
     
-    return $candidates;
+    return $selected;
   }
   
+  function get_candidates($resources, &$g, $trace = FALSE) {
+    $candidates = array();
+    foreach ($resources as $resource) {
+      if ($resource['type'] != 'literal') {
+        if (isset($resource['node'])) {
+          if ($trace) print "Path: Selecting nodes that are values of " . $resource['value'] . "\n";
+          $candidates = array_merge($candidates, $this->get_nodes($resource, $g));  
+        }
+        else {
+          if ($trace) print "Path: Selecting arcs that are properties of " . $resource['value'] . "\n";
+          $candidates = array_merge($candidates, $this->get_arcs($resource, $g)); 
+        }
+      }
+    }
+
+    if ($trace) print "Path: Selected " . count($candidates) . " candidates\n";
+    return $candidates;
+  }
+
+
+
   function get_arcs(&$node, &$g) {
     $arcs = array();
     $properties = $g->get_subject_properties($node['value']);
@@ -261,71 +435,89 @@ class Path {
 
 
 
-class TestExpr {
-  var $_test = '';
+
+class StepMatcher {
+  var $_selector = '';
   var $_axis = '';
   var $_filters = array();
-  function __construct($test, $axis, $filters) {
-    $this->_test = $test;
+  function __construct($selector, $axis, $filters) {
+    $this->_selector = $selector;
     $this->_axis = $axis;
     $this->_filters = $filters;
   } 
   
-  function matches(&$resource, &$g, $trace = FALSE) {
-    if ($trace) print "TestExpr: testing " . $resource['value'] . " against " . $this->to_string() . "\n";
-    $match = FALSE;
-    
-    if ($this->_test != '*') {
-      if ($resource['type'] == 'literal') return FALSE;
-      
-      $test_uri = $g->qname_to_uri($this->_test);
-
-      if ( $test_uri == null) return FALSE;
-
-      if (isset($resource['node'])) {
-        // We are testing an arc  
-        if ($resource['value'] != $test_uri) return FALSE;
+  function matches($candidate, &$g, $trace = FALSE) {
+    if ($trace) print "StepMatcher: Matching " . ( $candidate ? $candidate['value'] : 'null') . " using " . $this->to_string() . "\n";
+    $matches = FALSE;
+    if ( $this->_selector->matches($candidate, $g, $trace) ) {
+      if (count($this->_filters) == 0) {
+        $matches = TRUE;  
       }
       else {
-        // We are testing a node
-        if (! $g->has_resource_triple($resource['value'], RDF_TYPE, $test_uri) ) return FALSE;
+        if ($trace) print "StepMatcher: Iterating through all filters\n";
+        $filter_passes = 0;
+        
+        $filter_resources = $this->get_candidates(array($candidate), $g, $trace);
+        foreach ( $this->_filters as $filter) {
+          if ($trace) print "StepMatcher: Trying " . $filter->to_string() . "\n";
+          if ($filter->matches($filter_resources, $g, $trace)) {
+            $filter_passes++;
+          }
+        }   
+        if ( $filter_passes == count($this->_filters)) {
+          $matches = TRUE;  
+        }
       }
     }
 
-    if (count($this->_filters) == 0) return TRUE;
-    
-    $properties = $g->get_subject_properties($resource['value']);
-    $property_infos = array();
-    foreach ($properties as $property_uri) {
-      $property_info = $g->make_resource_array($property_uri);
-      $property_info['node'] = $resource['value'];
-      $property_infos[] = $property_info;
-    }
-    
-    $filter_passes = 0;
-    if ($trace) print "TestExpr: Iterating through all filters\n";
-    foreach ( $this->_filters as $filter) {
-      if ($trace) print "TestExpr: Trying " . $filter->to_string() . "\n";
-      if ($filter->matches_one_of($property_infos, $g, $trace)) {
-        $filter_passes++;
-        if ($trace) print "passing [" . $filter->to_string() . "], total number passed is " . $filter_passes . "\n";
-      }
-    }   
-    if ( $filter_passes == count($this->_filters)) {
-      if ($trace) print "TestExpr: All filters matched, return true\n";
-      return TRUE;
-    }
-
-    if ($trace) print "TestExpr: " . ( $match ? 'MATCHED' : 'NO MATCH') . "\n";
-    return $match;        
+    if ($trace) print "StepMatcher: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
+    return $matches;        
   }
+
+  function get_candidates($resources, &$g, $trace = FALSE) {
+    $candidates = array();
+    foreach ($resources as $resource) {
+      if ($resource['type'] != 'literal') {
+        if (isset($resource['node'])) {
+          if ($trace) print "Path: Selecting nodes that are values of " . $resource['value'] . "\n";
+          $candidates = array_merge($candidates, $this->get_nodes($resource, $g));  
+        }
+        else {
+          if ($trace) print "Path: Selecting arcs that are properties of " . $resource['value'] . "\n";
+          $candidates = array_merge($candidates, $this->get_arcs($resource, $g)); 
+        }
+      }
+    }
+
+    if ($trace) print "Path: Selected " . count($candidates) . " candidates\n";
+    return $candidates;
+  }
+
+
+
+  function get_arcs(&$node, &$g) {
+    $arcs = array();
+    $properties = $g->get_subject_properties($node['value']);
+    foreach ($properties as $property_uri) {
+      $info = $g->make_resource_array($property_uri);
+      $info['node'] = $node['value'];
+      $arcs[] = $info;
+    }
+    return $arcs;
+  }
+  
+  function get_nodes(&$arc, &$g) {
+    return $g->get_subject_property_values($arc['node'], $arc['value'], $g);
+  }
+
+
   
   function to_string() {
     $ret = '';
     if ($this->_axis && $this->_axis != 'out') {
       $ret .= $this->_axis . '::';
     } 
-    $ret .= $this->_test;
+    $ret .= $this->_selector->to_string();
     foreach ( $this->_filters as $filter) {
       $ret .= "[" . $filter->to_string() . "]";
     }
@@ -333,7 +525,6 @@ class TestExpr {
   }
   
 }
-    
 
 
 class OrExpr {
@@ -344,14 +535,14 @@ class OrExpr {
     $this->_right = $right;
   } 
   
-  function matches_one_of(&$resource_list, &$g, $trace = FALSE) {
+  function matches($candidates, &$g, $trace = FALSE) {
     $match = FALSE;
     
     
-    if ($this->_left->matches_one_of($resource_list, $g, $trace)) {
+    if ($this->_left->matches($candidates, $g, $trace)) {
       $match = TRUE;  
     }
-    else if ($this->_right && $this->_right->matches_one_of($resource_list, $g, $trace)) {
+    else if ($this->_right && $this->_right->matches($candidates, $g, $trace)) {
       $match = TRUE;  
     }
     if ($trace && $this->_right) print "OrExpr: " . ( $match ? 'MATCHED' : 'NO MATCH') . "\n";
@@ -375,13 +566,13 @@ class AndExpr {
     $this->_right = $right;
   } 
   
-  function matches_one_of(&$resource_list, &$g, $trace = FALSE) {
+  function matches($candidates, &$g, $trace = FALSE) {
     $match = FALSE;
 
-    if ($this->_left->matches_one_of($resource_list, $g, $trace)) {
+    if ($this->_left->matches($candidates, $g, $trace)) {
       $match = FALSE;
       if ($this->_right) {
-        if ($this->_right->matches_one_of($resource_list, $g, $trace)) {
+        if ($this->_right->matches($candidates, $g, $trace)) {
           $match = TRUE;  
         }
       }
@@ -413,17 +604,47 @@ class CompExpr {
     $this->_right = $right;
   } 
   
-  function matches_one_of(&$resource_list, &$g, $trace = FALSE) {
-    foreach ($resource_list as $resource) {
-      $selected = $this->_left->select($resource, $g, $trace);
-      if ($trace) print "CompExpr: selected " . count($selected) . " resources\n";
-      if (count($selected) > 0 ) return TRUE;
+  function matches($candidates, &$g, $trace = FALSE) {
+    $matches = FALSE;
+    
+    if ($trace) print "CompExpr: Testing using left of " . $this->_left->to_string() . "\n";
+    $selected = $this->_left->select($candidates, $g, $trace);
+    if ($trace) print "CompExpr: Selected " . count($selected) . " resources\n";
+    
+    if ( $this->_operator && $this->_right) {
+      if ($trace) print "CompExpr: Testing using left of " . $this->_right->to_string() . "\n";
+      $selected_right = $this->_right->select($candidates, $g, $trace);
+      if ($trace) print "CompExpr: Selected " . count($selected_right) . " resources\n";
+      if (count($selected_right) > 0 ) {
+      
+        if ($this->_operator == '=') {
+          // Naieve for now
+          foreach ($selected as $selected_resource) {
+            if (in_array($selected_resource, $selected_right)) {
+              $matches = TRUE;
+              break;
+            }
+          }
+        }       
+      }
+    }
+    else {
+      if (count($selected) > 0 ) {
+        $matches = TRUE;
+      }
+      
     }
     
-    return FALSE;
+    if ($trace) print "CompExpr: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
+    return $matches;
   }
+
   function to_string() {
-    return $this->_left->to_string();  
+    $ret = $this->_left->to_string();  
+    if ( $this->_operator && $this->_right) {
+      $ret .= ' ' . $this->_operator . ' ' . $this->_right->to_string();  
+    } 
+    return $ret;
   }
   
 }

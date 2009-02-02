@@ -20,7 +20,6 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
 
     $gp = new GraphPath('ex:Type');
     $matches = $gp->match($g);
-    
     $this->assertEquals( 1, count($matches));
     $this->assertTrue( is_array($matches[0]));
     $this->assertEquals('uri', $matches[0]['type']);
@@ -95,7 +94,6 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
 
     $gp = new GraphPath('ex:Type/*');
     $matches = $gp->match($g);
-   
     $this->assertEquals( 2, count($matches));
     $this->assertTrue( is_array($matches[0]));
     $this->assertEquals('uri', $matches[0]['type']);
@@ -216,7 +214,6 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
 
     $gp = new GraphPath('ex:Type[ex:pred]');
     $matches = $gp->match($g);
-    
     $this->assertEquals( 1, count($matches));
     $this->assertTrue( is_array($matches[0]));
     $this->assertEquals('uri', $matches[0]['type']);
@@ -304,4 +301,69 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('http://example.org/subj', $matches[0]['value']);
   }
 
+  function test_match_single_subject_with_comparison() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred2', 'foo');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', 'bar');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred2', 'foo');
+    
+    $gp = new GraphPath('*[ex:pred/* = ex:pred2/*]');
+    $matches = $gp->match($g);
+    
+    $this->assertEquals( 1, count($matches));
+    $this->assertTrue( is_array($matches[0]));
+    $this->assertEquals('uri', $matches[0]['type']);
+    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+  }
+
+
+  function test_match_single_subject_with_literal_last_step() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred2', 'foo');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', 'bar');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred2', 'foo');
+    
+    $gp = new GraphPath('*[ex:pred/"foo"]');
+    $matches = $gp->match($g);
+    $this->assertEquals( 1, count($matches));
+    $this->assertTrue( is_array($matches[0]));
+    $this->assertEquals('uri', $matches[0]['type']);
+    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+  }
+
+
+  function test_match_single_subject_with_comparison_to_string() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred2', 'foo');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', 'bar');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred2', 'foo');
+    
+    $gp = new GraphPath('*[ex:pred/* = "foo"]');
+    $matches = $gp->match($g);
+    $this->assertEquals( 1, count($matches));
+    $this->assertTrue( is_array($matches[0]));
+    $this->assertEquals('uri', $matches[0]['type']);
+    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+  }
+  
+  function test_match_single_subject_with_text_function() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo');
+    $g->add_resource_triple('http://example.org/subj2', 'http://example.org/pred', 'http://example.org/obj');
+    
+    $gp = new GraphPath('*[ex:pred/text()]');
+    $matches = $gp->match($g);
+    $this->assertEquals( 1, count($matches));
+    $this->assertTrue( is_array($matches[0]));
+    $this->assertEquals('uri', $matches[0]['type']);
+    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+  } 
 }
+
