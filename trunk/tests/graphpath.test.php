@@ -365,5 +365,70 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('uri', $matches[0]['type']);
     $this->assertEquals('http://example.org/subj', $matches[0]['value']);
   } 
+  
+  function test_match_single_subject_with_comparison_to_string_reverse_order() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred2', 'foo');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', 'bar');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred2', 'foo');
+    
+    $gp = new GraphPath('*["foo" = ex:pred/*]');
+    $matches = $gp->match($g);
+    $this->assertEquals( 1, count($matches));
+    $this->assertTrue( is_array($matches[0]));
+    $this->assertEquals('uri', $matches[0]['type']);
+    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+  } 
+  
+  
+  function test_match_single_subject_with_number_comparison() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', '2');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', '1');
+    
+    $gp = new GraphPath('*[ex:pred/* = 2]');
+    $matches = $gp->match($g);
+    $this->assertEquals( 1, count($matches));
+    $this->assertTrue( is_array($matches[0]));
+    $this->assertEquals('uri', $matches[0]['type']);
+    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+  }   
+  
+  function test_match_single_subject_with_count() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'bar');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', 'bar');
+    
+    $gp = new GraphPath('*[count(ex:pred) = 2]');
+    $matches = $gp->match($g);
+    $this->assertEquals( 1, count($matches));
+    $this->assertTrue( is_array($matches[0]));
+    $this->assertEquals('uri', $matches[0]['type']);
+    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+  } 
+  
+  function test_match_single_subject_with_count_on_right() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'bar');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred2', 'foo');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred2', 'bar');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', 'bar');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred2', 'foo');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred2', 'bar');
+    
+    $gp = new GraphPath('*[count(ex:pred) = count(ex:pred2)]');
+    $matches = $gp->match($g);
+    $this->assertEquals( 1, count($matches));
+    $this->assertTrue( is_array($matches[0]));
+    $this->assertEquals('uri', $matches[0]['type']);
+    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+  }   
 }
 

@@ -573,13 +573,21 @@ class SimpleGraph {
   /**
    * Fetch the properties of a given subject and predicate. 
    * @param string s the subject to search for
+   * @param boolean distinct if true then duplicate properties are included only once (optional, default is true)
    * @return array list of property URIs
    */
-  function get_subject_properties($s) {
+  function get_subject_properties($s, $distinct = TRUE) {
     $values = array();
     if (array_key_exists($s, $this->_index) ) {
       foreach ($this->_index[$s] as $prop => $prop_values ) {
-        $values[] = $prop;
+        if ($distinct) {
+          $values[] = $prop;
+        }
+        else {
+          for ($i = 0; $i < count($prop_values); $i++) {
+            $values[] = $prop;
+          } 
+        }
       }
     }
     return $values;

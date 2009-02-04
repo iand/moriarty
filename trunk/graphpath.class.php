@@ -25,7 +25,7 @@ class GraphPath {
     foreach (array_keys($index) as $subject) {
       $candidates[] = $g->make_resource_array($subject);
     }
-    return $this->_path->select($candidates, $g, $trace);
+    return  $this->_path->select($candidates, $g, TRUE, $trace);
   }
 
 
@@ -155,12 +155,13 @@ class GraphPath {
     if ((list($r, $v) = $this->m_functioncall($v)) && $r) {
       return array($r, $v);
     }
-    if ((list($r, $v) = $this->m_number($v)) && $r) {
+    if ((list($r, $v) = $this->m_literalgenerator($v)) && $r) {
       return array($r, $v);
     }
-    if ((list($r, $v) = $this->m_LiteralGenerator($v)) && $r) {
+    if ((list($r, $v) = $this->m_numbergenerator($v)) && $r) {
       return array($r, $v);
-    }
+    }   
+  
     if ((list($r, $v) = $this->m_locationpath($v)) && $r) {
       return array($r, $v);
     }
@@ -168,7 +169,7 @@ class GraphPath {
   }
 
 
-  function m_LiteralGenerator($v) {
+  function m_literalgenerator($v) {
     if ((list($r, $v) = $this->m_split('"(.*)"', $v)) && $r) {
       return array(new LiteralGenerator($r), $v);
     }
@@ -176,7 +177,14 @@ class GraphPath {
       return array(new LiteralGenerator($r), $v);
     }
     return array(false, $v);
-   }
+  }
+  
+  function m_numbergenerator($v) {
+    if ((list($r, $v) = $this->m_split('([0-9]+)', $v)) && $r) {
+      return array(new NumberGenerator($r), $v);
+    }
+    return array(false, $v);    
+  }
 
 
   function m_literal($v) {
@@ -189,12 +197,21 @@ class GraphPath {
     return array(false, $v);
    }
 
+
+  function m_number($v) {
+    if ((list($r, $v) = $this->m_split('([0-9]+)', $v)) && $r) {
+      return array(new NumberMatcher($r), $v);
+    }
+    return array(false, $v);
+  }
+
+
   function m_textfunction($v) {
     if ((list($r, $v) = $this->m_split('(text\(\))', $v)) && $r) {
       return array(new AnyLiteralMatcher($r), $v);
     }
     return array(false, $v);
-   }
+  }
 
   function m_operator($v) {
     return $this->m_split('(=)', $v);
@@ -202,10 +219,24 @@ class GraphPath {
 
 
   function m_functioncall($v) {
+    if ((list($r, $v) = $this->m_split('(count)\(', $v)) && $r) {
+      $function = $r;
+      if ((list($r, $v) = $this->m_oneargument($v)) && $r) {
+        $arg = $r;
+        if ((list($r, $v) = $this->m_split('(\))', $v)) && $r) {
+          if ($function == 'count') {
+            return array(new CountFunction($arg), $v); 
+          }
+        }
+      }
+    }
     return array(false, $v);
   }
 
-  function m_number($v) {
+  function m_oneargument($v) {
+    if ((list($r, $v) = $this->m_unaryexpr($v)) && $r) {
+      return array($r, $v); 
+    }
     return array(false, $v);
   }
 
@@ -319,6 +350,31 @@ class LiteralMatcher {
   }
 }
 
+class NumberMatcher {
+  var $_number = '';
+  function __construct($number_text) {
+    $this->_number = $number_text;
+  } 
+  
+  function matches($candidate, &$g, $trace = FALSE) {
+    if ($trace) print "NumberMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
+    $matches = FALSE;
+
+    if ($trace) print "NumberMatcher: Testing to see if " . $candidate['value'] . " equals " . $this->_text . "\n";
+    if ($candidate['type'] == 'literal' && is_numeric($candidate['value']) && $candidate['value'] == $this->_number) {
+      $matches = TRUE; 
+    }
+
+    if ($trace) print "NumberMatcher: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
+    return $matches;
+  }
+
+  function to_string() {
+    $ret = "'" . $this->_text. "'"; 
+    return $ret;
+  }
+}
+
 class AnyLiteralMatcher {
   function __construct() {
 
@@ -362,6 +418,22 @@ class LiteralGenerator {
 }
 
 
+class NumberGenerator {
+  var $_number = '';
+  function __construct($number_text) {
+    $this->_number = $number_text;
+  } 
+  
+  function select($candidates, &$g, $trace = FALSE) {
+    return array( array('type'=>'literal', 'value'=>$this->_number));
+  }
+
+  function to_string() {
+    $ret = "'" . $this->_number. "'"; 
+    return $ret;
+  }
+}
+
 class Path {
   var $_steps = array();
 
@@ -369,9 +441,10 @@ class Path {
     $this->_steps = $steps;  
   }
     
-  function select($candidates, &$g, $trace = FALSE) {
+  function select($candidates, &$g, $distinct = FALSE, $trace = FALSE) {
     if ($trace) print "Path: " . $this->to_string() ."\n";
    
+    $selected = array();
     for ($i = 0; $i < count($this->_steps); $i++) {
       $selected = array();
       $step = $this->_steps[$i];
@@ -382,13 +455,20 @@ class Path {
         }
       }
       if ($trace) print "Path: " . count($selected) . " resources passed the filter\n";
-      $candidates = $this->get_candidates($selected, $g, $trace);
+      if ( $i < count($this->_steps) - 2) {
+        // get a distinct list of candidates (an optimisation)
+        $candidates = $this->get_candidates($selected, $g, TRUE, $trace);
+      }
+      else if ( $i == count($this->_steps) - 2) {
+        // next step is last so get candidates including duplicates       
+        $candidates = $this->get_candidates($selected, $g, $distinct, $trace);
+      }
     }    
     
     return $selected;
   }
   
-  function get_candidates($resources, &$g, $trace = FALSE) {
+  function get_candidates($resources, &$g, $distinct = TRUE, $trace = FALSE) {
     $candidates = array();
     foreach ($resources as $resource) {
       if ($resource['type'] != 'literal') {
@@ -398,7 +478,7 @@ class Path {
         }
         else {
           if ($trace) print "Path: Selecting arcs that are properties of " . $resource['value'] . "\n";
-          $candidates = array_merge($candidates, $this->get_arcs($resource, $g)); 
+          $candidates = array_merge($candidates, $this->get_arcs($resource, $g, $distinct)); 
         }
       }
     }
@@ -409,9 +489,9 @@ class Path {
 
 
 
-  function get_arcs(&$node, &$g) {
+  function get_arcs(&$node, &$g, $distinct = TRUE) {
     $arcs = array();
-    $properties = $g->get_subject_properties($node['value']);
+    $properties = $g->get_subject_properties($node['value'], $distinct);
     foreach ($properties as $property_uri) {
       $info = $g->make_resource_array($property_uri);
       $info['node'] = $node['value'];
@@ -425,9 +505,12 @@ class Path {
   }
 
   function to_string() {
-    $ret = $this->_steps[0]->to_string();
-    for ($i = 1; $i < count($this->_steps); $i++) {
-      $ret .= '/' . $this->_steps[$i]->to_string();
+    $ret = '';
+    if (count($this->_steps) > 0 ) {
+      $ret = $this->_steps[0]->to_string();
+      for ($i = 1; $i < count($this->_steps); $i++) {
+        $ret .= '/' . $this->_steps[$i]->to_string();
+      }
     }
     return $ret;
   }
@@ -497,7 +580,7 @@ class StepMatcher {
 
   function get_arcs(&$node, &$g) {
     $arcs = array();
-    $properties = $g->get_subject_properties($node['value']);
+    $properties = $g->get_subject_properties($node['value'], FALSE);
     foreach ($properties as $property_uri) {
       $info = $g->make_resource_array($property_uri);
       $info['node'] = $node['value'];
@@ -607,19 +690,20 @@ class CompExpr {
   function matches($candidates, &$g, $trace = FALSE) {
     $matches = FALSE;
     
-    if ($trace) print "CompExpr: Testing using left of " . $this->_left->to_string() . "\n";
+    if ($trace) print "CompExpr: Selecting resources using left of " . $this->_left->to_string() . "\n";
     $selected = $this->_left->select($candidates, $g, $trace);
-    if ($trace) print "CompExpr: Selected " . count($selected) . " resources\n";
+    if ($trace) print "CompExpr: Left of comparison selected " . count($selected) . " resources\n";
     
     if ( $this->_operator && $this->_right) {
-      if ($trace) print "CompExpr: Testing using left of " . $this->_right->to_string() . "\n";
+      if ($trace) print "CompExpr: Selecting resources using right of " . $this->_right->to_string() . "\n";
       $selected_right = $this->_right->select($candidates, $g, $trace);
-      if ($trace) print "CompExpr: Selected " . count($selected_right) . " resources\n";
+      if ($trace) print "CompExpr: Right of comparison selected " . count($selected_right) . " resources\n";
       if (count($selected_right) > 0 ) {
       
         if ($this->_operator == '=') {
           // Naieve for now
           foreach ($selected as $selected_resource) {
+            if ($trace) print "CompExpr: Looking for " . $selected_resource['value'] . " in resources selected by right\n";
             if (in_array($selected_resource, $selected_right)) {
               $matches = TRUE;
               break;
@@ -647,4 +731,25 @@ class CompExpr {
     return $ret;
   }
   
+}
+
+
+class CountFunction {
+  var $_arg;
+  
+  function __construct($arg) {
+    $this->_arg = $arg; 
+  }
+  
+
+  function select($candidates, &$g, $trace = FALSE) {
+    if ($trace) print "CountFunction: Counting number of resources selected by " . $this->_arg->to_string() . "\n";
+    $selected = $this->_arg->select($candidates, $g, $trace);
+    if ($trace) print "CountFunction: Selected " . count($selected) . " resources\n";
+    return array(array('type'=>'literal', 'value'=> count($selected)));
+  }
+  
+  function to_string() {
+    return 'count(' .$this->_arg->to_string() . ')'; 
+  } 
 }
