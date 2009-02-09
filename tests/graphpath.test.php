@@ -5,6 +5,16 @@ require_once MORIARTY_DIR . 'graphpath.class.php';
 
 class GraphPathTest extends PHPUnit_Framework_TestCase {
 
+  function assertPathSelects($gp, $g, $trace = FALSE) {
+    $uri='http://example.org/subj';  
+    $matches = $gp->match($g, $trace);
+    $this->assertEquals( 1, count($matches));
+    $this->assertTrue( is_array($matches[0]));
+    $this->assertEquals('uri', $matches[0]['type']);
+    $this->assertEquals($uri, $matches[0]['value']);
+  }
+
+
   function test_match_returns_array() {
     $g = new SimpleGraph();
     $g->set_namespace_mapping('ex', 'http://example.org/');
@@ -196,12 +206,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/subj', RDF_TYPE, 'http://example.org/Type');
 
     $gp = new GraphPath('ex:Type[*]');
-    $matches = $gp->match($g);
-    
-    $this->assertEquals( 1, count($matches));
-    $this->assertTrue( is_array($matches[0]));
-    $this->assertEquals('uri', $matches[0]['type']);
-    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+    $this->assertPathSelects($gp, $g);
   }
 
   function test_match_single_subject_with_specific_filter() {
@@ -213,11 +218,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/bogus', RDF_TYPE, 'http://example.org/Type');
 
     $gp = new GraphPath('ex:Type[ex:pred]');
-    $matches = $gp->match($g);
-    $this->assertEquals( 1, count($matches));
-    $this->assertTrue( is_array($matches[0]));
-    $this->assertEquals('uri', $matches[0]['type']);
-    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+    $this->assertPathSelects($gp, $g);
   }
 
 
@@ -233,12 +234,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/bogus', RDF_TYPE, 'http://example.org/Type');
 
     $gp = new GraphPath('ex:Type[ex:pred][ex:pred2]');
-    $matches = $gp->match($g);
-    
-    $this->assertEquals( 1, count($matches));
-    $this->assertTrue( is_array($matches[0]));
-    $this->assertEquals('uri', $matches[0]['type']);
-    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+    $this->assertPathSelects($gp, $g);
   }
 
   function test_match_single_subject_with_nested_filters() {
@@ -251,12 +247,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/obj2', 'http://example.org/pred2', 'http://example.org/obj3');
 
     $gp = new GraphPath('ex:Type[ex:pred/ex:Type2[ex:pred2]]');
-    $matches = $gp->match($g);
-    
-    $this->assertEquals( 1, count($matches));
-    $this->assertTrue( is_array($matches[0]));
-    $this->assertEquals('uri', $matches[0]['type']);
-    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+    $this->assertPathSelects($gp, $g);
   }
 
 
@@ -292,13 +283,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/subj2', 'http://example.org/pred', 'http://example.org/obj');
 
     $gp = new GraphPath('*[ex:pred and ex:pred2]');
-//    $this->assertEquals( "*[ex:pred and ex:pred2]", $gp->to_string());
-    $matches = $gp->match($g);
-    
-    $this->assertEquals( 1, count($matches));
-    $this->assertTrue( is_array($matches[0]));
-    $this->assertEquals('uri', $matches[0]['type']);
-    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+    $this->assertPathSelects($gp, $g);
   }
 
   function test_match_single_subject_with_comparison() {
@@ -310,12 +295,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred2', 'foo');
     
     $gp = new GraphPath('*[ex:pred/* = ex:pred2/*]');
-    $matches = $gp->match($g);
-    
-    $this->assertEquals( 1, count($matches));
-    $this->assertTrue( is_array($matches[0]));
-    $this->assertEquals('uri', $matches[0]['type']);
-    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+    $this->assertPathSelects($gp, $g);
   }
 
 
@@ -328,11 +308,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred2', 'foo');
     
     $gp = new GraphPath('*[ex:pred/"foo"]');
-    $matches = $gp->match($g);
-    $this->assertEquals( 1, count($matches));
-    $this->assertTrue( is_array($matches[0]));
-    $this->assertEquals('uri', $matches[0]['type']);
-    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+    $this->assertPathSelects($gp, $g);
   }
 
 
@@ -345,11 +321,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred2', 'foo');
     
     $gp = new GraphPath('*[ex:pred/* = "foo"]');
-    $matches = $gp->match($g);
-    $this->assertEquals( 1, count($matches));
-    $this->assertTrue( is_array($matches[0]));
-    $this->assertEquals('uri', $matches[0]['type']);
-    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+    $this->assertPathSelects($gp, $g);
   }
   
   function test_match_single_subject_with_text_function() {
@@ -359,11 +331,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/subj2', 'http://example.org/pred', 'http://example.org/obj');
     
     $gp = new GraphPath('*[ex:pred/text()]');
-    $matches = $gp->match($g);
-    $this->assertEquals( 1, count($matches));
-    $this->assertTrue( is_array($matches[0]));
-    $this->assertEquals('uri', $matches[0]['type']);
-    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+    $this->assertPathSelects($gp, $g);
   } 
   
   function test_match_single_subject_with_comparison_to_string_reverse_order() {
@@ -375,11 +343,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred2', 'foo');
     
     $gp = new GraphPath('*["foo" = ex:pred/*]');
-    $matches = $gp->match($g);
-    $this->assertEquals( 1, count($matches));
-    $this->assertTrue( is_array($matches[0]));
-    $this->assertEquals('uri', $matches[0]['type']);
-    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+    $this->assertPathSelects($gp, $g);
   } 
   
   
@@ -390,11 +354,10 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', '1');
     
     $gp = new GraphPath('*[ex:pred/* = 2]');
-    $matches = $gp->match($g);
-    $this->assertEquals( 1, count($matches));
-    $this->assertTrue( is_array($matches[0]));
-    $this->assertEquals('uri', $matches[0]['type']);
-    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+    $this->assertPathSelects($gp, $g);
+
+    $gp = new GraphPath('*[2 = ex:pred/*]');
+    $this->assertPathSelects($gp, $g);
   }   
   
   function test_match_single_subject_with_count() {
@@ -405,11 +368,10 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', 'bar');
     
     $gp = new GraphPath('*[count(ex:pred) = 2]');
-    $matches = $gp->match($g);
-    $this->assertEquals( 1, count($matches));
-    $this->assertTrue( is_array($matches[0]));
-    $this->assertEquals('uri', $matches[0]['type']);
-    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+    $this->assertPathSelects($gp, $g);
+
+    $gp = new GraphPath('*[2 = count(ex:pred)]');
+    $this->assertPathSelects($gp, $g);
   } 
   
   function test_match_single_subject_with_count_on_right() {
@@ -424,11 +386,185 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred2', 'bar');
     
     $gp = new GraphPath('*[count(ex:pred) = count(ex:pred2)]');
-    $matches = $gp->match($g);
-    $this->assertEquals( 1, count($matches));
-    $this->assertTrue( is_array($matches[0]));
-    $this->assertEquals('uri', $matches[0]['type']);
-    $this->assertEquals('http://example.org/subj', $matches[0]['value']);
+    $this->assertPathSelects($gp, $g);
   }   
+
+  function test_match_local_name_function() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
+    $g->add_resource_triple('http://example.org/subj2', 'http://example.org/pred', 'http://example.org/foo');
+    
+    $gp = new GraphPath('*[local-name(ex:pred/*) = "obj"]');
+    $this->assertPathSelects($gp, $g);
+
+    $gp = new GraphPath('*["obj" = local-name(ex:pred/*)]');
+    $this->assertPathSelects($gp, $g);
+  }   
+
+  function test_match_namespace_uri_function() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
+    $g->add_resource_triple('http://example.org/subj2', 'http://example.org/pred', 'http://bogus.org/foo');
+    
+    $gp = new GraphPath('*[namespace-uri(ex:pred/*) = "http://example.org/"]');
+    $this->assertPathSelects($gp, $g);
+  }   
+
+  function test_match_uri_function() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
+    $g->add_resource_triple('http://example.org/subj2', 'http://example.org/pred', 'http://bogus.org/foo');
+    
+    $gp = new GraphPath('*[uri(ex:pred/*) = "http://example.org/obj"]');
+    $this->assertPathSelects($gp, $g);
+  }   
+  
+  function test_match_exp_function() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
+    $g->add_resource_triple('http://example.org/subj2', 'http://example.org/pred', 'http://bogus.org/foo');
+    
+    $gp = new GraphPath('*[uri(ex:pred/*) = exp("ex:obj")]');
+    $this->assertPathSelects($gp, $g);
+  }     
+
+  function test_match_literal_value_function() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'obj');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', 'foo');
+    
+    $gp = new GraphPath('*[literal-value(ex:pred) = "obj"]');
+    $this->assertPathSelects($gp, $g);
+  } 
+
+  function test_match_literal_value_function_no_literal() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
+    
+    $gp = new GraphPath('*[literal-value(ex:pred) = ""]');
+    $this->assertPathSelects($gp, $g);
+  } 
+
+  function test_match_literal_value_function_no_matches() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred2', 'http://example.org/obj');
+    
+    $gp = new GraphPath('*[literal-value(ex:pred) = ""]');
+    $this->assertPathSelects($gp, $g);
+  } 
+
+  function test_match_literal_dt_function() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'obj', null, 'http://example.org/dt');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', 'obj', null, 'http://example.org/bogus');
+    
+    $gp = new GraphPath('*[literal-dt(ex:pred) = "http://example.org/dt"]');
+    $this->assertPathSelects($gp, $g);
+  } 
+
+  function test_match_literal_dt_function_no_literal() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
+    
+    $gp = new GraphPath('*[literal-dt(ex:pred) = ""]');
+    $this->assertPathSelects($gp, $g);
+  } 
+
+  function test_match_literal_dt_function_no_matches() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred2', 'http://example.org/obj');
+    
+    $gp = new GraphPath('*[literal-dt(ex:pred) = ""]');
+    $this->assertPathSelects($gp, $g);
+  } 
+
+
+  function test_match_string_length_function() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'obj');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', 'foobar');
+    
+    $gp = new GraphPath('*[string-length(literal-value(ex:pred)) = 3]');
+    $this->assertPathSelects($gp, $g);
+  } 
+
+  function test_match_normalize_space_function_trims() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', ' obj ');
+    
+    $gp = new GraphPath('*[normalize-space(literal-value(ex:pred)) = "obj"]');
+    $this->assertPathSelects($gp, $g);
+  } 
+
+  function test_match_normalize_space_function_removes_double_spaces() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', "x  x\nx\rx  x    x");
+    
+    $gp = new GraphPath('*[normalize-space(literal-value(ex:pred)) = "x x x x x x"]');
+    $this->assertPathSelects($gp, $g);
+  } 
+
+
+  function test_match_abbreviated_self() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
+    $g->add_resource_triple('http://example.org/subj2', 'http://example.org/pred', 'http://bogus.org/foo');
+    
+    $gp = new GraphPath('*[uri(.) = "http://example.org/subj"]');
+    $this->assertPathSelects($gp, $g);
+  }     
+
+
+  function test_match_boolean_function() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
+    $g->add_resource_triple('http://example.org/subj2', 'http://example.org/bogus', 'http://example.org/obj');
+    
+    $gp = new GraphPath('*[boolean(ex:bogus) = false()]');
+    $this->assertPathSelects($gp, $g);
+
+    $gp2 = new GraphPath('*[boolean(ex:pred) = true()]');
+    $this->assertPathSelects($gp2, $g);
+  }     
+
+  function test_match_compare_node_set_with_boolean() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
+    $g->add_resource_triple('http://example.org/subj2', 'http://example.org/bogus', 'http://example.org/obj');
+    
+    $gp = new GraphPath('*[ex:pred = true()]');
+    $this->assertPathSelects($gp, $g);
+
+    $gp2 = new GraphPath('*[true() = ex:pred]');
+    $this->assertPathSelects($gp2, $g);
+  }     
+
+
+  function test_match_compare_string_with_boolean() {
+    $g = new SimpleGraph();
+    $g->set_namespace_mapping('ex', 'http://example.org/');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'obj');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', '');
+    
+    $gp = new GraphPath('*[literal-value(ex:pred) = true()]');
+    $this->assertPathSelects($gp, $g);
+  }     
+
 }
 
