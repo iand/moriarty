@@ -30,16 +30,38 @@ class SparqlServiceBase {
   }
 
   /**
-   * Obtain a bounded description of a given resource
+   * Obtain a bounded description of a given resource. Various types of description are supported:
+   * <ul>
+   * <li><em>cbd</em> - concise bounded description</li>
+   * <li><em>scbd</em> - symmetric bounded description</li>
+   * <li><em>lcbd</em> - labelled bounded description</li>
+   * <li><em>slcbd</em> - symmetric labelled bounded description</li>
+   * </ul>
+   * See http://n2.talis.com/wiki/Bounded_Descriptions_in_RDF for more information on these types of description
+   * Only cbd type is supported for arrays of URIs
    * @param mixed uri the URI of the resource to be described or an array of URIs
+   * @param string type the type of bounded description to be obtained (optional)
    * @return HttpResponse
    */
-  function describe( $uri ) {
+  function describe( $uri, $type = 'cbd' ) {
     if ( is_array( $uri ) ) {
       $query="DESCRIBE <" . implode('> <' , $uri) . ">";
     }
     else {
-      $query="DESCRIBE <$uri>";
+      if ($type == 'scbd') {
+        $query = "CONSTRUCT {<$uri> ?p ?o . ?s ?p2 <$uri> .} WHERE { {<$uri> ?p ?o .} UNION {?s ?p2 <$uri> .} }"; 
+      }
+      else if ($type == 'lcbd') {
+        $query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> CONSTRUCT {<$uri> ?p ?o . ?o rdfs:label ?label . ?o rdfs:comment ?comment . ?o rdfs:seeAlso ?seealso.} WHERE {<$uri> ?p ?o . OPTIONAL { ?o rdfs:label ?label .} OPTIONAL {?o rdfs:comment ?comment . } OPTIONAL {?o rdfs:seeAlso ?seealso.}}";
+      }
+      else if ($type == 'slcbd') {
+        $query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> CONSTRUCT {<$uri> ?p ?o . ?o rdfs:label ?label . ?o rdfs:comment ?comment . ?o rdfs:seeAlso ?seealso. ?s ?p2 <$uri> . ?s rdfs:label ?label . ?s rdfs:comment ?comment . ?s rdfs:seeAlso ?seealso.} WHERE { { <$uri> ?p ?o . OPTIONAL {?o rdfs:label ?label .} OPTIONAL {?o rdfs:comment ?comment .} OPTIONAL {?o rdfs:seeAlso ?seealso.} } UNION {?s ?p2 <$uri> . OPTIONAL {?s rdfs:label ?label .} OPTIONAL {?s rdfs:comment ?comment .} OPTIONAL {?s rdfs:seeAlso ?seealso.} } }";
+      }
+      else {
+        $query="DESCRIBE <$uri>";
+      }
+      
+
     }
     return $this->graph($query);
   }
@@ -70,10 +92,10 @@ class SparqlServiceBase {
    * @param mixed uri the URI of the resource to be described or an array of URIs
    * @return SimpleGraph
    */
-  function describe_to_simple_graph( $uri ) {
+  function describe_to_simple_graph( $uri, $type='cbd' ) {
     $graph = new SimpleGraph();
 
-    $response = $this->describe( $uri );
+    $response = $this->describe( $uri, $type );
 
     if ( $response->is_success() ) {
       $graph->from_rdfxml( $response->body );
