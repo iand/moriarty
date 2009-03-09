@@ -8,7 +8,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 class GraphPath {
 
   private $_path = array();
-  
+  private $_errors = array();
   function __construct($path) {
     $this->_path = $this->_parse_path($path);  
   }
@@ -19,13 +19,33 @@ class GraphPath {
    * @return array nodes that match the path
    */
   function match(&$g, $trace = FALSE) {
-    if ($trace) print "ResourceSelector: Selecting all subjects in graph\n";
+    if ($trace) print "GraphPath: Selecting all subjects in graph\n";
     $candidates = array();
     $index = $g->get_index();
     foreach (array_keys($index) as $subject) {
       $candidates[] = $g->make_resource_array($subject);
     }
-    return  $this->_path->select($candidates, $g, TRUE, $trace);
+    $ret = $this->_path->select($candidates, $g, NULL, TRUE, $trace);
+    if ($trace && $this->has_errors()) {
+      foreach ($this->_errors as $error) {
+        print "ERROR: " . $error . "\n";
+      } 
+    }
+    return $ret;
+  }
+
+  function add_error($err) {
+    if (!in_array($err, $this->_errors)) {
+      $this->_errors[] = $err;
+    }
+  }
+  
+  function has_errors() {
+    return (count($this->_errors) > 0); 
+  }
+  
+  function get_errors() {
+    return $this->_errors;
   }
 
 
@@ -161,7 +181,12 @@ class GraphPath {
     if ((list($r, $v) = $this->m_numbergenerator($v)) && $r) {
       return array($r, $v);
     }   
-  
+    if ((list($r, $v) = $this->m_booleangenerator($v)) && $r) {
+      return array($r, $v);
+    }   
+    if ((list($r, $v) = $this->m_split('(\.)', $v)) && $r) {
+      return array(new SelfGenerator(), $v);
+    }
     if ((list($r, $v) = $this->m_locationpath($v)) && $r) {
       return array($r, $v);
     }
@@ -170,10 +195,7 @@ class GraphPath {
 
 
   function m_literalgenerator($v) {
-    if ((list($r, $v) = $this->m_split('"(.*)"', $v)) && $r) {
-      return array(new LiteralGenerator($r), $v);
-    }
-    if ((list($r, $v) = $this->m_split('\\\'(.*)\\\'', $v)) && $r) {
+    if ((list($r, $v) = $this->m_string($v)) && $r !== FALSE) {
       return array(new LiteralGenerator($r), $v);
     }
     return array(false, $v);
@@ -186,12 +208,19 @@ class GraphPath {
     return array(false, $v);    
   }
 
+  function m_booleangenerator($v) {
+    if ((list($r, $v) = $this->m_split('(true\(\))', $v)) && $r) {
+      return array(new BooleanGenerator(TRUE), $v);
+    }
+    if ((list($r, $v) = $this->m_split('(false\(\))', $v)) && $r) {
+      return array(new BooleanGenerator(FALSE), $v);
+    }
+    return array(false, $v);    
+  }
+
 
   function m_literal($v) {
-    if ((list($r, $v) = $this->m_split('"(.*)"', $v)) && $r) {
-      return array(new LiteralMatcher($r), $v);
-    }
-    if ((list($r, $v) = $this->m_split('\\\'(.*)\\\'', $v)) && $r) {
+    if ((list($r, $v) = $this->m_string($v)) && $r !== FALSE) {
       return array(new LiteralMatcher($r), $v);
     }
     return array(false, $v);
@@ -219,13 +248,40 @@ class GraphPath {
 
 
   function m_functioncall($v) {
-    if ((list($r, $v) = $this->m_split('(count)\(', $v)) && $r) {
+    if ((list($r, $v) = $this->m_split('(count|local-name|namespace-uri|uri|literal-value|literal-dt|exp|string-length|normalize-space|boolean)\(', $v)) && $r) {
       $function = $r;
       if ((list($r, $v) = $this->m_oneargument($v)) && $r) {
         $arg = $r;
         if ((list($r, $v) = $this->m_split('(\))', $v)) && $r) {
           if ($function == 'count') {
             return array(new CountFunction($arg), $v); 
+          }
+          else if ($function == 'local-name') {
+            return array(new LocalNameFunction($arg), $v); 
+          }
+          else if ($function == 'namespace-uri') {
+            return array(new NamespaceUriFunction($arg), $v); 
+          }
+          else if ($function == 'uri') {
+            return array(new UriFunction($arg), $v); 
+          }
+          else if ($function == 'literal-value') {
+            return array(new LiteralValueFunction($arg), $v); 
+          }
+          else if ($function == 'literal-dt') {
+            return array(new LiteralDtFunction($arg), $v); 
+          }
+          else if ($function == 'exp') {
+            return array(new ExpFunction($arg), $v); 
+          }
+          else if ($function == 'string-length') {
+            return array(new StringLengthFunction($arg), $v); 
+          }
+          else if ($function == 'normalize-space') {
+            return array(new NormalizeSpaceFunction($arg), $v); 
+          }
+          else if ($function == 'boolean') {
+            return array(new BooleanFunction($arg), $v); 
           }
         }
       }
@@ -239,7 +295,18 @@ class GraphPath {
     }
     return array(false, $v);
   }
+  
+  function m_string($v) {
 
+    if ((list($r, $v) = $this->m_split('(".*")', $v)) && $r) {
+      return array(substr($r, 1, strlen($r) - 2), $v);
+    }
+    if ((list($r, $v) = $this->m_split('(\\\'.*\\\')', $v)) && $r) {
+      return array(substr($r, 1, strlen($r) - 2), $v);
+    }
+
+    return array(false, $v);
+  }
 
   function m_slash($v) {
     return $this->m_split('(\/)', $v);
@@ -266,174 +333,6 @@ class GraphPath {
 }
 
 
-
-
-class TypeMatcher {
-  var $_type = null;
-  function __construct($type) {
-    $this->_type = $type; 
-  }
-  
-  function matches($candidate, &$g, $trace = FALSE) {
-    if ($trace) print "TypeMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
-
-    $matches = FALSE;
-
-    $test_uri = $g->qname_to_uri($this->_type);
-    if ( $test_uri != null) {
-
-      if (isset($candidate['node'])) {
-        // We are testing an arc  
-        if ($trace) print "TypeMatcher: Testing to see if " . $candidate['value'] . " is same as " . $test_uri . "\n";
-        if ($candidate['value'] == $test_uri) {
-          $matches = TRUE;
-        }
-      }
-      else {
-        // We are testing a node
-        if ($trace) print "TypeMatcher: Testing to see if " . $candidate['value'] . " has type of " . $test_uri . "\n";
-        if ($g->has_resource_triple($candidate['value'], RDF_TYPE, $test_uri) ) {
-          $matches = TRUE;
-        }
-      }
-    }
-    if ($trace) print "TypeMatcher: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
-
-    return $matches;
-
-  }
-  
-
-  function to_string() {
-    return $this->_type; 
-  } 
-  
-}
-
-class WildCardMatcher {
-
-  function matches($candidate, &$g, $trace = FALSE) {
-    if ($trace) print "WildCardMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
-    return TRUE;
-  }
-  
-  function to_string() {
-    return '*'; 
-  } 
-}
-
-class LiteralMatcher {
-  var $_text = '';
-  var $_dt = '';
-  function __construct($text,$dt = null) {
-    $this->_text = $text;
-    $this->_dt = $dt;
-  } 
-  
-  function matches($candidate, &$g, $trace = FALSE) {
-    if ($trace) print "LiteralMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
-    $matches = FALSE;
-
-    if ($trace) print "LiteralMatcher: Testing to see if " . $candidate['value'] . " is same as " . $this->_text . "\n";
-    if ($candidate['type'] == 'literal' && $candidate['value'] == $this->_text) {
-      if ($trace) print "LiteralMatcher: It is, adding " . $candidate['value'] . " to selected queue\n";
-      $matches = TRUE; 
-    }
-
-    if ($trace) print "LiteralMatcher: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
-    return $matches;
-  }
-
-  function to_string() {
-    $ret = "'" . $this->_text. "'"; 
-    return $ret;
-  }
-}
-
-class NumberMatcher {
-  var $_number = '';
-  function __construct($number_text) {
-    $this->_number = $number_text;
-  } 
-  
-  function matches($candidate, &$g, $trace = FALSE) {
-    if ($trace) print "NumberMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
-    $matches = FALSE;
-
-    if ($trace) print "NumberMatcher: Testing to see if " . $candidate['value'] . " equals " . $this->_text . "\n";
-    if ($candidate['type'] == 'literal' && is_numeric($candidate['value']) && $candidate['value'] == $this->_number) {
-      $matches = TRUE; 
-    }
-
-    if ($trace) print "NumberMatcher: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
-    return $matches;
-  }
-
-  function to_string() {
-    $ret = "'" . $this->_text. "'"; 
-    return $ret;
-  }
-}
-
-class AnyLiteralMatcher {
-  function __construct() {
-
-  } 
-  
-  function matches($candidate, &$g, $trace = FALSE) {
-    if ($trace) print "AnyLiteralMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
-    $matches = FALSE;
-
-    if ($candidate['type'] == 'literal') {
-      $matches = TRUE; 
-    }
-
-    if ($trace) print "AnyLiteralMatcher: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
-    return $matches;
-  }
-
-  function to_string() {
-    $ret = "text()"; 
-    return $ret;
-  }
-}
-
-
-class LiteralGenerator {
-  var $_text = '';
-  var $_dt = '';
-  function __construct($text,$dt = null) {
-    $this->_text = $text;
-    $this->_dt = $dt;
-  } 
-  
-  function select($candidates, &$g, $trace = FALSE) {
-    return array( array('type'=>'literal', 'value'=>$this->_text));
-  }
-
-  function to_string() {
-    $ret = "'" . $this->_text. "'"; 
-    return $ret;
-  }
-}
-
-
-class NumberGenerator {
-  var $_number = '';
-  function __construct($number_text) {
-    $this->_number = $number_text;
-  } 
-  
-  function select($candidates, &$g, $trace = FALSE) {
-    return array( array('type'=>'literal', 'value'=>$this->_number));
-  }
-
-  function to_string() {
-    $ret = "'" . $this->_number. "'"; 
-    return $ret;
-  }
-}
-
 class Path {
   var $_steps = array();
 
@@ -441,7 +340,7 @@ class Path {
     $this->_steps = $steps;  
   }
     
-  function select($candidates, &$g, $distinct = FALSE, $trace = FALSE) {
+  function select($candidates, &$g, $context, $distinct = FALSE, $trace = FALSE) {
     if ($trace) print "Path: " . $this->to_string() ."\n";
    
     $selected = array();
@@ -450,7 +349,7 @@ class Path {
       $step = $this->_steps[$i];
       if ($trace) print "Path: Filtering " . count($candidates) . " candidates using " . $step->to_string() . "\n";
       foreach ($candidates as $candidate) {
-        if ( $step->matches($candidate, $g, $trace) ) {
+        if ( $step->matches($candidate, $g, $context, $trace) ) {
           $selected[] = $candidate; 
         }
       }
@@ -501,7 +400,7 @@ class Path {
   }
   
   function get_nodes(&$arc, &$g) {
-    return $g->get_subject_property_values($arc['node'], $arc['value'], $g);
+    return $g->get_subject_property_values($arc['node'], $arc['value']);
   }
 
   function to_string() {
@@ -517,7 +416,135 @@ class Path {
 }
 
 
+class TypeMatcher {
+  var $_type = null;
+  function __construct($type) {
+    $this->_type = $type; 
+  }
+  
+  function matches($candidate, &$g, $context, $trace = FALSE) {
+    if ($trace) print "TypeMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
 
+    $matches = FALSE;
+
+    $test_uri = $g->qname_to_uri($this->_type);
+    if ( $test_uri != null) {
+
+      if (isset($candidate['node'])) {
+        // We are testing an arc  
+        if ($trace) print "TypeMatcher: Testing to see if " . $candidate['value'] . " is same as " . $test_uri . "\n";
+        if ($candidate['value'] == $test_uri) {
+          $matches = TRUE;
+        }
+      }
+      else {
+        // We are testing a node
+        if ($trace) print "TypeMatcher: Testing to see if " . $candidate['value'] . " has type of " . $test_uri . "\n";
+        if ($g->has_resource_triple($candidate['value'], RDF_TYPE, $test_uri) ) {
+          $matches = TRUE;
+        }
+      }
+    }
+    if ($trace) print "TypeMatcher: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
+
+    return $matches;
+
+  }
+  
+
+  function to_string() {
+    return $this->_type; 
+  } 
+  
+}
+
+class WildCardMatcher {
+
+  function matches($candidate, &$g, $context, $trace = FALSE) {
+    if ($trace) print "WildCardMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
+    return TRUE;
+  }
+  
+  function to_string() {
+    return '*'; 
+  } 
+}
+
+class LiteralMatcher {
+  var $_text = '';
+  var $_dt = '';
+  function __construct($text,$dt = null) {
+    $this->_text = $text;
+    $this->_dt = $dt;
+  } 
+  
+  function matches($candidate, &$g, $context, $trace = FALSE) {
+    if ($trace) print "LiteralMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
+    $matches = FALSE;
+
+    if ($trace) print "LiteralMatcher: Testing to see if " . $candidate['value'] . " is same as " . $this->_text . "\n";
+    if ($candidate['type'] == 'literal' && $candidate['value'] == $this->_text) {
+      if ($trace) print "LiteralMatcher: It is, adding " . $candidate['value'] . " to selected queue\n";
+      $matches = TRUE; 
+    }
+
+    if ($trace) print "LiteralMatcher: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
+    return $matches;
+  }
+
+  function to_string() {
+    $ret = "'" . $this->_text. "'"; 
+    return $ret;
+  }
+}
+
+class NumberMatcher {
+  var $_number = '';
+  function __construct($number_text) {
+    $this->_number = $number_text;
+  } 
+  
+  function matches($candidate, &$g, $context, $trace = FALSE) {
+    if ($trace) print "NumberMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
+    $matches = FALSE;
+
+    if ($trace) print "NumberMatcher: Testing to see if " . $candidate['value'] . " equals " . $this->_text . "\n";
+    if ($candidate['type'] == 'literal' && is_numeric($candidate['value']) && $candidate['value'] == $this->_number) {
+      $matches = TRUE; 
+    }
+
+    if ($trace) print "NumberMatcher: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
+    return $matches;
+  }
+
+  function to_string() {
+    $ret = "'" . $this->_text. "'"; 
+    return $ret;
+  }
+}
+
+class AnyLiteralMatcher {
+  function __construct() {
+
+  } 
+  
+  function matches($candidate, &$g, $context, $trace = FALSE) {
+    if ($trace) print "AnyLiteralMatcher: Testing " . $candidate['value'] . " using "  . $this->to_string() . "\n";
+    $matches = FALSE;
+
+    if ($candidate['type'] == 'literal') {
+      $matches = TRUE; 
+    }
+
+    if ($trace) print "AnyLiteralMatcher: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
+    return $matches;
+  }
+
+  function to_string() {
+    $ret = "text()"; 
+    return $ret;
+  }
+}
 
 class StepMatcher {
   var $_selector = '';
@@ -529,10 +556,10 @@ class StepMatcher {
     $this->_filters = $filters;
   } 
   
-  function matches($candidate, &$g, $trace = FALSE) {
+  function matches($candidate, &$g, $context, $trace = FALSE) {
     if ($trace) print "StepMatcher: Matching " . ( $candidate ? $candidate['value'] : 'null') . " using " . $this->to_string() . "\n";
     $matches = FALSE;
-    if ( $this->_selector->matches($candidate, $g, $trace) ) {
+    if ( $this->_selector->matches($candidate, $g, $context, $trace) ) {
       if (count($this->_filters) == 0) {
         $matches = TRUE;  
       }
@@ -543,7 +570,7 @@ class StepMatcher {
         $filter_resources = $this->get_candidates(array($candidate), $g, $trace);
         foreach ( $this->_filters as $filter) {
           if ($trace) print "StepMatcher: Trying " . $filter->to_string() . "\n";
-          if ($filter->matches($filter_resources, $g, $trace)) {
+          if ($filter->matches($filter_resources, $g, $candidate, $trace)) {
             $filter_passes++;
           }
         }   
@@ -618,14 +645,14 @@ class OrExpr {
     $this->_right = $right;
   } 
   
-  function matches($candidates, &$g, $trace = FALSE) {
+  function matches($candidates, &$g, $context, $trace = FALSE) {
     $match = FALSE;
     
     
-    if ($this->_left->matches($candidates, $g, $trace)) {
+    if ($this->_left->matches($candidates, $g, $context, $trace)) {
       $match = TRUE;  
     }
-    else if ($this->_right && $this->_right->matches($candidates, $g, $trace)) {
+    else if ($this->_right && $this->_right->matches($candidates, $g, $context, $trace)) {
       $match = TRUE;  
     }
     if ($trace && $this->_right) print "OrExpr: " . ( $match ? 'MATCHED' : 'NO MATCH') . "\n";
@@ -649,13 +676,13 @@ class AndExpr {
     $this->_right = $right;
   } 
   
-  function matches($candidates, &$g, $trace = FALSE) {
+  function matches($candidates, &$g, $context, $trace = FALSE) {
     $match = FALSE;
 
-    if ($this->_left->matches($candidates, $g, $trace)) {
+    if ($this->_left->matches($candidates, $g, $context, $trace)) {
       $match = FALSE;
       if ($this->_right) {
-        if ($this->_right->matches($candidates, $g, $trace)) {
+        if ($this->_right->matches($candidates, $g, $context, $trace)) {
           $match = TRUE;  
         }
       }
@@ -687,41 +714,150 @@ class CompExpr {
     $this->_right = $right;
   } 
   
-  function matches($candidates, &$g, $trace = FALSE) {
+  function matches($candidates, &$g, $context, $trace = FALSE) {
     $matches = FALSE;
     
     if ($trace) print "CompExpr: Selecting resources using left of " . $this->_left->to_string() . "\n";
-    $selected = $this->_left->select($candidates, $g, $trace);
-    if ($trace) print "CompExpr: Left of comparison selected " . count($selected) . " resources\n";
+    $selected = $this->_left->select($candidates, $g, $context, $trace);
     
     if ( $this->_operator && $this->_right) {
       if ($trace) print "CompExpr: Selecting resources using right of " . $this->_right->to_string() . "\n";
-      $selected_right = $this->_right->select($candidates, $g, $trace);
-      if ($trace) print "CompExpr: Right of comparison selected " . count($selected_right) . " resources\n";
-      if (count($selected_right) > 0 ) {
-      
-        if ($this->_operator == '=') {
-          // Naieve for now
-          foreach ($selected as $selected_resource) {
-            if ($trace) print "CompExpr: Looking for " . $selected_resource['value'] . " in resources selected by right\n";
-            if (in_array($selected_resource, $selected_right)) {
-              $matches = TRUE;
-              break;
-            }
-          }
-        }       
+      $selected_right = $this->_right->select($candidates, $g, $context, $trace);
+
+      if (is_array($selected) ) {
+        if ($trace) print "CompExpr: Left of comparison selected a set of " . count($selected) . " resources\n";
+        if (is_array($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected " . count($selected_right) . " resources\n";
+          $matches = $this->compare_list_to_list($selected, $selected_right);
+        }
+        else if (is_bool($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a boolean of value " . $selected_right . "\n";
+          $matches = $this->compare_list_to_boolean($selected, $selected_right);
+        } 
+        else if (is_numeric($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a number of value " . $selected_right . "\n";
+          $matches = $this->compare_list_to_numeric($selected, $selected_right);
+        }
+        else if (is_string($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a string of value " . $selected_right . "\n";
+          $matches = $this->compare_list_to_string($selected, $selected_right);
+        }
       }
+      else if (is_bool($selected)) {
+        if ($trace) print "CompExpr: Left of comparison selected a boolean of value " . $selected . "\n";
+
+        if (is_array($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a set of " . count($selected_right) . " resources\n";
+          $matches = $this->compare_list_to_boolean($selected_right, $selected);
+        }
+        else if (is_bool($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a boolean of value " . $selected_right . "\n";
+          if ( ($selected_right && $selected) || (!$selected_right && !$selected)) {
+            $matches = TRUE;
+          } 
+        }
+        else if (is_numeric($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a number of value " . $selected_right . "\n";
+          // TODO
+        }
+        else if (is_string($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a string of value " . $selected_right . "\n";
+          $matches = $this->compare_boolean_to_string($selected, $selected_right);
+        }
+      } 
+      else if (is_numeric($selected)) {
+        if ($trace) print "CompExpr: Left of comparison selected a number of value " . $selected . "\n";
+        if (is_array($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a set of " . count($selected_right) . " resources\n";
+          $matches = $this->compare_list_to_numeric($selected_right, $selected);
+        }
+        else if (is_bool($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a boolean of value " . $selected_right . "\n";
+          // TODO
+        }
+        else if (is_numeric($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a number of value " . $selected_right . "\n";
+          $matches = ($selected == $selected_right);
+        }
+        else if (is_string($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a string of value " . $selected_right . "\n";
+          // TODO
+        }
+      }
+      else if (is_string($selected)) {
+        if ($trace) print "CompExpr: Left of comparison selected a string of value " . $selected_right . "\n";
+        if (is_array($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a set of " . count($selected_right) . " resources\n";
+          $matches = $this->compare_list_to_string($selected_right, $selected);
+        }
+        else if (is_bool($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a boolean of value " . $selected_right . "\n";
+          $matches = $this->compare_boolean_to_string($selected_right, $selected);
+        }
+        else if (is_numeric($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a number of value " . $selected_right . "\n";
+          // TODO
+        }
+        else if (is_string($selected_right)) {
+          if ($trace) print "CompExpr: Right of comparison selected a string of value " . $selected_right . "\n";
+          $matches = ($selected == $selected_right);
+        }
+      }
+
     }
     else {
-      if (count($selected) > 0 ) {
-        $matches = TRUE;
-      }
-      
+      $matches = Converter::to_boolean($selected);
     }
     
     if ($trace) print "CompExpr: " . ( $matches ? 'MATCHED' : 'NO MATCH') . " using " . $this->to_string() . "\n";
     return $matches;
   }
+
+  function compare_list_to_list($list1, $list2) {
+    if (count($list1) > 0 && count($list2) > 0) {
+      if ($this->_operator == '=') {
+        foreach ($list1 as $selected_resource) {
+          if (in_array($selected_resource, $list2)) {
+            return TRUE;
+          }
+        }
+      }       
+    }
+    return FALSE;
+  }
+
+  function compare_list_to_boolean($list, $boolean) {
+    $list_bool = Converter::to_boolean($list);
+    return ( ($boolean && $list_bool) || (!$boolean && !$list_bool));
+  }
+
+  function compare_list_to_numeric($list, $numeric) {
+    foreach ($list as $resource) {
+      if ($resource['type'] == 'literal' && is_numeric($resource['value']) ) {
+        if ($resource['value'] == $numeric) {
+          return TRUE;
+        }
+      }                
+    }                         
+    return false;
+  }
+
+  function compare_list_to_string($list, $string) {
+    foreach ($list as $resource) {
+      if ($resource['type'] == 'literal') {
+        if ($resource['value'] == $string) {
+          return TRUE;
+        }
+      }                
+    }                         
+    return false;
+  }
+  
+  function compare_boolean_to_string($boolean, $string) {
+    $string_bool = Converter::to_boolean($string);
+    return ( ($boolean && $string_bool) || (!$boolean && !$string_bool));
+  }
+  
 
   function to_string() {
     $ret = $this->_left->to_string();  
@@ -734,6 +870,69 @@ class CompExpr {
 }
 
 
+class LiteralGenerator {
+  var $_text = '';
+  var $_dt = '';
+  function __construct($text,$dt = null) {
+    $this->_text = $text;
+    $this->_dt = $dt;
+  } 
+  
+  function select($candidates, &$g, $context, $trace = FALSE) {
+    //return $this->_text;
+    return array( array('type'=>'literal', 'value'=>$this->_text));
+  }
+
+  function to_string() {
+    $ret = "'" . $this->_text. "'"; 
+    return $ret;
+  }
+}
+
+
+class NumberGenerator {
+  var $_number = '';
+  function __construct($number_text) {
+    $this->_number = $number_text;
+  } 
+  
+  function select($candidates, &$g, $context, $trace = FALSE) {
+    return $this->_number;
+  }
+
+  function to_string() {
+    $ret = "'" . $this->_number. "'"; 
+    return $ret;
+  }
+}
+
+class SelfGenerator {
+
+  function select($candidates, &$g, $context, $trace = FALSE) {
+    return array($context);
+  }
+  
+  function to_string() {
+    return '.'; 
+  }
+}
+
+class BooleanGenerator {
+  var $_value = '';
+  function __construct($value) {
+    $this->_value = $value;
+  } 
+  
+  function select($candidates, &$g, $context, $trace = FALSE) {
+    return $this->_value;
+  }
+  
+  function to_string() {
+    return ($this->_value ? 'true()' : 'false()'); 
+  }
+}
+
+
 class CountFunction {
   var $_arg;
   
@@ -742,9 +941,9 @@ class CountFunction {
   }
   
 
-  function select($candidates, &$g, $trace = FALSE) {
+  function select($candidates, &$g, $context, $trace = FALSE) {
     if ($trace) print "CountFunction: Counting number of resources selected by " . $this->_arg->to_string() . "\n";
-    $selected = $this->_arg->select($candidates, $g, $trace);
+    $selected = $this->_arg->select($candidates, $g, $context, $trace);
     if ($trace) print "CountFunction: Selected " . count($selected) . " resources\n";
     return array(array('type'=>'literal', 'value'=> count($selected)));
   }
@@ -753,3 +952,245 @@ class CountFunction {
     return 'count(' .$this->_arg->to_string() . ')'; 
   } 
 }
+
+
+class LocalNameFunction {
+  var $_arg;
+  
+  function __construct($arg) {
+    $this->_arg = $arg; 
+  }
+
+  function select($candidates, &$g, $context, $trace = FALSE) {
+    $selected = $this->_arg->select($candidates, $g, $context, $trace);
+    if (count($selected) > 0) {
+      if ( $selected[0]['type'] == 'uri') {
+        if ($trace) print "LocalNameFunction: Determining local name of " . $selected[0]['value'] . "\n";
+        if (preg_match('~^(.*[\/\#])([a-z0-9\-\_]+)$~i', $selected[0]['value'], $m)) {
+          if ($trace) print "LocalNameFunction: Selected local name of " . $m[2] . "\n";
+          return array(array('type'=>'literal', 'value'=> $m[2]));
+        }
+      }
+    }
+    return array();
+  }
+  
+  function to_string() {
+    return 'local-name(' .$this->_arg->to_string() . ')'; 
+  } 
+}
+
+class NamespaceUriFunction {
+  var $_arg;
+  
+  function __construct($arg) {
+    $this->_arg = $arg; 
+  }
+
+  function select($candidates, &$g, $context, $trace = FALSE) {
+    $selected = $this->_arg->select($candidates, $g, $context, $trace);
+    if (count($selected) > 0) {
+      if ( $selected[0]['type'] == 'uri') {
+        if ($trace) print "NamespaceUriFunction: Determining namespace URI of " . $selected[0]['value'] . "\n";
+        if (preg_match('~^(.*[\/\#])([a-z0-9\-\_]+)$~i', $selected[0]['value'], $m)) {
+          if ($trace) print "NamespaceUriFunction: Selected namespace URI of " . $m[1] . "\n";
+          return array(array('type'=>'literal', 'value'=> $m[1]));
+        }
+      }
+    }
+    return array();
+  }
+  
+  function to_string() {
+    return 'namespace-uri(' .$this->_arg->to_string() . ')'; 
+  } 
+}
+
+
+class UriFunction {
+  var $_arg;
+  
+  function __construct($arg) {
+    $this->_arg = $arg; 
+  }
+
+  function select($candidates, &$g, $context, $trace = FALSE) {
+    $selected = $this->_arg->select($candidates, $g, $context, $trace);
+    if (count($selected) > 0) {
+      if ( $selected[0]['type'] == 'uri') {
+        if ($trace) print "UriFunction: Selected URI of " . $selected[0]['value'] . "\n";
+        return array(array('type'=>'literal', 'value'=> $selected[0]['value']));
+      }
+    }
+    return array();
+  }
+  
+  function to_string() {
+    return 'uri(' .$this->_arg->to_string() . ')'; 
+  } 
+}
+
+class ExpFunction {
+  var $_arg;
+  
+  function __construct($arg) {
+    $this->_arg = $arg; 
+  }
+
+  function select($candidates, &$g, $context, $trace = FALSE) {
+    $selected = $this->_arg->select($candidates, $g, $context, $trace);
+    if ( count($selected) > 0 && $selected[0]['type'] == 'literal') {
+      if ($trace) print "ExpFunction: Attempting to expand " . $this->_arg . " to URI\n";
+      $uri = $g->qname_to_uri($selected[0]['value']);
+      if ($uri != null) {
+        if ($trace) print "ExpFunction: Expanded to " . $uri . "\n";
+        return array(array('type'=>'literal', 'value'=> $uri));
+      }
+    }
+    if ($trace) print "ExpFunction: Could not expand\n";
+    return array();
+  }
+  
+  function to_string() {
+    return 'exp(\'' .$this->_arg->to_string() . '\')'; 
+  } 
+}
+
+
+class LiteralValueFunction {
+  var $_arg;
+  
+  function __construct($arg) {
+    $this->_arg = $arg; 
+  }
+
+  function select($candidates, &$g, $context, $trace = FALSE) {
+    if ($trace) print "LiteralValueFunction: Using " . $this->_arg->to_string() . " to determine literal value\n";
+    $selected = $this->_arg->select($candidates, $g, $context, $trace);
+    if (count($selected) > 0 && isset($selected[0]['node'])) {
+      $values = $g->get_subject_property_values($selected[0]['node'], $selected[0]['value']);
+      if (count($values) > 0) {
+        if ( $values[0]['type'] == 'literal') {
+          if ($trace) print "LiteralValueFunction: Selected value of " . $values[0]['value'] . "\n";
+          return $values[0]['value'];
+        }
+      }
+    }
+    return '';
+  }
+  
+  function to_string() {
+    return 'literal-value(' .$this->_arg->to_string() . ')'; 
+  } 
+}
+
+class LiteralDtFunction {
+  var $_arg;
+  
+  function __construct($arg) {
+    $this->_arg = $arg; 
+  }
+
+  function select($candidates, &$g, $context, $trace = FALSE) {
+    if ($trace) print "LiteralDtFunction: Using " . $this->_arg->to_string() . " to determine literal datatype\n";
+    $selected = $this->_arg->select($candidates, $g, $context, $trace);
+    if (count($selected) > 0 && isset($selected[0]['node'])) {
+      $values = $g->get_subject_property_values($selected[0]['node'], $selected[0]['value']);
+      if (count($values) > 0) {
+        if ( $values[0]['type'] == 'literal' && isset($values[0]['datatype'])) {
+          if ($trace) print "LiteralDtFunction: Selected datatype of " . $values[0]['datatype'] . "\n";
+          return $values[0]['datatype'];
+        }
+      }
+    }
+    return '';
+  }
+  
+  function to_string() {
+    return 'literal-dt(' .$this->_arg->to_string() . ')'; 
+  }
+}
+
+
+class StringLengthFunction {
+  var $_arg;
+  
+  function __construct($arg) {
+    $this->_arg = $arg; 
+  }
+
+  function select($candidates, &$g, $context, $trace = FALSE) {
+    if ($trace) print "StringLengthFunction: Finding string length of " . $this->_arg->to_string() . "\n";
+    $selected = $this->_arg->select($candidates, $g, $context, $trace);
+    if (is_string($selected)) {
+      if ($trace) print "StringLengthFunction: String length of " . $selected . " is " .  strlen($selected) . "\n";
+      return strlen($selected);
+    }
+    else {
+      $this->add_error($this->to_string() . " expected a string as an argument but did not receive one");
+    }
+    return array();
+  }
+  
+  function to_string() {
+    return 'string-length(' .$this->_arg->to_string() . ')'; 
+  }
+}
+
+
+class NormalizeSpaceFunction {
+  var $_arg;
+  
+  function __construct($arg) {
+    $this->_arg = $arg; 
+  }
+
+  function select($candidates, &$g, $context, $trace = FALSE) {
+    $selected = $this->_arg->select($candidates, $g, $context, $trace);
+    if (is_string($selected)) {
+      $val = preg_replace("~\s+~m", ' ', $selected);
+      return trim($val);
+    }
+    else {
+      $this->add_error($this->to_string() . " expected a string as an argument but did not receive one");
+    }
+    return array();
+  }
+  
+  function to_string() {
+    return 'normalize-space(' .$this->_arg->to_string() . ')'; 
+  }
+}
+
+class BooleanFunction {
+  var $_arg;
+  
+  function __construct($arg) {
+    $this->_arg = $arg; 
+  }
+
+  function select($candidates, &$g, $context, $trace = FALSE) {
+    $selected = $this->_arg->select($candidates, $g, $context, $trace);
+    return Converter::to_boolean($selected);
+  }
+  
+  function to_string() {
+    return 'boolean(' .$this->_arg->to_string() . ')'; 
+  }
+}
+
+
+/**
+ * Implements FSL specific conversions
+ */
+class Converter {
+  function to_boolean($arg) {
+    if (is_array($arg)) {
+      return (count($arg) != 0);
+    }
+    else if (is_string($arg)) {
+      return (strlen($arg) != 0);
+    }
+  } 
+}
+
