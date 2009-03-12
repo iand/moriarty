@@ -135,6 +135,16 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( 0, count($g->get_triples()));
   }
 
+  function test_remove_literal_triple() {
+    $g = new SimpleGraph();
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'literal');
+
+    $this->assertEquals( 1, count($g->get_triples()));
+
+    $g->remove_literal_triple('http://example.org/subj', 'http://example.org/pred', 'literal');
+    $this->assertEquals( 0, count($g->get_triples()));
+  }
+
 
   function test_remove_triples_about() {
     $g = new SimpleGraph();
