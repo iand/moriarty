@@ -289,6 +289,22 @@ class SimpleGraph {
 
   }
 
+  function remove_literal_triple( $s, $p, $o) {
+    for ($i = count($this->_index[$s][$p]) - 1; $i >= 0; $i--) {
+      if ($this->_index[$s][$p][$i]['type'] == 'literal' && $this->_index[$s][$p][$i]['value'] == $o)  {
+        array_splice($this->_index[$s][$p], $i, 1);
+      }
+    }
+
+    if (count($this->_index[$s][$p]) == 0) {
+      unset($this->_index[$s][$p]);
+    }
+    if (count($this->_index[$s]) == 0) {
+      unset($this->_index[$s]);
+    }
+
+  }
+
   /**
    * Remove all triples having the supplied subject
    * @param string s the subject of the triple, either a URI or a blank node in the format _:name
