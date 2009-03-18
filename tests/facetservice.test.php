@@ -33,7 +33,7 @@ class FacetServiceTest extends PHPUnit_Framework_TestCase {
   function test_facets_uses_fields() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=dog&fields=subject+tag+year&top=10&output=xml", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=dog&fields=subject%2Ctag%2Cyear&top=10&output=xml", $fake_request );
 
     $ss = new FacetService("http://example.org/store/services/facet");
     $ss->request_factory = $fake_request_factory;
