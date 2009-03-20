@@ -32,6 +32,30 @@ class Contentbox {
     $this->credentials = $credentials;
   }
 
+  /**
+   * Get an item from the contentbox using only it's path 
+   * @param string path the path of the item in the content box.
+   * @return HttpResponse
+   */
+  function get_item_by_path( $path ) {
+    return $this->get_item($this->uri . $path);
+  }
+
+  /**
+   * Get an item from the contentbox
+   * @param string uri the full uri of the item in the content box.
+   * @return HttpResponse
+   */
+  function get_item( $uri ) {
+    if (! isset( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
+
+    $request = $this->request_factory->make( 'GET', $uri, $this->credentials );
+
+    return $request->execute();
+  }
+
   protected function make_search_uri( $query, $max=10, $offset=0, $sort=false) {
     $uri = $this->uri . '?query=' . urlencode($query) . '&max=' . urlencode($max) . '&offset=' . urlencode($offset);
     $uri.= ($sort)? '&sort='.urlencode($sort) : '';
