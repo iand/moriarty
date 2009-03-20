@@ -62,6 +62,32 @@ class ContentboxTest extends PHPUnit_Framework_TestCase {
   </item>
 </rdf:RDF>';
 
+  function test_get_item() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/items/images/myImage.jpg", $fake_request );
+
+    $cb = new Contentbox("http://example.org/store/items", new FakeCredentials());
+    $cb->request_factory = $fake_request_factory;
+
+    $response = $cb->get_item( 'http://example.org/store/items/images/myImage.jpg' );
+    $this->assertTrue( $fake_request->was_executed() );
+    $this->assertEquals( "user:pwd", $fake_request->get_auth() );
+  }
+
+  function test_get_item_by_path() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/items/images/myImage.jpg", $fake_request );
+
+    $cb = new Contentbox("http://example.org/store/items", new FakeCredentials());
+    $cb->request_factory = $fake_request_factory;
+
+    $response = $cb->get_item_by_path('/images/myImage.jpg' );
+    $this->assertTrue( $fake_request->was_executed() );
+    $this->assertEquals( "user:pwd", $fake_request->get_auth() );
+  }
+
   function test_search_gets_contentbox_uri() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
