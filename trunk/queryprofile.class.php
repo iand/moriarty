@@ -12,8 +12,8 @@ class QueryProfile extends NetworkResource {
    * @param string uri URI of the query profile
    * @param Credentials credentials the credentials to use for authenticated requests (optional)
    */ 
-  function __construct($uri, $credentials = null) {
-    parent::__construct($uri, $credentials);
+  function __construct($uri, $credentials = null, $request_factory = null) {
+    parent::__construct($uri, $credentials, $request_factory);
   }
 
 

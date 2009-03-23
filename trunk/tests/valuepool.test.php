@@ -31,7 +31,7 @@ class ValuePoolTest extends PHPUnit_Framework_TestCase {
   function test_get_candidate_values_posts_query() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=PREFIX+p%3A+%3Chttp%3A%2F%2Fpurl.org%2Fvocab%2Fvalue-pools%2Fschema%23%3E+CONSTRUCT+%7B%3Ctranscripts%3E+p%3Avalue+%3Fv+.+%7D+WHERE+%7B+%3Ctranscripts%3E+p%3Avalue+%3Fv+.+%7D+LIMIT+5", $fake_request );
 
     $ss = new SparqlService("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
@@ -40,7 +40,7 @@ class ValuePoolTest extends PHPUnit_Framework_TestCase {
     $pool->bigfootSparqlService = $ss;
 
     $values = $pool->get_candidate_values('transcripts');
-    $this->assertEquals( "query=PREFIX+p%3A+%3Chttp%3A%2F%2Fpurl.org%2Fvocab%2Fvalue-pools%2Fschema%23%3E+CONSTRUCT+%7B%3Ctranscripts%3E+p%3Avalue+%3Fv+.+%7D+WHERE+%7B+%3Ctranscripts%3E+p%3Avalue+%3Fv+.+%7D+LIMIT+5", $fake_request->get_body() );
+    $this->assertTrue( $fake_request->was_executed() );
   }
 
   function test_get_candidate_values_parses_results() {
@@ -60,7 +60,7 @@ class ValuePoolTest extends PHPUnit_Framework_TestCase {
 
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( $fake_response );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=PREFIX+p%3A+%3Chttp%3A%2F%2Fpurl.org%2Fvocab%2Fvalue-pools%2Fschema%23%3E+CONSTRUCT+%7B%3Chttp%3A%2F%2Fexample.org%2Fpool%3E+p%3Avalue+%3Fv+.+%7D+WHERE+%7B+%3Chttp%3A%2F%2Fexample.org%2Fpool%3E+p%3Avalue+%3Fv+.+%7D+LIMIT+5", $fake_request );
 
     $ss = new SparqlService("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
@@ -77,7 +77,7 @@ class ValuePoolTest extends PHPUnit_Framework_TestCase {
   function test_get_candidate_values_reads_uri() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=PREFIX+p%3A+%3Chttp%3A%2F%2Fpurl.org%2Fvocab%2Fvalue-pools%2Fschema%23%3E+CONSTRUCT+%7B%3Chttp%3A%2F%2Fexample.org%2Fpool%3E+p%3Avalue+%3Fv+.+%7D+WHERE+%7B+%3Chttp%3A%2F%2Fexample.org%2Fpool%3E+p%3Avalue+%3Fv+.+%7D+LIMIT+5", $fake_request );
 
     $ss = new SparqlService("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
@@ -86,14 +86,14 @@ class ValuePoolTest extends PHPUnit_Framework_TestCase {
     $pool->bigfootSparqlService = $ss;
 
     $values = $pool->get_candidate_values('http://example.org/pool');
-    $this->assertEquals( "query=PREFIX+p%3A+%3Chttp%3A%2F%2Fpurl.org%2Fvocab%2Fvalue-pools%2Fschema%23%3E+CONSTRUCT+%7B%3Chttp%3A%2F%2Fexample.org%2Fpool%3E+p%3Avalue+%3Fv+.+%7D+WHERE+%7B+%3Chttp%3A%2F%2Fexample.org%2Fpool%3E+p%3Avalue+%3Fv+.+%7D+LIMIT+5", $fake_request->get_body() );
+    $this->assertTrue( $fake_request->was_executed() );
   }
 
 
   function test_get_candidate_values_reads_max() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=PREFIX+p%3A+%3Chttp%3A%2F%2Fpurl.org%2Fvocab%2Fvalue-pools%2Fschema%23%3E+CONSTRUCT+%7B%3Chttp%3A%2F%2Fexample.org%2Fpool%3E+p%3Avalue+%3Fv+.+%7D+WHERE+%7B+%3Chttp%3A%2F%2Fexample.org%2Fpool%3E+p%3Avalue+%3Fv+.+%7D+LIMIT+14", $fake_request );
 
     $ss = new SparqlService("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
@@ -102,7 +102,7 @@ class ValuePoolTest extends PHPUnit_Framework_TestCase {
     $pool->bigfootSparqlService = $ss;
 
     $values = $pool->get_candidate_values('http://example.org/pool', 14);
-    $this->assertEquals( "query=PREFIX+p%3A+%3Chttp%3A%2F%2Fpurl.org%2Fvocab%2Fvalue-pools%2Fschema%23%3E+CONSTRUCT+%7B%3Chttp%3A%2F%2Fexample.org%2Fpool%3E+p%3Avalue+%3Fv+.+%7D+WHERE+%7B+%3Chttp%3A%2F%2Fexample.org%2Fpool%3E+p%3Avalue+%3Fv+.+%7D+LIMIT+14", $fake_request->get_body() );
+    $this->assertTrue( $fake_request->was_executed() );
   }
 
   function test_select_value_generates_addition_with_correct_subject() {

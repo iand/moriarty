@@ -25,9 +25,10 @@ class JobQueue {
    * @param string uri URI of the job queue
    * @param Credentials credentials the credentials to use for authenticated requests (optional)
    */ 
-  function __construct($uri, $credentials = null) {
+  function __construct($uri, $credentials = null, $request_factory = null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
+    $this->request_factory = $request_factory;
   }
 
 
@@ -98,7 +99,7 @@ class JobQueue {
    * @access private
    */
   function schedule_job($job) {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
 
@@ -120,13 +121,13 @@ class JobQueue {
    * @return array list of job URIs
    */ 
    function get_item_uris(){
-    if (! isset( $this->request_factory) ) {
-        $this->request_factory = new HttpRequestFactory();
-      }
+    if (empty( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
 
-      $request = $this->request_factory->make( 'GET', $this->uri, $this->credentials);
-      $request->set_accept("application/rdf+xml");
-      $response =  $request->execute();
+    $request = $this->request_factory->make( 'GET', $this->uri, $this->credentials);
+    $request->set_accept("application/rdf+xml");
+    $response =  $request->execute();
   
     if($response->is_success()){
       

@@ -24,9 +24,10 @@ class AugmentService {
    * @param string uri URI of the augment service
    * @param Credentials credentials the credentials to use for authenticated requests (optional)
    */ 
-  function __construct($uri, $credentials = null) {
+  function __construct($uri, $credentials = null, $request_factory = null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
+    $this->request_factory = $request_factory;
   }
 
   /**
@@ -35,7 +36,7 @@ class AugmentService {
    * @return HttpResponse
    */
   function augment($uri) {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
 
@@ -51,7 +52,7 @@ class AugmentService {
    * @return HttpResponse
    */
   function augment_graph($graph) {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
 

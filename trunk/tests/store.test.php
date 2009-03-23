@@ -100,6 +100,29 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $store = new Store("http://example.org/store", $credentials);
     $this->assertEquals( $credentials, $store->get_augment_service()->credentials );
   }
+  
+  function test_describe_single_uri_performs_get_on_metabox() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/meta?about=" . urlencode('http://example.org/scooby'), $fake_request );
 
+    $store = new Store("http://example.org/store", null, $fake_request_factory);
+    
+    $response = $store->describe( 'http://example.org/scooby' );
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+
+  function test_describe_multiple_uris_gets_from_sparql_service() {
+    $query = 'DESCRIBE <http://example.org/scooby> <http://example.org/shaggy>';
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
+
+    $store = new Store("http://example.org/store", null, $fake_request_factory);
+
+    $response = $store->describe( array( 'http://example.org/scooby', 'http://example.org/shaggy' )  );
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+  
 }
 ?>

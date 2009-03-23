@@ -27,9 +27,10 @@ class Contentbox {
    * @param string uri URI of the contentbox
    * @param Credentials credentials the credentials to use for authenticated requests (optional)
    */ 
-  function __construct($uri, $credentials = null) {
+  function __construct($uri, $credentials = null, $request_factory = null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
+    $this->request_factory = $request_factory;
   }
 
   /**
@@ -71,9 +72,10 @@ class Contentbox {
    * @return HttpResponse
    */
   function search( $query, $max=10, $offset=0, $sort=false) {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
+
 
     $request = $this->request_factory->make( 'GET', $this->make_search_uri($query, $max, $offset, $sort), $this->credentials );
     $request->set_accept(MIME_RSS);

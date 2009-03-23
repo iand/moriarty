@@ -108,6 +108,47 @@ foo';
   }
 
 
+  function test_cache_id() {
+    $request = new HttpRequest('GET', 'http://example.org/');
+    $request->set_accept('*/*');
+    
+    $expected_id = md5('<http://example.org/>*/*'); 
+    
+    $this->assertEquals( $expected_id, $request->cache_id($request));
+    
+  }
 
+  function test_cache_id_adds_missing_directory_separator() {
+    $request = new HttpRequest('GET', 'http://example.org/');
+    $request->set_accept('*/*');
+    
+    $expected_id = md5('<http://example.org/>*/*'); 
+    
+    $this->assertEquals( $expected_id, $request->cache_id($request));
+  }
+
+
+  function test_cache_id_normalises_accept_header() {
+    $request1 = new HttpRequest('GET', 'http://example.org/');
+    $request1->set_accept('text/html,application/xml');
+
+    $request2 = new HttpRequest('GET', 'http://example.org/');
+    $request2->set_accept('application/xml,text/html');
+
+    $this->assertEquals($request1->cache_id($request1), $request2->cache_id($request2));
+  }
+  
+  function test_cache_id_uses_request_body() {
+    $request1 = new HttpRequest('GET', 'http://example.org/');
+    $request1->set_accept('*/*');
+    $request1->set_body('foo');
+    
+    $request2 = new HttpRequest('GET', 'http://example.org/');
+    $request2->set_accept('*/*');
+    $request2->set_body('bar');
+
+    $this->assertNotEquals($request1->cache_id($request1), $request2->cache_id($request2));
+   
+  }
 }
 ?>

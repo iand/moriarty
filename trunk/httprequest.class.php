@@ -31,13 +31,16 @@ class HttpRequest {
    */
   var $credentials;
 
+
+  var $_cache = null;
+
   /**
    * Create a new instance of this class
    * @param string method the HTTP method to issue (i.e. GET, POST, PUT etc)
    * @param string uri the URI to issue the request to
    * @param Credentials credentials the credentials to use for secure requests (optional)
    */
-  function __construct($method, $uri, $credentials = null) {
+  function __construct($method, $uri, $credentials = null, $cache = null) {
     $this->uri = $uri;
     $this->method = strtoupper($method);
     if ( $credentials != null ) {
@@ -51,6 +54,11 @@ class HttpRequest {
     $this->options = array();
     $this->body = null;
 
+
+  }
+
+  function set_cache($cache) {
+    $this->_cache = $cache; 
   }
 
 
@@ -59,14 +67,10 @@ class HttpRequest {
    * @return HttpResponse
    */
   function execute() {
-
-    if ( defined('MORIARTY_HTTP_CACHE_DIR') ) {
-      $cache = new HttpCache(MORIARTY_HTTP_CACHE_DIR);
-
-      $cached_response = $cache->get_cached_response($this);
+    if ( $this->_cache ) {
+      $cached_response = $this->_cache->load($this->cache_id(), defined('MORIARTY_HTTP_CACHE_USE_STALE_ON_FAILURE'));
       if ($cached_response) {
-        
-        if (defined('MORIARTY_HTTP_CACHE_READ_ONLY') && $cache->is_fresh($this, $cached_response)) {
+        if (defined('MORIARTY_HTTP_CACHE_READ_ONLY') ) {
           $cached_response->request = $this;
           return $cached_response;
         }
@@ -75,6 +79,7 @@ class HttpRequest {
             $this->set_if_none_match($cached_response->headers['etag']);
           }
         }
+        
       }
     }
 
@@ -129,21 +134,10 @@ class HttpRequest {
           $response_body .= $body;
         }
 
-        if ( defined('MORIARTY_HTTP_CACHE_DIR') ) {
-          if ( $cached_response && ! $cache->is_fresh($this, $cached_response) ) {
-            $cache->remove_from_cache($this); 
-          }
-        }
       }
       else {
-        if ( defined('MORIARTY_HTTP_CACHE_DIR') && $cached_response) {
-          if ( defined('MORIARTY_HTTP_CACHE_USE_STALE_ON_FAILURE') ) {
-            $cached_response->request = $this;
-            return $cached_response;
-          }
-          else if ( !$cache->is_fresh($this, $cached_response) ) {
-            $cache->remove_from_cache($this); // cached response was definitely stale because we check above
-          }
+        if ( $this->_cache  && $cached_response) {
+          return $cached_response;
         }
 
         $response_code = $response_info['http_code'];
@@ -198,20 +192,10 @@ class HttpRequest {
 
       if ( $raw_response ) {
         list($response_code,$response_headers,$response_body) = $this->parse_response($raw_response);
-        if ( defined('MORIARTY_HTTP_CACHE_DIR') && $cached_response && ! $cache->is_fresh($this, $cached_response) ) {
-          $cache->remove_from_cache($this); 
-        }
-        
       }
       else {
-        if ( defined('MORIARTY_HTTP_CACHE_DIR') && $cached_response) {
-          if ( defined('MORIARTY_HTTP_CACHE_USE_STALE_ON_FAILURE') ) {
-            $cached_response->request = $this;
-            return $cached_response;
-          }
-          else if ( !$cache->is_fresh($this, $cached_response) ) {
-            $cache->remove_from_cache($this); // cached response was definitely stale because we check above
-          }
+        if ( $this->_cache && $cached_response) {
+          return $cached_response;
         }
 
         $response_code = $response_info['http_code'];
@@ -235,14 +219,28 @@ class HttpRequest {
   echo '<pre>' . htmlspecialchars($response->to_string()) . '</pre>';
 */
       
-    if ( defined('MORIARTY_HTTP_CACHE_DIR') ) {
+    if ( $this->_cache ) {
       if ( $cached_response && $response_code == 304) {
         $cached_response->request = $this;
         return $cached_response;
       }
 
-      if ( $this->method == 'GET' && $response->is_cacheable() ) {
-        $cache->write($this, $response);
+
+      if (! $cached_response ) {
+        $max_age = FALSE;
+        if ( $this->method == 'GET' && $response->is_cacheable() ) {
+          $cache_control = $response->headers['cache-control'];
+          $cache_control_tokens = split(',', $cache_control);
+          foreach ( $cache_control_tokens as $token) {
+            $token = trim($token);
+            if ( preg_match('/max-age=(.+)/', $token, $m) ) {
+              $max_age = $m[1];
+              break;
+            }
+          }       
+          
+          $this->_cache->save($response, $this->cache_id(), array(), $max_age);
+        }
       }
     }
     
@@ -310,6 +308,14 @@ class HttpRequest {
     $this->headers['If-None-Match'] = $val;
   }
    
+   
+  function cache_id() {
+    $accept = $this->headers['Accept'];
+    $accept_parts = split(',', $accept);
+    sort($accept_parts);
+    $accept = join(',', $accept_parts);
+    return md5('<' . $this->uri . '>' . $accept . $this->get_body()); 
+  }  
   /**
    * @access private
    */

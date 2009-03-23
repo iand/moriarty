@@ -25,13 +25,20 @@ class Store {
    */
   var $credentials;
 
+  /** 
+   * @access private 
+   */
+  var $request_factory;
+
+
   /**
    * @param string $uri URI of the store
    * @param Credentials $credentials
    */ 
-  function Store($uri, $credentials = null) {
+  function Store($uri, $credentials = null, $request_factory = null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
+    $this->request_factory = $request_factory;
   }
 
   /**
@@ -40,7 +47,7 @@ class Store {
    * @return Metabox
    */
   function get_metabox() {
-    return new Metabox($this->uri . '/meta', $this->credentials);
+    return new Metabox($this->uri . '/meta', $this->credentials, $this->request_factory);
   }
 
   /**
@@ -49,7 +56,7 @@ class Store {
    * @return SparqlService
    */
   function get_sparql_service() {
-    return new SparqlService($this->uri . '/services/sparql', $this->credentials);
+    return new SparqlService($this->uri . '/services/sparql', $this->credentials, $this->request_factory);
   }
 
   /**
@@ -58,7 +65,7 @@ class Store {
    * @return MultiSparqlService
    */
   function get_multisparql_service() {
-    return new MultiSparqlService($this->uri . '/services/multisparql', $this->credentials);
+    return new MultiSparqlService($this->uri . '/services/multisparql', $this->credentials, $this->request_factory);
   }
 
   /**
@@ -67,7 +74,7 @@ class Store {
    * @return Contentbox
    */
   function get_contentbox() {
-    return new Contentbox($this->uri . '/items', $this->credentials);
+    return new Contentbox($this->uri . '/items', $this->credentials, $this->request_factory);
   }
 
   /**
@@ -76,7 +83,7 @@ class Store {
    * @return JobQueue
    */
   function get_job_queue() {
-    return new JobQueue($this->uri . '/jobs', $this->credentials);
+    return new JobQueue($this->uri . '/jobs', $this->credentials, $this->request_factory);
   }
 
   /**
@@ -85,7 +92,7 @@ class Store {
    * @return Config
    */
   function get_config() {
-    return new Config($this->uri . '/config', $this->credentials);
+    return new Config($this->uri . '/config', $this->credentials, $this->request_factory);
   }
 
   /**
@@ -94,7 +101,7 @@ class Store {
    * @return FacetService
    */
   function get_facet_service() {
-    return new FacetService($this->uri . '/services/facet', $this->credentials);
+    return new FacetService($this->uri . '/services/facet', $this->credentials, $this->request_factory);
   }
 
   /**
@@ -103,7 +110,7 @@ class Store {
    * @return Snapshots
    */
   function get_snapshots() {
-    return new Snapshots($this->uri . '/snapshots', $this->credentials);
+    return new Snapshots($this->uri . '/snapshots', $this->credentials, $this->request_factory);
   }
 
   /**
@@ -112,7 +119,21 @@ class Store {
    * @return AugmentService
    */
   function get_augment_service() {
-    return new AugmentService($this->uri . '/services/augment', $this->credentials);
+    return new AugmentService($this->uri . '/services/augment', $this->credentials, $this->request_factory);
   }
+
+
+  function describe($uri) {
+    if ( is_array( $uri ) ) {
+      $ss = $this->get_sparql_service();
+      return $ss->describe($uri);
+    }
+    else {
+      $mb = $this->get_metabox();
+      return $mb->describe($uri);    
+    }
+  }
+
+
 }
 ?>

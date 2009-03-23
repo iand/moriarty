@@ -24,7 +24,7 @@ class MultiSparqlService extends SparqlServiceBase {
     }
 
     foreach( $graphs as $graph_uri) {
-      $query .= ' FROM <' . $graph_uri . '> ';
+      $query .= ' FROM <' . $graph_uri . '>';
     }
 
     return $this->graph($query);
