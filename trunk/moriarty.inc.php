@@ -9,8 +9,8 @@ if (!defined('MORIARTY_TEST_DIR') ) define('MORIARTY_TEST_DIR', MORIARTY_DIR . D
 if (!defined('MORIARTY_PHPUNIT_DIR') ) define('MORIARTY_PHPUNIT_DIR', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'phpunit' . DIRECTORY_SEPARATOR);
 
 require_once MORIARTY_ARC_DIR . 'ARC2.php';
-if (ARC2::getVersion() != '2008-08-04') {
-  trigger_error("Unsupported version of ARC detected. Expected '2008-08-04' but found '" . ARC2::getVersion(). "'",E_USER_ERROR);
+if (ARC2::getVersion() < '2008-08-04') {
+  trigger_error("Unsupported version of ARC detected. Expected at least '2008-08-04' but found '" . ARC2::getVersion(). "'",E_USER_ERROR);
 }
 
 
