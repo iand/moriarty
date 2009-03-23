@@ -26,9 +26,10 @@ class StoreCollection extends SimpleGraph {
    * @param string uri URI of the store collection
    * @param Credentials credentials the credentials to use for authenticated requests (optional)
    */ 
-  function __construct($uri, $credentials = null) {
+  function __construct($uri, $credentials = null, $request_factory = null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
+    $this->request_factory = $request_factory;
   }
 
   /**
@@ -36,7 +37,7 @@ class StoreCollection extends SimpleGraph {
    * @deprecated this should be compatible with NetworkResource
    */
   function retrieve() {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
     $uri = $this->uri;
@@ -58,7 +59,7 @@ class StoreCollection extends SimpleGraph {
    * @return HttpRequest
    */
   function create_store($name, $template_uri) {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
 

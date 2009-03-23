@@ -24,9 +24,10 @@ class FacetService {
    * @param string uri URI of the facet service
    * @param Credentials credentials the credentials to use for authenticated requests (optional)
    */ 
-  function __construct($uri, $credentials = null) {
+  function __construct($uri, $credentials = null, $request_factory= null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
+    $this->request_factory = $request_factory;
   }
 
   /**
@@ -37,10 +38,9 @@ class FacetService {
    * @return HttpResponse
    */
   function facets($query, $fields, $top = 10) {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
-
     $uri = $this->uri . '?query=' . urlencode($query) . '&fields=' . urlencode(join(',', $fields)) . '&top=' . urlencode($top) . '&output=xml';
     $request = $this->request_factory->make( 'GET', $uri , $this->credentials );
     $request->set_accept(MIME_XML);

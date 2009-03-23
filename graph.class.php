@@ -26,9 +26,10 @@ class Graph {
    * @param string uri URI of the graph
    * @param Credentials credentials the credentials to use for authenticated requests (optional)
    */ 
-  function __construct($uri, $credentials = null)  {
+  function __construct($uri, $credentials = null, $request_factory = null)  {
     $this->uri = $uri;
     $this->credentials = $credentials;
+    $this->request_factory = $request_factory;
   }
 
   /**
@@ -55,7 +56,7 @@ class Graph {
    * @return HttpResponse
    */
   function apply_changeset_rdfxml($rdfxml) {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
 
@@ -75,7 +76,7 @@ class Graph {
    * @return HttpResponse
    */
   function apply_versioned_changeset_rdfxml($rdfxml) {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
 
@@ -95,7 +96,7 @@ class Graph {
    * @return HttpResponse
    */
   function submit_rdfxml($rdfxml) {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
 
@@ -116,7 +117,7 @@ class Graph {
    * @return HttpResponse
    */
   function describe( $uri, $output = null ) {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
 
@@ -183,7 +184,7 @@ class Graph {
    * @return boolean true if the graph contains triples with the resource as a subject, false otherwise
    */
   function has_description( $uri ) {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
 

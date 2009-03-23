@@ -3,19 +3,22 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'constants.inc.p
 require_once MORIARTY_DIR . 'httprequestfactory.class.php';
 
 class FakeRequestFactory extends HttpRequestFactory {
-  var $requests;
-
+  var $_requests;
+  var $_received = array();
   function __construct() {
-    $this->requests = array();
+    $this->_requests = array();
+    $this->_received = array();
   }
 
   function register($method, $uri, $request ) {
-    $this->requests[$method . ' ' . $uri] = $request;
+    $this->_requests[$method . ' ' . $uri] = $request;
   }
 
   function make( $method, $uri, $credentials = null) {
-    if (array_key_exists( $method . ' ' . $uri, $this->requests) ) {
-      $request = $this->requests[$method . ' ' . $uri];
+    $this->_received[] = $method . ' ' . $uri;
+    
+    if (array_key_exists( $method . ' ' . $uri, $this->_requests) ) {
+      $request = $this->_requests[$method . ' ' . $uri];
       if ( $credentials != null) {
         $request->set_auth( $credentials->get_auth());
       }
@@ -28,5 +31,10 @@ class FakeRequestFactory extends HttpRequestFactory {
     return new FakeHttpRequest( $response );
   }
 
+  function dump_received() {
+    foreach ($this->_received as $received) {
+      echo $received, "\n"; 
+    } 
+  }
 }
 ?>

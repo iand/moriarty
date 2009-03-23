@@ -24,9 +24,10 @@ class NetworkResource extends SimpleGraph {
    * @param string uri URI of the resource
    * @param Credentials credentials the credentials to use for authenticated requests (optional)
    */ 
-  function __construct($uri, $credentials = null) {
+  function __construct($uri, $credentials = null, $request_factory = null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
+    $this->request_factory = $request_factory;
   }
   
   /**
@@ -67,7 +68,7 @@ class NetworkResource extends SimpleGraph {
    * @return HttpResponse
    */
   function get_from_network() {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
     $uri = $this->uri;
@@ -89,7 +90,7 @@ class NetworkResource extends SimpleGraph {
    * @return HttpResponse
    */
   function put_to_network() {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
     $uri = $this->uri;
@@ -108,7 +109,7 @@ class NetworkResource extends SimpleGraph {
    * @return HttpResponse
    */
   function delete_from_network() {
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
     $uri = $this->uri;

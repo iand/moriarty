@@ -24,9 +24,10 @@ class SparqlServiceBase {
    * @param string uri URI of the sparql service
    * @param Credentials credentials the credentials to use for authenticated requests (optional)
    */ 
-  function __construct($uri, $credentials = null) {
+  function __construct($uri, $credentials = null, $request_factory = null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
+    $this->request_factory = $request_factory;
   }
 
   /**
@@ -111,16 +112,24 @@ class SparqlServiceBase {
    * @return HttpResponse
    */
   function query($query, $mime=''){
-  
-    if (! isset( $this->request_factory) ) {
+    if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
-    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
-    if(empty($mime)) $mime = MIME_RDFXML.','.MIME_SPARQLRESULTS;
-    $request->set_accept($mime);
-    $request->set_content_type(MIME_FORMENCODED);
-    $request->set_body( "query=" . urlencode($query) );
 
+    
+    $get_uri = $this->uri . '?query=' . urlencode($query);
+    if (strlen($get_uri) <= 2048) {
+      $request = $this->request_factory->make( 'GET', $get_uri, $this->credentials );
+      if(empty($mime)) $mime = MIME_RDFXML.','.MIME_SPARQLRESULTS;
+      $request->set_accept($mime);
+    }
+    else {
+      $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
+      if(empty($mime)) $mime = MIME_RDFXML.','.MIME_SPARQLRESULTS;
+      $request->set_accept($mime);
+      $request->set_content_type(MIME_FORMENCODED);
+      $request->set_body( "query=" . urlencode($query) );
+    }
     return $request->execute();
   
   }
@@ -131,15 +140,7 @@ class SparqlServiceBase {
    * @return HttpResponse
    */
   function graph( $query ) {
-    if (! isset( $this->request_factory) ) {
-      $this->request_factory = new HttpRequestFactory();
-    }
-    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
-    $request->set_accept(MIME_RDFXML);
-    $request->set_content_type(MIME_FORMENCODED);
-    $request->set_body( "query=" . urlencode($query) );
-
-    return $request->execute();
+    return $this->query($query, MIME_RDFXML);
   }
 
   /**
@@ -201,16 +202,7 @@ class SparqlServiceBase {
    * @return HttpResponse
    */
   function select( $query ) {
-    if (! isset( $this->request_factory) ) {
-      $this->request_factory = new HttpRequestFactory();
-    }
-
-    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
-    $request->set_accept(MIME_SPARQLRESULTS);
-    $request->set_content_type(MIME_FORMENCODED);
-    $request->set_body( "query=" . urlencode($query) );
-
-    return $request->execute();
+    return $this->query($query, MIME_SPARQLRESULTS);
   }
 
   /**
@@ -338,16 +330,7 @@ class SparqlServiceBase {
    * @return HttpResponse
    */
   function ask( $query ) {
-    if (! isset( $this->request_factory) ) {
-      $this->request_factory = new HttpRequestFactory();
-    }
-
-    $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
-    $request->set_accept(MIME_SPARQLRESULTS);
-    $request->set_content_type(MIME_FORMENCODED);
-    $request->set_body( "query=" . urlencode($query) );
-
-    return $request->execute();
+    return $this->query($query, MIME_SPARQLRESULTS);
   }
 
   /**

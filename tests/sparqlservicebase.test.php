@@ -5,10 +5,11 @@ require_once MORIARTY_TEST_DIR . 'fakecredentials.class.php';
 
 class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
 
-  function test_describe_single_uri_posts_to_service_uri() {
+  function test_describe_single_uri_gets_from_service_uri() {
+    $query = 'DESCRIBE <http://example.org/scooby>';
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
@@ -17,6 +18,7 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( $fake_request->was_executed() );
   }
 
+/*
   function test_describe_single_uri_posts_query() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
@@ -28,11 +30,13 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $response = $ss->describe( 'http://example.org/scooby' );
     $this->assertEquals( "query=DESCRIBE+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E", $fake_request->get_body() );
   }
+*/
 
   function test_describe_single_uri_sets_accept() {
+    $query = 'DESCRIBE <http://example.org/scooby>';
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
@@ -41,6 +45,7 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( in_array('Accept: application/rdf+xml', $fake_request->get_headers() ) );
   }
 
+/*
   function test_describe_single_uri_sets_content_type() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
@@ -52,11 +57,13 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $response = $ss->describe( 'http://example.org/scooby' );
     $this->assertTrue( in_array('Content-Type: application/x-www-form-urlencoded', $fake_request->get_headers() ) );
   }
+*/
 
-  function test_describe_multiple_uris_posts_to_service_uri() {
+  function test_describe_multiple_uris_gets_from_service_uri() {
+    $query = 'DESCRIBE <http://example.org/scooby> <http://example.org/shaggy>';
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
@@ -65,19 +72,22 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( $fake_request->was_executed() );
   }
 
+/*
   function test_describe_multiple_uris_posts_query() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=DESCRIBE+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Chttp%3A%2F%2Fexample.org%2Fshaggy%3E+%3Chttp%3A%2F%2Fexample.org%2Fvelma%3E", $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
 
     $response = $ss->describe( array( 'http://example.org/scooby', 'http://example.org/shaggy', 'http://example.org/velma' )  );
-    $this->assertEquals( "query=DESCRIBE+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Chttp%3A%2F%2Fexample.org%2Fshaggy%3E+%3Chttp%3A%2F%2Fexample.org%2Fvelma%3E", $fake_request->get_body() );
+    $this->assertTrue( $fake_request->was_executed() );
   }
+*/
 
   function test_describe_to_triple_list() {
+    $query = 'DESCRIBE <http://example.org/subj>';
     $fake_response = new HttpResponse();
     $fake_response->status_code = 200;
     $fake_response->body = '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ex="http://example.org/">
@@ -88,9 +98,9 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
 
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( $fake_response );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
-    $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
+    $ss = new SparqlServiceBase("http://example .org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
   
     $triples = $ss->describe_to_triple_list( 'http://example.org/subj' );
@@ -99,6 +109,7 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
 
 
   function test_describe_to_triple_list_parses_response() {
+    $query = 'DESCRIBE <http://example.org/subj>';
     $fake_response = new HttpResponse();
     $fake_response->status_code = 200;
     $fake_response->body = '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ex="http://example.org/">
@@ -109,7 +120,7 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
 
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( $fake_response );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
@@ -126,42 +137,47 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
   }
 
 
-  function test_graph_posts_to_service_uri() {
+  function test_graph_gets_from_service_uri() {
+    $query = 'construct {?s ?p ?o } where { ?s ?p ?o .}';
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
 
-    $response = $ss->graph( 'construct {?s ?p ?o } where { ?s ?p ?o .}' );
+    $response = $ss->graph( $query );
     $this->assertTrue( $fake_request->was_executed() );
   }
 
+/*
   function test_graph_uri_posts_query() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=construct+%7B%3Fs+%3Fp+%3Fo+%7D+where+%7B+%3Fs+%3Fp+%3Fo+.%7D", $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
 
     $response = $ss->graph( 'construct {?s ?p ?o } where { ?s ?p ?o .}' );
-    $this->assertEquals( "query=construct+%7B%3Fs+%3Fp+%3Fo+%7D+where+%7B+%3Fs+%3Fp+%3Fo+.%7D", $fake_request->get_body() );
+    $this->assertTrue( $fake_request->was_executed() );
   }
+*/
 
-  function test_query_posts_to_service_uri() {
+  function test_query_gets_from_service_uri() {
+    $query = 'construct {?s ?p ?o } where { ?s ?p ?o .}';
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
 
-    $response = $ss->query( 'construct {?s ?p ?o } where { ?s ?p ?o .}' );
+    $response = $ss->query( $query );
     $this->assertTrue( $fake_request->was_executed() );
   }
 
+/*
   function test_query_uri_posts_query() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
@@ -173,10 +189,12 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $response = $ss->query( 'construct {?s ?p ?o } where { ?s ?p ?o .}' );
     $this->assertEquals( "query=construct+%7B%3Fs+%3Fp+%3Fo+%7D+where+%7B+%3Fs+%3Fp+%3Fo+.%7D", $fake_request->get_body() );
   }
+*/
 
 
 
   function test_graph_to_triple_list() {
+    $query = 'construct {?s ?p ?o } where { ?s ?p ?o .}';
     $fake_response = new HttpResponse();
     $fake_response->status_code = 200;
     $fake_response->body = '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ex="http://example.org/">
@@ -187,17 +205,18 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
 
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( $fake_response );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
   
-    $triples = $ss->graph_to_triple_list( 'construct {?s ?p ?o } where { ?s ?p ?o .}' );
+    $triples = $ss->graph_to_triple_list( $query );
     $this->assertTrue( is_array( $triples ) );
   }
 
 
   function test_graph_to_triple_list_parses_response() {
+    $query = 'construct {?s ?p ?o } where { ?s ?p ?o .}';
     $fake_response = new HttpResponse();
     $fake_response->status_code = 200;
     $fake_response->body = '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ex="http://example.org/">
@@ -208,12 +227,12 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
 
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( $fake_response );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
   
-    $triples = $ss->graph_to_triple_list( 'construct {?s ?p ?o } where { ?s ?p ?o .}' );
+    $triples = $ss->graph_to_triple_list( $query );
 
     $this->assertEquals( 1, count( $triples ) );
     $this->assertEquals( 'uri', $triples[0]['s_type'] );
@@ -224,18 +243,21 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
 
   }
 
-  function test_select_posts_to_service_uri() {
+  function test_select_gets_from_service_uri() {
+    $query = 'select ?s where { ?s ?p ?o .}';
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+//    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
 
-    $response = $ss->select( 'select ?s where { ?s ?p ?o .}' );
+    $response = $ss->select( $query );
     $this->assertTrue( $fake_request->was_executed() );
   }
 
+/*
   function test_select_posts_query() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
@@ -247,34 +269,40 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $response = $ss->select( 'select ?s where { ?s ?p ?o .}' );
     $this->assertEquals( "query=select+%3Fs+where+%7B+%3Fs+%3Fp+%3Fo+.%7D", $fake_request->get_body() );
   }
+*/
 
 
   function test_select_sets_accept() {
+    $query = 'select ?s where { ?s ?p ?o .}';
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
 
-    $response = $ss->select( 'select ?s where { ?s ?p ?o .}' );
+    $response = $ss->select( $query );
     $this->assertTrue( in_array('Accept: application/sparql-results+xml', $fake_request->get_headers() ) );
   }
 
+/*
   function test_select_sets_content_type() {
+    $query = 'select ?s where { ?s ?p ?o .}';
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
 
-    $response = $ss->select( 'select ?s where { ?s ?p ?o .}' );
+    $response = $ss->select( $query );
     $this->assertTrue( in_array('Content-Type: application/x-www-form-urlencoded', $fake_request->get_headers() ) );
   }
+*/
 
 
   function test_select_to_array() {
+    $query = 'select distinct ?s where { ?s ?p ?o .} limit 3';
     $fake_response = new HttpResponse();
     $fake_response->status_code = 200;
     $fake_response->body = '<?xml version="1.0"?>
@@ -309,18 +337,19 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
 
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( $fake_response );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
   
-    $array = $ss->select_to_array( 'select distinct ?s where { ?s ?p ?o .} limit 3' );
+    $array = $ss->select_to_array( $query );
     $this->assertTrue( is_array( $array ) );
 
   }
 
 
   function test_select_to_array_parses_response() {
+    $query = 'select distinct ?s where { ?s ?p ?o .} limit 3';
     $fake_response = new HttpResponse();
     $fake_response->status_code = 200;
     $fake_response->body = '<?xml version="1.0"?>
@@ -365,7 +394,7 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
 
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( $fake_response );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
@@ -470,18 +499,20 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
   }
 
 
-  function test_ask_posts_to_service_uri() {
+  function test_ask_gets_from_service_uri() {
+    $query = 'ask where { ?s ?p ?o .}';
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
 
-    $response = $ss->ask( 'ask where { ?s ?p ?o .}' );
+    $response = $ss->ask( $query );
     $this->assertTrue( $fake_request->was_executed() );
   }
 
+/*
   function test_ask_posts_query() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
@@ -493,19 +524,22 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $response = $ss->ask( 'ask where { ?s ?p ?o .}' );
     $this->assertEquals( "query=ask+where+%7B+%3Fs+%3Fp+%3Fo+.%7D", $fake_request->get_body() );
   }
+*/
 
   function test_ask_sets_accept() {
+    $query = 'ask where { ?s ?p ?o .}';
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
 
-    $response = $ss->ask( 'ask where { ?s ?p ?o .}' );
+    $response = $ss->ask( $query );
     $this->assertTrue( in_array('Accept: application/sparql-results+xml', $fake_request->get_headers() ) );
   }
 
+/*
   function test_ask_sets_content_type() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
@@ -517,6 +551,7 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $response = $ss->ask( 'ask where { ?s ?p ?o .}' );
     $this->assertTrue( in_array('Content-Type: application/x-www-form-urlencoded', $fake_request->get_headers() ) );
   }
+*/
 
   function test_ask_results_true() {
       $xml = '<?xml version="1.0"?>
@@ -558,43 +593,62 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
   function test_describe_supports_cbd_type() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=DESCRIBE+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E", $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
 
     $response = $ss->describe( 'http://example.org/scooby', 'cbd' );
-    $this->assertEquals( "query=DESCRIBE+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E", $fake_request->get_body() );
+    $this->assertTrue( $fake_request->was_executed() );
   }
 
   function test_describe_supports_scbd_type() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=CONSTRUCT+%7B%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.+%3Fs+%3Fp2+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+.%7D+WHERE+%7B+%7B%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.%7D+UNION+%7B%3Fs+%3Fp2+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+.%7D+%7D", $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
 
     $response = $ss->describe( 'http://example.org/scooby', 'scbd' );
-    $this->assertEquals( "query=CONSTRUCT+%7B%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.+%3Fs+%3Fp2+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+.%7D+WHERE+%7B+%7B%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.%7D+UNION+%7B%3Fs+%3Fp2+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+.%7D+%7D", $fake_request->get_body() );
-
+    $this->assertTrue( $fake_request->was_executed() );
   }
 
 
   function test_describe_supports_lcbd_type() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=PREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E+CONSTRUCT+%7B%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.+%3Fo+rdfs%3Alabel+%3Flabel+.+%3Fo+rdfs%3Acomment+%3Fcomment+.+%3Fo+rdfs%3AseeAlso+%3Fseealso.%7D+WHERE+%7B%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.+OPTIONAL+%7B+%3Fo+rdfs%3Alabel+%3Flabel+.%7D+OPTIONAL+%7B%3Fo+rdfs%3Acomment+%3Fcomment+.+%7D+OPTIONAL+%7B%3Fo+rdfs%3AseeAlso+%3Fseealso.%7D%7D", $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
 
     $response = $ss->describe( 'http://example.org/scooby', 'lcbd' );
-    $this->assertEquals( "query=PREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E+CONSTRUCT+%7B%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.+%3Fo+rdfs%3Alabel+%3Flabel+.+%3Fo+rdfs%3Acomment+%3Fcomment+.+%3Fo+rdfs%3AseeAlso+%3Fseealso.%7D+WHERE+%7B%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.+OPTIONAL+%7B+%3Fo+rdfs%3Alabel+%3Flabel+.%7D+OPTIONAL+%7B%3Fo+rdfs%3Acomment+%3Fcomment+.+%7D+OPTIONAL+%7B%3Fo+rdfs%3AseeAlso+%3Fseealso.%7D%7D", $fake_request->get_body() );
+    $this->assertTrue( $fake_request->was_executed() );
 
   }
 
   function test_describe_supports_slcbd_type() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=PREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E+CONSTRUCT+%7B%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.+%3Fo+rdfs%3Alabel+%3Flabel+.+%3Fo+rdfs%3Acomment+%3Fcomment+.+%3Fo+rdfs%3AseeAlso+%3Fseealso.+%3Fs+%3Fp2+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+.+%3Fs+rdfs%3Alabel+%3Flabel+.+%3Fs+rdfs%3Acomment+%3Fcomment+.+%3Fs+rdfs%3AseeAlso+%3Fseealso.%7D+WHERE+%7B+%7B+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.+OPTIONAL+%7B%3Fo+rdfs%3Alabel+%3Flabel+.%7D+OPTIONAL+%7B%3Fo+rdfs%3Acomment+%3Fcomment+.%7D+OPTIONAL+%7B%3Fo+rdfs%3AseeAlso+%3Fseealso.%7D+%7D+UNION+%7B%3Fs+%3Fp2+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+.+OPTIONAL+%7B%3Fs+rdfs%3Alabel+%3Flabel+.%7D+OPTIONAL+%7B%3Fs+rdfs%3Acomment+%3Fcomment+.%7D+OPTIONAL+%7B%3Fs+rdfs%3AseeAlso+%3Fseealso.%7D+%7D+%7D", $fake_request );
+
+    $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
+    $ss->request_factory = $fake_request_factory;
+
+    $response = $ss->describe( 'http://example.org/scooby', 'slcbd' );
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+
+  function test_query_uses_post_if_request_uri_longer_than_2048_bytes() {
+    $long_uri = "http://example.com/0123456789";
+    for ($i = 0; $i < 195; $i++) {
+      $long_uri .= '0123456789';  
+    }
+    $query = 'describe <' . $long_uri . '>' ;
+    $request_uri = "http://example.org/store/services/sparql?query=" . urlencode($query);
+    $this->assertEquals( 2049, strlen($request_uri) );
+    
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
     $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
@@ -602,8 +656,52 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
 
-    $response = $ss->describe( 'http://example.org/scooby', 'slcbd' );
-    $this->assertEquals( "query=PREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E+CONSTRUCT+%7B%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.+%3Fo+rdfs%3Alabel+%3Flabel+.+%3Fo+rdfs%3Acomment+%3Fcomment+.+%3Fo+rdfs%3AseeAlso+%3Fseealso.+%3Fs+%3Fp2+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+.+%3Fs+rdfs%3Alabel+%3Flabel+.+%3Fs+rdfs%3Acomment+%3Fcomment+.+%3Fs+rdfs%3AseeAlso+%3Fseealso.%7D+WHERE+%7B+%7B+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.+OPTIONAL+%7B%3Fo+rdfs%3Alabel+%3Flabel+.%7D+OPTIONAL+%7B%3Fo+rdfs%3Acomment+%3Fcomment+.%7D+OPTIONAL+%7B%3Fo+rdfs%3AseeAlso+%3Fseealso.%7D+%7D+UNION+%7B%3Fs+%3Fp2+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+.+OPTIONAL+%7B%3Fs+rdfs%3Alabel+%3Flabel+.%7D+OPTIONAL+%7B%3Fs+rdfs%3Acomment+%3Fcomment+.%7D+OPTIONAL+%7B%3Fs+rdfs%3AseeAlso+%3Fseealso.%7D+%7D+%7D", $fake_request->get_body() );
+
+    $response = $ss->query( $query );
+    $this->assertEquals( "query=" . urlencode($query), $fake_request->get_body() );
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+
+  function test_query_sets_content_type_if_request_uri_longer_than_2048_bytes() {
+    $long_uri = "http://example.com/0123456789";
+    for ($i = 0; $i < 195; $i++) {
+      $long_uri .= '0123456789';  
+    }
+    $query = 'describe <' . $long_uri . '>' ;
+    $request_uri = "http://example.org/store/services/sparql?query=" . urlencode($query);
+    $this->assertEquals( 2049, strlen($request_uri) );
+    
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+
+    $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
+    $ss->request_factory = $fake_request_factory;
+
+
+    $response = $ss->query( $query );
+    $this->assertTrue( in_array('Content-Type: application/x-www-form-urlencoded', $fake_request->get_headers() ) );
+  }
+
+  function test_query_uses_post_if_request_uri_less_than_or_equal_to_2048_bytes() {
+    $long_uri = "http://example.com/012345678";
+    for ($i = 0; $i < 195; $i++) {
+      $long_uri .= '0123456789';  
+    }
+    $query = 'describe <' . $long_uri . '>' ;
+    $request_uri = "http://example.org/store/services/sparql?query=" . urlencode($query);
+    $this->assertEquals( 2048, strlen($request_uri) );
+
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
+
+    $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
+    $ss->request_factory = $fake_request_factory;
+
+    $response = $ss->query( $query);
+    $this->assertEquals( "", $fake_request->get_body() );
+    $this->assertTrue( $fake_request->was_executed() );
   }
 
 }

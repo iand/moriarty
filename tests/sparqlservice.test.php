@@ -9,7 +9,7 @@ class SparqlServiceTest extends SparqlServiceBaseTest {
   function test_describe_single_uri_uses_credentials() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode("DESCRIBE <http://example.org/scooby>"), $fake_request );
 
     $ss = new SparqlService("http://example.org/store/services/sparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;
@@ -21,7 +21,7 @@ class SparqlServiceTest extends SparqlServiceBaseTest {
   function test_describe_multiple_uris_uses_credentials() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode("DESCRIBE <http://example.org/scooby> <http://example.org/shaggy> <http://example.org/velma>"), $fake_request );
 
     $ss = new SparqlService("http://example.org/store/services/sparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;
@@ -33,7 +33,7 @@ class SparqlServiceTest extends SparqlServiceBaseTest {
   function test_describe_to_triple_list_uses_credentials() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode("DESCRIBE <http://example.org/subj>"), $fake_request );
 
     $ss = new SparqlService("http://example.org/store/services/sparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;
@@ -45,7 +45,7 @@ class SparqlServiceTest extends SparqlServiceBaseTest {
   function test_graph_uses_credentials() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode('construct {?s ?p ?o } where { ?s ?p ?o .}'), $fake_request );
 
     $ss = new SparqlService("http://example.org/store/services/sparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;
@@ -57,7 +57,7 @@ class SparqlServiceTest extends SparqlServiceBaseTest {
   function test_graph_to_triple_list_uses_credentials() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode('construct {?s ?p ?o } where { ?s ?p ?o .}'), $fake_request );
 
     $ss = new SparqlService("http://example.org/store/services/sparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;
@@ -69,7 +69,7 @@ class SparqlServiceTest extends SparqlServiceBaseTest {
   function test_select_uses_credentials() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode('select ?s where { ?s ?p ?o .}'), $fake_request );
 
     $ss = new SparqlService("http://example.org/store/services/sparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;
@@ -123,7 +123,7 @@ class SparqlServiceTest extends SparqlServiceBaseTest {
 
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( $fake_response );
-    $fake_request_factory->register('POST', "http://example.org/store/services/sparql", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode('select distinct ?s where { ?s ?p ?o .} limit 3'), $fake_request );
 
     $ss = new SparqlService("http://example.org/store/services/sparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;

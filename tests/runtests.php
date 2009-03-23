@@ -92,7 +92,7 @@ class Moriarty_AllTests
         $suite->addTestSuite('NetworkResourceTest');
         $suite->addTestSuite('QueryProfileTest');
         $suite->addTestSuite('StoreGroupConfigTest');
-        $suite->addTestSuite('HttpCacheTest');
+//        $suite->addTestSuite('HttpCacheTest');
         $suite->addTestSuite('FacetServiceTest');
         $suite->addTestSuite('SnapshotsTest');
         $suite->addTestSuite('RollbackTest');
