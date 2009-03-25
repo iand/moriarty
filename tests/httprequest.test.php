@@ -2,6 +2,7 @@
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'constants.inc.php';
 require_once MORIARTY_DIR . 'httprequest.class.php';
 require_once MORIARTY_TEST_DIR . 'fakecredentials.class.php';
+require_once MORIARTY_TEST_DIR . 'fakecache.class.php';
 
 class HttpRequestTest extends PHPUnit_Framework_TestCase {
 
@@ -150,5 +151,26 @@ foo';
     $this->assertNotEquals($request1->cache_id($request1), $request2->cache_id($request2));
    
   }
+  
+  function test_cache_entry_exists_and_no_validation_required() {
+    $response = new HttpResponse();
+    $response->status_code = 200;
+    $response->body = 'scooby';
+
+    $request = new HttpRequest('GET', 'http://example.org/');
+
+    $cache = new FakeCache();
+    $cache->save($response, $request->cache_id());
+
+    $request->set_cache($cache);    
+    $request->always_validate_cache(FALSE);
+    
+    $new_response = $request->execute();  
+    
+    $this->assertEquals('scooby', $new_response->body);
+  
+    
+  }
+  
 }
 ?>

@@ -123,10 +123,10 @@ class Store {
   }
 
 
-  function describe($uri) {
-    if ( is_array( $uri ) ) {
+  function describe($uri, $type='cbd') {
+    if ( is_array( $uri ) || $type != 'cbd' ) {
       $ss = $this->get_sparql_service();
-      return $ss->describe($uri);
+      return $ss->describe($uri, $type);
     }
     else {
       $mb = $this->get_metabox();
