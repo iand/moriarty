@@ -33,6 +33,10 @@ class HttpRequest {
 
 
   var $_cache = null;
+  var $_always_validate_cache = TRUE;
+  var $_use_stale_response_on_failure = FALSE;
+  
+  var $_proxy = null;
 
   /**
    * Create a new instance of this class
@@ -51,6 +55,9 @@ class HttpRequest {
     }
     
     $this->headers = array();
+    $this->headers['Accept'] = '*/*';
+
+
     $this->options = array();
     $this->body = null;
 
@@ -61,6 +68,17 @@ class HttpRequest {
     $this->_cache = $cache; 
   }
 
+  function always_validate_cache($val) {
+    $this->_always_validate_cache = $val; 
+  }
+
+  function use_stale_response_on_failure($val) {
+    $this->_use_stale_response_on_failure = $val; 
+  }
+  
+  function set_proxy($val) {
+    $this->_proxy = $val; 
+  } 
 
   /**
    * Issue the HTTP request
@@ -68,18 +86,17 @@ class HttpRequest {
    */
   function execute() {
     if ( $this->_cache ) {
-      $cached_response = $this->_cache->load($this->cache_id(), defined('MORIARTY_HTTP_CACHE_USE_STALE_ON_FAILURE'));
+      $cached_response = $this->_cache->load($this->cache_id(), $this->_use_stale_response_on_failure);
       if ($cached_response) {
-        if (defined('MORIARTY_HTTP_CACHE_READ_ONLY') ) {
-          $cached_response->request = $this;
-          return $cached_response;
-        }
-        else {
+        if ($this->_always_validate_cache ) {
           if ( isset($cached_response->headers['etag']) ) {
             $this->set_if_none_match($cached_response->headers['etag']);
           }
         }
-        
+        else {
+          $cached_response->request = $this;
+          return $cached_response;
+        }
       }
     }
 
@@ -168,8 +185,8 @@ class HttpRequest {
       curl_setopt($poster, CURLOPT_TIMEOUT, 600);
       curl_setopt($poster, CURLOPT_HEADER, 1);
 
-      if ( defined( 'MORIARTY_PROXY' ) ) {
-        curl_setopt($poster, CURLOPT_PROXY, MORIARTY_PROXY );
+      if ( !empty( $this->_proxy ) ) {
+        curl_setopt($poster, CURLOPT_PROXY, $this->_proxy );
       }
 
       switch($this->method) {
@@ -310,7 +327,11 @@ class HttpRequest {
    
    
   function cache_id() {
-    $accept = $this->headers['Accept'];
+    $accept = '*/*';
+    if (array_key_exists('Accept', $this->headers)) {
+      $accept = $this->headers['Accept'];
+    }
+    
     $accept_parts = split(',', $accept);
     sort($accept_parts);
     $accept = join(',', $accept_parts);
