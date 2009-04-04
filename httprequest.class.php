@@ -487,6 +487,20 @@ class HttpResponse {
   }
 
   /**
+   * Obtain an html representation of this response
+   * @return string
+   */
+  function to_html()
+  {
+	if(!is_array($this->headers))
+	$html = '<div xmlns:http="http://www.w3.org/2006/http#" about="#http-response-'.time().'" typeof="http:Response"><h3>HTTP Response</h3><dl><dt>Status Code</dt><dd rel="http:responseCode" resource="http://www.w3.org/2006/http#'.htmlentities($this->status_code).'">'.htmlentities($this->status_code).'</dd>';
+	foreach($this->headers as $k => $v) $html.='<dt>'.htmlentities($k).'</dt><dd>'.htmlentities($v).'</dd>';
+	$html.='<dt>Body</dt><dd class="http:body">'.htmlentities($this->body, 0, 'UTF-8').'</dd></dl></div>';
+	return $html;
+  }
+
+
+  /**
    * Tests whether this response is suitable for caching
    * @return boolean true if the response can be cached, false otherwise
    */
