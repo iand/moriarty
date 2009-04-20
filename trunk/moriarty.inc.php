@@ -1,15 +1,16 @@
 <?php
-if(!defined('MORIARTY_DIR')) define('MORIARTY_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR ); 
+if(!defined('MORIARTY_DIR')) define('MORIARTY_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR );
 if(!defined('MORIARTY_ARC_DIR')) {
-  define('MORIARTY_ARC_DIR', dirname(dirname(__FILE__))  . DIRECTORY_SEPARATOR . 'arc_2008_08_04' . DIRECTORY_SEPARATOR); 
+  define('MORIARTY_ARC_DIR', dirname(dirname(__FILE__))  . DIRECTORY_SEPARATOR . 'arc_2008_08_04' . DIRECTORY_SEPARATOR);
   trigger_error("Constant MORIARTY_ARC_DIR was not defined, so a value of '" . MORIARTY_ARC_DIR . "' will be assumed",E_USER_WARNING);
-} 
+}
 
 if (!defined('MORIARTY_TEST_DIR') ) define('MORIARTY_TEST_DIR', MORIARTY_DIR . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR);
 if (!defined('MORIARTY_PHPUNIT_DIR') ) define('MORIARTY_PHPUNIT_DIR', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'phpunit' . DIRECTORY_SEPARATOR);
 
 require_once MORIARTY_ARC_DIR . 'ARC2.php';
-if (ARC2::getVersion() < '2008-08-04') {
+$__arc = new ARC2();
+if ($__arc->getVersion() < '2008-08-04') {
   trigger_error("Unsupported version of ARC detected. Expected at least '2008-08-04' but found '" . ARC2::getVersion(). "'",E_USER_ERROR);
 }
 
@@ -119,10 +120,10 @@ define('ANALYZER_STANDARDEL', 'http://schemas.talis.com/2007/bigfoot/analyzers#s
 define('ANALYZER_STANDARDDE', 'http://schemas.talis.com/2007/bigfoot/analyzers#standard-de');
 define('ANALYZER_STANDARDFR', 'http://schemas.talis.com/2007/bigfoot/analyzers#standard-fr');
 define('ANALYZER_STANDARDCJK', 'http://schemas.talis.com/2007/bigfoot/analyzers#standard-cjk');
-define('ANALYZER_STANDARDNL', 'http://schemas.talis.com/2007/bigfoot/analyzers#standard-nl'); 
-define('ANALYZER_KEYWORD', 'http://schemas.talis.com/2007/bigfoot/analyzers#keyword'); 
-define('ANALYZER_NOSTOPEN', 'http://schemas.talis.com/2007/bigfoot/analyzers#nostop-en'); 
-define('ANALYZER_NORMEN', 'http://schemas.talis.com/2007/bigfoot/analyzers#norm-en'); 
+define('ANALYZER_STANDARDNL', 'http://schemas.talis.com/2007/bigfoot/analyzers#standard-nl');
+define('ANALYZER_KEYWORD', 'http://schemas.talis.com/2007/bigfoot/analyzers#keyword');
+define('ANALYZER_NOSTOPEN', 'http://schemas.talis.com/2007/bigfoot/analyzers#nostop-en');
+define('ANALYZER_NORMEN', 'http://schemas.talis.com/2007/bigfoot/analyzers#norm-en');
 
 define('OWL_CLASS', 'http://www.w3.org/2002/07/owl#Class');
 define('OWL_COMPLEMENTOF', 'http://www.w3.org/2002/07/owl#complementOf');
