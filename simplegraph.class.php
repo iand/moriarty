@@ -207,7 +207,8 @@ class SimpleGraph {
    * @return string the JSON version of the graph
    */
   function to_json() {
-    $serializer = ARC2::getRDFJSONSerializer(
+    $arc = new ARC2();
+    $serializer = $arc->getRDFJSONSerializer(
         array(
           'ns' => $this->_ns,
         )
@@ -584,7 +585,19 @@ class SimpleGraph {
     return $values;
   }    
   
-  
+  /**
+   * Fetch a subgraph where all triples have given subject
+   * @param string s the subject to search for
+   * @return SimpleGraph triples with the supplied subject
+   */
+  function get_subject_subgraph($s) {
+    $sub = new SimpleGraph();
+    if (array_key_exists($s, $this->_index) ) {
+      $sub->_index[$s] = $this->_index[$s];
+    }
+    return $sub;
+  }     
+
   
   /**
    * Fetch the properties of a given subject and predicate. 

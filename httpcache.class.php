@@ -4,17 +4,20 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 class HttpCache {
   var $_directory;
   var $_options;
-  
+
   function __construct($options = array()) {
     $this->_options = $options;
+    if (! array_key_exists('caching', $this->_options)) {
+      $this->_options['caching'] = TRUE;
+    }
     $this->_directory = $options['directory'];
     if (substr($this->_directory, -1) != DIRECTORY_SEPARATOR) {
       $this->_directory .= DIRECTORY_SEPARATOR;
     }
-    
+
   }
 
- 
+
   function save($data, $id, $tags= array(), $specificLifetime = FALSE, $priority = 0) {
     if ($this->_options['caching'] === FALSE) return TRUE;
     $filename = $this->_directory . $id;
@@ -22,7 +25,7 @@ class HttpCache {
     if ($fp) {
       fwrite($fp,serialize($specificLifetime) . "\n");
       fwrite($fp,serialize($data));
-      fclose($fp);    
+      fclose($fp);
       chmod($filename, 0777);
       return TRUE;
     }
@@ -41,11 +44,11 @@ class HttpCache {
           if ( time() - filectime($filename) > $specificLifetime ) {
             $this->remove($id);
             return FALSE;
-          } 
+          }
         }
         $response = unserialize($response_ser);
         return $response;
-      }       
+      }
     }
     return FALSE;
   }
@@ -56,7 +59,7 @@ class HttpCache {
     $filename = $this->_directory . $id;
     if ( file_exists($filename)) {
       unlink($filename);
-    }       
+    }
 
     return TRUE;
   }
@@ -64,11 +67,11 @@ class HttpCache {
 
   function test($id) {
     if ($this->_options['caching'] === FALSE) return FALSE;
-    $filename = $this->_directory . $id;  
+    $filename = $this->_directory . $id;
     return file_exists($filename);
   }
-  
-  
+
+
 
 }
 
