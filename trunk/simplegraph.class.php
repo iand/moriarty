@@ -222,18 +222,30 @@ class SimpleGraph {
   /**
    * Fetch the first literal value for a given subject and predicate. If there are multiple possible values then one is selected at random. 
    * @param string s the subject to search for
-   * @param string p the predicate to search for
+   * @param string p the predicate to search for, or an array of predicates
    * @param string default a default value to use if no literal values are found
    * @return string the first literal value found or the supplied default if no values were found
    */
-  function get_first_literal($s, $p, $default = null) {
+  function get_first_literal($s, $p, $default = null, $preferred_language = null) {
+    
+    $best_literal = $default;
     if ( array_key_exists($s, $this->_index)) {
       if (is_array($p)) {
         foreach($p as $p_uri) {
           if(array_key_exists($p_uri, $this->_index[$s]) ) {
             foreach ($this->_index[$s][$p_uri] as $value) {
               if ($value['type'] == 'literal') {
-                return $value['value'];
+                if ($preferred_language == null) {
+                  return $value['value'];
+                }
+                else {
+                  if (array_key_exists('lang', $value) && $value['lang'] == $preferred_language) {
+                    return $value['value'];
+                  }
+                  else {
+                    $best_literal = $value['value'];  
+                  }
+                }
               }
             }
           }         
@@ -242,13 +254,23 @@ class SimpleGraph {
       else if(array_key_exists($p, $this->_index[$s]) ) {
         foreach ($this->_index[$s][$p] as $value) {
           if ($value['type'] == 'literal') {
-            return $value['value'];
+            if ($preferred_language == null) {
+              return $value['value'];
+            }
+            else {
+              if (array_key_exists('lang', $value) && $value['lang'] == $preferred_language) {
+                return $value['value'];
+              }
+              else {
+                $best_literal = $value['value'];  
+              }
+            }
           }
         }
       }
     }
 
-    return $default;
+    return $best_literal;
   }
 
   /**
