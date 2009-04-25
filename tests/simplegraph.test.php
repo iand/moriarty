@@ -345,5 +345,16 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(null, $g->uri_to_qname('http://example.org/foo/'));
   }
 
+  function test_get_first_literal_uses_preferred_language() {
+    $g = new SimpleGraph();
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'en', 'en');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'fr', 'fr');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'de', 'de');
+
+    $this->assertEquals( "en", $g->get_first_literal('http://example.org/subj', 'http://example.org/pred', null, 'en'));
+    $this->assertEquals( "fr", $g->get_first_literal('http://example.org/subj', 'http://example.org/pred', null, 'fr'));
+    $this->assertEquals( "de", $g->get_first_literal('http://example.org/subj', 'http://example.org/pred', null, 'de'));
+  }
+
 }
 ?>
