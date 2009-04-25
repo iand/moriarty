@@ -1,7 +1,7 @@
 <?php
 if(!defined('MORIARTY_DIR')) define('MORIARTY_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR );
 if(!defined('MORIARTY_ARC_DIR')) {
-  define('MORIARTY_ARC_DIR', dirname(dirname(__FILE__))  . DIRECTORY_SEPARATOR . 'arc_2008_08_04' . DIRECTORY_SEPARATOR);
+  define('MORIARTY_ARC_DIR', dirname(dirname(__FILE__))  . DIRECTORY_SEPARATOR . 'arc_2008_11_18' . DIRECTORY_SEPARATOR);
   trigger_error("Constant MORIARTY_ARC_DIR was not defined, so a value of '" . MORIARTY_ARC_DIR . "' will be assumed",E_USER_WARNING);
 }
 

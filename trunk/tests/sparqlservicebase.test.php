@@ -618,7 +618,7 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
   function test_describe_supports_lcbd_type() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=PREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E+CONSTRUCT+%7B%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.+%3Fo+rdfs%3Alabel+%3Flabel+.+%3Fo+rdfs%3Acomment+%3Fcomment+.+%3Fo+rdfs%3AseeAlso+%3Fseealso.%7D+WHERE+%7B%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Fp+%3Fo+.+OPTIONAL+%7B+%3Fo+rdfs%3Alabel+%3Flabel+.%7D+OPTIONAL+%7B%3Fo+rdfs%3Acomment+%3Fcomment+.+%7D+OPTIONAL+%7B%3Fo+rdfs%3AseeAlso+%3Fseealso.%7D%7D", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> CONSTRUCT {<http://example.org/scooby> ?p ?o . ?o rdfs:label ?label . ?o rdfs:comment ?comment . ?o <http://www.w3.org/2004/02/skos/core#prefLabel> ?plabel . ?o rdfs:seeAlso ?seealso.} WHERE {<http://example.org/scooby> ?p ?o . OPTIONAL { ?o rdfs:label ?label .} OPTIONAL {?o <http://www.w3.org/2004/02/skos/core#prefLabel> ?plabel . } OPTIONAL {?o rdfs:comment ?comment . } OPTIONAL {?o rdfs:seeAlso ?seealso.}}"), $fake_request );
 
     $ss = new SparqlServiceBase("http://example.org/store/services/sparql");
     $ss->request_factory = $fake_request_factory;
