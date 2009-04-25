@@ -53,7 +53,8 @@ class SparqlServiceBase {
         $query = "CONSTRUCT {<$uri> ?p ?o . ?s ?p2 <$uri> .} WHERE { {<$uri> ?p ?o .} UNION {?s ?p2 <$uri> .} }"; 
       }
       else if ($type == 'lcbd') {
-        $query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> CONSTRUCT {<$uri> ?p ?o . ?o rdfs:label ?label . ?o rdfs:comment ?comment . ?o rdfs:seeAlso ?seealso.} WHERE {<$uri> ?p ?o . OPTIONAL { ?o rdfs:label ?label .} OPTIONAL {?o rdfs:comment ?comment . } OPTIONAL {?o rdfs:seeAlso ?seealso.}}";
+//        $query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> CONSTRUCT {<$uri> ?p ?o . ?o rdfs:label ?label . ?o rdfs:comment ?comment . ?o rdfs:seeAlso ?seealso.} WHERE {<$uri> ?p ?o . OPTIONAL { ?o rdfs:label ?label .} OPTIONAL {?o rdfs:comment ?comment . } OPTIONAL {?o rdfs:seeAlso ?seealso.}}";
+        $query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> CONSTRUCT {<$uri> ?p ?o . ?o rdfs:label ?label . ?o rdfs:comment ?comment . ?o <http://www.w3.org/2004/02/skos/core#prefLabel> ?plabel . ?o rdfs:seeAlso ?seealso.} WHERE {<$uri> ?p ?o . OPTIONAL { ?o rdfs:label ?label .} OPTIONAL {?o <http://www.w3.org/2004/02/skos/core#prefLabel> ?plabel . } OPTIONAL {?o rdfs:comment ?comment . } OPTIONAL {?o rdfs:seeAlso ?seealso.}}";
       }
       else if ($type == 'slcbd') {
         $query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> CONSTRUCT {<$uri> ?p ?o . ?o rdfs:label ?label . ?o rdfs:comment ?comment . ?o rdfs:seeAlso ?seealso. ?s ?p2 <$uri> . ?s rdfs:label ?label . ?s rdfs:comment ?comment . ?s rdfs:seeAlso ?seealso.} WHERE { { <$uri> ?p ?o . OPTIONAL {?o rdfs:label ?label .} OPTIONAL {?o rdfs:comment ?comment .} OPTIONAL {?o rdfs:seeAlso ?seealso.} } UNION {?s ?p2 <$uri> . OPTIONAL {?s rdfs:label ?label .} OPTIONAL {?s rdfs:comment ?comment .} OPTIONAL {?s rdfs:seeAlso ?seealso.} } }";

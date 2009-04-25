@@ -39,6 +39,9 @@ class SimpleGraph {
                     'status' => 'http://www.w3.org/2003/06/sw-vocab-status/ns#',
                     'label' => 'http://purl.org/net/vocab/2004/03/label#',
                     'skos' => 'http://www.w3.org/2004/02/skos/core#',
+                    'bibo' => 'http://purl.org/ontology/bibo/',
+                    'ov' => 'http://open.vocab.org/terms/',
+                    'void' => 'http://rdfs.org/ns/void#',
                   );
                   
                   
