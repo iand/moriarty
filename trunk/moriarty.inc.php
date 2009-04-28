@@ -10,9 +10,9 @@ if (!defined('MORIARTY_PHPUNIT_DIR') ) define('MORIARTY_PHPUNIT_DIR', dirname(di
 
 require_once MORIARTY_ARC_DIR . 'ARC2.php';
 $__arc = new ARC2();
-// if ($__arc->getVersion() < '2008-08-04') {
-//   trigger_error("Unsupported version of ARC detected. Expected at least '2008-08-04' but found '" . ARC2::getVersion(). "'",E_USER_ERROR);
-// }
+if ($__arc->getVersion() < '2008-08-04') {
+  trigger_error("Unsupported version of ARC detected. Expected at least '2008-08-04' but found '" . ARC2::getVersion(). "'",E_USER_ERROR);
+}
 
 
 // MORIARTY_HTTP_CACHE_DIR - define this to be a valid path to enable automatic HTTP caching
