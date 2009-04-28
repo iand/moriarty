@@ -10,6 +10,7 @@ require_once MORIARTY_DIR. 'config.class.php';
 require_once MORIARTY_DIR. 'facetservice.class.php';
 require_once MORIARTY_DIR. 'snapshots.class.php';
 require_once MORIARTY_DIR. 'augmentservice.class.php';
+require_once MORIARTY_DIR. 'oaiservice.class.php';
 
 /**
 * Represents a platform store.
@@ -104,6 +105,15 @@ class Store {
     return new FacetService($this->uri . '/services/facet', $this->credentials, $this->request_factory);
   }
 
+
+  /**
+   * Obtain a reference to this store's OAI service
+   * @see http://n2.talis.com/wiki/Store_OAI_Service
+   * @return OAIService
+   */
+  function get_oai_service() {
+    return new OAIService($this->uri . '/services/oai-pmh', $this->credentials, $this->request_factory);
+  }
   /**
    * Obtain a reference to this store's snapshot collection
    * @see http://n2.talis.com/wiki/Snapshot_Collection

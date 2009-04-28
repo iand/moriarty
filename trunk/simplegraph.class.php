@@ -210,7 +210,7 @@ class SimpleGraph {
    * @return string the JSON version of the graph
    */
   function to_json() {
-  	return json_encode($this->_index);
+    return json_encode($this->_index);
   }
   
   /**

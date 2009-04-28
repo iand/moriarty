@@ -124,5 +124,16 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( $fake_request->was_executed() );
   }
   
+  function test_get_oai_service() {
+    $store = new Store("http://example.org/store");
+    $this->assertEquals( "http://example.org/store/services/oai-pmh", $store->get_oai_service()->uri );
+  }
+
+  function test_get_oai_service_sets_credentials() {
+    $credentials = new Credentials('scooby', 'shaggy');
+    $store = new Store("http://example.org/store", $credentials);
+    $this->assertEquals( $credentials, $store->get_oai_service()->credentials );
+  }
+
 }
 ?>
