@@ -210,13 +210,7 @@ class SimpleGraph {
    * @return string the JSON version of the graph
    */
   function to_json() {
-    $arc = new ARC2();
-    $serializer = $arc->getRDFJSONSerializer(
-        array(
-          'ns' => $this->_ns,
-        )
-      );
-    return $serializer->getSerializedIndex($this->_to_arc_index($this->_index));
+  	return json_encode($this->_index);
   }
   
   /**
