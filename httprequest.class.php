@@ -85,6 +85,7 @@ class HttpRequest {
    * @return HttpResponse
    */
   function execute() {
+
     if ( $this->_cache ) {
       $cached_response = $this->_cache->load($this->cache_id(), $this->_use_stale_response_on_failure);
       if ($cached_response) {
@@ -101,7 +102,12 @@ class HttpRequest {
     }
 
     if (class_exists('http_class') && class_exists('sasl_interact_class')) {
-      set_time_limit(0);
+
+      $response_code = '0';
+      $response_info = array();
+      $response_headers = array();
+      $error = '';
+
       $http=new http_class;
       $http->follow_redirect=1;
       $http->redirection_limit=5;
@@ -111,15 +117,12 @@ class HttpRequest {
 //  $http->html_debug=1;
         
       $error=$http->GetRequestArguments($this->uri,$arguments);
-      if ($error) {
-        echo htmlspecialchars($error);  
-      }
+
       if ($this->credentials != null) {
         $http->authentication_mechanism="Digest";
         $arguments['AuthUser'] = $this->credentials->get_username();
         $arguments['AuthPassword'] = $this->credentials->get_password();
       }      
-
 
       $arguments["RequestMethod"]=$this->method;
 
@@ -130,16 +133,13 @@ class HttpRequest {
       if ($this->body != null) {
         $arguments["Body"] = $this->body;
       }
-      $response_info = array();
-      $connect_error = '';
             
-      $connect_error = $http->Open($arguments);
-      if (! $connect_error) {
-        $connect_error = $http->SendRequest($arguments);
+      $error = $http->Open($arguments);
+      if (! $error) {
+        $error = $http->SendRequest($arguments);
       }
     
-      if ( ! $connect_error ) {
-        $response_headers=array();
+      if ( ! $error ) {
         $error = $http->ReadReplyHeaders($response_headers);
         $response_code = $http->response_status;
         $response_body = '';
@@ -150,21 +150,15 @@ class HttpRequest {
             break;
           $response_body .= $body;
         }
-
       }
       else {
         if ( $this->_cache  && $cached_response) {
           return $cached_response;
         }
-
-        $response_code = $response_info['http_code'];
-        $response_body = "Request failed: " . $response_error;
-        $response_headers = array();
+        $response_body = "Request failed: " . $error;
       }
       
       $http->Close();
-        
-
     }
     else {
     
