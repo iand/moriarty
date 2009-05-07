@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="Moriarty" default="build">
 
-<property name="base-dir" value = "/opt/hudson/jobs/moriarty/workspace/moriarty" />
+<property name="base-dir" value = "/opt/hudson/jobs/moriarty/workspace/trunk" />
 <property name="test-dir" value = "${base-dir}/tests" />
 <property name="test-results-dir" value="${test-dir}/test_results"/>
 <property name="deploy-dir" value="/var/www/html"/>
