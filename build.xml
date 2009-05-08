@@ -9,7 +9,7 @@
 <target name="unit-tests">
   <echo message="Running moriarty unit tests"/>
         <exec dir="${test-dir}" executable="php" failonerror="true" >
-                <arg line="${test-dir}/runtests.php" />
+                <arg line="${base-dir}/../tests.php" />
         </exec>
 </target>
 <target name="build" depends="unit-tests" />
