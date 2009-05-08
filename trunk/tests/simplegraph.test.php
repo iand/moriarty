@@ -356,5 +356,273 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( "de", $g->get_first_literal('http://example.org/subj', 'http://example.org/pred', null, 'de'));
   }
 
+	function test_reify(){
+
+		$triple = array(
+			'#foo' => array('#knows' => array(array('type'=>'uri','value' =>'#bar'))),
+			);
+			$RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+		$expected = array(
+			'_:Statement1' => array(
+				$RDF.'type' => array(
+					array(
+							'type' => 'uri',
+							'value' => $RDF.'Statement',
+						)
+					),
+				$RDF.'subject' => array(
+						array(
+								'type' => 'uri',
+								'value' => '#foo',
+							)
+					),
+				$RDF.'predicate' => array(
+						array(
+								'type' => 'uri',
+								'value' => '#knows',
+							)
+					),
+				$RDF.'object' => array(
+						array(
+								'type' => 'uri',
+								'value' => '#bar',
+							)
+					),
+				
+				)
+			);
+		$actual = SimpleGraph::reify($triple);
+		
+		$this->assertEquals($expected, $actual);
+	}
+	
+	function test_diff_static_call(){
+	
+		$_1 = array(
+			'#x' => array('#name' => array(array('value'=> 'Keith'),), '#nick'=> array(array('value'=> 'keithA')), '#foo' => array(array('value'=>'foo')) )
+			);	
+		
+		$_2 = array(
+				'#x' => array('#name' => array(array('value'=> 'Keith'),), '#nick'=> array(array('value'=> 'keithAlexander')), '#foo' => array(array('value'=>'foo')) )
+				);
+		$expected = array(
+					'#x' => array( '#nick'=> array(array('value'=> 'keithA'))),
+					);
+		$actual = SimpleGraph::diff($_1,$_2);
+
+		$this->assertEquals( $expected, $actual);
+	}
+	
+	function test_diff_object_call(){
+	
+		$_1 = array(
+			'#x' => array('#name' => array(array('value'=> 'Keith'),), '#nick'=> array(array('value'=> 'keithA')), '#foo' => array(array('value'=>'foo')) )
+			);	
+		
+		$_2 = array(
+				'#x' => array('#name' => array(array('value'=> 'Keith'),), '#nick'=> array(array('value'=> 'keithAlexander')), '#foo' => array(array('value'=>'foo')) )
+				);
+		$expected = array(
+					'#x' => array( '#nick'=> array(array('value'=> 'keithA'))),
+					);
+		$object = new SimpleGraph($_1);
+		$actual = $object->diff($_2);
+		$this->assertEquals( $expected, $actual);
+	}
+	
+	function test_merge_static(){
+		
+		$g1 = array(						//uri
+			'#x' => array(						//prop
+					'name' => array(				//obj
+						array(
+						'value' => 'Joe',
+						'type' => 'literal',
+							),
+						),				//obj
+				),					//prop
+			'_:y' => array(
+					'name' => array(array(
+						'value' => 'Joan',
+						'type' => 'literal',
+						),),
+				),
+
+			);
+
+			$g2 = array(
+				'#x' => array(
+						'knows' => array( array(
+							'value' => '_:y',
+							'type' => 'bnode',
+							),
+						),
+					),
+
+				'_:y' => array(
+						'name' => array(
+							array(
+							'value' => 'Susan',
+							'type' => 'literal',
+							),
+							),
+					),
+
+				);
+
+			$g3 = array (
+			  '#x' => 
+			  array (
+			    'name' => 
+			    array (
+			      0 => 
+			      array (
+			        'value' => 'Joe',
+			        'type' => 'literal',
+			      ),
+			    ),
+			    'knows' => 
+			    array (
+			      0 => 
+			      array (
+			        'value' => '_:y1',
+			        'type' => 'bnode',
+			      ),
+			    ),
+			  ),
+			  '_:y' => 
+			  array (
+			    'name' => 
+			    array (
+			      0 => 
+			      array (
+			        'value' => 'Joan',
+			        'type' => 'literal',
+			      ),
+			    ),
+			  ),
+			  '_:y1' => 
+			  array (
+			    'name' => 
+			    array (
+			      0 => 
+			      array (
+			        'value' => 'Susan',
+			        'type' => 'literal',
+			      ),
+			    ),
+			  ),
+			);
+
+		$g4 = array(
+			'#x' => array('#knows' => array(
+				'type' => 'uri',
+				'value' => 'Me'
+				),
+			),
+			);
+
+		$r1 = (SimpleGraph::merge($g1,$g2));
+		$this->assertEquals($r1, $g3);
+	}
+
+
+	function test_merge_object_call(){
+		
+		$g1 = array(						//uri
+			'#x' => array(						//prop
+					'name' => array(				//obj
+						array(
+						'value' => 'Joe',
+						'type' => 'literal',
+							),
+						),				//obj
+				),					//prop
+			'_:y' => array(
+					'name' => array(array(
+						'value' => 'Joan',
+						'type' => 'literal',
+						),),
+				),
+
+			);
+
+			$g2 = array(
+				'#x' => array(
+						'knows' => array( array(
+							'value' => '_:y',
+							'type' => 'bnode',
+							),
+						),
+					),
+
+				'_:y' => array(
+						'name' => array(
+							array(
+							'value' => 'Susan',
+							'type' => 'literal',
+							),
+							),
+					),
+
+				);
+
+			$g3 = array (
+			  '#x' => 
+			  array (
+			    'name' => 
+			    array (
+			      0 => 
+			      array (
+			        'value' => 'Joe',
+			        'type' => 'literal',
+			      ),
+			    ),
+			    'knows' => 
+			    array (
+			      0 => 
+			      array (
+			        'value' => '_:y1',
+			        'type' => 'bnode',
+			      ),
+			    ),
+			  ),
+			  '_:y' => 
+			  array (
+			    'name' => 
+			    array (
+			      0 => 
+			      array (
+			        'value' => 'Joan',
+			        'type' => 'literal',
+			      ),
+			    ),
+			  ),
+			  '_:y1' => 
+			  array (
+			    'name' => 
+			    array (
+			      0 => 
+			      array (
+			        'value' => 'Susan',
+			        'type' => 'literal',
+			      ),
+			    ),
+			  ),
+			);
+
+		$g4 = array(
+			'#x' => array('#knows' => array(
+				'type' => 'uri',
+				'value' => 'Me'
+				),
+			),
+			);
+		$graph = new SimpleGraph($g1);
+		$r1 = ($graph->merge($g2));
+		$this->assertEquals($r1, $g3);
+	}
+
+
 }
 ?>

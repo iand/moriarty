@@ -12,7 +12,6 @@ require_once MORIARTY_TEST_DIR . 'fakehttprequest.class.php';
 require_once MORIARTY_TEST_DIR . 'fakerequestfactory.class.php';
 
 require_once MORIARTY_TEST_DIR . 'changeset.test.php';
-require_once MORIARTY_TEST_DIR . 'changesetbatch.test.php';
 require_once MORIARTY_TEST_DIR . 'store.test.php';
 require_once MORIARTY_TEST_DIR . 'metabox.test.php';
 require_once MORIARTY_TEST_DIR . 'sparqlservice.test.php';
@@ -76,7 +75,6 @@ class Moriarty_AllTests
         $suite->addTestSuite('StoreTest');
         $suite->addTestSuite('SparqlServiceTest');
         $suite->addTestSuite('FieldPredicateMapTest');
-        $suite->addTestSuite('ChangesetBatchTest');
         $suite->addTestSuite('ChangesetTest');
         $suite->addTestSuite('CredentialsTest');
         $suite->addTestSuite('ValuePoolTest');
