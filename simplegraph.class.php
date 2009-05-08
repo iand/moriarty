@@ -44,7 +44,17 @@ class SimpleGraph {
                     'void' => 'http://rdfs.org/ns/void#',
                   );
                   
-                  
+  
+  function __construct($graph=false){
+	if($graph){
+		if(is_string($graph)){
+			$this->add_rdf($graph);
+		} else {
+			$this->_index = $graph;
+		}
+	}
+  }
+                
   function __destruct(){
     unset($this->_index);
     unset($this);
@@ -357,6 +367,23 @@ class SimpleGraph {
       $this->_index = json_decode($json, true);
     }
   }
+
+  /**
+   * Add the triples parsed from the supplied RDF to the graph - let ARC guess the input
+   * @param string rdf the RDF to parse
+   * @param string base the base URI against which relative URIs in the RDF document will be resolved
+   * @author Keith Alexander
+   */
+  function add_rdf($rdf=false, $base='') {
+    if ($rdf) {
+      $parser = ARC2::getRDFParser();
+      $parser->parse($base, $rdf);
+      $this->_add_arc2_triple_list($parser->getTriples());
+      unset($parser);
+    }
+  }
+
+
 
   /**
    * Add the triples parsed from the supplied RDF/XML to the graph
@@ -722,6 +749,155 @@ class SimpleGraph {
   
     return $label;
   }
+
+
+	function reify($resources=false)
+	{
+		if(!$resources) $resources = $this->index;
+		$nodeID_prefix='Statement';
+		$RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+		$reified = array();
+		$statement_no = 1;
+		foreach($resources as $uri => $properties){
+			foreach($properties as $property => $objects){
+				foreach($objects as $object){
+					while(!isset($statement_nodeID) OR isset($resources[$statement_nodeID]) OR isset($reified[$statement_nodeID]))
+					{
+						$statement_nodeID = '_:'.$nodeID_prefix.($statement_no++);
+					}
+					$reified[$statement_nodeID]= array(
+						$RDF.'type'=>array(
+								array('type'=>'uri','value'=>$RDF.'Statement')
+									),
+						$RDF.'subject' => array(array('type'=>  (substr($uri,0,2)=='_:')? 'bnode' : 'uri', 'value'=>$uri)),
+						$RDF.'predicate' => array(array('type'=>'uri','value'=>$property)),
+						$RDF.'object' => array($object),
+								);
+					
+				}
+			}
+		}
+		
+		return ($reified);
+	}
+
+	/**
+	 * diff
+	 * returns a simpleIndex consisting of all the statements in array1 that weren't found in any of the subsequent arrays
+	 * @param array1, array2, [array3, ...]
+	 * @return array
+	 * @author Keith
+	 **/	
+		function diff(){
+			$indices = func_get_args();
+			if(count($indices)==1){
+				array_unshift($indices, $this->_index);
+			}
+			$base = array_shift($indices);
+			$diff = array();
+			foreach($base as $base_uri => $base_ps){
+				foreach($indices as $index){
+					if(!isset($index[$base_uri])){
+						$diff[$base_uri] = $base_ps;
+					} else {
+						foreach($base_ps as $base_p => $base_obs){
+							if(!isset($index[$base_uri][$base_p])){
+								$diff[$base_uri][$base_p] = $base_obs;
+							} else {
+								foreach($base_obs as $base_o){
+									if(!in_array($base_o, $index[$base_uri][$base_p])){
+										$diff[$base_uri][$base_p][]=$base_o;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return $diff;
+		}
+
+/**
+ * merge
+ * merges all  rdf/json-style arrays passed as parameters 
+ * @param array1, array2, [array3, ...]
+ * @return array
+ * @author Keith
+ **/	
+
+	function merge(){
+		
+		$old_bnodeids = array();
+		$indices = func_get_args();
+		if(count($indices)==1){
+			array_unshift($indices, $this->_index);
+		}
+
+		$current = array_shift($indices);
+		foreach($indices as $newGraph)
+		{
+			foreach($newGraph as $uri => $properties)
+			{
+				/* Make sure that bnode ids don't overlap: 
+				_:a in g1 isn't the same as _:a in g2 */
+
+				if(substr($uri,0,2)=='_:')//bnode
+				{
+					$old_id = $uri;
+					$count = 1;
+
+					while(isset($current[$uri]) OR 
+					( $old_id!=$uri AND isset($newGraph[$uri]) )
+					OR isset($old_bnodeids[$uri])
+					)
+					{
+						$uri.=$count++;
+					}
+
+					if($old_id != $uri)	$old_bnodeids[$old_id] = $uri;
+				}
+
+				foreach($properties as $property => $objects)
+				{
+					foreach($objects as $object)
+					{
+						/* make sure that the new bnode is being used*/
+						if($object['type']=='bnode')
+						{
+							$bnode = $object['value'];
+
+							if(isset($old_bnodeids[$bnode])) $object['value'] = $old_bnodeids[$bnode];
+							else //bnode hasn't been transposed
+							{
+									$old_bnode_id = $bnode;
+									$count=1;
+									while(isset($current[$bnode]) OR 
+									( $object['value']!=$bnode AND isset($newGraph[$bnode]) )
+									OR isset($old_bnodeids[$uri])
+									)
+									{
+										$bnode.=$count++;
+									}
+
+									if($old_bnode_id!=$bnode)	$old_bnodeids[$old_bnode_id] = $bnode;
+									$object['value'] = $bnode;
+							}
+						}
+
+						if(!isset($current[$uri][$property]) OR !in_array($object, $current[$uri][$property]))
+						{
+							$current[$uri][$property][]=$object;
+						}
+					}
+				}
+
+			}
+		}
+		return $current;
+	}
+
+
 
 }
 
