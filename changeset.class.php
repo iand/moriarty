@@ -10,9 +10,9 @@ require_once MORIARTY_DIR. 'simplegraph.class.php';
 class ChangeSet extends SimpleGraph {
 
   protected $subjectOfChange;
-  protected $before;
+  var $before = array();
   protected $before_rdfxml;
-  protected $after;
+  var $after = array();
   protected $after_rdfxml;
   protected $createdDate = null;
   protected $creatorName = null;
@@ -45,180 +45,189 @@ class ChangeSet extends SimpleGraph {
    * </ul>
    * @param array args an associative array of parameters to use when constructing the changeset
    */
-  function __construct($args='') {
-    if(is_array($args)){foreach($args as $k=>$v){$this->$k=$v;}}/* subjectOfChange, after, createdDate, creatorName, changeReason */
-    $this->init();
-  }
+      var $a;
+	  var $subjectIndex = array();
+	  var $_index = array();
+	
+	  function __construct($a = '') {
+		$this->a = $a;
+		/* parse the before and after graphs if necessary*/
+		foreach(array('before','after', 'before_rdfxml', 'after_rdfxml') as $rdf){
+			if(!empty($a[$rdf]) ){
+				if(is_string($a[$rdf]) ){
+					$parser = ARC2::getRDFParser();
+					$parser->parse(false, $a[$rdf]);
+					$a[$rdf] = $parser->getSimpleIndex(0);
+				} else if(
+						is_array($a[$rdf]) AND 
+						isset($a[$rdf][0]) AND 
+						isset($a[$rdf][0]['s'])
+						) { //triples array
+					$ser = ARC2::getTurtleSerializer();
+					$turtle = $ser->getSerializedTriples($a[$rdf]);
+					$parser = ARC2::getTurtleParser();
+					$parser->parse(false, $turtle);
+					$a[$rdf] = $parser->getSimpleIndex(0);
+				
+				}
+			$nrdf = str_replace('_rdfxml','',$rdf);
+			$this->$nrdf = $a[$rdf] ;
 
-  private function init( ) {
-    if ( isset( $this->after_rdfxml) || isset( $this->before_rdfxml) ) {
-      $parser_args=array(
-        "bnode_prefix"=>"genid",
-        "base"=>""
-      );
+			} 
+		}
+			$this->__init();
+	  }
+  
+	  function ChangeSet ($a = '') {
+	    $this->__construct($a);
+	  }
 
-      if ( isset( $this->after_rdfxml) ) {
-        $parser = ARC2::getRDFXMLParser($parser_args);
-        $parser->parse("", $this->after_rdfxml );
-        $this->after = $parser->getTriples();
-      }
-      if ( isset( $this->before_rdfxml) ) {
-        $parser = ARC2::getRDFXMLParser($parser_args);
-        $parser->parse("", $this->before_rdfxml );
-        $this->before = $parser->getTriples();
-      }
-    }
+	  function __init() {
+		$csIndex = array();
+		$CSNS = 'http://purl.org/vocab/changeset/schema#';
 
-    $this->_triples = array();
+		// Get the triples to be added
+ 		if(empty($this->before)){
+				$additions = $this->after;
+			} else {
+				$additions = SimpleGraph::diff($this->after, $this->before); 
+			}
+		//Get the triples to be removed
+		if(empty($this->after)){
+			$removals = $this->before;			
+		} else {
+			$removals = SimpleGraph::diff($this->before, $this->after);
+		}
+		// $removals = !empty($this->after)? SimpleGraph::diff($this->before, $this->after) : $this->before;
+		
+		//remove etag triples
+		foreach(array('removals' => $removals, 'additions'=> $additions) as $name => $graph){
+			foreach($graph as $uri => $properties){
+				if(isset($properties["http://schemas.talis.com/2005/dir/schema#etag"])){
+					unset(${$name}[$uri]["http://schemas.talis.com/2005/dir/schema#etag"]);
+				}
+			}
+		}
+		
+		// Get an array of all the subject uris
+		$subjectIndex = !empty($this->a['subjectOfChange'])? array($this->a['subjectOfChange']) : array_merge(array_keys($this->before), array_keys($this->after));
 
-    $this->cs_resource = "_:cs";
+		// Get the metadata for all the changesets
+		$date  = (!empty($this->a['createdDate']))? $this->a['createdDate'] : date(DATE_ATOM);
+		$creator  = (!empty($this->a['creatorName']))? $this->a['creatorName'] : 'Moriarty ChangeSet Builder';
+		$reason  = (!empty($this->a['changeReason']))? $this->a['changeReason'] : 'Change using Moriarty ChangeSet Builder';
+		
+		
+		// for every subject uri, create a new changeset
+		$n = count($subjectIndex);
+		
+		for ($i=0 ; $i < $n; $i++) { 
+			$csID = '_:cs'.$i;
+			$csIndex[$subjectIndex[$i]] = $csID;
+			$this->addT($csID, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', $CSNS.'ChangeSet', 'uri');
+			$subjectType = (strpos($subjectIndex[$i], '_:')===0)? 'bnode' : 'uri';
+			$this->addT($csID, $CSNS.'subjectOfChange', $subjectIndex[$i], $subjectType);
+			$this->addT($csID, $CSNS.'createdDate', $date, 'literal');
+			$this->addT($csID, $CSNS.'creatorName', $creator, 'literal');
+			$this->addT($csID, $CSNS.'changeReason', $reason, 'literal');
+			
+			/* add extra user-given properties to each changeset*/					
+			if(!empty($this->a['properties'])){
+				foreach ($this->a['properties'] as $p => $objs) $this->addT($csID, $p, $objs);
+			}
+		}
+		
+	
+			/*iterate through the triples to be added, 
+			reifying them, 
+			and linking to the Statements from the appropriate changeset
+			*/
+			$reifiedAdditions = SimpleGraph::reify($additions, 'Add');
+			if(!empty($reifiedAdditions)){
+				foreach($reifiedAdditions as $nodeID => $props){
+					$subject = $props['http://www.w3.org/1999/02/22-rdf-syntax-ns#subject'][0]['value'];
+					if(in_array($subject, $subjectIndex)){
+						$csID = $csIndex[$subject];
+						$this->addT($csID, $CSNS.'addition', $nodeID, 'bnode');
+					}
+		
+					// if dc:source is given in the instantiating arguments, add it to the statement as provenance
+						if(isset($this->a['http://purl.org/dc/terms/source'])){
+						$this->addT($nodeID, 'http://purl.org/dc/terms/source', $this->a['http://purl.org/dc/terms/source'], 'uri');
+						}
+				}
+			}
+		
+		
+			/*iterate through the triples to be removed, 
+			reifying them, 
+			and linking to the Statements from the appropriate changeset
+			*/
+		
+		
+			$reifiedRemovals = SimpleGraph::reify($removals, 'Remove');
+			foreach($reifiedRemovals as $nodeID => $props){
+				$subject = $props['http://www.w3.org/1999/02/22-rdf-syntax-ns#subject'][0]['value'];
+				if(in_array($subject, $subjectIndex)){
+					$csID = $csIndex[$subject];
+					$this->addT($csID, $CSNS.'removal', $nodeID, 'bnode');
+				}
+			}
 
-    $this->add_resource_triple($this->cs_resource, RDF_TYPE, CS_CHANGESET );
+		
+		// foreach($this->_index as $uri => $props){
+		// 	if(
+		// 			!isset($props[$CSNS.'removal']) 
+		// 			AND 
+		// 			!isset($props[$CSNS.'addition'])
+		// 			){
+		// 				unset($this->_index[$uri]);
+		// 		}
+		// 		
+		// }
+			
+		$this->_index = SimpleGraph::merge($this->_index, $reifiedAdditions, $reifiedRemovals);	
+			
+	  }
 
-    $this->add_resource_triple($this->cs_resource, CS_SUBJECTOFCHANGE, $this->subjectOfChange );
-
-    if ($this->createdDate != null) {
-      $this->add_literal_triple($this->cs_resource, CS_CREATEDDATE, $this->createdDate );
-    }
-    if ($this->creatorName != null) {
-      $this->add_literal_triple($this->cs_resource, CS_CREATORNAME, $this->creatorName );
-    }
-    if ($this->changeReason != null) {
-      $this->add_literal_triple($this->cs_resource, CS_CHANGEREASON, $this->changeReason );
-    }
-
-    if ( ! isset( $this->before ) ) {
-      for($i=0,$i_max=count($this->after);$i<$i_max;$i++) {
-        if ( $this->after[$i]['s'] == $this->subjectOfChange ) {
-
-          $after_triple = $this->after[$i];
-          $this->include_addition( $after_triple );
-        }
-      }
-    }
-    else {
-      for($i=0,$i_max=count($this->after);$i<$i_max;$i++) {
-        if ( $this->after[$i]['s'] == $this->subjectOfChange) {
-
-          $after_triple = $this->after[$i];
-          if ( ! $this->triple_in_list( $after_triple, $this->before)) {
-            $this->include_addition( $after_triple );
-          }
-        }
-      }
-    }
-
-    if ( ! isset( $this->after ) ) {
-      for($i=0,$i_max=count($this->before);$i<$i_max;$i++) {
-        if ( $this->before[$i]['s'] == $this->subjectOfChange ) {
-
-          $before_triple = $this->before[$i];
-          $this->include_removal( $before_triple );
-        }
-      }
-    }
-    else {
-      for($i=0,$i_max=count($this->before);$i<$i_max;$i++) {
-        if ( $this->before[$i]['s'] == $this->subjectOfChange ) {
-
-          $before_triple = $this->before[$i];
-
-          if ( ! $this->triple_in_list( $before_triple, $this->after)) {
-            $this->include_removal($before_triple);
-
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * Include the supplied triple as a removal in the changeset.
-   * @param array triple an array representing the triple to be removed. The structure is as documented above.
-   */
-  function include_removal( $triple) {
-    if ( $triple['p'] == 'http://schemas.talis.com/2005/dir/schema#etag' ) return; // Platform always overrides this
-    $this->has_changes = true;
-    $this->include_count++;
-    $removal = "_:r" . $this->include_count;
-
-    $this->add_resource_triple($this->cs_resource, CS_REMOVAL, $removal );
-    $this->add_resource_triple($removal, RDF_TYPE, RDF_STATEMENT);
-    $this->add_resource_triple($removal, RDF_SUBJECT, $triple['s'] );
-    $this->add_resource_triple($removal, RDF_PREDICATE, $triple['p'] );
-    if ( $triple['o_type'] == 'uri' || $triple['o_type'] == 'bnode') {
-      $this->add_resource_triple($removal, RDF_OBJECT, $triple['o'] );
-    }
-    else {
-      $this->add_literal_triple($removal, RDF_OBJECT, $triple['o'], $triple['o_lang'], $triple['o_datatype'] );
-    }
-
-  }
-
-  /**
-   * Include the supplied triple as an addition in the changeset.
-   * @param array triple an array representing the triple to be added. The structure is as documented above.
-   */
-  function include_addition( $triple) {
-    if ( $triple['p'] == 'http://schemas.talis.com/2005/dir/schema#etag' ) return; // Platform always overrides this
-    $this->has_changes = true;
-    $this->include_count++;
-    $addition = "_:a" . $this->include_count;
-
-    $this->add_resource_triple($this->cs_resource, CS_ADDITION, $addition );
-    $this->add_resource_triple($addition, RDF_TYPE, RDF_STATEMENT );
-    $this->add_resource_triple($addition, RDF_SUBJECT, $triple['s'] );
-    $this->add_resource_triple($addition, RDF_PREDICATE, $triple['p'] );
-    if ( $triple['o_type'] == 'uri' || $triple['o_type'] == 'bnode') {
-      $this->add_resource_triple($addition, RDF_OBJECT, $triple['o'] );
-    }
-    else {
-      $this->add_literal_triple($addition, RDF_OBJECT, $triple['o'], $triple['o_lang'], $triple['o_datatype'] );
-    }
-
-  }
-
-  /**
-   * Checks whether the changeset contains any additions or removals. Can be useful when deciding whether to submit the changeset or not.
-   * @return boolean true if the changeset has changes to apply
-   */
-  function has_changes() {
-    return $this->has_changes;
-  }
-
-
-
-  protected function triple_in_list( $triple, &$list ) {
-    foreach ($list as $candidate) {
-      if ( $triple['s_type'] == $candidate['s_type'] && $triple['o_type'] == $candidate['o_type'] && $triple['p'] == $candidate['p'] ) {
-        if ( $triple['s'] == $candidate['s'] ) {
-          if ( $triple['o'] == $candidate['o']  )  {
-
-            if ( $triple['o_type'] == 'literal' ) {
-              if ( array_key_exists('o_lang', $triple) && array_key_exists('o_lang', $candidate) && $triple['o_lang'] == $candidate['o_lang']) {
-                return true;
-              }
-              elseif (! array_key_exists('o_lang', $triple) && ! array_key_exists('o_lang', $candidate) ) {
-                return true;
-              }
-              elseif ( array_key_exists('o_lang', $triple) && ! array_key_exists('o_lang', $candidate) && ! isset($triple['o_lang'] ) ) {
-                return true;
-              }
-              elseif ( ! array_key_exists('o_lang', $triple) && array_key_exists('o_lang', $candidate) && ! isset($candidate['o_lang']) ) {
-                return true;
-              }
-            }
-            else {
-              return true;
-            }
-          }
-        }
-      }
-    }
-
-    return false;
-  }
-
+/**
+ * addT
+ * adds a triple to the internal simpleIndex holding all the changesets and statements
+ * @return void
+ * @author Keith
+ **/		
+	  function addT($s, $p, $o, $o_type='bnode'){
+		if(is_array($o) AND isset($o[0]['type'])){
+			foreach($o as $obj){ 
+				$this->addT($s, $p, $obj ); 
+			}
+		}else {
+			$obj = !is_array($o)? array('value' => $o, 'type'=> $o_type) : $o ;
+			$this->_index[$s][$p][]=$obj;
+		}
+	  }
+	
+	  function toRDFXML(){
+		$ser = ARC2::getRDFXMLSerializer();
+		return $ser->getSerializedIndex($this->_index);
+	  }
+	  
+	  function to_rdfxml(){
+		return $this->toRDFXML();
+	}
+	
+	function has_changes(){
+		foreach($this->_index as $uri => $properties){
+			if(
+				isset($properties['http://purl.org/vocab/changeset/schema#addition'])
+				OR
+				isset($properties['http://purl.org/vocab/changeset/schema#removal'])
+			){
+				return true;
+			}
+		}
+		return false;
+	}
 
 }
 
