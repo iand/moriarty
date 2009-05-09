@@ -63,13 +63,51 @@ class ChangeSetTest extends PHPUnit_Framework_TestCase
   </rdf:Description>
 </rdf:RDF>';
 
+
+	var $Changeset;
+
+	var $cs = 'http://purl.org/vocab/changeset/schema#';
+
+	var $g1 = array(
+			'http://example.org' => array(
+				'http://purl.org/dc/elements/1.1/title' => array(
+						array('value'=> 'Hello World', 'type' => 'literal'),
+					),
+				'http://purl.org/dc/elements/1.1/subject' => array(
+						array('value'=> 'http://dbpedia.org/resource/Hello_World', 'type' => 'uri'),
+					),
+				'http://purl.org/dc/elements/1.1/subject' => array(
+							array('value'=> '_:bnode1', 'type' => 'bnode'),
+						),
+			
+			
+				),
+			'_:bnode1' => array(
+						'http://purl.org/dc/elements/1.1/title' => array(
+								array('value'=> 'Foo Bar', 'type' => 'literal'),
+							),
+				),
+		);
+
+
+
   function setUp() {
       $parser_args=array(
         "bnode_prefix"=>"genid",
         "base"=>""
       );
       $this->_parser = ARC2::getRDFXMLParser($parser_args);
+		$args =  array(
+			'before' => $this->g1,
+			'after' => array(),
+			);
+		$this->Changeset = new ChangeSet($args);
   }
+
+	function tearDown(){
+		unset($this->ChangeSet);
+	}
+
 
   function parse($base, $rdfxml) {
     $parser = ARC2::getRDFXMLParser();
@@ -81,7 +119,6 @@ class ChangeSetTest extends PHPUnit_Framework_TestCase
     $triples = $this->parse("", $this->_single_triple );
 
     $cs = new ChangeSet( array( 'subjectOfChange'=>"http://example.org/subj", 'after'=>$triples ) );
-
     return $cs->get_index();
   }
 
@@ -133,6 +170,11 @@ class ChangeSetTest extends PHPUnit_Framework_TestCase
       }
 
     }
+
+	if(!$numberOfChangeSets) {
+		var_dump($index);
+	}
+	
     $this->assertEquals(1,  $numberOfChangeSets);
   }
 
@@ -372,9 +414,9 @@ class ChangeSetTest extends PHPUnit_Framework_TestCase
 
   function test_to_rdfxml_with_lang() {
     $cs = new ChangeSet( array( 'subjectOfChange'=>"http://example.org/subj", 'after_rdfxml'=>$this->_single_triple_literal_lang ) );
+
     $this->_parser->parse("", $cs->to_rdfxml() );
     $triples = $this->_parser->getTriples();
-
     $objectLanguage = null;
     for($i=0,$i_max=count($triples);$i<$i_max;$i++) {
       if ( $triples[$i]['p'] == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#object' ) {
@@ -386,7 +428,6 @@ class ChangeSetTest extends PHPUnit_Framework_TestCase
 
   function test_to_rdfxml_with_blank_subject() {
     $cs = new ChangeSet( array( 'subjectOfChange'=>"_:a", 'after_rdfxml'=>$this->_single_blank_subject ) );
-
     $index = $cs->get_index();
     $changesetResource = $this->_find_changeset_resource($index);
 
@@ -526,6 +567,65 @@ class ChangeSetTest extends PHPUnit_Framework_TestCase
     $cs = new ChangeSet( array( 'subjectOfChange'=>"http://example.org/subj", 'after'=>$after_triples ) );
     $this->assertFalse($cs->has_changes());
   }    
+
+	function test_delete_resources(){
+		$expected = 0;
+		foreach($this->g1 as $uri => $props){
+			foreach($props as $p => $os){
+				$expected += count($os);
+			}
+		}
+		$actual = 0;
+		foreach($this->Changeset->_index as $uri => $props){
+			if(isset($props[$this->cs.'removal'])) $actual += count($props[$this->cs.'removal']);
+		}
+		$this->assertEquals($expected, $actual);
+	}	
+
+	function test_added_metadata(){
+		$args =  array(
+			'after' => $this->g1,
+			'before' => array(),
+			'properties' => array(
+				'http://purl.org/dc/elements/1.1/source' => array(array('value' => 'http://example.org/home.rdf', 'type' => 'uri')),
+				),
+			);
+		$this->ChangeSet = new ChangeSet($args);
+		$test = false;
+		foreach($this->ChangeSet->_index as $uri => $props){
+			if($types = ($props['http://www.w3.org/1999/02/22-rdf-syntax-ns#type']) AND $types[0]['value'] == 'http://purl.org/vocab/changeset/schema#ChangeSet' ){
+				foreach($args['properties'] as $mp => $mobjs){
+					$test = (isset($props[$mp]) AND $props[$mp]==$mobjs);
+				}
+			}
+		}
+		return $this->assertTrue($test);
+	}
+
+
+	function test_add_resources(){
+		
+		$args =  array(
+			'after' => $this->g1,
+			'before' => array(),
+			);
+		$this->Changeset = new ChangeSet($args);
+		
+		
+		$expected = 0;
+		foreach($this->g1 as $uri => $props){
+			foreach($props as $p => $os){
+				$expected += count($os);
+			}
+		}
+		$actual = 0;
+		foreach($this->Changeset->_index as $uri => $props){
+			if(isset($props[$this->cs.'addition'])) $actual += count($props[$this->cs.'addition']);
+		}
+
+		$this->assertEquals($expected, $actual);
+	}	
+	
 
 }
 

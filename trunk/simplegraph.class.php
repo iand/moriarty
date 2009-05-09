@@ -6,7 +6,7 @@ require_once MORIARTY_ARC_DIR . "ARC2.php";
  * Represents an RDF graph and provides some simple functions for traversing and manipulating it.
  */
 class SimpleGraph {
-  protected $_index = array();
+  var $_index = array();
   protected $_ns = array (
                     'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
                     'owl' => 'http://www.w3.org/2002/07/owl#',
@@ -751,10 +751,8 @@ class SimpleGraph {
   }
 
 
-	function reify($resources=false)
+	function reify($resources, $nodeID_prefix='Statement')
 	{
-		if(!$resources) $resources = $this->index;
-		$nodeID_prefix='Statement';
 		$RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
 		$reified = array();
 		$statement_no = 1;
@@ -793,8 +791,12 @@ class SimpleGraph {
 			if(count($indices)==1){
 				array_unshift($indices, $this->_index);
 			}
+			foreach($indices as $no => $index){
+				if(empty($indices[$no])) unset($indices[$no]);
+			}
 			$base = array_shift($indices);
 			$diff = array();
+
 			foreach($base as $base_uri => $base_ps){
 				foreach($indices as $index){
 					if(!isset($index[$base_uri])){
