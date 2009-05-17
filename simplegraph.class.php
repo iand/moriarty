@@ -42,6 +42,7 @@ class SimpleGraph {
                     'bibo' => 'http://purl.org/ontology/bibo/',
                     'ov' => 'http://open.vocab.org/terms/',
                     'void' => 'http://rdfs.org/ns/void#',
+                    'xsd' => 'http://www.w3.org/2001/XMLSchema#',
                   );
                   
   
