@@ -9,7 +9,7 @@ class SimpleGraph {
   var $_index = array();
   protected $_ns = array (
                     'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
-                    'owl' => 'http://www.w3.org/2002/07/owl#',
+//                    'owl' => 'http://www.w3.org/2002/07/owl#',
                     'cs' => 'http://purl.org/vocab/changeset/schema#',
                     'bf' => 'http://schemas.talis.com/2006/bigfoot/configuration#',
                     'frm' => 'http://schemas.talis.com/2006/frame/schema#',
@@ -18,16 +18,16 @@ class SimpleGraph {
                     'dct' => 'http://purl.org/dc/terms/',
                     'dctype' => 'http://purl.org/dc/dcmitype/',
 
-                    'foaf' => 'http://xmlns.com/foaf/0.1/',
-                    'bio' => 'http://purl.org/vocab/bio/0.1/',
+//                    'foaf' => 'http://xmlns.com/foaf/0.1/',
+//                    'bio' => 'http://purl.org/vocab/bio/0.1/',
                     'geo' => 'http://www.w3.org/2003/01/geo/wgs84_pos#',
                     'rel' => 'http://purl.org/vocab/relationship/',
-                    'rss' => 'http://purl.org/rss/1.0/',
+//                    'rss' => 'http://purl.org/rss/1.0/',
                     'wn' => 'http://xmlns.com/wordnet/1.6/',
                     'air' => 'http://www.daml.org/2001/10/html/airport-ont#',
                     'contact' => 'http://www.w3.org/2000/10/swap/pim/contact#',
-                    'ical' => 'http://www.w3.org/2002/12/cal/ical#',
-                    'icaltzd' => 'http://www.w3.org/2002/12/cal/icaltzd#',
+//                    'ical' => 'http://www.w3.org/2002/12/cal/ical#',
+//                    'icaltzd' => 'http://www.w3.org/2002/12/cal/icaltzd#',
                     'frbr' => 'http://purl.org/vocab/frbr/core#',
 
                     'ad' => 'http://schemas.talis.com/2005/address/schema#',
@@ -93,12 +93,40 @@ class SimpleGraph {
    */                  
   function uri_to_qname($uri) {
     if (preg_match('~^(.*[\/\#])([a-z0-9\-\_]+)$~i', $uri, $m)) {
-      $prefix = array_search($m[1], $this->_ns);
+      $ns = $m[1];
+      $localname = $m[2];
+      $prefix = $this->get_prefix($ns);
       if ( $prefix != null && $prefix !== FALSE) {
-        return $prefix . ':' . $m[2]; 
+        return $prefix . ':' . $localname; 
       }
     }
     return null;
+  }
+
+  function get_prefix($ns) {
+    $prefix = array_search($ns, $this->_ns);
+    if ( $prefix != null && $prefix !== FALSE) {
+      return $prefix; 
+    }
+    else {
+      $parts = split('[/#]', $ns);  
+      for ($i = count($parts) - 1; $i >= 0; $i--) {
+        if (preg_match('~^[a-zA-Z][a-zA-Z0-9\-]+$~', $parts[$i]) && !array_key_exists($parts[$i], $this->_ns) && $parts[$i] != 'schema' && $parts[$i] != 'ontology' && $parts[$i] != 'vocab' && $parts[$i] != 'terms' && $parts[$i] != 'ns' && $parts[$i] != 'core') {
+          $prefix = strtolower($parts[$i]);
+          $this->_ns[$prefix] = $ns;
+          return $prefix; 
+        }
+      }
+    }
+    return $prefix;
+  }
+  
+  function update_prefix_mappings() {
+    foreach ($this->_index as $s => $p_list) {
+      foreach ($p_list as $p => $v_list) {
+        $prefix = $this->uri_to_qname($p);  
+      }
+    }  
   }
 
 
@@ -184,6 +212,7 @@ class SimpleGraph {
    * @return string the RDF/XML version of the graph
    */
   function to_rdfxml() {
+    $this->update_prefix_mappings();
     $serializer = ARC2::getRDFXMLSerializer(
         array(
           'ns' => $this->_ns,
@@ -198,6 +227,7 @@ class SimpleGraph {
    * @return string the Turtle version of the graph
    */
   function to_turtle() {
+    $this->update_prefix_mappings();
     $serializer = ARC2::getTurtleSerializer(
         array(
           'ns' => $this->_ns,
