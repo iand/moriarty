@@ -133,14 +133,14 @@ class Store {
   }
 
 
-  function describe($uri, $type='cbd') {
+  function describe($uri, $type='cbd', $output='rdf') {
     if ( is_array( $uri ) || $type != 'cbd' ) {
       $ss = $this->get_sparql_service();
-      return $ss->describe($uri, $type);
+      return $ss->describe($uri, $type, $output);
     }
     else {
       $mb = $this->get_metabox();
-      return $mb->describe($uri);    
+      return $mb->describe($uri, $output);    
     }
   }
 

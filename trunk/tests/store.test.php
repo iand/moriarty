@@ -104,7 +104,7 @@ class StoreTest extends PHPUnit_Framework_TestCase {
   function test_describe_single_uri_performs_get_on_metabox() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('GET', "http://example.org/store/meta?about=" . urlencode('http://example.org/scooby'), $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/meta?about=" . urlencode('http://example.org/scooby') . "&output=rdf", $fake_request );
 
     $store = new Store("http://example.org/store", null, $fake_request_factory);
     
@@ -116,7 +116,7 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $query = 'DESCRIBE <http://example.org/scooby> <http://example.org/shaggy>';
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query), $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . "&output=rdf", $fake_request );
 
     $store = new Store("http://example.org/store", null, $fake_request_factory);
 

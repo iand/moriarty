@@ -44,7 +44,7 @@ class SparqlServiceBase {
    * @param string type the type of bounded description to be obtained (optional)
    * @return HttpResponse
    */
-  function describe( $uri, $type = 'cbd' ) {
+  function describe( $uri, $type = 'cbd', $output = OUTPUT_TYPE_RDF ) {
     if ( is_array( $uri ) ) {
       $query="DESCRIBE <" . implode('> <' , $uri) . ">";
     }
@@ -65,7 +65,7 @@ class SparqlServiceBase {
       
 
     }
-    return $this->graph($query);
+    return $this->graph($query, $output);
   }
 
   /**
@@ -97,10 +97,10 @@ class SparqlServiceBase {
   function describe_to_simple_graph( $uri, $type='cbd' ) {
     $graph = new SimpleGraph();
 
-    $response = $this->describe( $uri, $type );
+    $response = $this->describe( $uri, $type, OUTPUT_TYPE_JSON );
 
     if ( $response->is_success() ) {
-      $graph->from_rdfxml( $response->body );
+      $graph->from_json( $response->body );
     }
 
     return $graph;
@@ -119,6 +119,11 @@ class SparqlServiceBase {
 
     
     $get_uri = $this->uri . '?query=' . urlencode($query);
+    if ( !empty($mime) && strstr($mime, '/') === FALSE) {
+      $get_uri .= '&output=' . $mime;
+      $mime = '*/*';
+    }
+
     if (strlen($get_uri) <= 2048) {
       $request = $this->request_factory->make( 'GET', $get_uri, $this->credentials );
       if(empty($mime)) $mime = MIME_RDFXML.','.MIME_SPARQLRESULTS;
@@ -140,8 +145,8 @@ class SparqlServiceBase {
    * @param string query the describe or construct query to execute
    * @return HttpResponse
    */
-  function graph( $query ) {
-    return $this->query($query, MIME_RDFXML);
+  function graph( $query, $output = 'rdf' ) {
+    return $this->query($query, $output);
   }
 
   /**
