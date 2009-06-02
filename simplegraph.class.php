@@ -401,6 +401,19 @@ class SimpleGraph {
     }
   }
 
+
+  /**
+   * Add the triples parsed from the supplied JSON to the graph
+   * @see http://n2.talis.com/wiki/RDF_JSON_Specification
+   * @param string json the JSON to parse
+   */
+  function add_json($json) {
+    if ($json) {
+      $json_index = json_decode($json, true);
+      $this->_index = $this->merge($this->_index, $json_index);
+    }
+  }
+
   /**
    * Add the triples parsed from the supplied RDF to the graph - let ARC guess the input
    * @param string rdf the RDF to parse

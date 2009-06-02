@@ -8,7 +8,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
   function test_describe_single_uri_with_graph_gets_from_service_uri() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/scooby> FROM <http://example.org/graphs/1>'), $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/scooby> FROM <http://example.org/graphs/1>') . "&output=rdf", $fake_request );
     
     $ss = new MultiSparqlService("http://example.org/store/services/multisparql");
     $ss->request_factory = $fake_request_factory;
@@ -38,7 +38,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
   function test_describe_single_uri_with_graph_sets_accept() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/scooby> FROM <http://example.org/graphs/1>'), $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/scooby> FROM <http://example.org/graphs/1>') . "&output=rdf", $fake_request );
 
     $ss = new MultiSparqlService("http://example.org/store/services/multisparql");
     $ss->request_factory = $fake_request_factory;
@@ -46,7 +46,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
     $graphs = Array('http://example.org/graphs/1');    
 
     $response = $ss->describe( 'http://example.org/scooby', $graphs );
-    $this->assertTrue( in_array('Accept: application/rdf+xml', $fake_request->get_headers() ) );
+    $this->assertTrue( in_array('Accept: */*', $fake_request->get_headers() ) );
   }
 
 /*
@@ -68,7 +68,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
   function test_describe_single_uri_with_graph_uses_credentials() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/scooby> FROM <http://example.org/graphs/1>'), $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/scooby> FROM <http://example.org/graphs/1>') . "&output=rdf", $fake_request );
 
     $ss = new MultiSparqlService("http://example.org/store/services/multisparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;
@@ -83,7 +83,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
   function test_describe_multiple_uris_with_graph_gets_from_service_uri() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/scooby> <http://example.org/shaggy> FROM <http://example.org/graphs/1>'), $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/scooby> <http://example.org/shaggy> FROM <http://example.org/graphs/1>') . "&output=rdf", $fake_request );
 
     $ss = new MultiSparqlService("http://example.org/store/services/multisparql");
     $ss->request_factory = $fake_request_factory;
@@ -95,7 +95,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
   function test_describe_multiple_uris_with_graph_posts_query() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=DESCRIBE+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Chttp%3A%2F%2Fexample.org%2Fshaggy%3E+%3Chttp%3A%2F%2Fexample.org%2Fvelma%3E+FROM+%3Chttp%3A%2F%2Fexample.org%2Fgraphs%2F1%3E", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=DESCRIBE+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Chttp%3A%2F%2Fexample.org%2Fshaggy%3E+%3Chttp%3A%2F%2Fexample.org%2Fvelma%3E+FROM+%3Chttp%3A%2F%2Fexample.org%2Fgraphs%2F1%3E" . "&output=rdf", $fake_request );
 
     $ss = new MultiSparqlService("http://example.org/store/services/multisparql");
     $ss->request_factory = $fake_request_factory;
@@ -107,7 +107,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
   function test_describe_multiple_uris_with_graph_uses_credentials() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=DESCRIBE+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Chttp%3A%2F%2Fexample.org%2Fshaggy%3E+%3Chttp%3A%2F%2Fexample.org%2Fvelma%3E+FROM+%3Chttp%3A%2F%2Fexample.org%2Fgraphs%2F1%3E", $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=DESCRIBE+%3Chttp%3A%2F%2Fexample.org%2Fscooby%3E+%3Chttp%3A%2F%2Fexample.org%2Fshaggy%3E+%3Chttp%3A%2F%2Fexample.org%2Fvelma%3E+FROM+%3Chttp%3A%2F%2Fexample.org%2Fgraphs%2F1%3E" . "&output=rdf", $fake_request );
 
     $ss = new MultiSparqlService("http://example.org/store/services/multisparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;
@@ -127,7 +127,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
 
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( $fake_response );
-    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/subj> FROM <http://example.org/graphs/1>'), $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/subj> FROM <http://example.org/graphs/1>') . "&output=rdf", $fake_request );
 
     $ss = new MultiSparqlService("http://example.org/store/services/multisparql");
     $ss->request_factory = $fake_request_factory;
@@ -148,7 +148,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
 
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( $fake_response );
-    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/subj> FROM <http://example.org/graphs/1>'), $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/subj> FROM <http://example.org/graphs/1>') . "&output=rdf", $fake_request );
 
     $ss = new MultiSparqlService("http://example.org/store/services/multisparql");
     $ss->request_factory = $fake_request_factory;
@@ -167,7 +167,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
   function test_describe_to_triple_list_with_graph_uses_credentials() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/subj> FROM <http://example.org/graphs/1>'), $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('DESCRIBE <http://example.org/subj> FROM <http://example.org/graphs/1>') . "&output=rdf", $fake_request );
 
     $ss = new MultiSparqlService("http://example.org/store/services/multisparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;
@@ -179,7 +179,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
   function test_graph_uses_credentials() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('construct {?s ?p ?o } where { ?s ?p ?o .}'), $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('construct {?s ?p ?o } where { ?s ?p ?o .}') . "&output=rdf", $fake_request );
 
     $ss = new MultiSparqlService("http://example.org/store/services/multisparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;
@@ -191,7 +191,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
   function test_graph_to_triple_list_uses_credentials() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('construct {?s ?p ?o } where { ?s ?p ?o .}'), $fake_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/multisparql?query=" . urlencode('construct {?s ?p ?o } where { ?s ?p ?o .}') . "&output=rdf", $fake_request );
 
     $ss = new MultiSparqlService("http://example.org/store/services/multisparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;
