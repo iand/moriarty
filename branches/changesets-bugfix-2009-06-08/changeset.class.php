@@ -180,6 +180,8 @@ class ChangeSet extends SimpleGraph {
 
 		foreach($this->_index as $uri => $props){
 			if(
+					isset($props[$CSNS.'subjectOfChange'])
+					AND 
 					!isset($props[$CSNS.'removal']) 
 					AND 
 					!isset($props[$CSNS.'addition'])
