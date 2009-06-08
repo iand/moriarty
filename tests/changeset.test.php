@@ -626,6 +626,23 @@ class ChangeSetTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($expected, $actual);
 	}	
 	
+	function test_one_resource_changes_one_does_not(){
+		$before = $this->g1;
+		$after = $this->g1;
+		$after['_:test']['http://example.com/predicate'][0] = array('value' =>'something', 'type'=> 'literal');
+		
+			$args =  array(
+				'after' => $after,
+				'before' => $before,
+				);
+				
+		$this->Changeset = new ChangeSet($args);
+		foreach($this->Changeset->_index as $uri => $props){
+			if(!isset($props[$this->cs.'addition']) AND !isset($props[$this->cs.'removal'])) $empty = true;
+		}
+		
+		$this->assertFalse($empty, 'ChangeSets should all contain additions or removals');
+	}
 
 }
 

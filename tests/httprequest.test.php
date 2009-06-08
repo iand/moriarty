@@ -105,6 +105,7 @@ foo';
     $response = new HttpResponse(200);
     $response->headers['cache-control'] = "no-store";
 
+
     $this->assertFalse( $response->is_cacheable() );
   }
 
