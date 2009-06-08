@@ -637,6 +637,7 @@ class ChangeSetTest extends PHPUnit_Framework_TestCase
 				);
 				
 		$this->Changeset = new ChangeSet($args);
+		$empty = false;
 		foreach($this->Changeset->_index as $uri => $props){
 			if(isset($props[$this->cs.'subjectOfChange']) AND !isset($props[$this->cs.'addition']) AND !isset($props[$this->cs.'removal'])) $empty = true;
 		}
