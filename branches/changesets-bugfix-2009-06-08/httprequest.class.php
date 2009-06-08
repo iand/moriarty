@@ -38,6 +38,9 @@ class HttpRequest {
   
   var $_proxy = null;
 
+  var $start_time = 0;
+  var $end_time = 0;
+  
   /**
    * Create a new instance of this class
    * @param string method the HTTP method to issue (i.e. GET, POST, PUT etc)
