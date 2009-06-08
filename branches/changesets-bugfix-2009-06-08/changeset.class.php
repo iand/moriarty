@@ -175,6 +175,9 @@ class ChangeSet extends SimpleGraph {
 			}
 
 		
+			
+		$this->_index = SimpleGraph::merge($this->_index, $reifiedAdditions, $reifiedRemovals);	
+
 		foreach($this->_index as $uri => $props){
 			if(
 					!isset($props[$CSNS.'removal']) 
@@ -185,8 +188,7 @@ class ChangeSet extends SimpleGraph {
 				}
 				
 		}
-			
-		$this->_index = SimpleGraph::merge($this->_index, $reifiedAdditions, $reifiedRemovals);	
+		
 			
 	  }
 
