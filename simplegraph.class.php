@@ -691,8 +691,56 @@ class SimpleGraph {
       $sub->_index[$s] = $this->_index[$s];
     }
     return $sub;
-  }     
+  }
+  
+  /**
+   * Fetch an array of all the subject that have and rdf type that matches that given
+   * @param $t the type to match
+   * @return array
+   */
+  function get_subjects_of_type($t) {
+  	return $this->get_subjects_where_resource('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', $t);
+  }
 
+  /**
+   * Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a resource
+   * @param $p the predicate to match
+   * @param $o the resource object to match
+   * @return array
+   */
+  function get_subjects_where_resource($p, $o) {
+  	return $this->get_subjects_where($p, $o, 'uri');
+  }
+
+  /**
+   * Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a literal value
+   * @param $p the predicate to match
+   * @param $o the resource object to match
+   * @return array
+   */
+    function get_subjects_where_literal($p, $o) {
+  	return $this->get_subjects_where($p, $o, 'literal');
+  }
+  
+  private function get_subjects_where($p, $o, $type)
+  {
+  	$subjects = array();
+  	foreach ($this->_index as $subject => $properties)
+  	{
+  		if (array_key_exists($p, $properties))
+  		{
+  			foreach ($properties[$p] as $object)
+  			{
+  				if ($object['type'] == 'uri' && $object['value'] == $o)
+  				{
+  					$subjects[] = $subject;
+  					break;
+  				}
+  			}
+  		}
+  	}
+  	return $subjects;  	
+  }
   
   /**
    * Fetch the properties of a given subject and predicate. 

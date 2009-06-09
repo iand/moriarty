@@ -381,7 +381,90 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( "fr", $g->get_first_literal('http://example.org/subj', 'http://example.org/pred', null, 'fr'));
     $this->assertEquals( "de", $g->get_first_literal('http://example.org/subj', 'http://example.org/pred', null, 'de'));
   }
+  
+  function test_get_subjects_of_type() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj1', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_1');
+    $g->add_resource_triple('http://example.org/subj2', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_2');
+    $g->add_resource_triple('http://example.org/subj3', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_1');
+    $g->add_literal_triple('http://example.org/subj4', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_1');
+    
+    $subjects = $g->get_subjects_of_type('http://example.org/type_1');
+    $this->assertEquals(2, count($subjects), 'The returned subjects should be exactly 2');
+    $this->assertContains('http://example.org/subj1', $subjects, 'subj1 matches and should be returned');
+    $this->assertContains('http://example.org/subj3', $subjects, 'subj3 matches and should be returned');
+    $this->assertNotContains('http://example.org/subj2', $subjects, 'subj2 does not match and should not be returned');
+    $this->assertNotContains('http://example.org/subj4', $subjects, 'subj4 does not match and should not be returned');
+  }
 
+  function test_get_subjects_where_resource() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj1', 'http://example.org/pred', 'http://example.org/obj1');
+    $g->add_literal_triple('http://example.org/subj1', 'http://example.org/pred', 'http://example.org/obj1');
+
+    $g->add_resource_triple('http://example.org/subj2', 'http://example.org/pred', 'http://example.org/obj1');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', 'http://example.org/obj2');
+
+    $g->add_resource_triple('http://example.org/subj3', 'http://example.org/pred', 'http://example.org/obj2');
+    $g->add_literal_triple('http://example.org/subj3', 'http://example.org/pred', 'http://example.org/obj1');
+
+    $subjects = $g->get_subjects_where_resource('http://example.org/pred', 'http://example.org/obj1');
+    $this->assertEquals(2, count($subjects), 'The returned subjects should be exactly 2');
+    $this->assertContains('http://example.org/subj1', $subjects, 'subj1 matches and should be returned');
+    $this->assertContains('http://example.org/subj2', $subjects, 'subj2 matches and should be returned');
+    $this->assertNotContains('http://example.org/subj3', $subjects, 'subj3 does not match and should not be returned');
+  }
+  
+  function test_get_subjects_where_resource_no_match_on_predicate() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj1', 'http://example.org/pred', 'http://example.org/obj1');
+
+    $subjects = $g->get_subjects_where_resource('http://example.org/pred_foo', 'http://example.org/obj1');
+    $this->assertTrue(empty($subjects), 'The returned subjects should be empty');
+  }
+  
+  function test_get_subjects_where_resource_no_match_on_object() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj1', 'http://example.org/pred', 'http://example.org/obj1');
+
+    $subjects = $g->get_subjects_where_resource('http://example.org/pred', 'http://example.org/obj_foo');
+    $this->assertTrue(empty($subjects), 'The returned subjects should be empty');
+  }
+  
+  function test_get_subjects_where_literal() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj1', 'http://example.org/pred', 'http://example.org/obj1');
+    $g->add_literal_triple('http://example.org/subj1', 'http://example.org/pred', 'http://example.org/obj1');
+
+    $g->add_resource_triple('http://example.org/subj2', 'http://example.org/pred', 'http://example.org/obj1');
+    $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', 'http://example.org/obj2');
+
+    $g->add_resource_triple('http://example.org/subj3', 'http://example.org/pred', 'http://example.org/obj2');
+    $g->add_literal_triple('http://example.org/subj3', 'http://example.org/pred', 'http://example.org/obj1');
+
+    $subjects = $g->get_subjects_where_literal('http://example.org/pred', 'http://example.org/obj1');
+    $this->assertEquals(2, count($subjects), 'The returned subjects should be exactly 2');
+    $this->assertContains('http://example.org/subj1', $subjects, 'subj1 matches and should be returned');
+    $this->assertContains('http://example.org/subj2', $subjects, 'subj2 matches and should be returned');
+    $this->assertNotContains('http://example.org/subj3', $subjects, 'subj3 does not match and should not be returned');
+  }
+  
+  function test_get_subjects_where_literal_no_match_on_predicate() {
+    $g = new SimpleGraph();
+    $g->add_literal_triple('http://example.org/subj1', 'http://example.org/pred', 'http://example.org/obj1');
+
+    $subjects = $g->get_subjects_where_literal('http://example.org/pred_foo', 'http://example.org/obj1');
+    $this->assertTrue(empty($subjects), 'The returned subjects should be empty');
+  }
+  
+  function test_get_subjects_where_literal_no_match_on_object() {
+    $g = new SimpleGraph();
+    $g->add_literal_triple('http://example.org/subj1', 'http://example.org/pred', 'http://example.org/obj1');
+
+    $subjects = $g->get_subjects_where_literal('http://example.org/pred', 'http://example.org/obj_foo');
+    $this->assertTrue(empty($subjects), 'The returned subjects should be empty');
+  }
+  
   function test_reify(){
 
     $triple = array(
