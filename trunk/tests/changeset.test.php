@@ -778,6 +778,31 @@ class ChangeSetTest extends PHPUnit_Framework_TestCase
 		}
 		
 	}
+		function test_different_etags_dont_cause_a_changeset() {
+		$before = '
+		<rdf:RDF xmlns="http://example.com/foo#" xmlns:dir="http://schemas.talis.com/2005/dir/schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+		  <rdf:Description rdf:about="http://example.com/subject/one">
+		  <dir:etag>"83a10a68-5d8a-47f6-bfbe-0dbba55794d4"</dir:etag>
+		  </rdf:Description>
+		  </rdf:RDF>';
+		
+		$after = '
+		<rdf:RDF xmlns="http://example.com/foo#" xmlns:dir="http://schemas.talis.com/2005/dir/schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+		  <rdf:Description rdf:about="http://example.com/subject/one">
+		  </rdf:Description>
+		  </rdf:RDF>';
+		
+		
+		$changeset = new ChangeSet(array('before' => $before,
+							'after' => $after,
+							'changeReason' => 'foo reason',
+							'creatorName' => 'fooUser'));
+		
+		$changesets = $changeset->get_subjects_of_type('http://purl.org/vocab/changeset/schema#ChangeSet');
+
+		$this->assertEquals(0, count($changesets), 'There should be no changesets produced');
+		
+	}
 	
 }
 
