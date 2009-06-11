@@ -105,6 +105,10 @@ class ChangeSet extends SimpleGraph {
 			foreach($graph as $uri => $properties){
 				if(isset($properties["http://schemas.talis.com/2005/dir/schema#etag"])){
 					unset(${$name}[$uri]["http://schemas.talis.com/2005/dir/schema#etag"]);
+					if (count(${$name}[$uri]) == 0)
+					{
+						unset(${$name}[$uri]);
+					}
 				}
 			}
 		}
