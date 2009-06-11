@@ -626,94 +626,68 @@ class ChangeSetTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($expected, $actual);
 	}	
 	
-//	function test_multiple_subjects_some_without_changes() {
-//		$before = '
-//		<rdf:RDF xmlns:admin="http://talis.com/schema/2009/admin#" xmlns:multitenant="http://purl.org/vocab/multi-tenant-configuration/schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dir="http://schemas.talis.com/2005/dir/schema#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" > 
-//		  <rdf:Description rdf:about="http://admin.talis.com/tenancies/152424261671726325413132526/themes/1">
-//		    <admin:file rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/files/build.sh"/>
-//		    <dir:etag>"be8a419e-7434-47d8-af1d-3eeeec846c9d"</dir:etag>
-//		  </rdf:Description>
-//		  <rdf:Description rdf:about="http://admin.talis.com/tenancies/152424261671726325413132526">
-//		    <admin:theme rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/themes/1"/>
-//		    <multitenant:customer rdf:resource="http://admin.talis.com/customers/prism-one"/>
-//		    <multitenant:subscription rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526#subscription"/>
-//		    <rdfs:label>I am Prism Tenancy One, for Prism Customer One</rdfs:label>
-//		    <rdf:type rdf:resource="http://purl.org/vocab/multi-tenant-configuration/schema#Tenancy"/>
-//		    <multitenant:enabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</multitenant:enabled>
-//		    <multitenant:tenancyType rdf:resource="http://admin.talis.com/types/prism_tenancy"/>
-//		    <dir:etag>"38df183f-ddd7-42a1-bda8-51c8dece1110"</dir:etag>
-//		    <admin:activeTheme rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/themes/1"/>
-//		    <multitenant:createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2008-10-26T21:32:52</multitenant:createdAt>
-//		  </rdf:Description>
-//		  <rdf:Description rdf:about="http://admin.talis.com/tenancies/152424261671726325413132526/files/build.sh">
-//		    <admin:filesize>163</admin:filesize>
-//		    <admin:filename>build.sh</admin:filename>
-//		    <dir:etag>"9f3fc3b2-3391-4cb6-bac4-20468b1b6f06"</dir:etag>
-//		  </rdf:Description>
-//		</rdf:RDF>';
-//		
-//		$after = '
-//		<rdf:RDF xmlns:admin="http://talis.com/schema/2009/admin#" xmlns:multitenant="http://purl.org/vocab/multi-tenant-configuration/schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dir="http://schemas.talis.com/2005/dir/schema#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" > 
-//		  <rdf:Description rdf:about="http://admin.talis.com/tenancies/152424261671726325413132526/themes/1">
-//		    <admin:file rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/files/build.sh"/>
-//		    <dir:etag>"be8a419e-7434-47d8-af1d-3eeeec846c9d"</dir:etag>
-//		  </rdf:Description>
-//		  <rdf:Description rdf:about="http://admin.talis.com/tenancies/152424261671726325413132526">
-//		    <admin:theme rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/themes/1"/>
-//		    <multitenant:customer rdf:resource="http://admin.talis.com/customers/prism-one"/>
-//		    <multitenant:subscription rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526#subscription"/>
-//		    <rdfs:label>I am Prism Tenancy One, for Prism Customer One</rdfs:label>
-//		    <rdf:type rdf:resource="http://purl.org/vocab/multi-tenant-configuration/schema#Tenancy"/>
-//		    <multitenant:enabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</multitenant:enabled>
-//		    <multitenant:tenancyType rdf:resource="http://admin.talis.com/types/prism_tenancy"/>
-//		    <dir:etag>"38df183f-ddd7-42a1-bda8-51c8dece1110"</dir:etag>
-//		    <admin:activeTheme rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/themes/1"/>
-//		    <multitenant:createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2008-10-26T21:32:52</multitenant:createdAt>
-//		  </rdf:Description>
-//		  <rdf:Description rdf:about="http://admin.talis.com/tenancies/152424261671726325413132526/files/build.sh">
-//		    <admin:filesize>165</admin:filesize>
-//		    <admin:filename>build.sh</admin:filename>
-//		    <dir:etag>"9f3fc3b2-3391-4cb6-bac4-20468b1b6f06"</dir:etag>
-//		  </rdf:Description>
-//		</rdf:RDF>';
-//		
-////		<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns0="http://purl.org/vocab/changeset/schema#">
-////
-////		  <rdf:Description rdf:nodeID="cs0">
-////		    <rdf:type rdf:resource="http://purl.org/vocab/changeset/schema#ChangeSet"/>
-////		    <ns0:subjectOfChange rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/files/build.sh"/>
-////		    <ns0:createdDate>2009-06-09T15:16:18+01:00</ns0:createdDate>
-////		    <ns0:creatorName>fooUser</ns0:creatorName>
-////		    <ns0:changeReason>Upload of file from admin.talis.com</ns0:changeReason>
-////		    <ns0:addition rdf:nodeID="Add1"/>
-////		    <ns0:removal rdf:nodeID="Remove1"/>
-////		  </rdf:Description>
-////		
-////		  <rdf:Description rdf:nodeID="Add1">
-////		    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
-////		    <rdf:subject rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/files/build.sh"/>
-////		    <rdf:predicate rdf:resource="http://talis.com/schema/2009/admin#filesize"/>
-////		    <rdf:object>165</rdf:object>
-////		  </rdf:Description>
-////		
-////		  <rdf:Description rdf:nodeID="Remove1">
-////		    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
-////		    <rdf:subject rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/files/build.sh"/>
-////		    <rdf:predicate rdf:resource="http://talis.com/schema/2009/admin#filesize"/>
-////		    <rdf:object>163</rdf:object>
-////		  </rdf:Description>
-////
-////		</rdf:RDF>
-//		
-//		$changeset = new ChangeSet(array('before' => $before,
-//							'after' => $after,
-//							'changeReason' => 'Upload of file from admin.talis.com',
-//							'creatorName' => 'fooUser'));
-//		
-//		$changesets = $changeset->get_subjects_of_type('http://purl.org/vocab/changeset/schema#ChangeSet');
-//		$this->assertEquals(1, count($changesets), 'There should only be one changeset produced');
-//		
-//	}
+	function test_multiple_subjects_some_without_changes() {
+		$before = '
+		<rdf:RDF xmlns:admin="http://talis.com/schema/2009/admin#" xmlns:multitenant="http://purl.org/vocab/multi-tenant-configuration/schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dir="http://schemas.talis.com/2005/dir/schema#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" > 
+		  <rdf:Description rdf:about="http://admin.talis.com/tenancies/152424261671726325413132526/themes/1">
+		    <admin:file rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/files/build.sh"/>
+		    <dir:etag>"be8a419e-7434-47d8-af1d-3eeeec846c9d"</dir:etag>
+		  </rdf:Description>
+		  <rdf:Description rdf:about="http://admin.talis.com/tenancies/152424261671726325413132526">
+		    <admin:theme rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/themes/1"/>
+		    <multitenant:customer rdf:resource="http://admin.talis.com/customers/prism-one"/>
+		    <multitenant:subscription rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526#subscription"/>
+		    <rdfs:label>I am Prism Tenancy One, for Prism Customer One</rdfs:label>
+		    <rdf:type rdf:resource="http://purl.org/vocab/multi-tenant-configuration/schema#Tenancy"/>
+		    <multitenant:enabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</multitenant:enabled>
+		    <multitenant:tenancyType rdf:resource="http://admin.talis.com/types/prism_tenancy"/>
+		    <dir:etag>"38df183f-ddd7-42a1-bda8-51c8dece1110"</dir:etag>
+		    <admin:activeTheme rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/themes/1"/>
+		    <multitenant:createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2008-10-26T21:32:52</multitenant:createdAt>
+		  </rdf:Description>
+		  <rdf:Description rdf:about="http://admin.talis.com/tenancies/152424261671726325413132526/files/build.sh">
+		    <admin:filesize>163</admin:filesize>
+		    <admin:filename>build.sh</admin:filename>
+		    <dir:etag>"9f3fc3b2-3391-4cb6-bac4-20468b1b6f06"</dir:etag>
+		  </rdf:Description>
+		</rdf:RDF>';
+		
+		$after = '
+		<rdf:RDF xmlns:admin="http://talis.com/schema/2009/admin#" xmlns:multitenant="http://purl.org/vocab/multi-tenant-configuration/schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dir="http://schemas.talis.com/2005/dir/schema#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" > 
+		  <rdf:Description rdf:about="http://admin.talis.com/tenancies/152424261671726325413132526/themes/1">
+		    <admin:file rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/files/build.sh"/>
+		    <dir:etag>"be8a419e-7434-47d8-af1d-3eeeec846c9d"</dir:etag>
+		  </rdf:Description>
+		  <rdf:Description rdf:about="http://admin.talis.com/tenancies/152424261671726325413132526">
+		    <admin:theme rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/themes/1"/>
+		    <multitenant:customer rdf:resource="http://admin.talis.com/customers/prism-one"/>
+		    <multitenant:subscription rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526#subscription"/>
+		    <rdfs:label>I am Prism Tenancy One, for Prism Customer One</rdfs:label>
+		    <rdf:type rdf:resource="http://purl.org/vocab/multi-tenant-configuration/schema#Tenancy"/>
+		    <multitenant:enabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</multitenant:enabled>
+		    <multitenant:tenancyType rdf:resource="http://admin.talis.com/types/prism_tenancy"/>
+		    <dir:etag>"38df183f-ddd7-42a1-bda8-51c8dece1110"</dir:etag>
+		    <admin:activeTheme rdf:resource="http://admin.talis.com/tenancies/152424261671726325413132526/themes/1"/>
+		    <multitenant:createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2008-10-26T21:32:52</multitenant:createdAt>
+		  </rdf:Description>
+		  <rdf:Description rdf:about="http://admin.talis.com/tenancies/152424261671726325413132526/files/build.sh">
+		    <admin:filesize>165</admin:filesize>
+		    <admin:filename>build.sh</admin:filename>
+		    <dir:etag>"9f3fc3b2-3391-4cb6-bac4-20468b1b6f06"</dir:etag>
+		  </rdf:Description>
+		</rdf:RDF>';
+		
+		$changeset = new ChangeSet(array('before' => $before,
+							'after' => $after,
+							'changeReason' => 'Upload of file from admin.talis.com',
+							'creatorName' => 'fooUser'));
+		
+		$changesets = $changeset->get_subjects_of_type('http://purl.org/vocab/changeset/schema#ChangeSet');
+		$this->assertEquals(1, count($changesets), 'There should only be one changeset produced');
+		$subjectOfChange = $changeset->get_first_resource($changesets[0], 'http://purl.org/vocab/changeset/schema#subjectOfChange');
+		$this->assertEquals('http://admin.talis.com/tenancies/152424261671726325413132526/files/build.sh', $subjectOfChange, 'The subject of change of the one changeset should the subject that has changes');
+		
+	}
 
 }
 

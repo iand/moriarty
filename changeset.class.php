@@ -110,7 +110,7 @@ class ChangeSet extends SimpleGraph {
 		}
 		
 		// Get an array of all the subject uris
-		$subjectIndex = !empty($this->a['subjectOfChange'])? array($this->a['subjectOfChange']) : array_merge(array_keys($this->before), array_keys($this->after));
+		$subjectIndex = !empty($this->a['subjectOfChange'])? array($this->a['subjectOfChange']) : array_unique(array_merge(array_keys($additions), array_keys($removals)));
 
 		// Get the metadata for all the changesets
 		$date  = (!empty($this->a['createdDate']))? $this->a['createdDate'] : date(DATE_ATOM);
