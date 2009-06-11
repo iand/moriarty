@@ -90,7 +90,7 @@ class ChangeSet extends SimpleGraph {
  		if(empty($this->before)){
 				$additions = $this->after;
 			} else {
-				$additions = SimpleGraph::diff($this->after, $this->before); 
+				$additions = SimpleGraph::diff($this->after, $this->before);
 			}
 		//Get the triples to be removed
 		if(empty($this->after)){
@@ -109,24 +109,26 @@ class ChangeSet extends SimpleGraph {
 			}
 		}
 		
+//		print_r(array_keys($additions));
+//		print_r(array_keys($removals));
+//		print_r(array_merge(array_keys($additions), array_keys($removals)));
+		
 		// Get an array of all the subject uris
 		$subjectIndex = !empty($this->a['subjectOfChange'])? array($this->a['subjectOfChange']) : array_unique(array_merge(array_keys($additions), array_keys($removals)));
-
+//		print_r($subjectIndex);
+		
 		// Get the metadata for all the changesets
 		$date  = (!empty($this->a['createdDate']))? $this->a['createdDate'] : date(DATE_ATOM);
 		$creator  = (!empty($this->a['creatorName']))? $this->a['creatorName'] : 'Moriarty ChangeSet Builder';
 		$reason  = (!empty($this->a['changeReason']))? $this->a['changeReason'] : 'Change using Moriarty ChangeSet Builder';
 		
-		
-		// for every subject uri, create a new changeset
-		$n = count($subjectIndex);
-		
-		for ($i=0 ; $i < $n; $i++) { 
-			$csID = '_:cs'.$i;
-			$csIndex[$subjectIndex[$i]] = $csID;
+		$csCount = 0;
+		foreach ($subjectIndex as $subjectOfChange) { 
+			$csID = '_:cs'.$csCount;
+			$csIndex[$subjectOfChange] = $csID;
 			$this->addT($csID, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', $CSNS.'ChangeSet', 'uri');
-			$subjectType = (strpos($subjectIndex[$i], '_:')===0)? 'bnode' : 'uri';
-			$this->addT($csID, $CSNS.'subjectOfChange', $subjectIndex[$i], $subjectType);
+			$subjectType = (strpos($subjectOfChange, '_:')===0)? 'bnode' : 'uri';
+			$this->addT($csID, $CSNS.'subjectOfChange', $subjectOfChange, $subjectType);
 			$this->addT($csID, $CSNS.'createdDate', $date, 'literal');
 			$this->addT($csID, $CSNS.'creatorName', $creator, 'literal');
 			$this->addT($csID, $CSNS.'changeReason', $reason, 'literal');
@@ -135,9 +137,8 @@ class ChangeSet extends SimpleGraph {
 			if(!empty($this->a['properties'])){
 				foreach ($this->a['properties'] as $p => $objs) $this->addT($csID, $p, $objs);
 			}
+			$csCount++;
 		}
-		
-	
 			/*iterate through the triples to be added, 
 			reifying them, 
 			and linking to the Statements from the appropriate changeset
