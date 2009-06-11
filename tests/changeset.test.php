@@ -688,7 +688,97 @@ class ChangeSetTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('http://admin.talis.com/tenancies/152424261671726325413132526/files/build.sh', $subjectOfChange, 'The subject of change of the one changeset should the subject that has changes');
 		
 	}
+	
+		function test_multiple_subjects_multiple_changes_some_without_changes() {
+		$before = '
+		<rdf:RDF xmlns="http://example.com/foo#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+		  <rdf:Description rdf:about="http://example.com/subject/before_only/one">
+		    <one>before</one>
+		    <two>before</two>
+		    <three>unchanged</three>
+		  </rdf:Description>
+		  <rdf:Description rdf:about="http://example.com/subject/one">
+		    <one>before</one>
+		    <two>before</two>
+		    <three>unchanged</three>
+		  </rdf:Description>
+		  <rdf:Description rdf:about="http://example.com/subject/two">
+		    <one>before</one>
+		    <two>before</two>
+		    <three>unchanged</three>
+		  </rdf:Description>
+		  <rdf:Description rdf:about="http://example.com/subject/three">
+		    <one>before</one>
+		    <two>before</two>
+		    <three>unchanged</three>
+		  </rdf:Description>
+		  <rdf:Description rdf:about="http://example.com/subject/four">
+		    <one>unchanged</one>
+		    <two>unchanged</two>
+		    <three>unchanged</three>
+		  </rdf:Description>
+		  <rdf:Description rdf:about="http://example.com/subject/before_only/two">
+		    <one>before</one>
+		    <two>before</two>
+		    <three>unchanged</three>
+		  </rdf:Description>
+		  </rdf:RDF>';
 
+		$after = '
+		<rdf:RDF xmlns="http://example.com/foo#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"> 
+		  <rdf:Description rdf:about="http://example.com/subject/five">
+		  	<four>new</four>
+		  </rdf:Description>
+		  <rdf:Description rdf:about="http://example.com/subject/four">
+		    <one>unchanged</one>
+		    <two>unchanged</two>
+		    <three>unchanged</three>
+		  </rdf:Description>
+		  <rdf:Description rdf:about="http://example.com/subject/three">
+		    <one>after</one>
+		    <two>after</two>
+		    <three>unchanged</three>
+		  </rdf:Description>
+		  <rdf:Description rdf:about="http://example.com/subject/two">
+		    <one>after</one>
+		    <two>after</two>
+		    <three>unchanged</three>
+		  </rdf:Description>
+		  <rdf:Description rdf:about="http://example.com/subject/one">
+		    <one>after</one>
+		    <two>after</two>
+		    <three>unchanged</three>
+		  </rdf:Description>
+		  </rdf:RDF>';
+		
+		
+		$changeset = new ChangeSet(array('before' => $before,
+							'after' => $after,
+							'changeReason' => 'foo reason',
+							'creatorName' => 'fooUser'));
+		
+		$changesets = $changeset->get_subjects_of_type('http://purl.org/vocab/changeset/schema#ChangeSet');
+
+				$subjectsThatChanged = array (
+			'http://example.com/subject/five',
+			'http://example.com/subject/three',
+			'http://example.com/subject/two',
+			'http://example.com/subject/one',
+			'http://example.com/subject/before_only/one',
+			'http://example.com/subject/before_only/two'
+		);
+		
+		$this->assertEquals(count($subjectsThatChanged), count($changesets), 'There should be the right number of changesets produced');
+		
+		array ('http://example.com/subject/one', 'http://example.com/subject/two', 'http://example.com/subject/three');
+		foreach ($subjectsThatChanged as $subjectThatChanged)
+		{
+			$csSubject = $changeset->get_subjects_where_resource('http://purl.org/vocab/changeset/schema#subjectOfChange', $subjectThatChanged);
+			$this->assertEquals(1, count($csSubject), "$subjectThatChanged should have exactly one changeset");
+		}
+		
+	}
+	
 }
 
 ?>
