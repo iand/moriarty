@@ -101,7 +101,7 @@ class HttpRequest {
       }
     }
 
-    if (class_exists('http_class') && class_exists('sasl_interact_class')) {
+    if (class_exists('http_class', false) && class_exists('sasl_interact_class', false)) {
 
       $response_code = '0';
       $response_info = array();
