@@ -731,7 +731,7 @@ class SimpleGraph {
   		{
   			foreach ($properties[$p] as $object)
   			{
-  				if ($object['type'] == 'uri' && $object['value'] == $o)
+  				if ($object['type'] == $type && $object['value'] == $o)
   				{
   					$subjects[] = $subject;
   					break;
