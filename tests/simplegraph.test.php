@@ -445,8 +445,8 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $subjects = $g->get_subjects_where_literal('http://example.org/pred', 'http://example.org/obj1');
     $this->assertEquals(2, count($subjects), 'The returned subjects should be exactly 2');
     $this->assertContains('http://example.org/subj1', $subjects, 'subj1 matches and should be returned');
-    $this->assertContains('http://example.org/subj2', $subjects, 'subj2 matches and should be returned');
-    $this->assertNotContains('http://example.org/subj3', $subjects, 'subj3 does not match and should not be returned');
+    $this->assertContains('http://example.org/subj3', $subjects, 'subj3 matches and should be returned');
+    $this->assertNotContains('http://example.org/subj2', $subjects, 'subj2 does not match and should not be returned');
   }
   
   function test_get_subjects_where_literal_no_match_on_predicate() {

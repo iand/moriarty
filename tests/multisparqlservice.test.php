@@ -184,7 +184,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
     $ss = new MultiSparqlService("http://example.org/store/services/multisparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;
 
-    $response = $ss->graph( 'construct {?s ?p ?o } where { ?s ?p ?o .}', Array('http://example.org/graphs/1') );
+    $response = $ss->graph( 'construct {?s ?p ?o } where { ?s ?p ?o .}' );
     $this->assertEquals( "user:pwd", $fake_request->get_auth() );
   }
 
@@ -196,7 +196,7 @@ class MultiSparqlServiceTest extends SparqlServiceBaseTest {
     $ss = new MultiSparqlService("http://example.org/store/services/multisparql", new FakeCredentials());
     $ss->request_factory = $fake_request_factory;
 
-    $triples = $ss->graph_to_triple_list( 'construct {?s ?p ?o } where { ?s ?p ?o .}', Array('http://example.org/graphs/1') );
+    $triples = $ss->graph_to_triple_list( 'construct {?s ?p ?o } where { ?s ?p ?o .}' );
     $this->assertEquals( "user:pwd", $fake_request->get_auth() );
   }
 
