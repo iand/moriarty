@@ -170,6 +170,16 @@ class Contentbox {
 
     return $resources;
   }
+  
+  function submit_content($content, $mimetype)  {
+      if (empty( $this->request_factory) ) {
+        $this->request_factory = new HttpRequestFactory();
+      }
+      $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
+      $request->set_body($content);
+      $request->set_content_type($mimetype);
+      return $request->execute();
+  }
 
 }
 
