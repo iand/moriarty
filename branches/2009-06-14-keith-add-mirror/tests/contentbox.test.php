@@ -366,6 +366,24 @@ class ContentboxTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( "AppDomain, process and components...", $resources->items[0]['http://purl.org/dc/elements/1.1/title'][0] );
     $this->assertEquals( "Export & Import Goodie from/to Photoshop", $resources->items[1]['http://purl.org/dc/elements/1.1/title'][0] );
   }
+  
+  function test_submit_content_returns_http_response_with_location_header()  {
+      $fake_response = new HttpResponse();
+      $fake_response->status_code = 204;
+      $fake_response->headers['content-location'] = 'http://example.org/store/items/abc123';
+
+      $fake_request_factory = new FakeRequestFactory();
+      $fake_request = new FakeHttpRequest( $fake_response );
+      $fake_request_factory->register('POST', "http://example.org/store/items", $fake_request );
+
+      $cb = new Contentbox("http://example.org/store/items", new FakeCredentials());
+      $cb->request_factory = $fake_request_factory;
+      
+      $response = $cb->submit_content($this->_simple_rss_feed, 'application/rss+xml');
+      
+      $this->assertTrue(isset($response->headers['content-location']));
+      
+  }
 
 }
 
