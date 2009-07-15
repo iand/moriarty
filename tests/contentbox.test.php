@@ -370,7 +370,7 @@ class ContentboxTest extends PHPUnit_Framework_TestCase {
   function test_submit_content_returns_http_response_with_location_header()  {
       $fake_response = new HttpResponse();
       $fake_response->status_code = 204;
-      $fake_response->headers['content-location'] = 'http://example.org/store/items/abc123';
+      $fake_response->headers['location'] = 'http://example.org/store/items/abc123';
 
       $fake_request_factory = new FakeRequestFactory();
       $fake_request = new FakeHttpRequest( $fake_response );
@@ -381,7 +381,7 @@ class ContentboxTest extends PHPUnit_Framework_TestCase {
       
       $response = $cb->submit_content($this->_simple_rss_feed, 'application/rss+xml');
       
-      $this->assertTrue(isset($response->headers['content-location']));
+      $this->assertTrue(isset($response->headers['location']));
       
   }
 
