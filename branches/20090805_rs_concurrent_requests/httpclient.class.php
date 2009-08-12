@@ -14,7 +14,7 @@ abstract class HttpClient
 	
 	public static function Create()
 	{
-		if (HttpClient::_instance != null)
+		if (HttpClient::$_instance != null)
 		{
 			return HttpClient::$_instance;
 		}
