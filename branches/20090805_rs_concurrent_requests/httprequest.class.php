@@ -103,8 +103,8 @@ class HttpRequest {
     }
 
 $client = HttpClient::Create();
-$client.sendRequest(self);
-$response = $client.getResponse(self);
+$client->send_request($this);
+$response = $client->get_response_for($this);
 
 /*    
   echo '<p>The HTTP request sent was:</p>';

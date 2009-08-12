@@ -4,13 +4,13 @@ class CurlHttpClient extends HttpClient
 {
 	private $responses = array();
 
-	public function sendRequest($request)
+	public function send_request($request)
 	{
 		$poster = curl_init($request->uri);
 
-		if ($this->credentials != null) {
+		if ($request->credentials != null) {
 			curl_setopt($poster, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-			curl_setopt($poster, CURLOPT_USERPWD, $this->credentials->get_auth());
+			curl_setopt($poster, CURLOPT_USERPWD, $request->credentials->get_auth());
 		}
 		// curl_setopt($poster, CURLOPT_VERBOSE, 1);
 
@@ -63,14 +63,16 @@ class CurlHttpClient extends HttpClient
 		$response->body = $response_body;
 		$response->info = $response_info;
 		$response->request = $request;
-
-		$this->responses[$request] = $response;
+		
+		$key = spl_object_hash($request);
+		$this->responses[$key] = $response;
 
 	}
 
-	public function getResponseFor($request)
+	public function get_response_for($request)
 	{
-		return @$this->responses[$request];
+		$key = spl_object_hash($request);
+		return @$this->responses[$key];
 	}
 }
 

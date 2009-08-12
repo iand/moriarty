@@ -4,7 +4,7 @@ class PhpHttpClient extends HttpClient
 {
 	private $responses = array();
 
-	public function sendRequest($request)
+	public function send_request($request)
 	{
 		$response_code = '0';
 		$response_info = array();
@@ -71,7 +71,7 @@ class PhpHttpClient extends HttpClient
 
 	}
 
-	public function getResponseFor($request)
+	public function get_response_for($request)
 	{
 		return @$this->responses[$request];
 	}
