@@ -1,4 +1,7 @@
 <?php 
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
+require_once MORIARTY_DIR . 'phphttpclient.class.php';
+require_once MORIARTY_DIR . 'curlhttpclient.class.php';
 
 abstract class HttpClient
 {
