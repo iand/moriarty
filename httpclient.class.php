@@ -27,8 +27,8 @@ abstract class HttpClient
 		throw new Exception('HttpClient could not find an underlying client library to use. Install Curl support or Manuel Lemos\' HttpClient');		
 	}
 	
-	public abstract function sendRequest($request);
-	public abstract function getResponseFor($request);
+	public abstract function send_request($request);
+	public abstract function get_response_for($request);
 	
 	//to add in later for non-blocking check of response readiness
 	//public abstract function checkResponseFor($request);
