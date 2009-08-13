@@ -143,6 +143,13 @@ class Store {
       return $mb->describe($uri, $output);    
     }
   }
+  
+  function search_and_facet($query, $fields, $max=10, $offset=0, $sort=false, $top = 10)
+  {
+  	$facetResponse = $this->get_facet_service()->facets($query, $fields, $top);
+  	$searchReponse = $this->get_contentbox()->search($query, $max, $offset, $sort);
+  	return array('facetResponse' => $facetResponse, 'searchResponse' => $searchReponse);
+  }
 
 
 }
