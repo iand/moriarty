@@ -37,6 +37,7 @@ require_once MORIARTY_TEST_DIR . 'snapshots.test.php';
 require_once MORIARTY_TEST_DIR . 'augmentservice.test.php';
 require_once MORIARTY_TEST_DIR . 'graphpath.test.php';
 require_once MORIARTY_TEST_DIR . 'oaiservice.test.php';
+require_once MORIARTY_TEST_DIR . 'curlhttpclient.test.php';
 
 
 error_reporting(E_ALL );
@@ -98,6 +99,7 @@ class Moriarty_AllTests
         $suite->addTestSuite('AugmentServiceTest');
         $suite->addTestSuite('GraphPathTest');
         $suite->addTestSuite('OAIServiceTest');
+        $suite->addTestSuite('CurlHttpClientTest');
 
         return $suite;
     }
