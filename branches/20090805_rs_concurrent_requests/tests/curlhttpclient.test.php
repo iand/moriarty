@@ -20,17 +20,18 @@ class CurlHttpClientTest extends PHPUnit_Framework_TestCase {
 	function test_send_request_and_get_response_concurrently()
 	{
 		$client = new CurlHttpClient();
-		$request1 = new HttpRequest('GET', 'http://www.google.com/');
-		$request2 = new HttpRequest('GET', 'http://www.yahoo.com/');
-
-		$key1 = $client->send_request($request1);
-		$key2 = $client->send_request($request2);
-
-		$response2 = $client->get_response_for($key2);
-		$response1 = $client->get_response_for($key1);
 		
-		$this->assertContains('Server: gws', $response1);
-		$this->assertContains('X-XRDS-Location: http://open.login.yahooapis.com/openid20/www.yahoo.com/xrds', $response2);
+		$google_request = new HttpRequest('GET', 'http://www.google.com/');
+		$yahoo_request = new HttpRequest('GET', 'http://www.yahoo.com/');
+
+		$google_key = $client->send_request($google_request);
+		$yahoo_key = $client->send_request($yahoo_request);
+
+		$yahoo_response = $client->get_response_for($yahoo_key);
+		$google_response = $client->get_response_for($google_key);
+		
+		$this->assertContains('Server: gws', $google_response);
+		$this->assertContains('X-XRDS-Location: http://open.login.yahooapis.com/openid20/www.yahoo.com/xrds', $yahoo_response);
 	}
 	
 }
