@@ -24,7 +24,6 @@ class CurlHttpClient extends HttpClient
 		}
 		// curl_setopt($curl_handle, CURLOPT_VERBOSE, 1);
 
-
 		curl_setopt($curl_handle, CURLOPT_FRESH_CONNECT,TRUE);
 		curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER,1);
 		curl_setopt($curl_handle, CURLOPT_FOLLOWLOCATION, TRUE);
