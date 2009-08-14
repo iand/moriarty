@@ -39,6 +39,10 @@ class HttpRequest {
 
 	var $_proxy = null;
 
+	var $_async_key = null;
+
+	var $_response_from_cache = null;
+
 	/**
 	 * Create a new instance of this class
 	 * @param string method the HTTP method to issue (i.e. GET, POST, PUT etc)
@@ -86,6 +90,11 @@ class HttpRequest {
 	 * @return HttpResponse
 	 */
 	function execute() {
+		$this->execute_async();
+		return $this->get_async_response();
+	}
+
+	function execute_async() {
 
 		if ( $this->_cache ) {
 			$cached_response = $this->_cache->load($this->cache_id(), $this->_use_stale_response_on_failure);
@@ -97,21 +106,30 @@ class HttpRequest {
 				}
 				else {
 					$cached_response->request = $this;
-					return $cached_response;
+					$this->_response_from_cache = $cached_response;
+					return;
 				}
 			}
 		}
 
-		$client = HttpClient::Create();
-		$requestKey = $client->send_request($this);
-		$raw_response = $client->get_response_for($requestKey);
+		$this->client = HttpClient::Create();
+		$this->_async_key = $client->send_request($this);
+	}
 
-		if ( $raw_response ) {
+	function get_async_response()
+	{
+		$raw_response = null;
+		if ($this->_response_from_cache === null)
+		{
+			$raw_response = $this->client->get_response_for($this->_async_key);
+		}
+
+		if ( $raw_response !== null ) {
 			list($response_code,$response_headers,$response_body) = $this->parse_response($raw_response);
 		}
 		else {
-			if ( $this->_cache && $cached_response) {
-				return $cached_response;
+			if ( $this->_cache && $this->_response_from_cache) {
+				return $this->_response_from_cache;
 			}
 
 			$response_code = $response_info['http_code'];
@@ -134,13 +152,13 @@ class HttpRequest {
 		 */
 
 		if ( $this->_cache ) {
-			if ( $cached_response && $response_code == 304) {
-				$cached_response->request = $this;
-				return $cached_response;
+			if ( $this->_response_from_cache && $response_code == 304) {
+				$this->_response_from_cache->request = $this;
+				return $this->_response_from_cache;
 			}
 
 
-			if (! $cached_response ) {
+			if (! $this->_response_from_cache ) {
 				$max_age = FALSE;
 				if ( $this->method == 'GET' && $response->is_cacheable() ) {
 					$cache_control = $response->headers['cache-control'];
@@ -221,8 +239,8 @@ class HttpRequest {
 	function set_if_none_match($val) {
 		$this->headers['If-None-Match'] = $val;
 	}
-	 
-	 
+
+
 	function cache_id() {
 		$accept = '*/*';
 		if (array_key_exists('Accept', $this->headers)) {
