@@ -107,10 +107,10 @@ class HttpRequest {
 		$raw_response = $client->get_response_for($requestKey);
 
 		if ( $raw_response ) {
-			list($response_code,$response_headers,$response_body) = $request->parse_response($raw_response);
+			list($response_code,$response_headers,$response_body) = $this->parse_response($raw_response);
 		}
 		else {
-			if ( $request->_cache && $cached_response) {
+			if ( $this->_cache && $cached_response) {
 				return $cached_response;
 			}
 
@@ -124,7 +124,7 @@ class HttpRequest {
 		$response->headers = $response_headers;
 		$response->body = $response_body;
 		$response->info = $response_info;
-		$response->request = $request;
+		$response->request = $this;
 
 		/*
 		 echo '<p>The HTTP request sent was:</p>';

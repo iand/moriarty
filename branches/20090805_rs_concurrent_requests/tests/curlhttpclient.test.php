@@ -17,6 +17,15 @@ class CurlHttpClientTest extends PHPUnit_Framework_TestCase {
 		$this->assertContains('Server: gws', $response);
 	}
 	
+	function test_send_request_and_get_response_on_bad_server()
+	{
+		$client = new CurlHttpClient();
+		$request = new HttpRequest('GET', 'http://i.do.not.exist.com/');
+		$key = $client->send_request($request);
+		$response = $client->get_response_for($key);
+		$this->assertNotNull($response);
+	}
+	
 	function test_send_request_and_get_response_concurrently()
 	{
 		$client = new CurlHttpClient();
@@ -33,6 +42,8 @@ class CurlHttpClientTest extends PHPUnit_Framework_TestCase {
 		$this->assertContains('Server: gws', $google_response);
 		$this->assertContains('X-XRDS-Location: http://open.login.yahooapis.com/openid20/www.yahoo.com/xrds', $yahoo_response);
 	}
+	
+		
 	
 }
 
