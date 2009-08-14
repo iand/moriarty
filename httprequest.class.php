@@ -113,7 +113,7 @@ class HttpRequest {
 		}
 
 		$this->client = HttpClient::Create();
-		$this->_async_key = $client->send_request($this);
+		$this->_async_key = $this->client->send_request($this);
 	}
 
 	function get_async_response()
@@ -141,7 +141,7 @@ class HttpRequest {
 		$response->status_code = $response_code;
 		$response->headers = $response_headers;
 		$response->body = $response_body;
-		$response->info = $response_info;
+//		$response->info = $response_info;
 		$response->request = $this;
 
 		/*
