@@ -16,6 +16,14 @@ class FakeHttpRequest extends HttpRequest {
     $this->was_executed = true;
     return $this->response;
   }
+  
+  function execute_async() {
+  	$this->was_executed = true;
+  }
+  
+  function get_async_response() {
+  	return $this->response;
+  }
 
   function was_executed() {
     return $this->was_executed;

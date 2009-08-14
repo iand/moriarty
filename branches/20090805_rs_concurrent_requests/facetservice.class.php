@@ -41,10 +41,15 @@ class FacetService {
     if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
-    $uri = $this->uri . '?query=' . urlencode($query) . '&fields=' . urlencode(join(',', $fields)) . '&top=' . urlencode($top) . '&output=xml';
+    $uri = $this->make_facet_uri($query, $fields, $top);
     $request = $this->request_factory->make( 'GET', $uri , $this->credentials );
     $request->set_accept(MIME_XML);
     return $request->execute();
+  }
+  
+  function make_facet_uri($query, $fields, $top)
+  {
+    return $this->uri . '?query=' . urlencode($query) . '&fields=' . urlencode(join(',', $fields)) . '&top=' . urlencode($top) . '&output=xml';
   }
 
   /**
