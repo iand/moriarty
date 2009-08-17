@@ -1,8 +1,16 @@
 <?php
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
+require_once MORIARTY_DIR . 'httpcache.class.php';
+require_once MORIARTY_DIR . 'httprequest.class.php';
+require_once MORIARTY_DIR . 'httpresponse.class.php';
 
+/**
+ * A CURL based http client implementation.
+ */
 class CurlHttpClient extends HttpClient
 {
 	private $curl_handles = array();
+	private $requests = array();
 	private $responses = array();
 	private $multicurl;
 	private $running;
@@ -16,6 +24,7 @@ class CurlHttpClient extends HttpClient
 	{
 		$curl_handle = curl_init($request->uri);
 		$key = (string)$curl_handle;
+		$this->requests[$key] = $request;
 		$this->curl_handles[$key] = $curl_handle;
 
 		if ($request->credentials != null) {
@@ -71,7 +80,7 @@ class CurlHttpClient extends HttpClient
 		$innerSleepInt = $outerSleepInt = 1;
 		$sleepIncrement = 1.1;
 
-		$status = CURLM_OK;
+
 		while($this->running && ($this->execStatus == CURLM_OK || $this->execStatus == CURLM_CALL_MULTI_PERFORM))
 		{
 			usleep($outerSleepInt);
@@ -108,8 +117,83 @@ class CurlHttpClient extends HttpClient
 		while($done = curl_multi_info_read($this->multicurl))
 		{
 			$key = (string)$done['handle'];
-			$this->responses[$key] = curl_multi_getcontent($done['handle']);
+			$raw_response = curl_multi_getcontent($done['handle']);
+			$response_info = curl_getinfo($done['handle']);
+			
+			list($response_code,$response_headers,$response_body) = $this->parse_response($raw_response);
+				
+			$response = new HttpResponse();
+			$response->status_code = $response_code;
+			$response->headers = $response_headers;
+			$response->body = $response_body;
+			$response->info = $response_info;
+			$response->request = $this->requests[$key];
+
+			$this->responses[$key] = $response;
+
 		}
+	}
+
+	/**
+	 * @access private
+	 */
+	function parse_response($response){
+		/*
+		 ***original code extracted from examples at
+		 ***http://www.webreference.com/programming
+		 /php/cookbook/chap11/1/3.html
+
+		 ***returns an array in the following format which varies depending on headers returned
+
+		 [0] => the HTTP error or response code such as 404
+		 [1] => Array
+		 (
+		 [Server] => Microsoft-IIS/5.0
+		 [Date] => Wed, 28 Apr 2004 23:29:20 GMT
+		 [X-Powered-By] => ASP.NET
+		 [Connection] => close
+		 [Set-Cookie] => COOKIESTUFF
+		 [Expires] => Thu, 01 Dec 1994 16:00:00 GMT
+		 [Content-Type] => text/html
+		 [Content-Length] => 4040
+		 )
+		 [2] => Response body (string)
+		 */
+
+		do
+		{
+			if ( strstr($response, "\r\n\r\n") == FALSE) {
+				$response_headers = $response;
+				$response = '';
+			}
+			else {
+				list($response_headers,$response) = explode("\r\n\r\n",$response,2);
+			}
+			$response_header_lines = explode("\r\n",$response_headers);
+
+			// first line of headers is the HTTP response code
+			$http_response_line = array_shift($response_header_lines);
+			if (preg_match('@^HTTP/[0-9]\.[0-9] ([0-9]{3})@',$http_response_line,
+			$matches)) {
+				$response_code = $matches[1];
+			}
+			else
+			{
+				$response_code = "Error";
+			}
+		}
+		while (preg_match('@^HTTP/[0-9]\.[0-9] ([0-9]{3})@',$response));
+
+		$response_body = $response;
+
+		// put the rest of the headers in an array
+		$response_header_array = array();
+		foreach ($response_header_lines as $header_line) {
+			list($header,$value) = explode(': ',$header_line,2);
+			$response_header_array[strtolower($header)] = $value;
+		}
+
+		return array($response_code,$response_header_array,$response_body);
 	}
 }
 

@@ -1,5 +1,12 @@
 <?php
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
+require_once MORIARTY_DIR . 'httpcache.class.php';
+require_once MORIARTY_DIR . 'httprequest.class.php';
+require_once MORIARTY_DIR . 'httpresponse.class.php';
 
+/**
+ * A CURL based http client implementation.
+ */
 class PhpHttpClient extends HttpClient
 {
 	private $responses = array();
@@ -67,13 +74,16 @@ class PhpHttpClient extends HttpClient
 		$response->info = $response_info;
 		$response->request = $request;
 
-		$this->responses[$request] = $response;
+		$key = spl_object_hash($request);
+		$this->responses[$key] = $response;
+		
+		return $key;
 
 	}
 
-	public function get_response_for($request)
+	public function get_response_for($key)
 	{
-		return @$this->responses[$request];
+		return @$this->responses[$key];
 	}
 }
 
