@@ -147,6 +147,10 @@ class Store {
 
 	function search_and_facet($query, $fields, $max=10, $offset=0, $sort=false, $top = 10)
 	{
+		if (empty( $this->request_factory) ) {
+			$this->request_factory = new HttpRequestFactory();
+		}
+
 		$search_uri = $this->get_contentbox()->make_search_uri($query, $max, $offset, $sort);
 		$facet_uri = $this->get_facet_service()->make_facet_uri($query, $fields, $top);
 			
