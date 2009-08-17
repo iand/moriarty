@@ -63,6 +63,10 @@ class CurlHttpClient extends HttpClient
 			do
 			{
 				$this->execStatus = curl_multi_exec($this->multicurl, $this->running);
+				if (!$this->running)
+				{
+					$this->storeResponses();
+				}
 			}
 			while ($this->execStatus === CURLM_CALL_MULTI_PERFORM);
 		}
@@ -77,9 +81,9 @@ class CurlHttpClient extends HttpClient
 			return $this->responses[$key];
 		}
 
+
 		$innerSleepInt = $outerSleepInt = 1;
 		$sleepIncrement = 1.1;
-
 
 		while($this->running && ($this->execStatus == CURLM_OK || $this->execStatus == CURLM_CALL_MULTI_PERFORM))
 		{
@@ -107,7 +111,6 @@ class CurlHttpClient extends HttpClient
 				return $this->responses[$key];
 			}
 
-			$this->runningCurrent = $this->running;
 		}
 		return null;
 	}
@@ -119,9 +122,9 @@ class CurlHttpClient extends HttpClient
 			$key = (string)$done['handle'];
 			$raw_response = curl_multi_getcontent($done['handle']);
 			$response_info = curl_getinfo($done['handle']);
-			
-			list($response_code,$response_headers,$response_body) = $this->parse_response($raw_response);
 				
+			list($response_code,$response_headers,$response_body) = $this->parse_response($raw_response);
+
 			$response = new HttpResponse();
 			$response->status_code = $response_code;
 			$response->headers = $response_headers;
