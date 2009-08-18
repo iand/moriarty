@@ -135,5 +135,138 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( $credentials, $store->get_oai_service()->credentials );
   }
 
+  function test_search_and_facet_return_both_responses() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_search_response = new HttpResponse(111);
+    $expected_search_body = 'I am the search response body';
+    $fake_search_response->body = $expected_search_body;
+    $fake_facet_response = new HttpResponse(222);
+    $expected_facet_body = 'I am the facet response body';
+    $fake_facet_response->body = $expected_facet_body;
+    $fake_search_request = new FakeHttpRequest( $fake_search_response );
+    $fake_facet_request = new FakeHttpRequest( $fake_facet_response );
+    $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=10&offset=0", $fake_search_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
+    
+    $store = new Store("http://example.org/store", null, $fake_request_factory);
+
+    $response = $store->search_and_facet( 'scooby', array( 'foo' ) );
+    
+    $this->assertEquals(111, $response['searchResponse']->status_code);
+    $this->assertEquals(222, $response['facetResponse']->status_code);
+    $this->assertEquals($expected_search_body, $response['searchResponse']->body);
+    $this->assertEquals($expected_facet_body, $response['facetResponse']->body);
+  }
+  
+  function test_search_and_facet_uses_uri() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_search_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=10&offset=0", $fake_search_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
+    
+    $store = new Store("http://example.org/store", null, $fake_request_factory);
+
+    $response = $store->search_and_facet( 'scooby', array( 'foo' ) );
+    $this->assertTrue( $fake_search_request->was_executed() );
+    $this->assertTrue( $fake_facet_request->was_executed() );
+  }
+
+  function test_search_and_facet_passes_max_parameter() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_search_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=45&offset=0", $fake_search_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
+    
+    $store = new Store("http://example.org/store", null, $fake_request_factory);
+
+    $response = $store->search_and_facet( 'scooby', array( 'foo' ), 45 );
+    $this->assertTrue( $fake_search_request->was_executed() );
+  }
+
+  function test_search_and_facet_passes_sort_parameter() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_search_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=45&offset=0&sort=bar", $fake_search_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
+    
+    $store = new Store("http://example.org/store", null, $fake_request_factory);
+
+    $response = $store->search_and_facet( 'scooby', array( 'foo' ), 45, 0, 'bar' );
+    $this->assertTrue( $fake_search_request->was_executed() );
+  }
+
+  function test_search_and_facet_passes_offset_parameter() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_search_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=45&offset=12", $fake_search_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
+    
+    $store = new Store("http://example.org/store", null, $fake_request_factory);
+
+    $response = $store->search_and_facet( 'scooby', array( 'foo' ), 45, 12 );
+    $this->assertTrue( $fake_search_request->was_executed() );
+  }
+
+  function test_search_and_facet_sets_accept() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_search_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=10&offset=0", $fake_search_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
+    
+    $store = new Store("http://example.org/store", null, $fake_request_factory);
+
+    $response = $store->search_and_facet( 'scooby', array( 'foo' ) );
+  	$this->assertTrue( in_array('Accept: application/rss+xml', $fake_search_request->get_headers() ) );
+  	$this->assertTrue( in_array('Accept: application/xml', $fake_facet_request->get_headers() ) );
+  }
+
+  function test_search_and_facet_uses_credentials() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_search_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=10&offset=0", $fake_search_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
+    
+  	$store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+
+    $response = $store->search_and_facet( 'scooby', array( 'foo') );
+    $this->assertEquals( "user:pwd", $fake_search_request->get_auth() );
+    $this->assertEquals( "user:pwd", $fake_facet_request->get_auth() );
+  }
+
+  
+  function test_search_and_facet_uses_fields() {
+  	$fake_request_factory = new FakeRequestFactory();
+    $fake_search_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=10&offset=0", $fake_search_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo%2Cbar%2Cbaz%2Cqux&top=10&output=xml", $fake_facet_request );
+    
+  	$store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+
+    $response = $store->search_and_facet( 'scooby', array( 'foo', 'bar', 'baz', 'qux' ) );
+  	
+    $this->assertTrue( $fake_facet_request->was_executed() );
+  }
+
+  function test_search_and_facet_uses_top() {
+  	$fake_request_factory = new FakeRequestFactory();
+    $fake_search_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=10&offset=0", $fake_search_request );
+    $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo%2Cbar%2Cbaz%2Cqux&top=93&output=xml", $fake_facet_request );
+    
+  	$store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+
+    $response = $store->search_and_facet( 'scooby', array( 'foo', 'bar', 'baz', 'qux' ), 10, 0, null, 93 );
+    
+    $this->assertTrue( $fake_facet_request->was_executed() );
+  }
+
 }
 ?>
