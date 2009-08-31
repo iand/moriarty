@@ -118,12 +118,13 @@ class SparqlServiceBase {
     }
 
     
-    $get_uri = $this->uri . '?query=' . urlencode($query);
+    $params = 'query=' . urlencode($query);
     if ( !empty($mime) && strstr($mime, '/') === FALSE) {
-      $get_uri .= '&output=' . $mime;
+      $params .= '&output=' . $mime;
       $mime = '*/*';
     }
 
+    $get_uri = $this->uri . '?' . $params;
     if (strlen($get_uri) <= 2048) {
       $request = $this->request_factory->make( 'GET', $get_uri, $this->credentials );
       if(empty($mime)) $mime = MIME_RDFXML.','.MIME_SPARQLRESULTS;
@@ -134,7 +135,7 @@ class SparqlServiceBase {
       if(empty($mime)) $mime = MIME_RDFXML.','.MIME_SPARQLRESULTS;
       $request->set_accept($mime);
       $request->set_content_type(MIME_FORMENCODED);
-      $request->set_body( "query=" . urlencode($query) );
+      $request->set_body( $params );
     }
     return $request->execute();
   
