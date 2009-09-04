@@ -699,7 +699,7 @@ class SimpleGraph {
    * @return array
    */
   function get_subjects_of_type($t) {
-  	return $this->get_subjects_where_resource('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', $t);
+    return $this->get_subjects_where_resource('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', $t);
   }
 
   /**
@@ -709,7 +709,7 @@ class SimpleGraph {
    * @return array
    */
   function get_subjects_where_resource($p, $o) {
-  	return $this->get_subjects_where($p, $o, 'uri');
+    return $this->get_subjects_where($p, $o, 'uri');
   }
 
   /**
@@ -719,27 +719,27 @@ class SimpleGraph {
    * @return array
    */
     function get_subjects_where_literal($p, $o) {
-  	return $this->get_subjects_where($p, $o, 'literal');
+    return $this->get_subjects_where($p, $o, 'literal');
   }
   
   private function get_subjects_where($p, $o, $type)
   {
-  	$subjects = array();
-  	foreach ($this->_index as $subject => $properties)
-  	{
-  		if (array_key_exists($p, $properties))
-  		{
-  			foreach ($properties[$p] as $object)
-  			{
-  				if ($object['type'] == $type && $object['value'] == $o)
-  				{
-  					$subjects[] = $subject;
-  					break;
-  				}
-  			}
-  		}
-  	}
-  	return $subjects;  	
+    $subjects = array();
+    foreach ($this->_index as $subject => $properties)
+    {
+      if (array_key_exists($p, $properties))
+      {
+        foreach ($properties[$p] as $object)
+        {
+          if ($object['type'] == $type && $object['value'] == $o)
+          {
+            $subjects[] = $subject;
+            break;
+          }
+        }
+      }
+    }
+    return $subjects;   
   }
   
   /**
@@ -820,6 +820,9 @@ class SimpleGraph {
       $label = $this->get_first_literal($resource_uri,RDFS_LABEL, '', 'en');
     }
     if ( strlen($label) == 0) {
+      $label = $this->get_first_literal($resource_uri,'http://purl.org/dc/terms/title', '', 'en');
+    }
+    if ( strlen($label) == 0) {
       $label = $this->get_first_literal($resource_uri,DC_TITLE, '', 'en');
     }
     if ( strlen($label) == 0) {
@@ -837,6 +840,30 @@ class SimpleGraph {
   
     return $label;
   }
+
+  function get_description($resource_uri = null) {
+    if ($resource_uri == null) {
+      $resource_uri = $this->_primary_resource; 
+    }
+    $text = $this->get_first_literal($resource_uri,'http://purl.org/dc/terms/description', '', 'en');
+    if ( strlen($text) == 0) {
+      $text = $this->get_first_literal($resource_uri,DC_DESCRIPTION, '', 'en');
+    }
+    if ( strlen($text) == 0) {
+      $text = $this->get_first_literal($resource_uri,RDFS_COMMENT, '', 'en');
+    }
+    if ( strlen($text) == 0) {
+      $text = $this->get_first_literal($resource_uri,'http://purl.org/rss/1.0/description', '', 'en');
+    }
+    if ( strlen($text) == 0) {
+      $text = $this->get_first_literal($resource_uri,'http://purl.org/dc/terms/abstract', '', 'en');
+    }
+    if ( strlen($text) == 0) {
+      $text = $this->get_first_literal($resource_uri,'http://purl.org/vocab/bio/0.1/olb', '', 'en');
+    }   
+    return $text;
+  }  
+
 
 
   function reify($resources, $nodeID_prefix='Statement')
