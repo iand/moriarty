@@ -733,5 +733,79 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
   }
 
 
+  function test_replace_resource_object() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
+
+    $g->replace_resource('http://example.org/obj', 'http://example.org/other');
+    $this->assertTrue( $g->has_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/other'));
+    $this->assertFalse( $g->has_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj'));
+  }
+
+  function test_replace_resource_property() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
+
+    $g->replace_resource('http://example.org/pred', 'http://example.org/other');
+    $this->assertTrue( $g->has_resource_triple('http://example.org/subj', 'http://example.org/other', 'http://example.org/obj'));
+    $this->assertFalse( $g->has_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj'));
+  }
+
+  function test_replace_resource_property_with_literal_objects() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
+    $g->add_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo', 'en');
+
+    $g->replace_resource('http://example.org/pred', 'http://example.org/other');
+    $this->assertTrue( $g->has_resource_triple('http://example.org/subj', 'http://example.org/other', 'http://example.org/obj'));
+    $this->assertFalse( $g->has_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj'));
+    $this->assertTrue( $g->has_literal_triple('http://example.org/subj', 'http://example.org/other', 'foo','en'));
+    $this->assertFalse( $g->has_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo','en'));
+  }
+
+  function test_replace_resource_property_with_object_needing_replacing_too() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/pred');
+
+    $g->replace_resource('http://example.org/pred', 'http://example.org/other');
+    $this->assertTrue( $g->has_resource_triple('http://example.org/subj', 'http://example.org/other', 'http://example.org/other'));
+    $this->assertFalse( $g->has_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/pred'));
+  }
+  
+  function test_replace_resource_subject() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
+
+    $g->replace_resource('http://example.org/subj', 'http://example.org/other');
+    $this->assertTrue( $g->has_resource_triple('http://example.org/other', 'http://example.org/pred', 'http://example.org/obj'));
+    $this->assertFalse( $g->has_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj'));
+  }
+
+  function test_replace_resource_subject_with_object_needing_replacing_too() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/subj');
+
+    $g->replace_resource('http://example.org/subj', 'http://example.org/other');
+    $this->assertTrue( $g->has_resource_triple('http://example.org/other', 'http://example.org/pred', 'http://example.org/other'));
+    $this->assertFalse( $g->has_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/subj'));
+  }
+
+  function test_replace_resource_subject_with_property_needing_replacing_too() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/subj', 'http://example.org/obj');
+
+    $g->replace_resource('http://example.org/subj', 'http://example.org/other');
+    $this->assertTrue( $g->has_resource_triple('http://example.org/other', 'http://example.org/other', 'http://example.org/obj'));
+    $this->assertFalse( $g->has_resource_triple('http://example.org/subj', 'http://example.org/subj', 'http://example.org/obj'));
+  }
+    
+  function test_replace_resource_all_components() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/subj', 'http://example.org/subj');
+
+    $g->replace_resource('http://example.org/subj', 'http://example.org/other');
+    $this->assertTrue( $g->has_resource_triple('http://example.org/other', 'http://example.org/other', 'http://example.org/other'));
+    $this->assertFalse( $g->has_resource_triple('http://example.org/subj', 'http://example.org/subj', 'http://example.org/subj'));
+  }
 }
 ?>
