@@ -1014,6 +1014,109 @@ class SimpleGraph {
     return $current;
   }
 
+  function replace_resource($look_for, $replace_with) {
+    $remove_list_resources = array();
+    $remove_list_literals = array();
+    $add_list_resources = array();
+    $add_list_literals = array();
+    foreach ($this->_index as $s => $p_list) {
+      if ($s == $look_for) {
+        foreach ($p_list as $p => $o_list) {
+          if ($p == $look_for) {
+            foreach ($o_list as $o_info) {
+              if ($o_info['type'] == 'literal') {
+                $lang = array_key_exists('lang', $o_info) ? $o_info['lang'] : null;
+                $dt = array_key_exists('datatype', $o_info) ? $o_info['datatype'] : null;
+
+                $remove_list_literals[] = array($look_for, $look_for, $o_info['value'], $lang, $dt);
+                $add_list_literals[] = array($replace_with, $replace_with, $o_info['value'], $lang, $dt);
+              }
+              else  { 
+                if ($o_info['value'] == $look_for) {
+                  $remove_list_resources[] = array($look_for, $look_for, $look_for);
+                  $add_list_resources[] = array($replace_with, $replace_with, $replace_with);
+                } 
+                else {
+                  $remove_list_resources[] = array($look_for, $look_for, $o_info['value']);
+                  $add_list_resources[] = array($replace_with, $replace_with, $o_info['value']);
+                }
+              }
+            }
+          }
+          else {
+            foreach ($o_list as $o_info) {
+              if ($o_info['type'] == 'literal') {
+                $lang = array_key_exists('lang', $o_info) ? $o_info['lang'] : null;
+                $dt = array_key_exists('datatype', $o_info) ? $o_info['datatype'] : null;
+
+                $remove_list_literals[] = array($look_for, $p, $o_info['value'], $lang, $dt);
+                $add_list_literals[] = array($replace_with, $p, $o_info['value'], $lang, $dt);
+              }
+              else  { 
+                if ($o_info['value'] == $look_for) {
+                  $remove_list_resources[] = array($look_for, $p, $look_for);
+                  $add_list_resources[] = array($replace_with, $p, $replace_with);
+                } 
+                else {
+                  $remove_list_resources[] = array($look_for, $p, $o_info['value']);
+                  $add_list_resources[] = array($replace_with, $p, $o_info['value']);
+                }
+              }
+            }
+          }
+        }
+      }
+      else {
+      
+        foreach ($p_list as $p => $o_list) {
+          if ($p == $look_for) {
+            foreach ($o_list as $o_info) {
+              if ($o_info['type'] == 'literal') {
+                $lang = array_key_exists('lang', $o_info) ? $o_info['lang'] : null;
+                $dt = array_key_exists('datatype', $o_info) ? $o_info['datatype'] : null;
+
+                $remove_list_literals[] = array($s, $look_for, $o_info['value'], $lang, $dt);
+                $add_list_literals[] = array($s, $replace_with, $o_info['value'], $lang, $dt);
+              }
+              else  { 
+                if ($o_info['value'] == $look_for) {
+                  $remove_list_resources[] = array($s, $look_for, $look_for);
+                  $add_list_resources[] = array($s, $replace_with, $replace_with);
+                } 
+                else {
+                  $remove_list_resources[] = array($s, $look_for, $o_info['value']);
+                  $add_list_resources[] = array($s, $replace_with, $o_info['value']);
+                }
+              }
+            } 
+          }
+          else {
+            foreach ($o_list as $o_info) {
+              if ($o_info['type'] != 'literal' && $o_info['value'] == $look_for) {
+                $remove_list_resources[] = array($s, $p, $look_for);
+                $add_list_resources[] = array($s, $p, $replace_with);
+              }
+            } 
+          }
+        } 
+      }
+    } 
+  
+    foreach ($remove_list_resources as $t) {
+      $this->remove_resource_triple($t[0], $t[1], $t[2]);
+    }
+    foreach ($add_list_resources as $t) {
+      $this->add_resource_triple($t[0], $t[1], $t[2]);
+    }
+
+    foreach ($remove_list_literals as $t) {
+      $this->remove_literal_triple($t[0], $t[1], $t[2], $t[3], $t[4]);
+    }
+    foreach ($add_list_literals as $t) {
+      $this->add_literal_triple($t[0], $t[1], $t[2], $t[3], $t[4]);
+    }
+
+  }
 
 
 }
