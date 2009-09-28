@@ -125,7 +125,7 @@ class SparqlServiceBase {
     }
 
     $get_uri = $this->uri . '?' . $params;
-    if (strlen($get_uri) <= 2048) {
+    if (strlen($get_uri) <= 1024) {
       $request = $this->request_factory->make( 'GET', $get_uri, $this->credentials );
       if(empty($mime)) $mime = MIME_RDFXML.','.MIME_SPARQLRESULTS;
       $request->set_accept($mime);
