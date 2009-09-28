@@ -28,6 +28,7 @@ class NetworkResource extends SimpleGraph {
     $this->uri = $uri;
     $this->credentials = $credentials;
     $this->request_factory = $request_factory;
+    parent::__construct();
   }
   
   /**
