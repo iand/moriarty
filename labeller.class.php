@@ -108,6 +108,11 @@ class Labeller {
       'http://xmlns.com/foaf/0.1/holdsAccount' => array('account', 'accounts', 'is account held by'),
 
       'http://rdfs.org/sioc/ns#topic' => array('topic'),
+      'http://rdfs.org/sioc/ns#content' => array('content'),
+      'http://rdfs.org/sioc/ns#hasContainer' => array('container'),
+
+      'http://www.w3.org/2003/12/exif/ns#height' => array('height'),
+      'http://www.w3.org/2003/12/exif/ns#width' => array('width'),
 
       'http://purl.org/dc/elements/1.1/title' => array('title','titles','is the title of'),
       'http://purl.org/dc/elements/1.1/description' => array('description','descriptions','is description of'),
@@ -119,6 +124,7 @@ class Labeller {
       'http://purl.org/dc/elements/1.1/subject' => array('subject','subjects','is subject for'),
       'http://purl.org/dc/elements/1.1/publisher' => array('publisher','publishers','is publisher of'),
       'http://purl.org/dc/elements/1.1/creator' => array('creator','creators','is creator of'),
+      'http://purl.org/dc/elements/1.1/source' => array('source'),
 
       'http://purl.org/dc/terms/abstract' => array('abstract','abstracts','is abstract of'),
       'http://purl.org/dc/terms/accessRights' => array('access rights','access rights','are access rights for'),
@@ -220,6 +226,7 @@ class Labeller {
       'http://open.vocab.org/terms/subtitle' => array('sub-title','sub-titles','is sub-title of'),
       'http://open.vocab.org/terms/firstSentence' => array('first sentence'),
       'http://open.vocab.org/terms/weight' => array('weight'),
+      'http://open.vocab.org/terms/category' => array('category', 'categories'),
 
       'http://purl.org/ontology/bibo/edition' => array('edition'),
       'http://purl.org/ontology/bibo/issue' => array('issue'),
@@ -239,6 +246,7 @@ class Labeller {
 
 
       'http://purl.org/ontology/mo/wikipedia' => array('wikipedia page','wikipedia pages','is wikipedia page of'),
+      'http://purl.org/ontology/mo/discogs' => array('discogs page','discogs pages','is discogs page of'),
 
       'http://purl.org/ontology/po/episode' => array('episode'),
       'http://purl.org/ontology/po/series' => array('series','series'),
@@ -316,6 +324,9 @@ class Labeller {
       'http://www.gazettes-online.co.uk/ontology/court#courtName' => array('court name'),
       'http://www.gazettes-online.co.uk/ontology/court#sitsAt' => array('sits at', 'sits at'),
 
+      'http://purl.org/goodrelations/v1#hasManufacturer' => array('manufacturer'),
+      'http://dbpedia.org/property/abstract' => array('abstract'),
+
     );    
   
   
@@ -387,17 +398,27 @@ class Labeller {
   }
 
   
-  function get_label($p, $g = null) {
+  function get_label($p, $g = null, $capitalize = false) {
     if ($g) {
       $label = $g->get_label($p);
       if ($label != $p) return $label;
     }
     
     if (array_key_exists($p, $this->_labels)) {
-      return $this->_labels[$p][0];
+      if ($capitalize) {
+        return ucfirst($this->_labels[$p][0]);
+      }
+      else {
+        return $this->_labels[$p][0];
+      }
     }
     else if (preg_match('~^http://www.w3.org/1999/02/22-rdf-syntax-ns#_(.+)$~', $p, $m)) {
-      return 'item ' . $m[1];
+      if ($capitalize) {
+        return 'Item ' . $m[1];
+      }
+      else {
+        return 'item ' . $m[1];
+      }
     }     
     else {
       $label = $this->uri_to_qname($p);
