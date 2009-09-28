@@ -389,13 +389,7 @@ class Labeller {
     return $prefix;
   }
   
-  function update_prefix_mappings() {
-    foreach ($this->_index as $s => $p_list) {
-      foreach ($p_list as $p => $v_list) {
-        $prefix = $this->uri_to_qname($p);  
-      }
-    }  
-  }
+
 
   
   function get_label($p, $g = null, $capitalize = false) {
