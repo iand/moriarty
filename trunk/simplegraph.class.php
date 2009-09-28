@@ -97,9 +97,15 @@ class SimpleGraph {
     return $this->_labeller->get_prefix($ns);
   }
   
+
   function update_prefix_mappings() {
-    $this->_labeller->update_prefix_mappings();
+    foreach ($this->_index as $s => $p_list) {
+      foreach ($p_list as $p => $v_list) {
+        $prefix = $this->_labeller->uri_to_qname($p);  
+      }
+    }  
   }
+
 
 
 
