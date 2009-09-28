@@ -19,6 +19,8 @@ class GraphTest extends PHPUnit_Framework_TestCase {
   </foaf:Person>
 </rdf:RDF>';
 
+  var $_turtle_doc = '@prefix foaf: <http://xmlns.com/foaf/0.1/> . [] a foaf:Person ; foaf:name "scooby" .';
+
   function make_graph($uri, $credentials = null) {
     // abstract
   }
@@ -301,6 +303,56 @@ class GraphTest extends PHPUnit_Framework_TestCase {
     $response = $g->has_description( 'http://example.org/scooby' );
     $this->assertFalse( $response );
   }
+
+
+  function test_submit_turtle_posts_to_metabox_uri() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $g = $this->make_graph("http://example.org/store/meta");
+    $g->request_factory = $fake_request_factory;
+
+    $response = $g->submit_turtle( $this->_turtle_doc );
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+
+  function test_submit_turtle_posts_supplied_turtle() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $g = $this->make_graph("http://example.org/store/meta");
+    $g->request_factory = $fake_request_factory;
+
+    $response = $g->submit_turtle( $this->_turtle_doc );
+    $this->assertEquals( $this->_turtle_doc , $fake_request->get_body() );
+  }
+
+  function test_submit_turtle_sets_content_type() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $g = $this->make_graph("http://example.org/store/meta");
+    $g->request_factory = $fake_request_factory;
+
+    $response = $g->submit_turtle( $this->_turtle_doc );
+    $this->assertTrue( in_array('Content-Type: application/x-turtle', $fake_request->get_headers() ) );
+  }
+
+  function test_submit_turtle_sets_accept() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $g = $this->make_graph("http://example.org/store/meta");
+    $g->request_factory = $fake_request_factory;
+
+    $response = $g->submit_turtle( $this->_turtle_doc );
+    $this->assertTrue( in_array('Accept: */*', $fake_request->get_headers() ) );
+  }
+
 
 }
 

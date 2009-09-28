@@ -683,14 +683,14 @@ class SparqlServiceBaseTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( in_array('Content-Type: application/x-www-form-urlencoded', $fake_request->get_headers() ) );
   }
 
-  function test_query_uses_post_if_request_uri_less_than_or_equal_to_2048_bytes() {
-    $long_uri = "http://example.com/012345678";
-    for ($i = 0; $i < 195; $i++) {
+  function test_query_uses_post_if_request_uri_less_than_or_equal_to_1024_bytes() {
+    $long_uri = "http://example.com/012340123456789";
+    for ($i = 0; $i < 92; $i++) {
       $long_uri .= '0123456789';  
     }
     $query = 'describe <' . $long_uri . '>' ;
     $request_uri = "http://example.org/store/services/sparql?query=" . urlencode($query);
-    $this->assertEquals( 2048, strlen($request_uri) );
+    $this->assertEquals( 1024, strlen($request_uri) );
 
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );

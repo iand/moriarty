@@ -110,6 +110,23 @@ class Graph {
 
 
   /**
+   * Submit some Turtle to be added to the graph
+   * @param string turtle the RDF to be submitted, serialised as Turtle
+   * @return HttpResponse
+   */
+  function submit_turtle($turtle) {
+    if (empty( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
+    $uri = $this->uri;
+    $request = $this->request_factory->make( 'POST', $uri, $this->credentials);
+    $request->set_content_type("application/x-turtle");
+    $request->set_accept("*/*");
+    $request->set_body( $turtle );
+    return $request->execute();
+  }
+
+  /**
    * Obtain the graph's bounded description of a given resource
    * @see http://n2.talis.com/wiki/Metabox#Describing_a_Resource
    * @param string uri the URI of the resource to be described
