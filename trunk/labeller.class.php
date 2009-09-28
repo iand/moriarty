@@ -43,8 +43,9 @@ class Labeller {
                     'ov' => 'http://open.vocab.org/terms/',
                     'void' => 'http://rdfs.org/ns/void#',
                     'xsd' => 'http://www.w3.org/2001/XMLSchema#',
-                    'dbpedia' => 'http://dbpedia.org/resource/',
-                    'wikipedia' => 'http://en.wikipedia.org/wiki/',
+                    'dbp' => 'http://dbpedia.org/resource/',
+                    'dbpo' => 'http://dbpedia.org/ontology/',
+                    'wiki' => 'http://en.wikipedia.org/wiki/',
                   );
   var $_labels = array(
       'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' => array('type','types','is type of'),
