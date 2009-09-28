@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'labeller.class.php';
 require_once MORIARTY_ARC_DIR . "ARC2.php";
 
 /**
@@ -45,15 +46,18 @@ class SimpleGraph {
                     'xsd' => 'http://www.w3.org/2001/XMLSchema#',
                   );
                   
+  var $_labeller;
   
   function __construct($graph=false){
-  if($graph){
-    if(is_string($graph)){
-      $this->add_rdf($graph);
-    } else {
-      $this->_index = $graph;
+    $this->_labeller = new Labeller();
+    if($graph){
+      if(is_string($graph)){
+        $this->add_rdf($graph);
+      } else {
+        $this->_index = $graph;
+      }
     }
-  }
+    
   }
                 
   function __destruct(){
@@ -68,7 +72,7 @@ class SimpleGraph {
    * @param string uri the URI to associate with the prefix
    */                  
   function set_namespace_mapping($prefix, $uri) {
-    $this->_ns[$prefix] = $uri;
+    $this->_labeller->set_namespace_mapping($prefix, $uri);
   }
 
   /**
@@ -77,13 +81,7 @@ class SimpleGraph {
    * @return string the URI corresponding to the QName if a suitable prefix exists, null otherwise
    */                  
   function qname_to_uri($qname) {
-    if (preg_match("~^(.+):(.+)$~", $qname, $m)) {
-      if ( isset($this->_ns[$m[1]])) {
-        return $this->_ns[$m[1]] . $m[2]; 
-      }
-    }  
-    
-    return null;
+    return $this->_labeller->qname_to_uri($qname);
   }
 
   /**
@@ -92,41 +90,15 @@ class SimpleGraph {
    * @return string the QName corresponding to the URI if a suitable prefix exists, null otherwise
    */                  
   function uri_to_qname($uri) {
-    if (preg_match('~^(.*[\/\#])([a-z0-9\-\_]+)$~i', $uri, $m)) {
-      $ns = $m[1];
-      $localname = $m[2];
-      $prefix = $this->get_prefix($ns);
-      if ( $prefix != null && $prefix !== FALSE) {
-        return $prefix . ':' . $localname; 
-      }
-    }
-    return null;
+    return $this->_labeller->uri_to_qname($uri);
   }
 
   function get_prefix($ns) {
-    $prefix = array_search($ns, $this->_ns);
-    if ( $prefix != null && $prefix !== FALSE) {
-      return $prefix; 
-    }
-    else {
-      $parts = split('[/#]', $ns);  
-      for ($i = count($parts) - 1; $i >= 0; $i--) {
-        if (preg_match('~^[a-zA-Z][a-zA-Z0-9\-]+$~', $parts[$i]) && !array_key_exists($parts[$i], $this->_ns) && $parts[$i] != 'schema' && $parts[$i] != 'ontology' && $parts[$i] != 'vocab' && $parts[$i] != 'terms' && $parts[$i] != 'ns' && $parts[$i] != 'core') {
-          $prefix = strtolower($parts[$i]);
-          $this->_ns[$prefix] = $ns;
-          return $prefix; 
-        }
-      }
-    }
-    return $prefix;
+    return $this->_labeller->get_prefix($ns);
   }
   
   function update_prefix_mappings() {
-    foreach ($this->_index as $s => $p_list) {
-      foreach ($p_list as $p => $v_list) {
-        $prefix = $this->uri_to_qname($p);  
-      }
-    }  
+    $this->_labeller->update_prefix_mappings();
   }
 
 
@@ -826,13 +798,13 @@ class SimpleGraph {
       $label = $this->get_first_literal($resource_uri,DC_TITLE, '', 'en');
     }
     if ( strlen($label) == 0) {
-      $label = $this->get_first_literal($resource_uri,'http://purl.org/rss/1.0/title', '', 'en');
-    }
-    if ( strlen($label) == 0) {
       $label = $this->get_first_literal($resource_uri,FOAF_NAME, '', 'en');
     }
     if ( strlen($label) == 0) {
       $label = $this->get_first_literal($resource_uri,RDF_VALUE, '', 'en');
+    }
+    if ( strlen($label) == 0) {
+      $label = $this->get_first_literal($resource_uri,'http://purl.org/rss/1.0/title', '', 'en');
     }
     if ( strlen($label) == 0) {
       $label = $resource_uri;
