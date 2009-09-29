@@ -46,6 +46,7 @@ class Labeller {
                     'dbp' => 'http://dbpedia.org/resource/',
                     'dbpo' => 'http://dbpedia.org/ontology/',
                     'wiki' => 'http://en.wikipedia.org/wiki/',
+                    'gn' => 'http://www.geonames.org/ontology#',
                   );
   var $_labels = array(
       'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' => array('type','types','is type of'),
@@ -326,6 +327,8 @@ class Labeller {
 
       'http://purl.org/goodrelations/v1#hasManufacturer' => array('manufacturer'),
       'http://dbpedia.org/property/abstract' => array('abstract'),
+      'http://www.geonames.org/ontology#name' => array('name'),
+      'http://www.geonames.org/ontology#parentFeature' => array('parent feature'),
 
     );    
   
