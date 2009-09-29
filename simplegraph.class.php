@@ -807,6 +807,9 @@ class SimpleGraph {
       $label = $this->get_first_literal($resource_uri,FOAF_NAME, '', 'en');
     }
     if ( strlen($label) == 0) {
+      $label = $this->get_first_literal($resource_uri,'http://www.geonames.org/ontology#name', '', 'en');
+    }
+    if ( strlen($label) == 0) {
       $label = $this->get_first_literal($resource_uri,RDF_VALUE, '', 'en');
     }
     if ( strlen($label) == 0) {
