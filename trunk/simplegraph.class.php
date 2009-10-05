@@ -8,6 +8,8 @@ require_once MORIARTY_ARC_DIR . "ARC2.php";
  */
 class SimpleGraph {
   var $_index = array();
+  var $_image_properties =  array( 'http://xmlns.com/foaf/0.1/depiction', 'http://xmlns.com/foaf/0.1/img'); 
+  var $_property_order =  array('http://www.w3.org/2004/02/skos/core#prefLabel', RDFS_LABEL, 'http://purl.org/dc/terms/title', DC_TITLE, FOAF_NAME, 'http://www.w3.org/2004/02/skos/core#definition', RDFS_COMMENT, 'http://purl.org/dc/terms/description', DC_DESCRIPTION, 'http://purl.org/vocab/bio/0.1/olb', RDF_TYPE); 
   protected $_ns = array (
                     'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
 //                    'owl' => 'http://www.w3.org/2002/07/owl#',
@@ -97,6 +99,10 @@ class SimpleGraph {
     return $this->_labeller->get_prefix($ns);
   }
   
+  function add_labelling_property($p)  {
+    $this->_labeller->add_labelling_property($p);
+  }
+
 
   function update_prefix_mappings() {
     foreach ($this->_index as $s => $p_list) {
@@ -233,6 +239,67 @@ class SimpleGraph {
   function to_json() {
     return json_encode($this->_index);
   }
+
+
+  /**
+   * Serialise the graph to HTML
+   * @return string a HTML version of the graph
+   */
+  function to_html($s = null) {
+    $this->update_prefix_mappings();
+    $h = '';
+    
+    if ($s) {
+      if (is_array($s)) {
+        $subjects = array_intersect($s, $this->get_subjects());
+        if (count($subjects) == 0) return '';
+      }
+      else {
+        if (array_key_exists($s, $this->_index)) {
+          $subjects = array($s);
+        }
+        else {
+          return '';
+        }
+      }
+    }
+    else {
+      $subjects = $this->get_subjects();
+    }
+    
+    
+    if (count($subjects) > 0) {
+      foreach ($subjects as $subject) {
+        if (count($subjects) > 1) {
+          $h .= '<h1><a href="' . htmlspecialchars($subject) . '">' . htmlspecialchars($this->get_label($subject)) . '</a></h1>' . "\n";
+        }
+        $h .= '<table>' . "\n";
+        
+        $properties = $this->get_subject_properties($subject, TRUE);
+        $priority_properties = array_intersect($properties, $this->_property_order);
+        $properties = array_merge($priority_properties, array_diff($properties, $priority_properties));
+        
+        foreach ($properties as $p) {
+          $h .= '<tr><th valign="top"><a href="' . htmlspecialchars($p). '">' . htmlspecialchars($this->get_label($p)). '</a></th>';
+          $h .= '<td valign="top">';
+          for ($i = 0; $i < count($this->_index[$subject][$p]); $i++) {
+            if ($i > 0) $h .= '<br />';
+            if ($this->_index[$subject][$p][$i]['type'] === 'literal') {
+              $h .= htmlspecialchars($this->_index[$subject][$p][$i]['value'] );
+            }
+            else {
+              $h .= '<a href="' . htmlspecialchars($this->_index[$subject][$p][$i]['value']). '">' . htmlspecialchars($this->get_label($this->_index[$subject][$p][$i]['value']) ). '</a>';
+            }
+          }
+          $h .= '</td>';
+          $h .= '</tr>' . "\n";
+        }
+        $h .= '</table>' . "\n";
+      }
+    }
+    return $h;
+  }
+
   
   /**
    * Fetch the first literal value for a given subject and predicate. If there are multiple possible values then one is selected at random. 
@@ -672,6 +739,15 @@ class SimpleGraph {
   }
   
   /**
+   * Fetch an array of all the subjects
+   * @return array
+   */
+  function get_subjects() {
+    return array_keys($this->_index);
+  }
+
+
+  /**
    * Fetch an array of all the subject that have and rdf type that matches that given
    * @param $t the type to match
    * @return array
@@ -696,7 +772,7 @@ class SimpleGraph {
    * @param $o the resource object to match
    * @return array
    */
-    function get_subjects_where_literal($p, $o) {
+  function get_subjects_where_literal($p, $o) {
     return $this->get_subjects_where($p, $o, 'literal');
   }
   
@@ -793,33 +869,7 @@ class SimpleGraph {
 
   
   function get_label($resource_uri) {
-    $label = $this->get_first_literal($resource_uri,'http://www.w3.org/2004/02/skos/core#prefLabel', '', 'en');
-    if ( strlen($label) == 0) {
-      $label = $this->get_first_literal($resource_uri,RDFS_LABEL, '', 'en');
-    }
-    if ( strlen($label) == 0) {
-      $label = $this->get_first_literal($resource_uri,'http://purl.org/dc/terms/title', '', 'en');
-    }
-    if ( strlen($label) == 0) {
-      $label = $this->get_first_literal($resource_uri,DC_TITLE, '', 'en');
-    }
-    if ( strlen($label) == 0) {
-      $label = $this->get_first_literal($resource_uri,FOAF_NAME, '', 'en');
-    }
-    if ( strlen($label) == 0) {
-      $label = $this->get_first_literal($resource_uri,'http://www.geonames.org/ontology#name', '', 'en');
-    }
-    if ( strlen($label) == 0) {
-      $label = $this->get_first_literal($resource_uri,RDF_VALUE, '', 'en');
-    }
-    if ( strlen($label) == 0) {
-      $label = $this->get_first_literal($resource_uri,'http://purl.org/rss/1.0/title', '', 'en');
-    }
-    if ( strlen($label) == 0) {
-      $label = $resource_uri;
-    }  
-  
-    return $label;
+    return $this->_labeller->get_label($resource_uri, $this);
   }
 
   function get_description($resource_uri = null) {

@@ -807,5 +807,22 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( $g->has_resource_triple('http://example.org/other', 'http://example.org/other', 'http://example.org/other'));
     $this->assertFalse( $g->has_resource_triple('http://example.org/subj', 'http://example.org/subj', 'http://example.org/subj'));
   }
+
+
+  function test_get_subjects() {
+    $g = new SimpleGraph();
+    $g->add_resource_triple('http://example.org/subj1', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_1');
+    $g->add_resource_triple('http://example.org/subj2', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_2');
+    $g->add_resource_triple('http://example.org/subj3', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_1');
+    $g->add_literal_triple('http://example.org/subj4', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_1');
+    
+    $subjects = $g->get_subjects();
+    $this->assertEquals(4, count($subjects), 'The returned subjects should be exactly 4');
+    $this->assertContains('http://example.org/subj1', $subjects, 'subj1 matches and should be returned');
+    $this->assertContains('http://example.org/subj2', $subjects, 'subj2 matches and should be returned');
+    $this->assertContains('http://example.org/subj3', $subjects, 'subj3 matches and should be returned');
+    $this->assertContains('http://example.org/subj4', $subjects, 'subj4 matches and should be returned');
+  }
+
 }
 ?>

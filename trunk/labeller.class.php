@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
  * Utility class for labelling properties
  */
 class Labeller {
-
+  protected $_label_properties = array();
 
   protected $_ns = array (
                     'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
@@ -392,24 +392,55 @@ class Labeller {
     return $prefix;
   }
   
+  function add_labelling_property($p)  {
+    $this->_label_properties[] = $p;
+  }
 
 
   
-  function get_label($p, $g = null, $capitalize = false) {
+  function get_label($uri, $g = null, $capitalize = false) {
     if ($g) {
-      $label = $g->get_label($p);
-      if ($label != $p) return $label;
+      $label = $g->get_first_literal($uri,'http://www.w3.org/2004/02/skos/core#prefLabel', '', 'en');
+      if ( strlen($label) != 0) return $label;
+
+      $label = $g->get_first_literal($uri,RDFS_LABEL, '', 'en');
+      if ( strlen($label) != 0) return $label;
+
+      $label = $g->get_first_literal($uri,'http://purl.org/dc/terms/title', '', 'en');
+      if ( strlen($label) != 0) return $label;
+
+      $label = $g->get_first_literal($uri,DC_TITLE, '', 'en');
+      if ( strlen($label) != 0) return $label;
+
+      $label = $g->get_first_literal($uri,FOAF_NAME, '', 'en');
+      if ( strlen($label) != 0) return $label;
+
+      $label = $g->get_first_literal($uri,'http://www.geonames.org/ontology#name', '', 'en');
+      if ( strlen($label) != 0) return $label;
+
+      $label = $g->get_first_literal($uri,RDF_VALUE, '', 'en');
+      if ( strlen($label) != 0) return $label;
+
+      $label = $g->get_first_literal($uri,'http://purl.org/rss/1.0/title', '', 'en');
+      if ( strlen($label) != 0) return $label;
+      
+      foreach ($this->_label_properties as $p) {
+        $label = $g->get_first_literal($uri,$p, '', 'en');
+        if ( strlen($label) != 0) return $label;
+      }
+      
+      
     }
     
-    if (array_key_exists($p, $this->_labels)) {
+    if (array_key_exists($uri, $this->_labels)) {
       if ($capitalize) {
-        return ucfirst($this->_labels[$p][0]);
+        return ucfirst($this->_labels[$uri][0]);
       }
       else {
-        return $this->_labels[$p][0];
+        return $this->_labels[$uri][0];
       }
     }
-    else if (preg_match('~^http://www.w3.org/1999/02/22-rdf-syntax-ns#_(.+)$~', $p, $m)) {
+    else if (preg_match('~^http://www.w3.org/1999/02/22-rdf-syntax-ns#_(.+)$~', $uri, $m)) {
       if ($capitalize) {
         return 'Item ' . $m[1];
       }
@@ -418,10 +449,10 @@ class Labeller {
       }
     }     
     else {
-      $label = $this->uri_to_qname($p);
+      $label = $this->uri_to_qname($uri);
       if ($label) return $label;
-      return $p;
     }
+    return $uri;
   }
 
   

@@ -1,6 +1,11 @@
 <?php
-require_once 'store.class.php';
-require_once 'constants.inc.php';
+// CHANGE THESE TO POINT TO YOUR INSTALLATIONS OF MORIARTY AND ARC
+define('MORIARTY_DIR', '../');
+define('MORIARTY_ARC_DIR', '../../../web/lib/arc_2008_11_18/');
+
+
+require_once MORIARTY_DIR . 'moriarty.inc.php';
+require_once MORIARTY_DIR . 'store.class.php';
 
 $store = new Store('http://api.talis.com/stores/ukbib');
 $contentbox = $store->get_contentbox();
