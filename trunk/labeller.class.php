@@ -50,6 +50,7 @@ class Labeller {
                   );
   var $_labels = array(
       'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' => array('type','types','is type of'),
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#value' => array('value'),
       'http://www.w3.org/1999/02/22-rdf-syntax-ns#_1' => array('first', 'first', 'is first member of'),
       'http://www.w3.org/1999/02/22-rdf-syntax-ns#_2' => array('second', 'second', 'is second member of'),
       'http://www.w3.org/1999/02/22-rdf-syntax-ns#_3' => array('third', 'third', 'is third member of'),
