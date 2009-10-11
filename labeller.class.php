@@ -414,7 +414,12 @@ class Labeller {
             }
           }
           else {
-            return $localname;
+            if ($capitalize && preg_match('~^[a-z]~', $localname)) {
+              return ucfirst($localname);
+            }
+            else {
+              return $localname;
+            }
           }
         }
       }
