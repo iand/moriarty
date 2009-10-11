@@ -869,8 +869,8 @@ class SimpleGraph {
   }
 
   
-  function get_label($resource_uri) {
-    return $this->_labeller->get_label($resource_uri, $this);
+  function get_label($resource_uri, $capitalize = false, $use_qnames = FALSE) {
+    return $this->_labeller->get_label($resource_uri, $this, $capitalize, $use_qnames);
   }
 
   function get_description($resource_uri = null) {
