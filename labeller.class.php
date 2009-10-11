@@ -49,8 +49,6 @@ class Labeller {
                     'gn' => 'http://www.geonames.org/ontology#',
                   );
   var $_labels = array(
-      'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' => array('type','types','is type of'),
-      'http://www.w3.org/1999/02/22-rdf-syntax-ns#value' => array('value'),
       'http://www.w3.org/1999/02/22-rdf-syntax-ns#_1' => array('first', 'first', 'is first member of'),
       'http://www.w3.org/1999/02/22-rdf-syntax-ns#_2' => array('second', 'second', 'is second member of'),
       'http://www.w3.org/1999/02/22-rdf-syntax-ns#_3' => array('third', 'third', 'is third member of'),
@@ -72,12 +70,8 @@ class Labeller {
       'http://www.w3.org/1999/02/22-rdf-syntax-ns#_19' => array('nineteenth', 'nineteenth', 'is nineteenth member of'),
       'http://www.w3.org/1999/02/22-rdf-syntax-ns#_20' => array('twentieth', 'twentieth', 'is twentieth member of'),
 
-      'http://www.w3.org/2000/01/rdf-schema#label' => array('label','labels','is label of'),
-      'http://www.w3.org/2000/01/rdf-schema#comment' => array('comment','comments','is comment of'),
       'http://www.w3.org/2000/01/rdf-schema#seeAlso' => array('see also','see also','is see also of'),
       'http://www.w3.org/2000/01/rdf-schema#isDefinedBy' => array('defined by','defined by','defines'),
-      'http://www.w3.org/2000/01/rdf-schema#range' => array('range','ranges','is range of'),
-      'http://www.w3.org/2000/01/rdf-schema#domain' => array('domain','domains','is domain of'),
       'http://www.w3.org/2000/01/rdf-schema#subClassOf' => array('subclass of','subclass of','is superclass of'),
 
       'http://www.w3.org/2002/07/owl#imports' => array('imports','imports','is imported by'),
@@ -85,14 +79,9 @@ class Labeller {
 
       'http://xmlns.com/foaf/0.1/isPrimaryTopicOf' => array('is the primary topic of','is the primary topic of','primary topic'),
       'http://xmlns.com/foaf/0.1/primaryTopic' => array('primary topic','primary topics','is the primary topic of'),
-      'http://xmlns.com/foaf/0.1/topic' => array('topic','topics','is a topic of'),
-      'http://xmlns.com/foaf/0.1/name' => array('name','names','is name of'),
-      'http://xmlns.com/foaf/0.1/homepage' => array('homepage','homepages','is homepage of'),
       'http://xmlns.com/foaf/0.1/weblog' => array('blog','blogs','is weblog of'),
       'http://xmlns.com/foaf/0.1/knows' => array('knows','knows','knows'),
-      'http://xmlns.com/foaf/0.1/interest' => array('interest','interests','is interest of'),
       'http://xmlns.com/foaf/0.1/firstName' => array('first name','first names','is first name of'),
-      'http://xmlns.com/foaf/0.1/surname' => array('surname','surnames','is surname of'),
       'http://xmlns.com/foaf/0.1/depiction' => array('picture','pictures','is picture of'),
       'http://xmlns.com/foaf/0.1/nick' => array('nickname','nickname','is nickname of'),
       'http://xmlns.com/foaf/0.1/phone' => array('phone number' ),
@@ -101,32 +90,19 @@ class Labeller {
       'http://xmlns.com/foaf/0.1/schoolHomepage' => array('school\'s homepage' ),
       'http://xmlns.com/foaf/0.1/openid' => array('OpenID' ),
       'http://xmlns.com/foaf/0.1/mbox_sha1sum' => array('email address hashcode' ),
-      'http://xmlns.com/foaf/0.1/title' => array('title' ),
-      'http://xmlns.com/foaf/0.1/maker' => array('maker', 'makers', 'made' ),
       'http://xmlns.com/foaf/0.1/made' => array('made', 'made', 'maker' ),
       'http://xmlns.com/foaf/0.1/accountProfilePage' => array('account profile page'),
       'http://xmlns.com/foaf/0.1/accountName' => array('account name'),
       'http://xmlns.com/foaf/0.1/accountServiceHomepage' => array('account service homepage'),
       'http://xmlns.com/foaf/0.1/holdsAccount' => array('account', 'accounts', 'is account held by'),
 
-      'http://rdfs.org/sioc/ns#topic' => array('topic'),
       'http://rdfs.org/sioc/ns#content' => array('content'),
       'http://rdfs.org/sioc/ns#hasContainer' => array('container'),
 
-      'http://www.w3.org/2003/12/exif/ns#height' => array('height'),
-      'http://www.w3.org/2003/12/exif/ns#width' => array('width'),
 
-      'http://purl.org/dc/elements/1.1/title' => array('title','titles','is the title of'),
-      'http://purl.org/dc/elements/1.1/description' => array('description','descriptions','is description of'),
-      'http://purl.org/dc/elements/1.1/date' => array('date','dates','is date of'),
       'http://purl.org/dc/elements/1.1/identifier' => array('general identifier','general identifiers','is general identifier of'),
       'http://purl.org/dc/elements/1.1/type' => array('document type','document types','is document type of'),
-      'http://purl.org/dc/elements/1.1/contributor' => array('contributor','contributors','is contributor to'),
       'http://purl.org/dc/elements/1.1/rights' => array('rights statement','right statements','is rights statement for'),
-      'http://purl.org/dc/elements/1.1/subject' => array('subject','subjects','is subject for'),
-      'http://purl.org/dc/elements/1.1/publisher' => array('publisher','publishers','is publisher of'),
-      'http://purl.org/dc/elements/1.1/creator' => array('creator','creators','is creator of'),
-      'http://purl.org/dc/elements/1.1/source' => array('source'),
 
       'http://purl.org/dc/terms/abstract' => array('abstract','abstracts','is abstract of'),
       'http://purl.org/dc/terms/accessRights' => array('access rights','access rights','are access rights for'),
@@ -154,33 +130,24 @@ class Labeller {
       'http://purl.org/dc/terms/issued' => array('date issued','dates issued','is date issued of'),
       'http://purl.org/dc/terms/isVersionOf' => array('version of','version of','version'),
       'http://purl.org/dc/terms/language' => array('language','languages','is language of'),
-      'http://purl.org/dc/terms/license' => array('license','licenses','is license of'),
       'http://purl.org/dc/terms/medium' => array('medium','media','is medium of'),
       'http://purl.org/dc/terms/modified' => array('date modified','dates modified','is date modified of'),
-      'http://purl.org/dc/terms/provenance' => array('provenance','provenances','is provenance of'),
-      'http://purl.org/dc/terms/publisher' => array('publisher','publishers','is publisher of'),
       'http://purl.org/dc/terms/replaces' => array('replaces','replaces','replaced by'),
       'http://purl.org/dc/terms/references' => array('references','references','is referenced by'),
-      'http://purl.org/dc/terms/relation' => array('relation','relations','relation'),
       'http://purl.org/dc/terms/replaces' => array('replaces','replaces','is replaced by'),
       'http://purl.org/dc/terms/requires' => array('requires','requires','is required by'),
       'http://purl.org/dc/terms/rights' => array('rights statement','right statements','is rights statement for'),
       'http://purl.org/dc/terms/rightsHolder' => array('rights holder','rights holders','is rights holder of'),
-      'http://purl.org/dc/terms/source' => array('source','sources','is source of'),
-      'http://purl.org/dc/terms/subject' => array('subject','subjects','is subject of'),
       'http://purl.org/dc/terms/tableOfContents' => array('table of contents','tables of contents','is table of contents of'),
-      'http://purl.org/dc/terms/title' => array('title','titles','is the title of'),
       'http://purl.org/dc/terms/type' => array('document type','document types','is document type of'),
       'http://purl.org/dc/terms/updated' => array('date updated','dates updated','is date updated of'),
       'http://purl.org/dc/terms/valid' => array('date valid','dates valid','is date valid of'),
 
       'http://www.w3.org/2003/01/geo/wgs84_pos#lat' => array('latitude','latitudes','is latitude of'),
       'http://www.w3.org/2003/01/geo/wgs84_pos#long' => array('longitude','longitudes','is longitude of'),
-      'http://www.w3.org/2003/01/geo/wgs84_pos#location' => array('location'),
 
       'http://purl.org/vocab/bio/0.1/olb' => array('one line bio','one line bios','is one line bio of'),
       'http://purl.org/vocab/bio/0.1/event' => array('life event','life events','is life event of'),
-      'http://purl.org/vocab/bio/0.1/date' => array('date'),
 
       'http://purl.org/vocab/relationship/parentOf' => array('is parent of','is parent of','is child of'),
       'http://purl.org/vocab/relationship/childOf' => array('is child of','is child of','is parent of'),
@@ -196,13 +163,9 @@ class Labeller {
       'http://www.w3.org/2004/02/skos/core#prefLabel' => array('preferred label','preferred labels','is preferred label of'),
       'http://www.w3.org/2004/02/skos/core#altLabel' => array('alternative label','alternative labels','is alternative label of'),
       'http://www.w3.org/2004/02/skos/core#hiddenLabel' => array('hidden label','hidden labels','is hidden label of'),
-      'http://www.w3.org/2004/02/skos/core#member' => array('member','members','is a member of'),
       'http://www.w3.org/2004/02/skos/core#related' => array('related concept','related concepts','is related concept of'),
-      'http://www.w3.org/2004/02/skos/core#definition' => array('definition','definitions','is definition of'),
-      'http://www.w3.org/2004/02/skos/core#context' => array('context','contexts','is context of'),
       'http://www.w3.org/2004/02/skos/core#broader' => array('broader concept','broader concepts','narrower concept'),
       'http://www.w3.org/2004/02/skos/core#narrower' => array('narrower concept','narrower concepts','broader concept'),
-      'http://www.w3.org/2004/02/skos/core#note' => array('note','notes','is note of'),
       'http://www.w3.org/2004/02/skos/core#scopeNote' => array('scope note','scope notes','is scope note of'),
       'http://www.w3.org/2004/02/skos/core#example' => array('example','examples','is example of'),
       'http://www.w3.org/2004/02/skos/core#historyNote' => array('history note','history notes','is history note of'),
@@ -218,7 +181,6 @@ class Labeller {
 
       'http://rdfs.org/ns/void#exampleResource' => array('example resource','example resources','is example resource of'),
       'http://rdfs.org/ns/void#sparqlEndpoint' => array('SPARQL endpoint','SPARQL endpoints','is SPARQL endpoint of'),
-      'http://rdfs.org/ns/void#subset' => array('subset','subsets','is subset of'),
       'http://rdfs.org/ns/void#uriLookupEndpoint' => array('URI lookup point','URI lookup points','is URI lookup point of'),
       'http://rdfs.org/ns/void#dataDump' => array('data dump','data dumps','is data dump of'),
       'http://rdfs.org/ns/void#vocabulary' => array('vocabulary used','vocabularies used','is vocabulary used in'),
@@ -227,12 +189,8 @@ class Labeller {
       'http://open.vocab.org/terms/numberOfPages' => array('number of pages','numbers of pages','is number of pages of'),
       'http://open.vocab.org/terms/subtitle' => array('sub-title','sub-titles','is sub-title of'),
       'http://open.vocab.org/terms/firstSentence' => array('first sentence'),
-      'http://open.vocab.org/terms/weight' => array('weight'),
       'http://open.vocab.org/terms/category' => array('category', 'categories'),
 
-      'http://purl.org/ontology/bibo/edition' => array('edition'),
-      'http://purl.org/ontology/bibo/issue' => array('issue'),
-      'http://purl.org/ontology/bibo/volume' => array('volume'),
       'http://purl.org/ontology/bibo/pageStart' => array('first page'),
       'http://purl.org/ontology/bibo/pageEnd' => array('last page'),
       'http://purl.org/ontology/bibo/issn' => array('ISSN','ISSNs','is ISSN of'),
@@ -250,24 +208,18 @@ class Labeller {
       'http://purl.org/ontology/mo/wikipedia' => array('wikipedia page','wikipedia pages','is wikipedia page of'),
       'http://purl.org/ontology/mo/discogs' => array('discogs page','discogs pages','is discogs page of'),
 
-      'http://purl.org/ontology/po/episode' => array('episode'),
       'http://purl.org/ontology/po/series' => array('series','series'),
       'http://purl.org/ontology/po/medium_synopsis' => array('medium synopsis','medium synopses'),
       'http://purl.org/ontology/po/short_synopsis' => array('short synopsis','short synopses'),
       'http://purl.org/ontology/po/long_synopsis' => array('long synopsis','long synopses'),
-      'http://purl.org/ontology/po/genre' => array('genre'),
-      'http://purl.org/ontology/po/microsite' => array('microsite'),
       'http://purl.org/ontology/po/format' => array('programme format'),
       'http://purl.org/ontology/po/masterbrand' => array('master  brand'),
 
       'http://purl.org/net/schemas/space/actor' => array('actor','actors','performed'),
       'http://purl.org/net/schemas/space/performed' => array('performed','performed','actor'),
-      'http://purl.org/net/schemas/space/role' => array('role'),
-      'http://purl.org/net/schemas/space/mission' => array('mission'),
       'http://purl.org/net/schemas/space/missionRole' => array('mission role'),
       'http://purl.org/net/schemas/space/alternateName' => array('alternate name'),
       'http://purl.org/net/schemas/space/mass' => array('mass'),
-      'http://purl.org/net/schemas/space/discipline' => array('discipline'),
       'http://purl.org/net/schemas/space/spacecraft' => array('spacecraft', 'spacecraft'),
       'http://purl.org/net/schemas/space/agency' => array('agency'),
       'http://purl.org/net/schemas/space/launch' => array('launch', 'launches'),
@@ -275,12 +227,11 @@ class Labeller {
       'http://purl.org/net/schemas/space/launchsite' => array('launch site'),
       'http://purl.org/net/schemas/space/launched' => array('launched', 'launched'),
       'http://purl.org/net/schemas/space/country' => array('country', 'countries'),
-      'http://purl.org/net/schemas/space/place' => array('place'),
 
       'http://www.ordnancesurvey.co.uk/ontology/AdministrativeGeography/v2.0/AdministrativeGeography.rdf#borders' => array('borders', 'borders', 'borders'),
       'http://www.ordnancesurvey.co.uk/ontology/AdministrativeGeography/v2.0/AdministrativeGeography.rdf#hasCensusCode' => array('census code'),
-      'http://www.ordnancesurvey.co.uk/ontology/AdministrativeGeography/v2.0/AdministrativeGeography.rdf#hasArea' => array('area'),
-      'http://www.ordnancesurvey.co.uk/ontology/AdministrativeGeography/v2.0/AdministrativeGeography.rdf#hasName' => array('name'),
+//      'http://www.ordnancesurvey.co.uk/ontology/AdministrativeGeography/v2.0/AdministrativeGeography.rdf#hasArea' => array('area'),
+//      'http://www.ordnancesurvey.co.uk/ontology/AdministrativeGeography/v2.0/AdministrativeGeography.rdf#hasName' => array('name'),
       'http://www.ordnancesurvey.co.uk/ontology/AdministrativeGeography/v2.0/AdministrativeGeography.rdf#hasOfficialName' => array('official name'),
       'http://www.ordnancesurvey.co.uk/ontology/AdministrativeGeography/v2.0/AdministrativeGeography.rdf#hasOfficialWelshName' => array('official welsh name'),
       'http://www.ordnancesurvey.co.uk/ontology/AdministrativeGeography/v2.0/AdministrativeGeography.rdf#hasVernacularName' => array('vernacular name'),
@@ -309,26 +260,15 @@ class Labeller {
       'http://schemas.talis.com/2006/recordstore/schema#appliedBy' => array('applied by','applied by'),
       'http://schemas.talis.com/2006/recordstore/schema#appliedDate' => array('date applied','dates applied'),
       'http://schemas.talis.com/2006/recordstore/schema#reason' => array('reason'),
-      'http://schemas.talis.com/2006/recordstore/schema#note' => array('note'),
 
       'http://schemas.talis.com/2005/dir/schema#etag' => array('ETag'),
 
-      'http://www.w3.org/2006/vcard/ns#label' => array('label'),
-
-      'http://www.gazettes-online.co.uk/ontology#hasEdition' => array('edition'),
-      'http://www.gazettes-online.co.uk/ontology#hasIssueNumber' => array('issue number'),
-      'http://www.gazettes-online.co.uk/ontology#hasPublicationDate' => array('publication date'),
-      'http://www.gazettes-online.co.uk/ontology#hasNoticeNumber' => array('notice number'),
-      'http://www.gazettes-online.co.uk/ontology#hasNoticeCode' => array('notice code'),
       'http://www.gazettes-online.co.uk/ontology#isAbout' => array('about', 'about'),
       'http://www.gazettes-online.co.uk/ontology#isInIssue' => array('issue'),
       'http://www.gazettes-online.co.uk/ontology/location#hasAddress' => array('address', 'addresses'),
       'http://www.gazettes-online.co.uk/ontology/court#courtName' => array('court name'),
       'http://www.gazettes-online.co.uk/ontology/court#sitsAt' => array('sits at', 'sits at'),
 
-      'http://purl.org/goodrelations/v1#hasManufacturer' => array('manufacturer'),
-      'http://dbpedia.org/property/abstract' => array('abstract'),
-      'http://www.geonames.org/ontology#name' => array('name'),
       'http://www.geonames.org/ontology#parentFeature' => array('parent feature'),
 
     );    
@@ -462,6 +402,9 @@ class Labeller {
           if (preg_match('~[^A-Z][A-Z][^A-Z]~', $localname)) {
             $parts = preg_split('/([A-Z][^A-Z]*)/', $localname, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
             $parts = array_map('strtolower', $parts);
+            if ($parts[0] == 'has') {
+              array_shift($parts);
+            }
             $label = join(' ', $parts);
             if ($capitalize) {
               return ucfirst($label);
@@ -477,6 +420,41 @@ class Labeller {
       }
     }
     return $uri;
+  }
+
+
+  function get_plural_label($uri, $g = null, $capitalize = false, $use_qnames = FALSE) {
+    if ($g) {
+      $label = $g->get_first_literal($uri,'http://purl.org/net/vocab/2004/03/label#plural', '', 'en');
+      if ( strlen($label) != 0) return $label;
+    }
+    
+    if (array_key_exists($uri, $this->_labels)) {
+      if (count($this->_labels[$uri]) > 1) {
+        $label = $this->_labels[$uri][1];
+      }
+      else {
+        $label = $this->_labels[$uri][0] . 's';
+      }
+      if ($capitalize) {
+        return ucfirst($label);
+      }
+      else {
+        return $label;
+      }
+    }
+    else if ($use_qnames == FALSE && preg_match('~^.*[\/\#]([a-z]+)$~', $uri, $m)) {
+      return $m[1] . 's';
+    }
+
+
+    $label = $this->get_label($uri, $g, $capitalize, $use_qnames);
+    if (preg_match('~^[^\s]+$~', $label)) {
+      return $label . 's';
+    }
+    else {
+      return $label;
+    }
   }
 
   
