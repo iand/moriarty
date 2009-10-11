@@ -10,7 +10,11 @@ class LabellerTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('school:RELIGIOUSCHARACTER', $lab->get_label('http://education.data.gov.uk/ontology/school#RELIGIOUSCHARACTER'));
     $this->assertEquals('religious character', $lab->get_label('http://education.data.gov.uk/ontology/school#religiousCharacter'));
   }
+  function test_get_label_splits_camelcase_and_capitalizes(){
 
+    $lab = new Labeller();
+    $this->assertEquals('Religious character', $lab->get_label('http://education.data.gov.uk/ontology/school#religiousCharacter', null, TRUE));
+  }
 
 }
 ?>
