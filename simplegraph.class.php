@@ -200,7 +200,7 @@ class SimpleGraph {
     $this->update_prefix_mappings();
     $serializer = ARC2::getRDFXMLSerializer(
         array(
-          'ns' => $this->_ns,
+          'ns' => $this->_labeller->get_ns(),
         )
       );
     return $serializer->getSerializedIndex($this->_to_arc_index($this->_index));
@@ -215,7 +215,7 @@ class SimpleGraph {
     $this->update_prefix_mappings();
     $serializer = ARC2::getTurtleSerializer(
         array(
-          'ns' => $this->_ns,
+          'ns' => $this->_labeller->get_ns(),
         )
       );
     return $serializer->getSerializedIndex($this->_to_arc_index($this->_index));

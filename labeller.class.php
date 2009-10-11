@@ -397,7 +397,9 @@ class Labeller {
     $this->_label_properties[] = $p;
   }
 
-
+  function get_ns() {
+    return $this->_ns;
+  }
   
   function get_label($uri, $g = null, $capitalize = false) {
     if ($g) {
