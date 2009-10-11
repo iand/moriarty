@@ -401,7 +401,7 @@ class Labeller {
     return $this->_ns;
   }
   
-  function get_label($uri, $g = null, $capitalize = false) {
+  function get_label($uri, $g = null, $capitalize = false, $use_qnames = FALSE) {
     if ($g) {
       $label = $g->get_first_literal($uri,'http://www.w3.org/2004/02/skos/core#prefLabel', '', 'en');
       if ( strlen($label) != 0) return $label;
@@ -451,20 +451,30 @@ class Labeller {
         return 'item ' . $m[1];
       }
     }     
-    else if (preg_match('~^(.*[\/\#])(.+[^A-Z][A-Z][^A-Z].+)$~', $uri, $m)) {
-      $parts = preg_split('/([A-Z][^A-Z]*)/', $m[2], -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-      $parts = array_map('strtolower', $parts);
-      $label = join(' ', $parts);
-      if ($capitalize) {
-        return ucfirst($label);
+    else {
+      if ($use_qnames) {
+        $label = $this->uri_to_qname($uri);
+        if ($label) return $label;
       }
       else {
-        return $label;
+        if (preg_match('~^.*[\/\#]([^\/\#]+)$~', $uri, $m)) {
+          $localname = $m[1];
+          if (preg_match('~[^A-Z][A-Z][^A-Z]~', $localname)) {
+            $parts = preg_split('/([A-Z][^A-Z]*)/', $localname, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+            $parts = array_map('strtolower', $parts);
+            $label = join(' ', $parts);
+            if ($capitalize) {
+              return ucfirst($label);
+            }
+            else {
+              return $label;
+            }
+          }
+          else {
+            return $localname;
+          }
+        }
       }
-    }
-    else {
-      $label = $this->uri_to_qname($uri);
-      if ($label) return $label;
     }
     return $uri;
   }
