@@ -451,6 +451,17 @@ class Labeller {
         return 'item ' . $m[1];
       }
     }     
+    else if (preg_match('~^(.*[\/\#])(.+[^A-Z][A-Z][^A-Z].+)$~', $uri, $m)) {
+      $parts = preg_split('/([A-Z][^A-Z]*)/', $m[2], -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+      $parts = array_map('strtolower', $parts);
+      $label = join(' ', $parts);
+      if ($capitalize) {
+        return ucfirst($label);
+      }
+      else {
+        return $label;
+      }
+    }
     else {
       $label = $this->uri_to_qname($uri);
       if ($label) return $label;
