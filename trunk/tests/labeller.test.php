@@ -284,22 +284,6 @@ class LabellerTest extends PHPUnit_Framework_TestCase {
 
   );    
 
-
-  function test_get_label_splits_camelcase(){
-
-    $lab = new Labeller();
-    $this->assertEquals('RELIGIOUSCHARACTER', $lab->get_label('http://education.data.gov.uk/ontology/school#RELIGIOUSCHARACTER'));
-    $this->assertEquals('religious character', $lab->get_label('http://education.data.gov.uk/ontology/school#religiousCharacter'));
-  }
-
-  function test_get_label_splits_camelcase_and_capitalizes(){
-    $lab = new Labeller();
-    $this->assertEquals('Religious character', $lab->get_label('http://education.data.gov.uk/ontology/school#religiousCharacter', null, TRUE));
-  }
-  function test_get_label_removes_has_prefix(){
-    $lab = new Labeller();
-    $this->assertEquals('some thing', $lab->get_label('http://education.data.gov.uk/ontology/school#hasSomeThing'));
-  }
   function test_get_label(){
     $lab = new Labeller();
     foreach ($this->labels as $uri => $label_info) {
@@ -317,6 +301,28 @@ class LabellerTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($label_info[0] .'s', $lab->get_plural_label($uri)); 
       }
     }
+  }
+
+  function test_get_label_splits_camelcase(){
+
+    $lab = new Labeller();
+    $this->assertEquals('RELIGIOUSCHARACTER', $lab->get_label('http://education.data.gov.uk/ontology/school#RELIGIOUSCHARACTER'));
+    $this->assertEquals('religious character', $lab->get_label('http://education.data.gov.uk/ontology/school#religiousCharacter'));
+  }
+
+  function test_get_label_splits_camelcase_and_capitalizes(){
+    $lab = new Labeller();
+    $this->assertEquals('Religious character', $lab->get_label('http://education.data.gov.uk/ontology/school#religiousCharacter', null, TRUE));
+  }
+  function test_get_label_removes_has_prefix(){
+    $lab = new Labeller();
+    $this->assertEquals('some thing', $lab->get_label('http://education.data.gov.uk/ontology/school#hasSomeThing'));
+  }
+  
+  function test_get_label_capitalizes_single_lowercase_words(){
+    $lab = new Labeller();
+    $this->assertEquals('Easting', $lab->get_label('http://example.org/terms#easting', null, TRUE));
+    $this->assertEquals('LCCN', $lab->get_label('http://example.org/terms#LCCN', null, TRUE));
   }
 
 }
