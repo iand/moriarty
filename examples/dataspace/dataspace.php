@@ -312,13 +312,14 @@ if ($response->is_success()) {
       
     
         foreach ($media_types as $extension => $type_info) {
-          $g->add_resource_triple( $doc_uri, 'http://purl.org/dc/terms/hasFormat', $doc_uri . '.' . $extension );
-          $g->add_resource_triple( $doc_uri . '.' . $extension, 'http://purl.org/dc/terms/isFormatOf', $doc_uri );
-          $g->add_resource_triple( $doc_uri . '.' . $extension, RDF_TYPE, 'http://purl.org/dc/dcmitype/Text' );
-          $g->add_resource_triple( $doc_uri . '.' . $extension, RDF_TYPE, FOAF_DOCUMENT );
-          $g->add_resource_triple( $doc_uri . '.' . $extension, FOAF_PRIMARYTOPIC, $resource_uri );
-          $g->add_literal_triple( $doc_uri . '.' . $extension , 'http://purl.org/dc/terms/format', $type_info['type'] );
-          $g->add_literal_triple( $doc_uri . '.' . $extension, 'http://purl.org/dc/terms/title', 'Linked Data in ' . $type_info['label'] . ' format for ' . $g->get_label($resource_uri, TRUE) );
+          $alt_uri = $resource_uri . '.' . $extension;
+          $g->add_resource_triple( $doc_uri, 'http://purl.org/dc/terms/hasFormat', $alt_uri );
+          $g->add_resource_triple( $alt_uri, 'http://purl.org/dc/terms/isFormatOf', $doc_uri );
+          $g->add_resource_triple( $alt_uri, RDF_TYPE, 'http://purl.org/dc/dcmitype/Text' );
+          $g->add_resource_triple( $alt_uri, RDF_TYPE, FOAF_DOCUMENT );
+          $g->add_resource_triple( $alt_uri, FOAF_PRIMARYTOPIC, $resource_uri );
+          $g->add_literal_triple( $alt_uri , 'http://purl.org/dc/terms/format', $type_info['type'] );
+          $g->add_literal_triple( $alt_uri, 'http://purl.org/dc/terms/title', 'Linked Data in ' . $type_info['label'] . ' format for ' . $g->get_label($resource_uri, TRUE) );
         }
       }
       
@@ -385,7 +386,7 @@ if ($response->is_success()) {
        
         $alternates = array();
         foreach ($media_types as $extension => $type_info) {
-          $alternates[] = array('type' => $type_info['type'], 'name' => $type_info['label'], 'uri' =>$resource_uri . '.' . $extension);
+          $alternates[] = array('type' => $type_info['type'], 'name' => $type_info['label'], 'uri' => $resource_uri . '.' . $extension);
         }
 
         send_html('200 OK', $template, $page_title, $title, $body, $content_location, $etag, $resource_uri, $alternates);
