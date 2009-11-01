@@ -353,7 +353,10 @@ if ($response->is_success()) {
           $body .= '                <th valign="top" class="' . $class . '"><a href="' . htmlspecialchars($p). '">' . htmlspecialchars($g->get_label($p, TRUE)). '</a></th>' . "\n";
           $body .= '                <td valign="top" class="' . $class . '">';
           for ($i = 0; $i < count($index[$resource_uri][$p]); $i++) {
-            if ($i > 0) $body .= '<br />';
+            if ($i > 0) {
+              $body .= ', ';
+            }
+            
             if ($index[$resource_uri][$p][$i]['type'] === 'literal') {
               if (array_key_exists('datatype', $index[$resource_uri][$p][$i]) && $index[$resource_uri][$p][$i]['datatype'] == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral') {
                 $body .= $index[$resource_uri][$p][$i]['value'];
@@ -379,15 +382,7 @@ if ($response->is_success()) {
         $body .= '          </table>' . "\n";
       
         $body .= '          <p>The data for this description was obtained from the SPARQL service at <a href="' . htmlspecialchars($sparql_service_uri) . '">' . htmlspecialchars($sparql_service_uri) . '</a>. A free text search service is available at <a href="' . htmlspecialchars($search_service_uri) . '">' . htmlspecialchars($search_service_uri) . '</a></p>';
-        $body .= '          <p>View this data using these other browsers:</p>' . "\n";
-        $body .= '          <ul>' . "\n";
-        $body .= '            <li><a href="http://www5.wiwiss.fu-berlin.de/marbles/?uri=' . htmlspecialchars(urlencode($resource_uri)) .'">Marbles</a></li>' . "\n";
-        $body .= '            <li><a href="http://dataviewer.zitgist.com/?uri=' . htmlspecialchars(urlencode($resource_uri)) .'">Zitgist Data Viewer</a></li>' . "\n";
-        $body .= '            <li><a href="http://www4.wiwiss.fu-berlin.de/rdf_browser/?browse_uri=' . htmlspecialchars(urlencode($resource_uri)) .'">Disco</a></li>' . "\n";
-        $body .= '            <li><a href="http://api.talis.com/stores/iand-dev1/items/dipper.html#q=' . htmlspecialchars(urlencode($resource_uri)) .'">Dipper</a></li>' . "\n";
-        $body .= '            <li><a href="http://demo.openlinksw.com/ode/?uri=' . htmlspecialchars(urlencode($resource_uri)) .'">OpenLink Data Explorer</a></li>' . "\n";
-        $body .= '          </ul>' . "\n";
-        
+       
         $alternates = array();
         foreach ($media_types as $extension => $type_info) {
           $alternates[] = array('type' => $type_info['type'], 'name' => $type_info['label'], 'uri' =>$resource_uri . '.' . $extension);
