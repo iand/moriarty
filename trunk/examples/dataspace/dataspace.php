@@ -3,6 +3,7 @@
  * This script is designed for producing linked data views backed by a Talis Platform store
  * 
  * See index.php in this directory for notes on usage and configuration
+ * Also see http://blogs.talis.com/n2/archives/872 
  */
 ini_set ( "memory_limit", "64M");
 
