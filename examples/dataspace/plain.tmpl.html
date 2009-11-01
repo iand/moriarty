@@ -81,12 +81,22 @@ xml version="1.0" encoding="utf-8"?>
     <div class="colmask fullpage">
       <div class="col1">
       <?php echo($body); ?>
+      
+      
+        <p>View this data using these other browsers:</p>
+        <ul>
+          <li><a href="http://www5.wiwiss.fu-berlin.de/marbles/?uri=<?php echo(htmlspecialchars(urlencode($resource_uri))); ?>">Marbles</a></li>
+          <li><a href="http://dataviewer.zitgist.com/?uri=<?php echo(htmlspecialchars(urlencode($resource_uri))); ?>">Zitgist Data Viewer</a></li>
+          <li><a href="http://www4.wiwiss.fu-berlin.de/rdf_browser/?browse_uri=<?php echo(htmlspecialchars(urlencode($resource_uri))); ?>">Disco</a></li>
+          <li><a href="http://api.talis.com/stores/iand-dev1/items/dipper.html#q=<?php echo(htmlspecialchars(urlencode($resource_uri))); ?>">Dipper</a></li>
+          <li><a href="http://demo.openlinksw.com/ode/?uri=<?php echo(htmlspecialchars(urlencode($resource_uri))); ?>">OpenLink Data Explorer</a></li>
+        </ul>
       </div>
     </div>
 
     <div id="footer">
       <!-- Page template based on http://matthewjamestaylor.com/blog/ultimate-1-column-full-page-ems.htm -->
-      <p></p>
+      <p>Data hosted by the <a href="http://www.talis.com/platform">Talis Platform</a>. This page produced using <a href="http://code.google.com/p/moriarty">Moriarty</a></p>
     </div>
 
   </body>
