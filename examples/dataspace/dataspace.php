@@ -298,30 +298,28 @@ if ($response->is_success()) {
   else {
     $g->remove_property_values($resource_uri, 'http://schemas.talis.com/2005/dir/schema#etag');
     
-    if ($doc_type == null && $uri != $doc_uri) {
+    if ($uri != $doc_uri) {
       header("HTTP/1.1 303 See Other"); 
       header("Location: " . $doc_uri);        
       exit;
     }
     else {
-      if ($resource_uri != $doc_uri) {
   
-        $g->add_resource_triple( $doc_uri, RDF_TYPE, FOAF_DOCUMENT );
-        $g->add_resource_triple( $doc_uri, RDF_TYPE, 'http://purl.org/dc/dcmitype/Text' );
-        $g->add_resource_triple( $doc_uri, FOAF_PRIMARYTOPIC, $resource_uri );
-        $g->add_literal_triple( $doc_uri, 'http://purl.org/dc/terms/title', 'Linked Data for ' . $g->get_label($resource_uri, TRUE) );
-      
+      $g->add_resource_triple( $doc_uri, RDF_TYPE, FOAF_DOCUMENT );
+      $g->add_resource_triple( $doc_uri, RDF_TYPE, 'http://purl.org/dc/dcmitype/Text' );
+      $g->add_resource_triple( $doc_uri, FOAF_PRIMARYTOPIC, $resource_uri );
+      $g->add_literal_triple( $doc_uri, 'http://purl.org/dc/terms/title', 'Linked Data for ' . $g->get_label($resource_uri, TRUE) );
     
-        foreach ($media_types as $extension => $type_info) {
-          $alt_uri = $resource_uri . '.' . $extension;
-          $g->add_resource_triple( $doc_uri, 'http://purl.org/dc/terms/hasFormat', $alt_uri );
-          $g->add_resource_triple( $alt_uri, 'http://purl.org/dc/terms/isFormatOf', $doc_uri );
-          $g->add_resource_triple( $alt_uri, RDF_TYPE, 'http://purl.org/dc/dcmitype/Text' );
-          $g->add_resource_triple( $alt_uri, RDF_TYPE, FOAF_DOCUMENT );
-          $g->add_resource_triple( $alt_uri, FOAF_PRIMARYTOPIC, $resource_uri );
-          $g->add_literal_triple( $alt_uri , 'http://purl.org/dc/terms/format', $type_info['type'] );
-          $g->add_literal_triple( $alt_uri, 'http://purl.org/dc/terms/title', 'Linked Data in ' . $type_info['label'] . ' format for ' . $g->get_label($resource_uri, TRUE) );
-        }
+  
+      foreach ($media_types as $extension => $type_info) {
+        $alt_uri = $resource_uri . '.' . $extension;
+        $g->add_resource_triple( $doc_uri, 'http://purl.org/dc/terms/hasFormat', $alt_uri );
+        $g->add_resource_triple( $alt_uri, 'http://purl.org/dc/terms/isFormatOf', $doc_uri );
+        $g->add_resource_triple( $alt_uri, RDF_TYPE, 'http://purl.org/dc/dcmitype/Text' );
+        $g->add_resource_triple( $alt_uri, RDF_TYPE, FOAF_DOCUMENT );
+        $g->add_resource_triple( $alt_uri, FOAF_PRIMARYTOPIC, $resource_uri );
+        $g->add_literal_triple( $alt_uri , 'http://purl.org/dc/terms/format', $type_info['type'] );
+        $g->add_literal_triple( $alt_uri, 'http://purl.org/dc/terms/title', 'Linked Data in ' . $type_info['label'] . ' format for ' . $g->get_label($resource_uri, TRUE) );
       }
       
       if ($doc_type == 'rdf') {
