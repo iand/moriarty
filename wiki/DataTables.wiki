@@ -39,8 +39,22 @@ Optionally a Credentials object can be supplied as the second parameter (see cre
 == get() ==
 Runs the constructed query and returns the results as an instance of DataTableResult
 
+== map($uri_or_array, $short_name) ==
+Maps a URI to a short name. The first parameter can either be a URI or an associative array of uri and shortname mappings in which case the second parameter is ignored. 
+Short names are used by other methods to refer to property and class URIs. 
+
+The following are equivalent:
+
+{{{
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->map('http://xmlns.com/foaf/0.1/nick', 'nick');
+
+$dt->map( array('http://xmlns.com/foaf/0.1/name' => 'name', 'http://xmlns.com/foaf/0.1/nick' => 'nick'));
+}}}
+
+
 == select($field_list) ==
-Specifies the variables you want to select in your query. It takes a single parameter which is a comma separated list of field names.
+Specifies the variables you want to select in your query. It takes a single parameter which is a comma separated list of field names (which must be mapped short names).
 
 All of the following are valid:
 {{{
@@ -57,6 +71,27 @@ $dt->map('http://xmlns.com/foaf/0.1/name', 'name');
 $dt->select('name');
 $dt->get(5);
 }}
+
+== from($type_list) ==
+Specifies types of the resources you want to select in your query. It takes a single parameter which is a comma separated list of types (which must be mapped short names). If multiple types are specified then the selected resources must have an rdf:type triple for every one of the types.
+
+All of the following are valid:
+{{{
+$dt->from('person');
+$dt->from('document,book');
+}}}
+
+The following code will select the foaf:names of every foaf:Person in a store:
+
+{{{
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->map('http://xmlns.com/foaf/0.1/Person', 'person');
+$dt->select('name');
+$dt->from('person');
+$dt->get(5);
+}}
+
 
 = Examples =
 
