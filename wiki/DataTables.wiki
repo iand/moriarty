@@ -1,0 +1,66 @@
+#summary Moriarty DataTables
+
+= Introduction =
+
+DataTable is Moriarty's implementation of the Active Record pattern for RDF data. Currently this is read only but it does provide a very simple way to create and run SPARQL queries.
+
+
+= Details =
+
+DataTable (in file datatable.class.php) is the class that constructs the queries. DataTableResult (in datatableresult.class.php) is a class that represents the results of a query. The interface to DataTable takes inspiration from [http://codeigniter.com/user_guide/database/active_record.html CodeIgniter's Active Record] class, adapted slightly for some RDF specifics.
+
+DataTable uses method chaining to make the code more compact and readable. All of the following are equivalent:
+
+{{{
+$dt->select('name')->from('person')->limit(5);
+
+$dt->select('name');
+$dt->from('person');
+$dt->limit(5);
+
+$dt->select('name')->limit(5);
+$dt->from('person');
+}}}
+
+= DataTable Methods =
+
+== Constructor ==
+
+The DataTable constructor requires the URI of the Talis Platform store as its first parameter, e.g.:
+
+{{{
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+}}}
+
+Optionally a Credentials object can be supplied as the second parameter (see credentials.class.php).
+
+*Advanced*: A third, optional, parameter allows an alternate HttpRequestFactory to be specified for when you need an alternate HTTP implementation to the default cURL-based one
+
+== get() ==
+Runs the constructed query and returns the results as an instance of DataTableResult
+
+== select($field_list) ==
+Specifies the variables you want to select in your query. It takes a single parameter which is a comma separated list of field names.
+
+All of the following are valid:
+{{{
+$dt->select('name');
+$dt->select('name,age');
+$dt->select(' name  , age');
+}}}
+
+The following code will select the foaf:names of every resource in a store:
+
+{{{
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->select('name');
+$dt->get(5);
+}}
+
+= Examples =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
