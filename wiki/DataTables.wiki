@@ -69,8 +69,8 @@ The following code will select the foaf:names of every resource in a store:
 $dt = new DataTable('http://api.talis.com/stores/mystore');
 $dt->map('http://xmlns.com/foaf/0.1/name', 'name');
 $dt->select('name');
-$dt->get(5);
-}}
+$dt->get();
+}}}
 
 == from($type_list) ==
 Specifies types of the resources you want to select in your query. It takes a single parameter which is a comma separated list of types (which must be mapped short names). If multiple types are specified then the selected resources must have an rdf:type triple for every one of the types.
@@ -87,10 +87,64 @@ The following code will select the foaf:names of every foaf:Person in a store:
 $dt = new DataTable('http://api.talis.com/stores/mystore');
 $dt->map('http://xmlns.com/foaf/0.1/name', 'name');
 $dt->map('http://xmlns.com/foaf/0.1/Person', 'person');
-$dt->select('name');
+$dt->select('name')->from('person');
+$dt->get();
+}}}
+
+== distinct() ==
+Specifies that the query results must be distinct (i.e. without duplicate rows). 
+
+All of the following are valid:
+{{{
 $dt->from('person');
-$dt->get(5);
-}}
+$dt->from('document,book');
+}}}
+
+The following code will select the unique foaf:names of every resource in a store:
+
+{{{
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->select('name')->distinct();
+$dt->get();
+}}}
+
+== limit($value, $offset) ==
+Specifies the maximum number of rows to return in the query and, optionally, an offset row number to start from. This could be used to implement a paging scheme. The default offset is zero.
+
+Select the first five names in a store:
+{{{
+$dt->select('name')->limit(5);
+}}}
+
+Select names 15 through to 19 in a store:
+
+{{{
+$dt->select('name')->distinct()->limit(5, 15);
+}}}
+
+*Note*: Using offset without specifying a sort order may lead to unpredictable results.
+
+== order_by($field, $ordering) ==
+Specifies a sort order for the query results. The first parameter is required and specifies the field name to sort by (which must be a mapped short name). The second parameter is optional and specifies the ordering of the results. It must be one of 'asc' (meaning ascending order) or 'desc' (meaning descending order). The default ordering is 'asc'.
+
+Select names and ages in a store and return them in age order
+{{{
+$dt->select('name,age')->order_by('age');
+}}}
+
+Select names in a store and return them in descending order
+{{{
+$dt->select('name')->order_by('name', 'desc');
+}}}
+
+Multiple orderings can be specified by repeating this method call:
+
+Select names and ages in a store and return them in age order. For example to sort by age and then by name descending:
+{{{
+$dt->select('name,age')->order_by('age')->order_by('name', 'desc');
+}}}
+
 
 
 = Examples =
