@@ -40,6 +40,8 @@ require_once MORIARTY_TEST_DIR . 'oaiservice.test.php';
 require_once MORIARTY_TEST_DIR . 'curlhttpclient.test.php';
 require_once MORIARTY_TEST_DIR . 'union.test.php';
 require_once MORIARTY_TEST_DIR . 'labeller.test.php';
+require_once MORIARTY_TEST_DIR . 'datatable.test.php';
+require_once MORIARTY_TEST_DIR . 'datatableresult.test.php';
 
 
 error_reporting(E_ALL );
@@ -104,6 +106,8 @@ class Moriarty_AllTests
 //        $suite->addTestSuite('CurlHttpClientTest');
         $suite->addTestSuite('UnionTest');
         $suite->addTestSuite('LabellerTest');
+        $suite->addTestSuite('DataTableTest');
+        $suite->addTestSuite('DataTableResultTest');
 
         return $suite;
     }

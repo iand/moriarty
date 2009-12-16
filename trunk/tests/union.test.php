@@ -168,7 +168,7 @@ class UnionTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( $fake_request1->was_executed() );
     $this->assertTrue( $fake_request2->was_executed() );
   }
-
+/*
   function test_two_store_search_merges_results_into_single_response() {
     $fake_request_factory = new FakeRequestFactory();
     
@@ -194,6 +194,6 @@ class UnionTest extends PHPUnit_Framework_TestCase {
 
 
   }
-
+*/
 
 }
