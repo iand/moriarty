@@ -145,9 +145,144 @@ Select names and ages in a store and return them in age order. For example to so
 $dt->select('name,age')->order_by('age')->order_by('name', 'desc');
 }}}
 
+== where($field, $value) ==
+Specifies a constraint on a literal value. Multiple calls to this method are conjunctive, i.e. all the constraints must apply to the resources.
 
+Select all names where the person has a nickname of santa:
+
+{{{
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->map('http://xmlns.com/foaf/0.1/nick', 'nick');
+
+$dt->select('name')->where('nick', 'santa');
+}}}
+
+Select all names where the person has a nickname of santa and a shoe size of 9:
+
+{{{
+$dt->select('name')->where('nick', 'santa')->where('shoesize', 9);
+}}}
+
+The field name can be suffixed by a boolean operator, one of =, >, <, !=, <=, >=
+
+Select names of all resources that are older than 68
+{{{
+$dt->select('name')->where('age >', 68);
+}}}
+
+Select names of all resources that do not have a nickname of santa:
+{{{
+$dt->select('name')->where('nick !=', 'santa');
+}}}
+
+Boolean, floats and integer types are compared as those specific types, not strings:
+{{{
+$dt->select('name')->where('jolly', TRUE);
+$dt->select('name')->where('age >=', 21);
+$dt->select('name')->where('shoesize <', 12.76);
+}}}
+
+*SPARQL Note:* These constraints are implemented as filters with appropriate casts based on the type of variable supplied for the second parameter.
+
+== where_uri($field, $value) ==
+Specifies a constraint on a resource value. Multiple calls to this method are conjunctive, i.e. all the constraints must apply to the resources. The first parameter is required and specifies the field name to test (which must be a mapped short name). The second parameter is also required and specifies a URI against which the field name is tested.
+
+Select names of all resources that have a location of http://sws.geonames.org/6269203/
+{{{
+$dt->select('name')->where('location', 'http://sws.geonames.org/6269203/');
+}}}
+
+*SPARQL Note:* These constraints are implemented as additional graph patterns.
+
+
+== optional($field_list) ==
+Specifies the variables you want to optionally select in your query. It takes a single parameter which is a comma separated list of field names (which must be mapped short names). Optional variables will be returned only if there is matching data for them, otherwise they have a null value. In contrast the select method requires that all results must have values for the fields specified. At least one variable must be specified by select before any optional variables can be used.
+
+Select the names of all the resources in a store and the nicknames of those resources that have them:
+{{{
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->map('http://xmlns.com/foaf/0.1/nick', 'nick');
+
+$dt->select('name')->optional('nick');
+}}}
+
+== get_sparql() ==
+Returns the generated SPARQL query
+
+= DataTableResult Methods =
+
+== num_rows() ==
+Returns the number of rows in the result set
+
+== num_fields() ==
+Returns the number of fields in the result set
+
+== result() ==
+Returns the query result as an array of objects, or an empty array on any failure. Each field in the original query is mapped to an object variable.
+
+For example:
+{{{
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->map('http://xmlns.com/foaf/0.1/nick', 'nick');
+
+$dt->select('name,nick')->limit(10);
+$res = $dt->get();
+
+foreach ($res->result() as $row) {
+   echo $row->name;
+   echo $row->nick;
+}
+}}}
+
+== result_array() ==
+Returns the query result as an array of associative arrays, or an empty array on any failure. The keys and values of the associative array correspond with the fields and values in the results.
+
+For example:
+{{{
+$dt->select('name,nick')->limit(10);
+$res = $dt->get();
+
+foreach ($res->result() as $row) {
+   echo $row['name'];
+   echo $row['nick'];
+}
+}}}
+
+== row($index) ==
+Returns a single result row as an object. The $index parameter is optional and defaults to zero.
+
+For example:
+{{{
+$dt->select('name,nick')->limit(10);
+$res = $dt->get();
+
+$row = $res->row(5);
+echo $row->name;
+echo $row->nick;
+}}}
+
+== row_array($index) ==
+Returns a single result row as an associative array. The $index parameter is optional and defaults to zero.
+
+For example:
+{{{
+$dt->select('name,nick')->limit(10);
+$res = $dt->get();
+
+$row = $res->row_array();
+echo $row['name'];
+echo $row['nick'];
+}}}
+
+== to_string() ==
 
 = Examples =
+
+
+
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
