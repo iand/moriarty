@@ -284,7 +284,7 @@ require_once MORIARTY_DIR . 'store.class.php';
 require_once MORIARTY_DIR . 'simplegraph.class.php';
 
 $store = new Store($store_uri);
-$response = $store->describe($resource_uri, 'lcbd', 'json');
+$response = $store->describe($resource_uri, 'cbd', 'json');
 
 if ($response->is_success()) {
   if (array_key_exists('etag', $response->headers)) {
