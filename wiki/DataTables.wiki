@@ -343,7 +343,8 @@ $dt->map($mappings);
 == Example 1 ==
 Select the names of schools in the Administrative District of the City of London Ordering results by name of the school
 {{{
-$dt->select('name')->from('school')->where_uri('district', 'http://statistics.data.gov.uk/id/local-authority-district/00AA')->order_by('name');
+$dt->select('name')->from('school')->order_by('name');
+$dt->where_uri('district', 'http://statistics.data.gov.uk/id/local-authority-district/00AA');
 }}}
 
 == Example 2 ==
