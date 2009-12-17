@@ -1,5 +1,7 @@
 #summary Moriarty DataTables
 
+<wiki:toc max_depth="1" />
+
 = Introduction =
 
 DataTable is Moriarty's implementation of the Active Record pattern for RDF data. Currently this is read only but it does provide a very simple way to create and run SPARQL queries.
