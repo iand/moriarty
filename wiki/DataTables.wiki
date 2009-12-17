@@ -24,7 +24,7 @@ $dt->select('name')->limit(5);
 $dt->from('person');
 }}}
 
-= DataTable Methods =
+= !DataTable Methods =
 
 == Constructor ==
 
@@ -234,7 +234,7 @@ $dt->select('name')->optional('nick');
 == get_sparql() ==
 Returns the generated SPARQL query
 
-= DataTableResult Methods =
+= !DataTableResult Methods =
 
 == num_rows() ==
 Returns the number of rows in the result set
