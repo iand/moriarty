@@ -1,6 +1,7 @@
 <?php
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'constants.inc.php';
 require_once MORIARTY_DIR . 'datatable.class.php';
+require_once MORIARTY_TEST_DIR . 'fakecredentials.class.php';
 
 
 class DataTableTest extends PHPUnit_Framework_TestCase {
@@ -399,5 +400,247 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( "select ?_uri ?friend_name ?husband_name where {?_uri <http://example.org/friend> ?friend; <http://example.org/husband> ?husband. ?friend <http://example.org/name> ?friend_name. ?husband <http://example.org/name> ?husband_name. }", $dt->get_sparql() );
   }  
 
+  function test_insert_posts_to_metabox_uri() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $dt = new DataTable("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'scooby');
+    $dt->insert();
+
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+
+  function test_insert_posts_generated_turtle() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $dt = new DataTable("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'scooby');
+    $dt->insert();
+
+    $g = $dt->get_insert_graph();
+    $this->assertEquals( $g->to_turtle() , $fake_request->get_body() );
+  }
+
+  function test_insert_sets_content_type() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $dt = new DataTable("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'scooby');
+    $dt->insert();
+
+    $this->assertTrue( in_array('Content-Type: application/x-turtle', $fake_request->get_headers() ) );
+  }
+
+  function test_insert_sets_accept() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $dt = new DataTable("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'scooby');
+    $dt->insert();
+
+    $this->assertTrue( in_array('Accept: */*', $fake_request->get_headers() ) );
+  }
+
+  function test_insert_uses_credentials() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $dt = new DataTable("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'scooby');
+    $dt->insert();
+
+    $this->assertEquals( "user:pwd" , $fake_request->get_auth() );
+  }
+
+  function test_set_plain_literal() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/person', 'person');
+    $dt->set('name', 'scooby');
+    
+    $g = $dt->get_insert_graph();
+    
+    $this->assertTrue( $g->has_literal_triple('_:a1', 'http://example.org/name', 'scooby'));
+  }
+
+  function test_set_language_literal() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/person', 'person');
+    $dt->set('name', 'scooby', 'literal', 'en');
+    
+    $g = $dt->get_insert_graph();
+    
+    $this->assertTrue( $g->has_literal_triple('_:a1', 'http://example.org/name', 'scooby', 'en'));
+  }
+
+  function test_set_literal_datatype() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/person', 'person');
+    $dt->set('name', 'scooby', 'literal', null, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral');
+    
+    $g = $dt->get_insert_graph();
+    
+    $this->assertTrue( $g->has_literal_triple('_:a1', 'http://example.org/name', 'scooby', null, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral'));
+  }
+  
+  function test_set_uri() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/person', 'person');
+    $dt->set('name', 'http://example.org/thing', 'uri');
+    
+    $g = $dt->get_insert_graph();
+    
+    $this->assertTrue( $g->has_resource_triple('_:a1', 'http://example.org/name', 'http://example.org/thing'));
+  }
+  
+  function test_set_bnode() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/person', 'person');
+    $dt->set('name', '_:b', 'bnode');
+    
+    $g = $dt->get_insert_graph();
+    
+    $this->assertTrue( $g->has_resource_triple('_:a1', 'http://example.org/name', '_:b'));
+  }
+  
+
+  function test_set_detects_boolean_type() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/person', 'person');
+    $dt->set('name', TRUE);
+    
+    $g = $dt->get_insert_graph();
+    $this->assertTrue( $g->has_literal_triple('_:a1', 'http://example.org/name', 'true', null, 'http://www.w3.org/2001/XMLSchema#boolean'));
+  }
+
+  function test_set_detects_boolean_type_false() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/person', 'person');
+    $dt->set('name', FALSE);
+    
+    $g = $dt->get_insert_graph();
+    $this->assertTrue( $g->has_literal_triple('_:a1', 'http://example.org/name', 'false', null, 'http://www.w3.org/2001/XMLSchema#boolean'));
+  }
+
+  function test_set_multiple() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/surname', 'surname');
+    $dt->set('name', 'scooby')->set('surname', 'doo');
+    $g = $dt->get_insert_graph();
+    $this->assertTrue( $g->has_literal_triple('_:a1', 'http://example.org/name', 'scooby'));
+    $this->assertTrue( $g->has_literal_triple('_:a1', 'http://example.org/surname', 'doo'));
+    
+  }
+  function test_set_subject_uri() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('_uri', 'http://example.org/s')->set('name', 'scooby');
+    $g = $dt->get_insert_graph();
+    $this->assertTrue( $g->has_literal_triple('http://example.org/s', 'http://example.org/name', 'scooby'));
+  }
+
+  function test_get_insert_graph_specifies_type() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/person', 'person');
+    $dt->set('_uri', 'http://example.org/s');
+    $dt->set('name', 'scooby');
+    $g = $dt->get_insert_graph('person');
+    $this->assertTrue( $g->has_literal_triple('http://example.org/s', 'http://example.org/name', 'scooby'));
+    $this->assertTrue( $g->has_resource_triple('http://example.org/s', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/person'));
+  }
+
+
+  function test_get_insert_graph_specifies_multiple_types() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/person', 'person');
+    $dt->map('http://example.org/employee', 'employee');
+    $dt->set('_uri', 'http://example.org/s');
+    $dt->set('name', 'scooby');
+    $g = $dt->get_insert_graph('person,employee');
+    $this->assertTrue( $g->has_resource_triple('http://example.org/s', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/person'));
+    $this->assertTrue( $g->has_resource_triple('http://example.org/s', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/employee'));
+  }
+
+  function test_insert_posts_generated_turtle_with_types() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $dt = new DataTable("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/person', 'person');
+    $dt->set('name', 'scooby');
+    $dt->insert('person');
+
+    $g = $dt->get_insert_graph('person');
+    $this->assertEquals( $g->to_turtle() , $fake_request->get_body() );
+  }
+  
+  function test_set_field_defaults_sets_datatype() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/person', 'person');
+    $dt->set('name', '5');
+    $dt->set_field_defaults('name', 'literal', 'http://www.w3.org/2001/XMLSchema#integer');
+    
+    $g = $dt->get_insert_graph();
+    
+    $this->assertTrue( $g->has_literal_triple('_:a1', 'http://example.org/name', '5', null,'http://www.w3.org/2001/XMLSchema#integer' ));
+    
+  }
+
+  function test_set_field_defaults_datatype_is_overridden_by_set() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', '5', 'literal', null, 'http://www.w3.org/2001/XMLSchema#double');
+    $dt->set_field_defaults('name', 'literal', 'http://www.w3.org/2001/XMLSchema#integer');
+    
+    $g = $dt->get_insert_graph();
+    $this->assertTrue( $g->has_literal_triple('_:a1', 'http://example.org/name', '5', null, 'http://www.w3.org/2001/XMLSchema#double' ));
+  }
+  
+  function test_set_field_defaults_sets_type() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'http://example.com/foo');
+    $dt->set_field_defaults('name', 'uri');
+    
+    $g = $dt->get_insert_graph();
+    $this->assertTrue( $g->has_resource_triple('_:a1', 'http://example.org/name', 'http://example.com/foo' ));
+  }
+
+  function test_set_field_defaults_type_is_overridden_by_set() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'http://example.com/foo', 'literal');
+    $dt->set_field_defaults('name', 'uri');
+    
+    $g = $dt->get_insert_graph();
+    $this->assertTrue( $g->has_literal_triple('_:a1', 'http://example.org/name', 'http://example.com/foo' ));
+  }
+  
 }
 ?>
