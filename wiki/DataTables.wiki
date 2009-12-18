@@ -4,7 +4,7 @@
 
 = Introduction =
 
-DataTable is Moriarty's implementation of the Active Record pattern for RDF data. Currently this is read only but it does provide a very simple way to create and run SPARQL queries.
+DataTable is Moriarty's implementation of the Active Record pattern for RDF data. It provides a very simple way to create and run SPARQL queries.
 
 
 = Details =
@@ -233,6 +233,62 @@ $dt->select('name')->optional('nick');
 
 == get_sparql() ==
 Returns the generated SPARQL query
+
+== set($field, $value, $type, $lang, $dt) ==
+Sets the value of a field for use with the insert() method.  The first parameter is required and specifies the field name to assign the value to (which must be a mapped short name). The second parameter is also required and specifies the new value for the field. Optionally a third parameter can be supplied to specify the type of the value, one of 'literal', 'uri' or 'bnode'. This will default to 'literal'. If the third parameter is 'literal', two further optional parameters may be supplied to specify the language or datatype of the value.
+
+Set value of 'name' to be the literal 'chocolate':
+{{{
+$dt->set('name', 'chocolate');
+}}}
+
+Set value of 'name' to be the literal 'chocolate' with language code 'en':
+{{{
+$dt->set('name', 'chocolate', 'literal', 'en');
+}}}
+
+Set value of 'age' to be the literal '34' with datatype of xsd:integer:
+{{{
+$dt->set('age', '34', 'literal', null, 'http://www.w3.org/2001/XMLSchema#integer');
+}}}
+
+Set value of 'father' to be the URI 'http://example.org/bob':
+{{{
+$dt->set('name', 'http://example.org/bob', 'uri');
+}}}
+
+== set_field_defaults($field, $type, $datatype) ==
+Specifies default metadata for a field. These will be used by the set() method to set values for type and datatype for the specified field. The first parameter is required and specifies the field name (which must be a mapped short name). The second parameter is also required and specifies the type of the field, one of 'literal', 'uri' or 'bnode'. If the second parameter is 'literal' then a third optional parameter can be supplied which specifies a default datatype URI for the field.
+
+Use of this method can simplify and clarify code using set() and insert()
+
+*Note*: Values for type and datatype supplied via the set() method will override any default values set using this method.
+
+Set the default type for the 'name' field to be literal:
+{{{
+$dt->set('name', 'literal');
+}}}
+
+Set the default datatype for the 'created' field to be xsd:dateTime:
+{{{
+$dt->set('created', 'literal', 'http://www.w3.org/2001/XMLSchema#dateTime');
+}}}
+
+
+== insert($type_list) ==
+Inserts data into a platform store. It optionally takes a single parameter which is a comma separated list of types (which must be mapped short names). These are added as rdf:type properties for the inserted resource. If multiple types are specified then multiple rdf:types will be added.
+
+Insert a new resource description for something with a name of "scooby" and a type of http://example.org/person:
+{{{
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://example.org/name', 'name');
+$dt->map('http://example.org/person', 'person');
+$dt->set('name', 'scooby');
+$response = $dt->insert('person');
+}}}
+
+
+
 
 = !DataTableResult Methods =
 
