@@ -234,11 +234,30 @@ class DataTableResultTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( 'uri', $rowdata['link']['type'] );
     $this->assertEquals( 'literal', $rowdata['title']['type'] );
     $this->assertEquals( 'literal', $rowdata['name']['type'] );
-    $this->assertEquals( 'typed-literal', $rowdata['body']['type'] );
+    $this->assertEquals( 'literal', $rowdata['body']['type'] );
     $this->assertEquals( 'bnode', $rowdata['misc']['type'] );
   }  
+
+  function test_rowdata_returns_datatypes() {
+    $result = new DataTableResult($this->_select_result2);
+    $rowdata = $result->rowdata();
+    $this->assertEquals( null, $rowdata['link']['datatype'] );
+    $this->assertEquals( null, $rowdata['title']['datatype'] );
+    $this->assertEquals( null, $rowdata['name']['datatype'] );
+    $this->assertEquals( 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral', $rowdata['body']['datatype'] );
+    $this->assertEquals( null, $rowdata['misc']['datatype'] );
+  }    
   
-  
+  function test_rowdata_returns_languagues() {
+    $result = new DataTableResult($this->_select_result2);
+    $rowdata = $result->rowdata();
+    $this->assertEquals( null, $rowdata['link']['lang'] );
+    $this->assertEquals( 'en', $rowdata['title']['lang'] );
+    $this->assertEquals( null, $rowdata['name']['lang'] );
+    $this->assertEquals( null, $rowdata['body']['lang'] );
+    $this->assertEquals( null, $rowdata['misc']['lang'] );
+  }    
+
   function test_rowdata_with_row_index() {
     $result = new DataTableResult($this->_select_result2);
     $rowdata = $result->rowdata(1);

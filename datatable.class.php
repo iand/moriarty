@@ -1,6 +1,7 @@
 <?php
 require_once MORIARTY_DIR. 'store.class.php';
 require_once MORIARTY_DIR. 'datatableresult.class.php';
+require_once MORIARTY_DIR. 'simplegraph.class.php';
 
 class DataTable {
   var $_store_uri = '';
@@ -21,7 +22,8 @@ class DataTable {
   var $_patterns = array();
   var $_joins = array();
   var $_selections = array();
-
+  var $_data = array();
+  var $_field_defaults = array();
 
   function __construct($store_uri, $credentials = null, $request_factory = null) {
     $this->_store_uri = $store_uri;
@@ -284,5 +286,75 @@ class DataTable {
     }
 
   }
+  
+  function set($field, $value, $type=null, $lang=null, $dt=null) {
+    if (is_bool($value)) {
+      $field_value = $value === TRUE ? 'true' : 'false';
+      $this->_data[$field] = array('type' => 'literal', 'value' => $field_value, 'lang' => null, 'datatype' => 'http://www.w3.org/2001/XMLSchema#boolean');
+    }
+    else {
+      $this->_data[$field] = array('type' => $type, 'value' => $value, 'lang' => $lang, 'datatype' => $dt);
+    }
+    return $this;
+  }
+  
+  function get_insert_graph($type_list = '') {
+    $g = new SimpleGraph();
+    if (array_key_exists('_uri', $this->_data)) {
+      $s = $this->_data['_uri']['value'];
+    }
+    else {
+      $s = '_:a1';
+    }
+    
+    $type_list = trim($type_list);
+    $types = explode(',', $type_list);
+    foreach ($types as $type) {
+      $type = trim($type);
+      if (strlen($type) > 0) {
+        $g->add_resource_triple($s, RDF_TYPE, $this->_rmap[$type] ); 
+      }
+    }
+    
+    foreach ($this->_data as $field => $field_info) {
+      if ($field !== '_uri') {
+        $type = $field_info['type'];
+        if ($type === null && array_key_exists($field, $this->_field_defaults) && array_key_exists('type', $this->_field_defaults[$field]) && $this->_field_defaults[$field]['type'] !== null) {
+          $type = $this->_field_defaults[$field]['type'];
+        }
+        if ($type === null) {
+          $type = 'literal';
+        }
+
+        if ($type === 'literal') {
+          
+          $dt = $field_info['datatype'];
+          if ($dt === null && array_key_exists($field, $this->_field_defaults) && array_key_exists('datatype', $this->_field_defaults[$field]) && $this->_field_defaults[$field]['datatype'] !== null) {
+            $dt = $this->_field_defaults[$field]['datatype'];
+          }
+          
+          $g->add_literal_triple($s, $this->_rmap[$field], $field_info['value'], $field_info['lang'], $dt ); 
+        }
+        else if ($type === 'uri') {
+          $g->add_resource_triple($s, $this->_rmap[$field], $field_info['value'] ); 
+        }
+        else if ($type === 'bnode') {
+          $g->add_resource_triple($s, $this->_rmap[$field], $field_info['value'] ); 
+        }
+      }
+    }
+    
+    return $g;
+  }
+
+  function insert($type_list = '') {
+    $store = new Store($this->_store_uri, $this->_credentials, $this->_request_factory);
+    $mb = $store->get_metabox();
+    $g = $this->get_insert_graph($type_list);
+    $response = $mb->submit_turtle( $g->to_turtle() );
+  }
  
+  function set_field_defaults($field, $type, $datatype = null) {
+    $this->_field_defaults[$field] = array('type' => $type, 'datatype' => $datatype);
+  }
 }

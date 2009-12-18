@@ -15,7 +15,31 @@ class DataTableResult {
       foreach ($this->_fields as $field) {
         if (array_key_exists($field, $binding)) {
           $row[$field] = $binding[$field]['value'];
-          $rowdata[$field]['type'] = $binding[$field]['type'];
+          if (array_key_exists('type', $binding[$field]) ) {
+            if ($binding[$field]['type'] === 'typed-literal') {
+              $rowdata[$field]['type'] = 'literal';
+            }
+            else {
+              $rowdata[$field]['type'] = $binding[$field]['type'];
+            }
+          }
+          else {
+            $rowdata[$field]['type'] = null;
+          }
+
+          if (array_key_exists('datatype', $binding[$field]) ) {
+            $rowdata[$field]['datatype'] = $binding[$field]['datatype'];
+          }
+          else {
+            $rowdata[$field]['datatype'] = null;
+          }
+
+          if (array_key_exists('xml:lang', $binding[$field]) ) {
+            $rowdata[$field]['lang'] = $binding[$field]['xml:lang'];
+          }
+          else {
+            $rowdata[$field]['lang'] = null;
+          }
         }
         else {
           $row[$field] = null;

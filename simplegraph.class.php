@@ -621,7 +621,7 @@ class SimpleGraph {
     if (array_key_exists($s, $this->_index) ) {
       if (array_key_exists($p, $this->_index[$s]) ) {
         foreach ($this->_index[$s][$p] as $value) {
-          if ( ( $value['type'] == 'uri' || $value['type'] == 'bnode') && $value['value'] == $o) {
+          if ( ( $value['type'] == 'uri' || $value['type'] == 'bnode') && $value['value'] === $o) {
             return true;
           }
         }
@@ -638,11 +638,19 @@ class SimpleGraph {
    * @param string o the object of the triple as a literal value
    * @return boolean true if the triple exists in the graph, false otherwise
    */
-  function has_literal_triple($s, $p, $o) {
+  function has_literal_triple($s, $p, $o, $lang = null, $dt = null) {
     if (array_key_exists($s, $this->_index) ) {
       if (array_key_exists($p, $this->_index[$s]) ) {
         foreach ($this->_index[$s][$p] as $value) {
-          if ( ( $value['type'] == 'literal') && $value['value'] == $o) {
+          if ( ( $value['type'] == 'literal') && $value['value'] === $o) {
+
+            if ($lang !== null) {
+              return (array_key_exists('lang', $value) && $value['lang'] === $lang);
+            }
+
+            if ($dt !== null) {
+              return (array_key_exists('datatype', $value) && $value['datatype'] === $dt);
+            }
             return true;
           }
         }
