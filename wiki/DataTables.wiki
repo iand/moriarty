@@ -324,7 +324,7 @@ For example:
 $dt->select('name,nick')->limit(10);
 $res = $dt->get();
 
-foreach ($res->result() as $row) {
+foreach ($res->result_array() as $row) {
    echo $row['name'];
    echo $row['nick'];
 }
