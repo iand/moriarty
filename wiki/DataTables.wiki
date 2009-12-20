@@ -330,6 +330,26 @@ foreach ($res->result_array() as $row) {
 }
 }}}
 
+== row($index) ==
+Returns an object containing a single result row. The $index parameter is optional and defaults to zero.
+
+{{
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->map('http://xmlns.com/foaf/0.1/nick', 'nick');
+
+$dt->select('name,nick')->limit(10);
+$res = $dt->get();
+
+$row = $res->row(1);
+echo $row->name;
+echo $row->nick;
+}}}
+
+
+== row_array($index) ==
+Returns an associative array containing a single result row. The $index parameter is optional and defaults to zero.
+
 == rowdata($index) ==
 Returns an associative array containing metadata about the values in the specified row. The array keys correspond to field names and the values to another associative array containing the metadata for that field's value. The $index parameter is optional and defaults to zero.
 
