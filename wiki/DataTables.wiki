@@ -333,7 +333,7 @@ foreach ($res->result_array() as $row) {
 == row($index) ==
 Returns an object containing a single result row. The $index parameter is optional and defaults to zero.
 
-{{
+{{{
 $dt = new DataTable('http://api.talis.com/stores/mystore');
 $dt->map('http://xmlns.com/foaf/0.1/name', 'name');
 $dt->map('http://xmlns.com/foaf/0.1/nick', 'nick');
