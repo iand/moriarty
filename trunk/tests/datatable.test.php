@@ -18,6 +18,97 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
   }
 }';
 
+  var $_select_result2 = '{
+  "head": {
+    "vars": [ "_uri", "name" ]
+  } ,
+  "results": {
+    "bindings": [
+      {
+        "_uri": {"type": "uri", "value":"http://example.com/uri1"},
+        "name": { "type": "literal" , "value": "Andrew" }
+      }
+    ]
+  }
+}';
+
+  var $_select_result3 = '{
+  "head": {
+    "vars": [ "_uri", "name" ]
+  } ,
+  "results": {
+    "bindings": [
+      {
+        "_uri": {"type": "uri", "value":"http://example.com/uri1"},
+        "name": { "type": "literal" , "value": "Andrew" }
+      },
+      {
+        "_uri": {"type": "uri", "value":"http://example.com/uri2"},
+        "name": { "type": "literal" , "value": "Bill" }
+      }
+    ]
+  }
+}';
+
+
+  var $_select_result_uri = '{
+  "head": {
+    "vars": [ "_uri", "link" , "title" , "name" , "body" , "misc" ]
+  } ,
+  "results": {
+    "bindings": [
+      {
+        "_uri": {"type": "uri", "value":"http://example.com/uri1"},
+        "name": { "type": "uri" , "value": "http://example.com/" }
+      }
+    ]
+  }
+}';
+
+  var $_select_result_lang_literal = '{
+  "head": {
+    "vars": [ "_uri", "link" , "title" , "name" , "body" , "misc" ]
+  } ,
+  "results": {
+    "bindings": [
+      {
+        "_uri": {"type": "uri", "value":"http://example.com/uri1"},
+        "name": { "type": "literal" , "value": "Example", "xml:lang": "en" } 
+      }
+    ]
+  }
+}';
+  var $_select_result_typed_literal = '{
+  "head": {
+    "vars": [ "_uri", "link" , "title" , "name" , "body" , "misc" ]
+  } ,
+  "results": {
+    "bindings": [
+      {
+        "_uri": {"type": "uri", "value":"http://example.com/uri1"},
+        "name": { "type": "typed-literal" , "value": "<p xmlns=\"http://www.w3.org/1999/xhtml\">My name is <b>Andrew</b></p>", "datatype":"http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"} 
+      }
+    ]
+  }
+}';
+  var $_select_result_bnode = '{
+  "head": {
+    "vars": [ "_uri", "link" , "title" , "name" , "body" , "misc" ]
+  } ,
+  "results": {
+    "bindings": [
+      {
+        "_uri": {"type": "uri", "value":"http://example.com/uri1"},
+        "name": { "type": "bnode", "value":"foo"}
+      }
+    ]
+  }
+}';
+
+
+
+
+
   function test_select_uses_map() {
     $dt = new DataTable("http://example.org/store");
     $dt->map('http://example.org/name', 'name');
@@ -514,7 +605,7 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $dt = new DataTable("http://example.org/store");
     $dt->map('http://example.org/name', 'name');
     $dt->map('http://example.org/person', 'person');
-    $dt->set('name', '_:b', 'bnode');
+    $dt->set('name', 'b', 'bnode');
     
     $g = $dt->get_insert_graph();
     
@@ -641,6 +732,251 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $g = $dt->get_insert_graph();
     $this->assertTrue( $g->has_literal_triple('_:a1', 'http://example.org/name', 'http://example.com/foo' ));
   }
-  
+
+
+  function test_update_executes_query() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_select_result2;
+
+    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
+
+    $dt = new DataTable("http://example.org/store", null, $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'John');
+    $dt->update();
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+
+  function test_update_posts_changeset() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_select_result2;
+
+    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
+    
+    $fake_request_cs = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request_cs );
+
+    $dt = new DataTable("http://example.org/store", null, $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'John');
+    $response = $dt->update();
+
+    $this->assertTrue( $fake_request_cs->was_executed() );
+  }  
+
+  function get_simple_update_changeset($query_response_body) {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $query_response_body;
+
+    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
+    
+    $fake_request_cs = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request_cs );
+
+    $dt = new DataTable("http://example.org/store", null, $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'John');
+    $dt->update();
+
+    $cs = new SimpleGraph();
+    $cs->from_rdfxml($fake_request_cs->get_body());
+
+    return $cs;
+  }
+
+  function test_update_simple_changeset_contains_removal_and_addition() {
+    $cs = $this->get_simple_update_changeset($this->_select_result2);
+
+    $changesets = $cs->get_subjects_of_type(CS_CHANGESET);
+    $this->assertEquals( 1, count($changesets) );
+    $this->assertTrue( $cs->has_resource_triple( $changesets[0], CS_SUBJECTOFCHANGE, 'http://example.com/uri1'));
+    $this->assertEquals( 1, count($cs->get_literal_triple_values( $changesets[0], CS_CREATEDDATE) ) );
+    $this->assertEquals( 1, count($cs->get_literal_triple_values( $changesets[0], CS_CREATORNAME) ) );
+    $this->assertEquals( 1, count($cs->get_literal_triple_values( $changesets[0], CS_CHANGEREASON) ) );
+    
+    $removals = $cs->get_resource_triple_values($changesets[0], CS_REMOVAL);
+    $this->assertEquals( 1, count($removals) );
+    $this->assertTrue( $cs->has_resource_triple( $removals[0], RDF_SUBJECT, 'http://example.com/uri1'));
+    $this->assertTrue( $cs->has_resource_triple( $removals[0], RDF_PREDICATE,'http://example.org/name'));
+    $this->assertTrue( $cs->has_literal_triple( $removals[0], RDF_OBJECT, "Andrew"));
+
+    $additions = $cs->get_resource_triple_values($changesets[0], CS_ADDITION);
+    $this->assertEquals( 1, count($additions) );
+    $this->assertTrue( $cs->has_resource_triple( $additions[0], RDF_SUBJECT, 'http://example.com/uri1'));
+    $this->assertTrue( $cs->has_resource_triple( $additions[0], RDF_PREDICATE,'http://example.org/name'));
+    $this->assertTrue( $cs->has_literal_triple( $additions[0], RDF_OBJECT, "John"));
+  }    
+
+  function test_update_creates_one_changeset_per_subject() {
+    $cs = $this->get_simple_update_changeset($this->_select_result3);
+
+    $changesets = $cs->get_subjects_of_type(CS_CHANGESET);
+    $this->assertEquals( 2, count($changesets) );
+  }    
+
+  function test_update_removes_uri() {
+    $cs = $this->get_simple_update_changeset($this->_select_result_uri);
+
+    $changesets = $cs->get_subjects_of_type(CS_CHANGESET);
+    $this->assertEquals( 1, count($changesets) );
+    $removals = $cs->get_resource_triple_values($changesets[0], CS_REMOVAL);
+    $this->assertEquals( 1, count($removals) );
+    $this->assertTrue( $cs->has_resource_triple( $removals[0], RDF_OBJECT, "http://example.com/"));
+  }    
+
+  function test_update_removes_lang_literal() {
+    $cs = $this->get_simple_update_changeset($this->_select_result_lang_literal);
+
+    $changesets = $cs->get_subjects_of_type(CS_CHANGESET);
+    $this->assertEquals( 1, count($changesets) );
+    $removals = $cs->get_resource_triple_values($changesets[0], CS_REMOVAL);
+    $this->assertEquals( 1, count($removals) );
+    $this->assertTrue( $cs->has_literal_triple( $removals[0], RDF_OBJECT, "Example", "en"));
+  }    
+
+  function test_update_removes_typed_literal() {
+    $cs = $this->get_simple_update_changeset($this->_select_result_typed_literal);
+
+    $changesets = $cs->get_subjects_of_type(CS_CHANGESET);
+    $this->assertEquals( 1, count($changesets) );
+    $removals = $cs->get_resource_triple_values($changesets[0], CS_REMOVAL);
+    $this->assertEquals( 1, count($removals) );
+    $this->assertTrue( $cs->has_literal_triple( $removals[0], RDF_OBJECT, "<p xmlns=\"http://www.w3.org/1999/xhtml\">My name is <b>Andrew</b></p>", null, "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"));
+  }    
+
+  function test_update_removes_bnode() {
+    $cs = $this->get_simple_update_changeset($this->_select_result_bnode);
+
+    $changesets = $cs->get_subjects_of_type(CS_CHANGESET);
+    $this->assertEquals( 1, count($changesets) );
+    $removals = $cs->get_resource_triple_values($changesets[0], CS_REMOVAL);
+    $this->assertEquals( 1, count($removals) );
+    $this->assertTrue( $cs->has_resource_triple( $removals[0], RDF_OBJECT, "_:foo"));
+  }    
+
+  function test_update_adds_uri() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_select_result2;
+
+    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
+    
+    $fake_request_cs = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request_cs );
+
+    $dt = new DataTable("http://example.org/store", null, $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'http://example.com/2', 'uri');
+    $dt->update();
+
+    $cs = new SimpleGraph();
+    $cs->from_rdfxml($fake_request_cs->get_body());
+
+    $changesets = $cs->get_subjects_of_type(CS_CHANGESET);
+    $this->assertEquals( 1, count($changesets) );
+    $additions = $cs->get_resource_triple_values($changesets[0], CS_ADDITION);
+    $this->assertEquals( 1, count($additions) );
+    $this->assertTrue( $cs->has_resource_triple( $additions[0], RDF_OBJECT, "http://example.com/2"));
+  }    
+
+  function test_update_adds_lang_literal() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_select_result2;
+
+    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
+    
+    $fake_request_cs = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request_cs );
+
+    $dt = new DataTable("http://example.org/store", null, $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'foo', 'literal', 'en');
+    $dt->update();
+
+    $cs = new SimpleGraph();
+    $cs->from_rdfxml($fake_request_cs->get_body());
+
+    $changesets = $cs->get_subjects_of_type(CS_CHANGESET);
+    $this->assertEquals( 1, count($changesets) );
+    $additions = $cs->get_resource_triple_values($changesets[0], CS_ADDITION);
+    $this->assertEquals( 1, count($additions) );
+    $this->assertTrue( $cs->has_literal_triple( $additions[0], RDF_OBJECT, "foo", 'en'));
+  }    
+  function test_update_adds_typed_literal() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_select_result2;
+
+    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
+    
+    $fake_request_cs = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request_cs );
+
+    $dt = new DataTable("http://example.org/store", null, $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'foo', 'literal', null, 'http://example.org/type');
+    $dt->update();
+
+    $cs = new SimpleGraph();
+    $cs->from_rdfxml($fake_request_cs->get_body());
+
+    $changesets = $cs->get_subjects_of_type(CS_CHANGESET);
+    $this->assertEquals( 1, count($changesets) );
+    $additions = $cs->get_resource_triple_values($changesets[0], CS_ADDITION);
+    $this->assertEquals( 1, count($additions) );
+    $this->assertTrue( $cs->has_literal_triple( $additions[0], RDF_OBJECT, "foo", null, 'http://example.org/type'));
+  }    
+
+
+  function test_update_adds_bnode() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_select_result2;
+
+    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
+    
+    $fake_request_cs = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request_cs );
+
+    $dt = new DataTable("http://example.org/store", null, $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'foo', 'bnode');
+    $dt->update();
+
+    $cs = new SimpleGraph();
+    $cs->from_rdfxml($fake_request_cs->get_body());
+
+    $changesets = $cs->get_subjects_of_type(CS_CHANGESET);
+    $this->assertEquals( 1, count($changesets) );
+    $additions = $cs->get_resource_triple_values($changesets[0], CS_ADDITION);
+    $this->assertEquals( 1, count($additions) );
+    $this->assertTrue( $cs->has_resource_triple( $additions[0], RDF_OBJECT, "_:foo"));
+  }    
+
 }
 ?>
