@@ -295,17 +295,25 @@ class DataTable {
     else {
       $this->_data[$field] = array('type' => $type, 'value' => $value, 'lang' => $lang, 'datatype' => $dt);
     }
+    $this->_fields[] = $field;
+    $this->_selections[] = $field;
     return $this;
   }
+
+  function set_field_defaults($field, $type, $datatype = null) {
+    $this->_field_defaults[$field] = array('type' => $type, 'datatype' => $datatype);
+  }
+
   
   function get_insert_graph($type_list = '') {
-    $g = new SimpleGraph();
     if (array_key_exists('_uri', $this->_data)) {
       $s = $this->_data['_uri']['value'];
     }
     else {
       $s = '_:a1';
     }
+    
+    $g = $this->get_data_as_graph($s);
     
     $type_list = trim($type_list);
     $types = explode(',', $type_list);
@@ -315,6 +323,11 @@ class DataTable {
         $g->add_resource_triple($s, RDF_TYPE, $this->_rmap[$type] ); 
       }
     }
+    return $g;
+  }
+  
+  function get_data_as_graph($s) {
+    $g = new SimpleGraph();
     
     foreach ($this->_data as $field => $field_info) {
       if ($field !== '_uri') {
@@ -339,7 +352,7 @@ class DataTable {
           $g->add_resource_triple($s, $this->_rmap[$field], $field_info['value'] ); 
         }
         else if ($type === 'bnode') {
-          $g->add_resource_triple($s, $this->_rmap[$field], $field_info['value'] ); 
+          $g->add_resource_triple($s, $this->_rmap[$field], '_:' . $field_info['value'] ); 
         }
       }
     }
@@ -353,8 +366,100 @@ class DataTable {
     $g = $this->get_insert_graph($type_list);
     $response = $mb->submit_turtle( $g->to_turtle() );
   }
- 
-  function set_field_defaults($field, $type, $datatype = null) {
-    $this->_field_defaults[$field] = array('type' => $type, 'datatype' => $datatype);
+  
+  function update() {
+    $store = new Store($this->_store_uri, $this->_credentials, $this->_request_factory);
+
+    $query = $this->get_sparql();
+    $res = $this->get();
+    $g_before = new SimpleGraph();
+
+    $row_count = $res->num_rows();
+    $node_index = 0;
+
+    $cs = new SimpleGraph();
+    for ($i = 0; $i < $row_count; $i++) {
+      $row = $res->row_array($i);
+      $rowdata = $res->rowdata($i);
+      if (array_key_exists('_uri', $row)) {
+        $s = $row['_uri'];
+      }
+      else {
+        $s = '_:r' . $i;
+      }
+
+      foreach ($this->_data as $field => $field_info) {
+        if (array_key_exists($field, $row)) {
+          $p = $this->_rmap[$field];
+
+          if ($rowdata[$field]['type'] === 'literal') {
+            $g_before->add_literal_triple($s, $p, $row[$field], $rowdata[$field]['lang'], $rowdata[$field]['datatype']); 
+          }
+          else if ($rowdata[$field]['type'] === 'uri') {
+            $g_before->add_resource_triple($s, $p, $row[$field] ); 
+          }
+          else if ($rowdata[$field]['type'] === 'bnode') {
+            $g_before->add_resource_triple($s, $p, '_:'.$row[$field] ); 
+          }
+        }
+      }
+      
+      $g_after = $this->get_data_as_graph($s);
+      
+      $removals = SimpleGraph::diff($g_before->get_index(), $g_after->get_index());
+      $additions = SimpleGraph::diff($g_after->get_index(), $g_before->get_index());
+      
+      $cs_subj = '_:cs' . $i;
+      $cs->add_resource_triple($cs_subj, RDF_TYPE, CS_CHANGESET);
+      $cs->add_resource_triple($cs_subj, CS_SUBJECTOFCHANGE, $s);
+      $cs->add_literal_triple($cs_subj, CS_CHANGEREASON, "Update from DataTable");
+      $cs->add_literal_triple($cs_subj, CS_CREATEDDATE, date(DATE_ATOM));
+      $cs->add_literal_triple($cs_subj, CS_CREATORNAME, "Moriarty DataTable");
+      
+      foreach ($removals[$s] as $p => $p_list) {
+        foreach ($p_list as $p_info) {
+          $node = '_:r' . $node_index;
+          $cs->add_resource_triple($cs_subj, CS_REMOVAL, $node);
+          $cs->add_resource_triple($node, RDF_TYPE, RDF_STATEMENT);
+          $cs->add_resource_triple($node, RDF_SUBJECT, $s);
+          $cs->add_resource_triple($node, RDF_PREDICATE, $p);
+          if ($p_info['type'] === 'literal')  {
+            $dt = array_key_exists('datatype', $p_info) ? $p_info['datatype'] : null;
+            $lang = array_key_exists('lang', $p_info) ? $p_info['lang'] : null;
+            $cs->add_literal_triple($node, RDF_OBJECT, $p_info['value'], $lang, $dt);
+          }
+          else {
+            $cs->add_resource_triple($node, RDF_OBJECT, $p_info['value']);
+          }
+          $node_index++;
+        }
+      }
+      
+      foreach ($additions[$s] as $p => $p_list) {
+        foreach ($p_list as $p_info) {
+          $node = '_:a' . $node_index;
+          $cs->add_resource_triple($cs_subj, CS_ADDITION, $node);
+          $cs->add_resource_triple($node, RDF_TYPE, RDF_STATEMENT);
+          $cs->add_resource_triple($node, RDF_SUBJECT, $s);
+          $cs->add_resource_triple($node, RDF_PREDICATE, $p);
+          if ($p_info['type'] === 'literal')  {
+            $dt = array_key_exists('datatype', $p_info) ? $p_info['datatype'] : null;
+            $lang = array_key_exists('lang', $p_info) ? $p_info['lang'] : null;
+            $cs->add_literal_triple($node, RDF_OBJECT, $p_info['value'], $lang, $dt);
+          }
+          else {
+            $cs->add_resource_triple($node, RDF_OBJECT, $p_info['value']);
+          }
+          $node_index++;
+        }
+      }
+      
+    }
+
+    $mb = $store->get_metabox();
+    return $mb->apply_changeset_rdfxml( $cs->to_rdfxml() );
+
   }
+ 
 }
+
