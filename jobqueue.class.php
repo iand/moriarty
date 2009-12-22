@@ -148,6 +148,17 @@ class JobQueue {
     
   }
 
+  public function get_item($jobUri)
+  {
+    if (empty( $this->request_factory)) 
+    {
+      $this->request_factory = new HttpRequestFactory();
+    }
 
-
+    $request = $this->request_factory->make( 'GET', $jobUri, $this->credentials);
+    $request->set_accept("application/rdf+xml");
+    $response =  $request->execute();
+  
+    return $response;
+  }
 }
