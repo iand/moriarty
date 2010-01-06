@@ -13,6 +13,7 @@ class DataTable {
   var $_map = array();
   var $_rmap = array();
 
+  var $_subject = null;
   var $_types = array();
   var $_is_distinct = FALSE;
   var $_fields = array();
@@ -103,14 +104,19 @@ class DataTable {
   }
 
   function where($field, $value) {
-    if (preg_match('~^(.+)\s*(>|<|\!\=|<=|>=)$~', $field, $m)) {
-      $op = $m[2];
-      $field = trim($m[1]);
+    if ($field === '_uri') {
+      $this->_subject = $value;
     }
     else {
-      $op = '=';
+      if (preg_match('~^(.+)\s*(>|<|\!\=|<=|>=)$~', $field, $m)) {
+        $op = $m[2];
+        $field = trim($m[1]);
+      }
+      else {
+        $op = '=';
+      }
+      $this->_filters[] = array('field'=>$field, 'op'=>$op, 'value'=>$value);
     }
-    $this->_filters[] = array('field'=>$field, 'op'=>$op, 'value'=>$value);
     return $this;
   }
 
@@ -121,40 +127,6 @@ class DataTable {
 
   function get_sparql() {
     $prefixes  = array();
-    
-    $this->_sparql = 'select ';
-    if ($this->_is_distinct) {
-      $this->_sparql .= 'distinct ';
-    }
-    $this->_sparql .= '?_uri ?' . join(' ?', $this->_selections);
-    foreach ($this->_optionals as $optionals) {
-      $this->_sparql .= ' ?' . join(' ?', $optionals);
-    }
-    $this->_sparql .= ' where {?_uri';
-    $done_first = FALSE;
-    foreach ($this->_patterns as $pattern) {
-      if ($done_first) $this->_sparql .= ';';
-      $this->_sparql .= ' <' . $this->_rmap[$pattern['field']] . '> ' . $pattern['value'];
-      $done_first = TRUE;
-    }
-    foreach ($this->_fields as $field) {
-      if ($done_first) $this->_sparql .= ';';
-      $this->_sparql .= ' <' . $this->_rmap[$field] . '> ?' . $field;
-      $done_first = TRUE;
-    }
-    foreach ($this->_filters as $filter) {
-      if (!in_array($filter['field'], $this->_fields)) {
-        if ($done_first) $this->_sparql .= ';';
-        $this->_sparql .= ' <' . $this->_rmap[$filter['field']] . '> ?' . $filter['field'];
-        $done_first = TRUE;
-      }
-    }
-
-    foreach ($this->_types as $type) {
-      if ($done_first) $this->_sparql .= ';';
-      $this->_sparql .= ' a <' . $this->_rmap[$type] . '>';
-      $done_first = TRUE;
-    }
 
     $join_groups = array();
     foreach ($this->_joins as $join) {
@@ -168,16 +140,79 @@ class DataTable {
       $join_groups[$join[0]] = $join_group_properties;
     }
     
-    foreach ($join_groups as $join_group => $join_group_properties) {
-      if ($done_first) $this->_sparql .= ';';
-      $this->_sparql .= ' <' . $this->_rmap[$join_group] . '> ?' . $join_group;
-      $done_first = TRUE;
+    $this->_sparql = 'select ';
+    if ($this->_is_distinct) {
+      $this->_sparql .= 'distinct ';
     }
-
-    $this->_sparql .= '.';
-
+    
+    if ($this->_subject === null) {
+      $this->_sparql .= '?_uri ';
+    }
+    
+    if (count($this->_selections) > 0) {
+      $this->_sparql .= '?' . join(' ?', $this->_selections) . ' ';
+    }
+    
     foreach ($this->_optionals as $optionals) {
-      $this->_sparql .= ' optional {?_uri';
+      $this->_sparql .= '?' . join(' ?', $optionals) . ' ';
+    }
+    $this->_sparql .= 'where {';
+    
+    if (count($this->_patterns) > 0 || 
+        count($this->_fields) > 0 || 
+        count($this->_filters) > 0 || 
+        count($this->_types) > 0 || 
+        count($this->_joins) > 0 ) {
+      if ($this->_subject === null) {
+        $this->_sparql .= '?_uri';
+      }
+      else {
+        $this->_sparql .= sprintf('<%s>', $this->_subject);
+      }
+      $done_first = FALSE;
+      foreach ($this->_patterns as $pattern) {
+        if ($done_first) $this->_sparql .= ';';
+        $this->_sparql .= ' <' . $this->_rmap[$pattern['field']] . '> ' . $pattern['value'];
+        $done_first = TRUE;
+      }
+      foreach ($this->_fields as $field) {
+        if ($done_first) $this->_sparql .= ';';
+        $this->_sparql .= ' <' . $this->_rmap[$field] . '> ?' . $field;
+        $done_first = TRUE;
+      }
+      foreach ($this->_filters as $filter) {
+        if (!in_array($filter['field'], $this->_fields)) {
+          if ($done_first) $this->_sparql .= ';';
+          $this->_sparql .= ' <' . $this->_rmap[$filter['field']] . '> ?' . $filter['field'];
+          $done_first = TRUE;
+        }
+      }
+
+      foreach ($this->_types as $type) {
+        if ($done_first) $this->_sparql .= ';';
+        $this->_sparql .= ' a <' . $this->_rmap[$type] . '>';
+        $done_first = TRUE;
+      }
+
+      
+      foreach ($join_groups as $join_group => $join_group_properties) {
+        if ($done_first) $this->_sparql .= ';';
+        $this->_sparql .= ' <' . $this->_rmap[$join_group] . '> ?' . $join_group;
+        $done_first = TRUE;
+      }
+
+      $this->_sparql .= '.';
+    }
+    
+    foreach ($this->_optionals as $optionals) {
+      $this->_sparql .= ' optional {';
+      if ($this->_subject === null) {
+        $this->_sparql .= '?_uri';
+      }
+      else {
+        $this->_sparql .= sprintf('<%s>', $this->_subject);
+      }
+      
       $done_first = FALSE;
       foreach ($optionals as $field) {
         if ($done_first) $this->_sparql .= ';';
@@ -192,9 +227,7 @@ class DataTable {
       $op = $filter['op'];
       $this->_sparql .= ' filter(';
       if (is_string($filter['value'])) {
-        $this->_sparql .= 'str(?'. $field . ')';
-        $this->_sparql .= $op;
-        $this->_sparql .= "'".str_replace("'","\\'", $filter['value'])."'";
+        $this->_sparql .= sprintf("str(?%s)%s'%s'", $field, $op, str_replace("'","\\'", $filter['value']));
       }
       else if (is_bool($filter['value'])) {
         $prefixes['xsd'] = 'http://www.w3.org/2001/XMLSchema#';
@@ -209,20 +242,14 @@ class DataTable {
       }
       else if (is_int($filter['value'])) {
         $prefixes['xsd'] = 'http://www.w3.org/2001/XMLSchema#';
-        $this->_sparql .= 'xsd:integer(?'. $field . ')';
-        $this->_sparql .= $op;
-        $this->_sparql .= $filter['value'];
+        $this->_sparql .= sprintf('xsd:integer(?%s)%s%s', $field, $op, $filter['value']);
       }
       else if (is_float($filter['value'])) {
         $prefixes['xsd'] = 'http://www.w3.org/2001/XMLSchema#';
-        $this->_sparql .= 'xsd:double(?'. $field . ')';
-        $this->_sparql .= $op;
-        $this->_sparql .= $filter['value'];
+        $this->_sparql .= sprintf('xsd:double(?%s)%s%s', $field, $op, $filter['value']);
       }
       else {
-        $this->_sparql .= $field;
-        $this->_sparql .= $op;
-        $this->_sparql .= $filter['value'];
+        $this->_sparql .= sprintf('?%s%s%s', $field, $op, $filter['value']);
       }   
       $this->_sparql .= ').';
     }
@@ -232,7 +259,7 @@ class DataTable {
       $done_first = FALSE;
       foreach ($join_group_properties as $join_group_property) {
         if ($done_first) $this->_sparql .= ';';
-        $this->_sparql .= ' <' . $this->_rmap[$join_group_property] . '> ?' . $join_group.'_'.$join_group_property;
+        $this->_sparql .= sprintf(' <%s> ?%s_%s', $this->_rmap[$join_group_property], $join_group, $join_group_property);
         $done_first = TRUE;
       }
       $this->_sparql .= '.';
@@ -249,10 +276,10 @@ class DataTable {
             $done_order_by_token = TRUE;
           }
           if (strtolower($order['ordering']) == 'desc') {
-            $this->_sparql .= ' DESC(?'. $order['field'] . ')';
+            $this->_sparql .= sprintf(' DESC(?%s)', $order['field']);
           }
           else {
-            $this->_sparql .= ' ?' . $order['field'];
+            $this->_sparql .= sprintf(' ?%s', $order['field']);
           }
         }
       }
@@ -279,24 +306,31 @@ class DataTable {
     $response = $ss->query($query, 'json');
     
     if ($response->is_success()) {
-      return new DataTableResult($response->body);
+      return new DataTableResult($response->body, $this->_subject);
     }
     else {
-      return new DataTableResult('{"head": {"vars": [ ] } , "results": { "bindings": [] } }');
+      return new DataTableResult('{"head": {"vars": [ ] } , "results": { "bindings": [] } }', $this->_subject);
     }
 
   }
   
   function set($field, $value, $type=null, $lang=null, $dt=null) {
-    if (is_bool($value)) {
-      $field_value = $value === TRUE ? 'true' : 'false';
-      $this->_data[$field] = array('type' => 'literal', 'value' => $field_value, 'lang' => null, 'datatype' => 'http://www.w3.org/2001/XMLSchema#boolean');
+    if ($field === '_uri') {
+      if ($value) {
+        $this->_subject= $value;
+      }
     }
     else {
-      $this->_data[$field] = array('type' => $type, 'value' => $value, 'lang' => $lang, 'datatype' => $dt);
+      if (is_bool($value)) {
+        $field_value = $value === TRUE ? 'true' : 'false';
+        $this->_data[$field] = array('type' => 'literal', 'value' => $field_value, 'lang' => null, 'datatype' => 'http://www.w3.org/2001/XMLSchema#boolean');
+      }
+      else {
+        $this->_data[$field] = array('type' => $type, 'value' => $value, 'lang' => $lang, 'datatype' => $dt);
+      }
+      //$this->_fields[] = $field;
+      $this->_optionals[] = array($field);
     }
-    $this->_fields[] = $field;
-    $this->_selections[] = $field;
     return $this;
   }
 
@@ -306,8 +340,9 @@ class DataTable {
 
   
   function get_insert_graph($type_list = '') {
-    if (array_key_exists('_uri', $this->_data)) {
-      $s = $this->_data['_uri']['value'];
+    
+    if ($this->_subject !== null) {
+      $s = $this->_subject;
     }
     else {
       $s = '_:a1';
@@ -367,98 +402,178 @@ class DataTable {
     $response = $mb->submit_turtle( $g->to_turtle() );
   }
   
-  function update() {
-    $store = new Store($this->_store_uri, $this->_credentials, $this->_request_factory);
-
-    $query = $this->get_sparql();
-    $res = $this->get();
+  function get_differences($query_results) {
+    $res = $query_results;
     $g_before = new SimpleGraph();
+    $g_after = new SimpleGraph();
 
     $row_count = $res->num_rows();
     $node_index = 0;
 
-    $cs = new SimpleGraph();
-    for ($i = 0; $i < $row_count; $i++) {
-      $row = $res->row_array($i);
-      $rowdata = $res->rowdata($i);
-      if (array_key_exists('_uri', $row)) {
-        $s = $row['_uri'];
+    $diffs = array();
+
+
+    if ($row_count === 0) {
+      if ($this->_subject) {
+        $s = $this->_subject;
       }
       else {
-        $s = '_:r' . $i;
+        $s = "_:s";
       }
-
-      foreach ($this->_data as $field => $field_info) {
-        if (array_key_exists($field, $row)) {
-          $p = $this->_rmap[$field];
-
-          if ($rowdata[$field]['type'] === 'literal') {
-            $g_before->add_literal_triple($s, $p, $row[$field], $rowdata[$field]['lang'], $rowdata[$field]['datatype']); 
+      $g_after = $this->get_data_as_graph($s);
+      $index = $g_after->get_index();
+      $diffs[$s] = array( 'additions' => $index[$s], 'removals' => array());
+      
+    }
+    else {
+      $subjects = array();
+      
+      for ($i = 0; $i < $row_count; $i++) {
+        $row = $res->row_array($i);
+        $rowdata = $res->rowdata($i);
+        if (array_key_exists('_uri', $row)) {
+          $s = $row['_uri'];
+        }
+        else {
+          if ($this->_subject) {
+            $s = $this->_subject;
           }
-          else if ($rowdata[$field]['type'] === 'uri') {
-            $g_before->add_resource_triple($s, $p, $row[$field] ); 
+          else {
+            $s = "_:s";
           }
-          else if ($rowdata[$field]['type'] === 'bnode') {
-            $g_before->add_resource_triple($s, $p, '_:'.$row[$field] ); 
+        }
+
+        $subjects[] = $s;
+        foreach ($this->_data as $field => $field_info) {
+          if (array_key_exists($field, $row)) {
+            $p = $this->_rmap[$field];
+
+            if ($rowdata[$field]['type'] === 'literal') {
+              $g_before->add_literal_triple($s, $p, $row[$field], $rowdata[$field]['lang'], $rowdata[$field]['datatype']); 
+            }
+            else if ($rowdata[$field]['type'] === 'uri') {
+              $g_before->add_resource_triple($s, $p, $row[$field] ); 
+            }
+            else if ($rowdata[$field]['type'] === 'bnode') {
+              $g_before->add_resource_triple($s, $p, '_:'.$row[$field] ); 
+            }
           }
         }
       }
-      
-      $g_after = $this->get_data_as_graph($s);
+    
+      if (count($subjects) > 0) {
+        $subjects = array_unique($subjects);
+        foreach ($subjects as $s) {
+          $g_after->add_graph( $this->get_data_as_graph($s) );
+        }
+      }
+
       
       $removals = SimpleGraph::diff($g_before->get_index(), $g_after->get_index());
       $additions = SimpleGraph::diff($g_after->get_index(), $g_before->get_index());
+
+      foreach ($subjects as $s) {
+        $diff = array( 'additions' => array(), 'removals' => array());
+        if (array_key_exists($s, $additions)) {
+          $diff['additions'] = $additions[$s];
+        }
+        if (array_key_exists($s, $removals)) {
+          $diff['removals'] = $removals[$s];
+        }
+        $diffs[$s] = $diff;
+      }
       
-      $cs_subj = '_:cs' . $i;
+    }
+    
+    return $diffs;
+  }
+  
+  
+  function get_update_changeset() {
+    $store = new Store($this->_store_uri, $this->_credentials, $this->_request_factory);
+
+    $query = $this->get_sparql();
+    $res = $this->get();
+
+    $cs = new SimpleGraph();
+    $diffs = $this->get_differences($res);
+
+
+    $node_index = 0;
+    foreach ($diffs as $s => $diff_info) {
+
+      $removals = $diff_info['removals'];
+      $additions = $diff_info['additions'];
+      
+      $cs_subj = '_:cs' . $node_index++;
       $cs->add_resource_triple($cs_subj, RDF_TYPE, CS_CHANGESET);
       $cs->add_resource_triple($cs_subj, CS_SUBJECTOFCHANGE, $s);
       $cs->add_literal_triple($cs_subj, CS_CHANGEREASON, "Update from DataTable");
       $cs->add_literal_triple($cs_subj, CS_CREATEDDATE, date(DATE_ATOM));
       $cs->add_literal_triple($cs_subj, CS_CREATORNAME, "Moriarty DataTable");
       
-      foreach ($removals[$s] as $p => $p_list) {
-        foreach ($p_list as $p_info) {
-          $node = '_:r' . $node_index;
-          $cs->add_resource_triple($cs_subj, CS_REMOVAL, $node);
-          $cs->add_resource_triple($node, RDF_TYPE, RDF_STATEMENT);
-          $cs->add_resource_triple($node, RDF_SUBJECT, $s);
-          $cs->add_resource_triple($node, RDF_PREDICATE, $p);
-          if ($p_info['type'] === 'literal')  {
-            $dt = array_key_exists('datatype', $p_info) ? $p_info['datatype'] : null;
-            $lang = array_key_exists('lang', $p_info) ? $p_info['lang'] : null;
-            $cs->add_literal_triple($node, RDF_OBJECT, $p_info['value'], $lang, $dt);
+      if (count($removals) > 0) {
+        foreach ($removals as $p => $p_list) {
+          foreach ($p_list as $p_info) {
+            $node = '_:r' . $node_index;
+            $cs->add_resource_triple($cs_subj, CS_REMOVAL, $node);
+            $cs->add_resource_triple($node, RDF_TYPE, RDF_STATEMENT);
+            $cs->add_resource_triple($node, RDF_SUBJECT, $s);
+            $cs->add_resource_triple($node, RDF_PREDICATE, $p);
+            if ($p_info['type'] === 'literal')  {
+              $dt = array_key_exists('datatype', $p_info) ? $p_info['datatype'] : null;
+              $lang = array_key_exists('lang', $p_info) ? $p_info['lang'] : null;
+              $cs->add_literal_triple($node, RDF_OBJECT, $p_info['value'], $lang, $dt);
+            }
+            else {
+              $cs->add_resource_triple($node, RDF_OBJECT, $p_info['value']);
+            }
+            $node_index++;
           }
-          else {
-            $cs->add_resource_triple($node, RDF_OBJECT, $p_info['value']);
-          }
-          $node_index++;
         }
       }
       
-      foreach ($additions[$s] as $p => $p_list) {
-        foreach ($p_list as $p_info) {
-          $node = '_:a' . $node_index;
-          $cs->add_resource_triple($cs_subj, CS_ADDITION, $node);
-          $cs->add_resource_triple($node, RDF_TYPE, RDF_STATEMENT);
-          $cs->add_resource_triple($node, RDF_SUBJECT, $s);
-          $cs->add_resource_triple($node, RDF_PREDICATE, $p);
-          if ($p_info['type'] === 'literal')  {
-            $dt = array_key_exists('datatype', $p_info) ? $p_info['datatype'] : null;
-            $lang = array_key_exists('lang', $p_info) ? $p_info['lang'] : null;
-            $cs->add_literal_triple($node, RDF_OBJECT, $p_info['value'], $lang, $dt);
+      if (count($additions) > 0) {
+        foreach ($additions as $p => $p_list) {
+          foreach ($p_list as $p_info) {
+            $node = '_:a' . $node_index;
+            $cs->add_resource_triple($cs_subj, CS_ADDITION, $node);
+            $cs->add_resource_triple($node, RDF_TYPE, RDF_STATEMENT);
+            $cs->add_resource_triple($node, RDF_SUBJECT, $s);
+            $cs->add_resource_triple($node, RDF_PREDICATE, $p);
+            if ($p_info['type'] === 'literal')  {
+              $dt = array_key_exists('datatype', $p_info) ? $p_info['datatype'] : null;
+              $lang = array_key_exists('lang', $p_info) ? $p_info['lang'] : null;
+              $cs->add_literal_triple($node, RDF_OBJECT, $p_info['value'], $lang, $dt);
+            }
+            else {
+              $cs->add_resource_triple($node, RDF_OBJECT, $p_info['value']);
+            }
+            $node_index++;
           }
-          else {
-            $cs->add_resource_triple($node, RDF_OBJECT, $p_info['value']);
-          }
-          $node_index++;
         }
       }
-      
     }
+    return $cs;
+  }
+  
+  
+  function update() {
+    $cs= $this->get_update_changeset();
 
+    $changesets = $cs->get_subjects_of_type(CS_CHANGESET);
+    $store = new Store($this->_store_uri, $this->_credentials, $this->_request_factory);
     $mb = $store->get_metabox();
-    return $mb->apply_changeset_rdfxml( $cs->to_rdfxml() );
 
+    if (count($changesets) > 0 && count($cs->get_resource_triple_values($changesets[0], CS_REMOVAL)) > 0) {
+      //printf("<p><strong>Posting a changeset</strong></p><pre>%s</pre>", $cs->to_turtle());
+      return $mb->apply_changeset_rdfxml( $cs->to_rdfxml() );
+    }
+    else {
+      $g = $this->get_insert_graph('');
+      //printf("<p><strong>Submitting RDF</strong></p><pre>%s</pre>", $g->to_turtle());
+      return $mb->submit_turtle( $g->to_turtle() );
+    }
   }
  
 }

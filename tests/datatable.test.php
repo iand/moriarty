@@ -106,7 +106,32 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
 }';
 
 
+  var $_select_result_zero_results = '{
+  "head": {
+    "vars": [ "_uri", "name" ]
+  } ,
+  "results": {
+    "bindings": [
+    ]
+  }
+}';
 
+
+  var $_select_result_without_uri_pseudo_variable_multiple_rows = '{
+  "head": {
+    "vars": [ "title" ]
+  } ,
+  "results": {
+    "bindings": [
+      {
+        "title": { "type": "literal" , "value": "foo" }
+      },
+      {
+        "title": { "type": "literal" , "value": "bar" }
+      }
+    ]
+  }
+}';
 
 
   function test_select_uses_map() {
@@ -294,6 +319,18 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $dt->optional('age');
     $this->assertEquals( "select ?_uri ?foo ?name ?age where {?_uri <http://example.org/foo> ?foo. optional {?_uri <http://example.org/name> ?name. } optional {?_uri <http://example.org/age> ?age. } }", $dt->get_sparql() );
   }  
+
+  function test_all_optionals() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/foo', 'foo');
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/age', 'age');
+    $dt->optional('foo');
+    $dt->optional('name');
+    $dt->optional('age');
+    $this->assertEquals( "select ?_uri ?foo ?name ?age where { optional {?_uri <http://example.org/foo> ?foo. } optional {?_uri <http://example.org/name> ?name. } optional {?_uri <http://example.org/age> ?age. } }", $dt->get_sparql() );
+  }  
+
 
   function test_map_takes_associative_array() {
     $mappings = array();
@@ -740,7 +777,7 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $fake_response->status_code = 200;
     $fake_response->body = $this->_select_result2;
 
-    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $query = "select ?_uri ?name where { optional {?_uri <http://example.org/name> ?name. } }";
     $fake_request = new FakeHttpRequest( $fake_response );
     $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
 
@@ -748,6 +785,7 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $dt->map('http://example.org/name', 'name');
     $dt->set('name', 'John');
     $dt->update();
+
     $this->assertTrue( $fake_request->was_executed() );
   }
 
@@ -757,7 +795,7 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $fake_response->status_code = 200;
     $fake_response->body = $this->_select_result2;
 
-    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $query = "select ?_uri ?name where { optional {?_uri <http://example.org/name> ?name. } }";
     $fake_request = new FakeHttpRequest( $fake_response );
     $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
     
@@ -778,7 +816,7 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $fake_response->status_code = 200;
     $fake_response->body = $query_response_body;
 
-    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $query = "select ?_uri ?name where { optional {?_uri <http://example.org/name> ?name. } }";
     $fake_request = new FakeHttpRequest( $fake_response );
     $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
     
@@ -872,7 +910,7 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $fake_response->status_code = 200;
     $fake_response->body = $this->_select_result2;
 
-    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $query = "select ?_uri ?name where { optional {?_uri <http://example.org/name> ?name. } }";
     $fake_request = new FakeHttpRequest( $fake_response );
     $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
     
@@ -883,6 +921,8 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $dt->map('http://example.org/name', 'name');
     $dt->set('name', 'http://example.com/2', 'uri');
     $dt->update();
+
+
 
     $cs = new SimpleGraph();
     $cs->from_rdfxml($fake_request_cs->get_body());
@@ -900,7 +940,7 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $fake_response->status_code = 200;
     $fake_response->body = $this->_select_result2;
 
-    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $query = "select ?_uri ?name where { optional {?_uri <http://example.org/name> ?name. } }";
     $fake_request = new FakeHttpRequest( $fake_response );
     $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
     
@@ -927,7 +967,7 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $fake_response->status_code = 200;
     $fake_response->body = $this->_select_result2;
 
-    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $query = "select ?_uri ?name where { optional {?_uri <http://example.org/name> ?name. } }";
     $fake_request = new FakeHttpRequest( $fake_response );
     $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
     
@@ -956,7 +996,7 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $fake_response->status_code = 200;
     $fake_response->body = $this->_select_result2;
 
-    $query = "select ?_uri ?name where {?_uri <http://example.org/name> ?name. }";
+    $query = "select ?_uri ?name where { optional {?_uri <http://example.org/name> ?name. } }";
     $fake_request = new FakeHttpRequest( $fake_response );
     $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
     
@@ -977,6 +1017,85 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( 1, count($additions) );
     $this->assertTrue( $cs->has_resource_triple( $additions[0], RDF_OBJECT, "_:foo"));
   }    
+
+  function test_where_with_uri_pseudo_variable() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->select('name');
+    $dt->where('_uri', 'http://example.org/scooby');
+    $this->assertEquals( "select ?name where {<http://example.org/scooby> <http://example.org/name> ?name. }", $dt->get_sparql() );
+  }  
+
+  function test_where_with_uri_pseudo_variable_and_optional() {
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/name', 'name');
+    $dt->map('http://example.org/age', 'age');
+    $dt->select('name');
+    $dt->optional('age');
+    $dt->where('_uri', 'http://example.org/scooby');
+    $this->assertEquals( "select ?name ?age where {<http://example.org/scooby> <http://example.org/name> ?name. optional {<http://example.org/scooby> <http://example.org/age> ?age. } }", $dt->get_sparql() );
+  }  
+
+  function test_update_with_zero_removals_becomes_an_insert() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_select_result_zero_results;
+
+    $query = "select ?_uri ?name where { optional {?_uri <http://example.org/name> ?name. } }";
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', "http://example.org/store/services/sparql?query=" . urlencode($query) . '&output=json', $fake_request );
+    
+    $fake_request_post = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request_post );
+
+    $dt = new DataTable("http://example.org/store", null, $fake_request_factory);
+    $dt->map('http://example.org/name', 'name');
+    $dt->set('name', 'foo');
+    $dt->update();
+
+    $g = $dt->get_insert_graph();
+    $this->assertEquals( $g->to_turtle() , $fake_request_post->get_body() );
+  }    
+  function test_get_differences_with_zero_query_results() {
+    $s =  'http://example.com/subj';
+    $result = new DataTableResult($this->_select_result_zero_results, $s);
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/title', 'title');
+    $dt->set('title', 'baz');
+    $dt->where('_uri', $s);
+    $diffs = $dt->get_differences($result);
+    
+    $this->assertEquals( 1, count($diffs) );
+    $this->assertTrue( array_key_exists($s, $diffs) );
+    $this->assertEquals( 0, count($diffs[$s]['removals']) );
+    $this->assertEquals( 1, count($diffs[$s]['additions']) );
+  }
+
+  function test_get_differences() {
+    $s =  'http://example.com/subj';
+    $result = new DataTableResult($this->_select_result_without_uri_pseudo_variable_multiple_rows, $s);
+    $dt = new DataTable("http://example.org/store");
+    $dt->map('http://example.org/title', 'title');
+    $dt->set('title', 'baz');
+    $diffs = $dt->get_differences($result);
+
+    $this->assertEquals( 1, count($diffs) );
+    $this->assertTrue( array_key_exists($s, $diffs) );
+    
+    $this->assertEquals( 1, count($diffs[$s]['removals']) );
+    $this->assertTrue( array_key_exists('http://example.org/title', $diffs[$s]['removals']) );
+    $this->assertEquals( 2, count($diffs[$s]['removals']['http://example.org/title']) );
+
+    $this->assertEquals( 1, count($diffs[$s]['additions']) );
+    $this->assertTrue( array_key_exists('http://example.org/title', $diffs[$s]['additions']) );
+    $this->assertEquals( 1, count($diffs[$s]['additions']['http://example.org/title']) );
+  }
+
+
+
+
+
 
 }
 ?>
