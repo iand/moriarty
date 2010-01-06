@@ -950,19 +950,22 @@ class SimpleGraph {
         if(empty($indices[$no])) unset($indices[$no]);
       }
       $base = array_shift($indices);
+      if (count($base) === 0) return array();
       $diff = array();
 
-      foreach($base as $base_uri => $base_ps){
+      foreach($base as $base_uri => $base_ps) {
         foreach($indices as $index){
-          if(!isset($index[$base_uri])){
+          if(!isset($index[$base_uri])) {
             $diff[$base_uri] = $base_ps;
-          } else {
-            foreach($base_ps as $base_p => $base_obs){
-              if(!isset($index[$base_uri][$base_p])){
+          } 
+          else {
+            foreach($base_ps as $base_p => $base_obs) {
+              if(!isset($index[$base_uri][$base_p])) {
                 $diff[$base_uri][$base_p] = $base_obs;
-              } else {
+              } 
+              else {
                 foreach($base_obs as $base_o){
-                  if(!in_array($base_o, $index[$base_uri][$base_p])){
+                  if(!in_array($base_o, $index[$base_uri][$base_p])) {
                     $diff[$base_uri][$base_p][]=$base_o;
                   }
                 }

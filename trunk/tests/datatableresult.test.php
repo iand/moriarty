@@ -138,6 +138,20 @@ class DataTableResultTest extends PHPUnit_Framework_TestCase {
 
 
 
+  var $_select_result_without_uri_pseudo_variable = '{
+  "head": {
+    "vars": [ "link" , "title" , "name" , "body" , "misc" ]
+  } ,
+  "results": {
+    "bindings": [
+      {
+        "name": { "type": "uri" , "value": "http://example.com/" }
+      }
+    ]
+  }
+}';
+
+
 
 
 
@@ -263,6 +277,15 @@ class DataTableResultTest extends PHPUnit_Framework_TestCase {
     $rowdata = $result->rowdata(1);
     $this->assertEquals( 'literal', $rowdata['body']['type'] );
   }
+
+  function test_result_without_uri_pseudo_variable() {
+    $result = new DataTableResult($this->_select_result_without_uri_pseudo_variable, 'http://example.org/scooby');
+    $results = $result->result();
+    
+    $this->assertEquals( 1, count($results) );
+    $this->assertEquals( 'http://example.org/scooby', $results[0]->_uri );
+  }
+
 
 }
 ?>

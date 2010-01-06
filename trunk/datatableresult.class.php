@@ -5,7 +5,7 @@ class DataTableResult {
   var $_results = array();
   var $_rowdata = array();
   
-  function __construct($data) {
+  function __construct($data, $uri = null) {
     $results = json_decode($data, true);
     
     $this->_fields = $results['head']['vars'];
@@ -46,6 +46,12 @@ class DataTableResult {
           $rowdata[$field]['type'] = 'unknown';
         }
       }
+
+      if ($uri) {
+        $row['_uri'] = $uri;
+        $rowdata['_uri']['type'] = 'uri';
+      }
+
       $this->_results[] = $row;
       $this->_rowdata[] = $rowdata;
     }  
