@@ -1,16 +1,8 @@
 #summary Represents an RDF graph and provides some simple functions for traversing and manipulating it.
 
-<pre class="tree"><strong>SimpleGraph</strong><br /></pre>
-
-<hr>
-
-<p class="signature">public  class <strong>SimpleGraph</strong></p>
-
-<hr>
-
+<wiki:toc max_depth="1" />
 = Constructors =
  * [#SimpleGraph SimpleGraph]
-
 = Methods =
  * [#add_graph add_graph] - Add the triples in the supplied graph to the current graph
  * [#add_json add_json] - Add the triples parsed from the supplied JSON to the graph
