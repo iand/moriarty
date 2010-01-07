@@ -370,7 +370,7 @@ Fetch the values for a given subject and predicate.<dl>
 == get_subject_subgraph ==
 
 {{{
-public <a href="../moriarty/simplegraph.html">SimpleGraph</a> get_subject_subgraph(string s)
+public SimpleGraph get_subject_subgraph(string s)
 }}}
 
 Fetch a subgraph where all triples have given subject<dl>
