@@ -1,6 +1,5 @@
 #summary Represents a changeset.
 
-<wiki:toc max_depth="1" />
 = Overview =
 
 Represents a changeset. Can be used to create a changeset based on the difference between two bounded descriptions. The descriptions must share the same subject URI.
@@ -9,11 +8,6 @@ Represents a changeset. Can be used to create a changeset based on the differenc
 <dt>See Also:</dt>
 <dd><a href="http://n2.talis.com/wiki/Changesets">http://n2.talis.com/wiki/Changesets</a></dd>
 </dl>
-== Fields ==
- * [#a $a] - Represents a changeset.
- * [#after $after] - Represents a changeset.
- * [#before $before] - Represents a changeset.
- * [#subjectIndex $subjectIndex] - Represents a changeset.
 == Constructors ==
  * [#ChangeSet ChangeSet]
 == Methods ==
@@ -25,56 +19,6 @@ Represents a changeset. Can be used to create a changeset based on the differenc
 <table class="inherit">
 <tr><th colspan="2">Methods inherited from Moriarty.SimpleGraph</th></tr>
 <tr><td><a href="../moriarty/simplegraph.html#add_graph()">add_graph</a>, <a href="../moriarty/simplegraph.html#add_json()">add_json</a>, <a href="../moriarty/simplegraph.html#add_labelling_property()">add_labelling_property</a>, <a href="../moriarty/simplegraph.html#add_literal_triple()">add_literal_triple</a>, <a href="../moriarty/simplegraph.html#add_rdf()">add_rdf</a>, <a href="../moriarty/simplegraph.html#add_rdfxml()">add_rdfxml</a>, <a href="../moriarty/simplegraph.html#add_resource_triple()">add_resource_triple</a>, <a href="../moriarty/simplegraph.html#add_turtle()">add_turtle</a>, <a href="../moriarty/simplegraph.html#diff()">diff</a>, <a href="../moriarty/simplegraph.html#from_json()">from_json</a>, <a href="../moriarty/simplegraph.html#from_rdfxml()">from_rdfxml</a>, <a href="../moriarty/simplegraph.html#from_turtle()">from_turtle</a>, <a href="../moriarty/simplegraph.html#get_description()">get_description</a>, <a href="../moriarty/simplegraph.html#get_first_literal()">get_first_literal</a>, <a href="../moriarty/simplegraph.html#get_first_resource()">get_first_resource</a>, <a href="../moriarty/simplegraph.html#get_index()">get_index</a>, <a href="../moriarty/simplegraph.html#get_label()">get_label</a>, <a href="../moriarty/simplegraph.html#get_literal_triple_values()">get_literal_triple_values</a>, <a href="../moriarty/simplegraph.html#get_prefix()">get_prefix</a>, <a href="../moriarty/simplegraph.html#get_resource_triple_values()">get_resource_triple_values</a>, <a href="../moriarty/simplegraph.html#get_subject_properties()">get_subject_properties</a>, <a href="../moriarty/simplegraph.html#get_subject_property_values()">get_subject_property_values</a>, <a href="../moriarty/simplegraph.html#get_subject_subgraph()">get_subject_subgraph</a>, <a href="../moriarty/simplegraph.html#get_subjects()">get_subjects</a>, <a href="../moriarty/simplegraph.html#get_subjects_of_type()">get_subjects_of_type</a>, <a href="../moriarty/simplegraph.html#get_subjects_where()">get_subjects_where</a>, <a href="../moriarty/simplegraph.html#get_subjects_where_literal()">get_subjects_where_literal</a>, <a href="../moriarty/simplegraph.html#get_subjects_where_resource()">get_subjects_where_resource</a>, <a href="../moriarty/simplegraph.html#get_triples()">get_triples</a>, <a href="../moriarty/simplegraph.html#has_literal_triple()">has_literal_triple</a>, <a href="../moriarty/simplegraph.html#has_resource_triple()">has_resource_triple</a>, <a href="../moriarty/simplegraph.html#has_triples_about()">has_triples_about</a>, <a href="../moriarty/simplegraph.html#is_empty()">is_empty</a>, <a href="../moriarty/simplegraph.html#make_resource_array()">make_resource_array</a>, <a href="../moriarty/simplegraph.html#merge()">merge</a>, <a href="../moriarty/simplegraph.html#qname_to_uri()">qname_to_uri</a>, <a href="../moriarty/simplegraph.html#reify()">reify</a>, <a href="../moriarty/simplegraph.html#remove_all_triples()">remove_all_triples</a>, <a href="../moriarty/simplegraph.html#remove_literal_triple()">remove_literal_triple</a>, <a href="../moriarty/simplegraph.html#remove_property_values()">remove_property_values</a>, <a href="../moriarty/simplegraph.html#remove_resource_triple()">remove_resource_triple</a>, <a href="../moriarty/simplegraph.html#remove_triples_about()">remove_triples_about</a>, <a href="../moriarty/simplegraph.html#replace_resource()">replace_resource</a>, <a href="../moriarty/simplegraph.html#set_namespace_mapping()">set_namespace_mapping</a>, <a href="../moriarty/simplegraph.html#subject_has_property()">subject_has_property</a>, <a href="../moriarty/simplegraph.html#to_html()">to_html</a>, <a href="../moriarty/simplegraph.html#to_json()">to_json</a>, <a href="../moriarty/simplegraph.html#to_ntriples()">to_ntriples</a>, <a href="../moriarty/simplegraph.html#to_rdfxml()">to_rdfxml</a>, <a href="../moriarty/simplegraph.html#to_turtle()">to_turtle</a>, <a href="../moriarty/simplegraph.html#update_prefix_mappings()">update_prefix_mappings</a>, <a href="../moriarty/simplegraph.html#uri_to_qname()">uri_to_qname</a></td></tr></table>
-
-= Field Detail =
-
-== a==
-
-{{{
-public  mixed
-}}}
-
-$a</strong></code>
-<div class="details">
-Create a new changeset. This will calculate the required additions and removals based on before and after versions of a bounded description. The args parameter is an associative array that may have the following fields:  <ul>    <li><em>subjectOfChange</em> => a string representing the URI of the changeset's subject of change</li>    <li><em>createdDate</em> => a string representing the date of the changeset</li>    <li><em>creatorName</em> => a string representing the creator of the changeset</li>    <li><em>changeReason</em> => a string representing the reason for the changeset</li>    <li><em>after</em> => an array of triples representing the required state of the resource description after the changeset would be applied. All subjects must be the same.</li>    <li><em>before</em> => an array of triples representing the state of the resource description before the changeset is applied. All subjects must be the same.</li>    <li><em>after_rdfxml</em> => a string of RDF/XML representing the required state of the resource description after the changeset would be applied. This is parsed and used to overwrite the 'after' parameter, if any. All subjects must be the same.</li>    <li><em>before_rdfxml</em> => a string of RDF/XML representing the state of the resource description before the changeset is applied. This is parsed and used to overwrite the 'begin' parameter, if any. All subjects must be the same.</li>  </ul>  If none of 'after', 'before', 'after_rdfxml' or 'before_rdfxml' is supplied then an empty changeset is constructed. <br />  The 'after' and 'before' arrays are simple arrays where each element is a triple array with the following structure:  <ul>    <li><em>s</em> => the subject URI</li>    <li><em>p</em> => the predicate URI</li>    <li><em>o</em> => the value of the object</li>    <li><em>o_type</em> => one of 'uri', 'bnode' or 'literal'</li>    <li><em>o_lang</em> => the language of the literal if any</li>    <li><em>o_datatype</em> => the data type URI of the literal if any</li>  </ul></div>
-
-<hr>
-
-== after==
-
-{{{
-public  mixed
-}}}
-
-$after</strong> = array()</code>
-<div class="details">
-</div>
-
-<hr>
-
-== before==
-
-{{{
-public  mixed
-}}}
-
-$before</strong> = array()</code>
-<div class="details">
-</div>
-
-<hr>
-
-== subjectIndex==
-
-{{{
-public  mixed
-}}}
-
-$subjectIndex</strong> = array()</code>
-<div class="details">
-</div>
-
-<hr>
 
 = Constructor Detail =
 
@@ -127,4 +71,59 @@ Serialise the graph to RDF/XML<dl>
 <dd>the RDF/XML version of the graph</dd>
 </dl>
 
+
+== Fields ==
+ * [#a $a] - Serialise the graph to RDF/XML
+ * [#after $after] - Serialise the graph to RDF/XML
+ * [#before $before] - Serialise the graph to RDF/XML
+ * [#subjectIndex $subjectIndex] - Serialise the graph to RDF/XML
+= Field Detail =
+
+== a==
+
+{{{
+public  mixed
+}}}
+
+$a</strong></code>
+<div class="details">
+Create a new changeset. This will calculate the required additions and removals based on before and after versions of a bounded description. The args parameter is an associative array that may have the following fields:  <ul>    <li><em>subjectOfChange</em> => a string representing the URI of the changeset's subject of change</li>    <li><em>createdDate</em> => a string representing the date of the changeset</li>    <li><em>creatorName</em> => a string representing the creator of the changeset</li>    <li><em>changeReason</em> => a string representing the reason for the changeset</li>    <li><em>after</em> => an array of triples representing the required state of the resource description after the changeset would be applied. All subjects must be the same.</li>    <li><em>before</em> => an array of triples representing the state of the resource description before the changeset is applied. All subjects must be the same.</li>    <li><em>after_rdfxml</em> => a string of RDF/XML representing the required state of the resource description after the changeset would be applied. This is parsed and used to overwrite the 'after' parameter, if any. All subjects must be the same.</li>    <li><em>before_rdfxml</em> => a string of RDF/XML representing the state of the resource description before the changeset is applied. This is parsed and used to overwrite the 'begin' parameter, if any. All subjects must be the same.</li>  </ul>  If none of 'after', 'before', 'after_rdfxml' or 'before_rdfxml' is supplied then an empty changeset is constructed. <br />  The 'after' and 'before' arrays are simple arrays where each element is a triple array with the following structure:  <ul>    <li><em>s</em> => the subject URI</li>    <li><em>p</em> => the predicate URI</li>    <li><em>o</em> => the value of the object</li>    <li><em>o_type</em> => one of 'uri', 'bnode' or 'literal'</li>    <li><em>o_lang</em> => the language of the literal if any</li>    <li><em>o_datatype</em> => the data type URI of the literal if any</li>  </ul></div>
+
+<hr>
+
+== after==
+
+{{{
+public  mixed
+}}}
+
+$after</strong> = array()</code>
+<div class="details">
+</div>
+
+<hr>
+
+== before==
+
+{{{
+public  mixed
+}}}
+
+$before</strong> = array()</code>
+<div class="details">
+</div>
+
+<hr>
+
+== subjectIndex==
+
+{{{
+public  mixed
+}}}
+
+$subjectIndex</strong> = array()</code>
+<div class="details">
+</div>
+
+<hr>
 
