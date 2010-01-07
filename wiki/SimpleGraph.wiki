@@ -1,5 +1,4 @@
-#summary SimpleGraph: = Introduction =
-Represents an RDF graph and provides some simple functions for traversing and manipulating it. /
+#summary Represents an RDF graph and provides some simple functions for traversing and manipulating it. /
 
 <pre class="tree"><strong>SimpleGraph</strong><br /></pre>
 
