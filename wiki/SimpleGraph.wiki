@@ -74,8 +74,18 @@ public SimpleGraph(mixed graph)
 
 == add_graph ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1673    4312656   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void add_graph(<a href="../moriarty/simplegraph.html">SimpleGraph</a> g)
+public void add_graph
 }}}
 
 Add the triples in the supplied graph to the current graph<dl>
@@ -86,8 +96,18 @@ Add the triples in the supplied graph to the current graph<dl>
 
 == add_json ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1677    4312616   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void add_json(string json)
+public void add_json
 }}}
 
 Add the triples parsed from the supplied JSON to the graph<dl>
@@ -100,16 +120,76 @@ Add the triples parsed from the supplied JSON to the graph<dl>
 
 == add_labelling_property ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1681    4312700   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void add_labelling_property(mixed p)
+public void add_labelling_property
 }}}
 
 
 
 == add_literal_triple ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1682    4312800   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1682    4312800   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1682    4312800   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1682    4312800   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1682    4312800   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public boolean add_literal_triple(string s, string p, string o, string lang, string dt)
+public boolean add_literal_triple, , , , 
 }}}
 
 Adds a triple with a literal object to the graph<dl>
@@ -126,8 +206,28 @@ Adds a triple with a literal object to the graph<dl>
 
 == add_rdf ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1687    4312876   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1687    4312876   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void add_rdf(string rdf, string base)
+public void add_rdf, 
 }}}
 
 Add the triples parsed from the supplied RDF to the graph - let ARC guess the input<dl>
@@ -141,8 +241,28 @@ Add the triples parsed from the supplied RDF to the graph - let ARC guess the in
 
 == add_rdfxml ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1691    4312912   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1691    4312912   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void add_rdfxml(string rdfxml, string base)
+public void add_rdfxml, 
 }}}
 
 Add the triples parsed from the supplied RDF/XML to the graph<dl>
@@ -154,8 +274,38 @@ Add the triples parsed from the supplied RDF/XML to the graph<dl>
 
 == add_resource_triple ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1695    4312892   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1695    4312892   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1695    4312892   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public boolean add_resource_triple(string s, string p, string o)
+public boolean add_resource_triple, , 
 }}}
 
 Adds a triple with a resource object to the graph<dl>
@@ -170,8 +320,28 @@ Adds a triple with a resource object to the graph<dl>
 
 == add_turtle ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1701    4312892   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1701    4312892   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void add_turtle(string turtle, string base)
+public void add_turtle, 
 }}}
 
 Add the triples parsed from the supplied Turtle to the graph<dl>
@@ -185,8 +355,18 @@ Add the triples parsed from the supplied Turtle to the graph<dl>
 
 == diff ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1705    4312872   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public array diff(array1, array2,)
+public array diff
 }}}
 
 diff returns a simpleIndex consisting of all the statements in array1 that weren't found in any of the subsequent arrays<dl>
@@ -199,8 +379,18 @@ diff returns a simpleIndex consisting of all the statements in array1 that weren
 
 == from_json ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1710    4312828   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void from_json(string json)
+public void from_json
 }}}
 
 Replace the triples in the graph with those parsed from the supplied JSON<dl>
@@ -213,8 +403,28 @@ Replace the triples in the graph with those parsed from the supplied JSON<dl>
 
 == from_rdfxml ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1717    4312820   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1717    4312820   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void from_rdfxml(string rdfxml, string base)
+public void from_rdfxml, 
 }}}
 
 Replace the triples in the graph with those parsed from the supplied RDF/XML<dl>
@@ -226,8 +436,28 @@ Replace the triples in the graph with those parsed from the supplied RDF/XML<dl>
 
 == from_turtle ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1721    4312900   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1721    4312900   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void from_turtle(string turtle, string base)
+public void from_turtle, 
 }}}
 
 Replace the triples in the graph with those parsed from the supplied Turtle<dl>
@@ -241,16 +471,66 @@ Replace the triples in the graph with those parsed from the supplied Turtle<dl>
 
 == get_description ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1726    4312984   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void get_description(mixed resource_uri)
+public void get_description
 }}}
 
 
 
 == get_first_literal ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1727    4313024   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1727    4313024   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1727    4313024   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1727    4313024   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public string get_first_literal(string s, string p, string default, mixed preferred_language)
+public string get_first_literal, , , 
 }}}
 
 Fetch the first literal value for a given subject and predicate. If there are multiple possible values then one is selected at random.<dl>
@@ -265,8 +545,38 @@ Fetch the first literal value for a given subject and predicate. If there are mu
 
 == get_first_resource ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1732    4313072   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1732    4313072   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1732    4313072   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public string get_first_resource(string s, string p, string default)
+public string get_first_resource, , 
 }}}
 
 Fetch the first resource value for a given subject and predicate. If there are multiple possible values then one is selected at random.<dl>
@@ -282,7 +592,7 @@ Fetch the first resource value for a given subject and predicate. If there are m
 == get_index ==
 
 {{{
-public void get_index()
+public void get_index
 }}}
 
 Get a copy of the graph's triple index<dl>
@@ -293,16 +603,66 @@ Get a copy of the graph's triple index<dl>
 
 == get_label ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1745    4313248   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1745    4313248   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1745    4313248   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void get_label(mixed resource_uri, mixed capitalize, mixed use_qnames)
+public void get_label, , 
 }}}
 
 
 
 == get_literal_triple_values ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1747    4313296   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1747    4313296   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public array get_literal_triple_values(string s, string p)
+public array get_literal_triple_values, 
 }}}
 
 Fetch the literal values for a given subject and predicate.<dl>
@@ -316,16 +676,46 @@ Fetch the literal values for a given subject and predicate.<dl>
 
 == get_prefix ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1753    4313300   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void get_prefix(mixed ns)
+public void get_prefix
 }}}
 
 
 
 == get_resource_triple_values ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1755    4313428   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1755    4313428   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public array get_resource_triple_values(string s, string p)
+public array get_resource_triple_values, 
 }}}
 
 Fetch the resource values for a given subject and predicate.<dl>
@@ -339,8 +729,28 @@ Fetch the resource values for a given subject and predicate.<dl>
 
 == get_subject_properties ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1760    4313440   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1760    4313440   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public array get_subject_properties(string s, boolean distinct)
+public array get_subject_properties, 
 }}}
 
 Fetch the properties of a given subject and predicate.<dl>
@@ -354,8 +764,28 @@ Fetch the properties of a given subject and predicate.<dl>
 
 == get_subject_property_values ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1764    4313412   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1764    4313412   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public array get_subject_property_values(string s, string p)
+public array get_subject_property_values, 
 }}}
 
 Fetch the values for a given subject and predicate.<dl>
@@ -369,8 +799,18 @@ Fetch the values for a given subject and predicate.<dl>
 
 == get_subject_subgraph ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1769    4323680   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public <a href="../moriarty/simplegraph.html">SimpleGraph</a> get_subject_subgraph(string s)
+public <a href="../moriarty/simplegraph.html">SimpleGraph</a> get_subject_subgraph
 }}}
 
 Fetch a subgraph where all triples have given subject<dl>
@@ -384,15 +824,35 @@ Fetch a subgraph where all triples have given subject<dl>
 == get_subjects ==
 
 {{{
-public array get_subjects()
+public array get_subjects
 }}}
 
 Fetch an array of all the subjects
 
 == get_subjects_of_type ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1776    4323756   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1776    4323756   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public array get_subjects_of_type(mixed t, $t the)
+public array get_subjects_of_type, 
 }}}
 
 Fetch an array of all the subject that have and rdf type that matches that given<dl>
@@ -403,16 +863,76 @@ Fetch an array of all the subject that have and rdf type that matches that given
 
 == get_subjects_where ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1780    4323904   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1780    4323904   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1780    4323904   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-private void get_subjects_where(mixed p, mixed o, mixed type)
+private void get_subjects_where, , 
 }}}
 
 
 
 == get_subjects_where_literal ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1782    4324076   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1782    4324076   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1782    4324076   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public array get_subjects_where_literal(mixed p, mixed o, $o the)
+public array get_subjects_where_literal, , 
 }}}
 
 Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a literal value<dl>
@@ -424,8 +944,38 @@ Fetch an array of all the subjects where the predicate and object match a ?s $p 
 
 == get_subjects_where_resource ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1787    4324048   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1787    4324048   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1787    4324048   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public array get_subjects_where_resource(mixed p, mixed o, $o the)
+public array get_subjects_where_resource, , 
 }}}
 
 Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a resource<dl>
@@ -438,7 +988,7 @@ Fetch an array of all the subjects where the predicate and object match a ?s $p 
 == get_triples ==
 
 {{{
-public void get_triples()
+public void get_triples
 }}}
 
 <dl>
@@ -449,8 +999,58 @@ public void get_triples()
 
 == has_literal_triple ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1795    4324180   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1795    4324180   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1795    4324180   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1795    4324180   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1795    4324180   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public boolean has_literal_triple(string s, string p, string o, mixed lang, mixed dt)
+public boolean has_literal_triple, , , , 
 }}}
 
 Tests whether the graph contains the given triple<dl>
@@ -465,8 +1065,38 @@ Tests whether the graph contains the given triple<dl>
 
 == has_resource_triple ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1802    4334484   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1802    4334484   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1802    4334484   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public boolean has_resource_triple(string s, string p, string o)
+public boolean has_resource_triple, , 
 }}}
 
 Tests whether the graph contains the given triple<dl>
@@ -481,8 +1111,18 @@ Tests whether the graph contains the given triple<dl>
 
 == has_triples_about ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1807    4334504   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public boolean has_triples_about(string s)
+public boolean has_triples_about
 }}}
 
 Tests whether the graph contains a triple with the given subject<dl>
@@ -496,7 +1136,7 @@ Tests whether the graph contains a triple with the given subject<dl>
 == is_empty ==
 
 {{{
-public boolean is_empty()
+public boolean is_empty
 }}}
 
 Tests whether the graph contains any triples<dl>
@@ -507,8 +1147,18 @@ Tests whether the graph contains any triples<dl>
 
 == make_resource_array ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1814    4334624   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public array make_resource_array(string resource)
+public array make_resource_array
 }}}
 
 Constructs an array containing the type of the resource and its value<dl>
@@ -521,8 +1171,18 @@ Constructs an array containing the type of the resource and its value<dl>
 
 == merge ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1817    4334560   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public array merge(array1, array2,)
+public array merge
 }}}
 
 merge merges all  rdf/json-style arrays passed as parameters<dl>
@@ -535,8 +1195,18 @@ merge merges all  rdf/json-style arrays passed as parameters<dl>
 
 == qname_to_uri ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1821    4334628   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public string qname_to_uri(string qname)
+public string qname_to_uri
 }}}
 
 Convert a QName to a URI using registered namespace prefixes<dl>
@@ -549,8 +1219,28 @@ Convert a QName to a URI using registered namespace prefixes<dl>
 
 == reify ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1825    4334664   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1825    4334664   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void reify(mixed resources, mixed nodeID_prefix)
+public void reify, 
 }}}
 
 
@@ -558,23 +1248,73 @@ public void reify(mixed resources, mixed nodeID_prefix)
 == remove_all_triples ==
 
 {{{
-public void remove_all_triples()
+public void remove_all_triples
 }}}
 
 Clears all triples out of the graph
 
 == remove_literal_triple ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1830    4345300   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1830    4345300   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1830    4345300   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void remove_literal_triple(mixed s, mixed p, mixed o)
+public void remove_literal_triple, , 
 }}}
 
 
 
 == remove_property_values ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1832    4345496   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1832    4345496   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void remove_property_values(string s, string p)
+public void remove_property_values, 
 }}}
 
 Removes all triples with the given subject and predicate<dl>
@@ -586,8 +1326,38 @@ Removes all triples with the given subject and predicate<dl>
 
 == remove_resource_triple ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1837    4345460   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1837    4345460   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1837    4345460   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void remove_resource_triple(string s, string p, string o)
+public void remove_resource_triple, , 
 }}}
 
 Remove a triple with a resource object from the graph<dl>
@@ -600,8 +1370,18 @@ Remove a triple with a resource object from the graph<dl>
 
 == remove_triples_about ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1842    4345464   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void remove_triples_about(string s)
+public void remove_triples_about
 }}}
 
 Remove all triples having the supplied subject<dl>
@@ -612,16 +1392,56 @@ Remove all triples having the supplied subject<dl>
 
 == replace_resource ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1845    4345420   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1845    4345420   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void replace_resource(mixed look_for, mixed replace_with)
+public void replace_resource, 
 }}}
 
 
 
 == set_namespace_mapping ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1847    4345680   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1847    4345680   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public void set_namespace_mapping(string prefix, string uri)
+public void set_namespace_mapping, 
 }}}
 
 Map a portion of a URI to a short prefix for use when serialising the graph<dl>
@@ -633,8 +1453,28 @@ Map a portion of a URI to a short prefix for use when serialising the graph<dl>
 
 == subject_has_property ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1851    4355908   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1851    4355908   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public boolean subject_has_property(string s, string p)
+public boolean subject_has_property, 
 }}}
 
 Tests whether the graph contains a triple with the given subject and predicate<dl>
@@ -648,8 +1488,18 @@ Tests whether the graph contains a triple with the given subject and predicate<d
 
 == to_html ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1862    4355896   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public string to_html(mixed s)
+public string to_html
 }}}
 
 Serialise the graph to HTML<dl>
@@ -661,7 +1511,7 @@ Serialise the graph to HTML<dl>
 == to_json ==
 
 {{{
-public string to_json()
+public string to_json
 }}}
 
 Serialise the graph to JSON<dl>
@@ -675,7 +1525,7 @@ Serialise the graph to JSON<dl>
 == to_ntriples ==
 
 {{{
-public string to_ntriples()
+public string to_ntriples
 }}}
 
 Serialise the graph to N-Triples<dl>
@@ -689,7 +1539,7 @@ Serialise the graph to N-Triples<dl>
 == to_rdfxml ==
 
 {{{
-public string to_rdfxml()
+public string to_rdfxml
 }}}
 
 Serialise the graph to RDF/XML<dl>
@@ -701,7 +1551,7 @@ Serialise the graph to RDF/XML<dl>
 == to_turtle ==
 
 {{{
-public string to_turtle()
+public string to_turtle
 }}}
 
 Serialise the graph to Turtle<dl>
@@ -715,15 +1565,25 @@ Serialise the graph to Turtle<dl>
 == update_prefix_mappings ==
 
 {{{
-public void update_prefix_mappings()
+public void update_prefix_mappings
 }}}
 
 
 
 == uri_to_qname ==
 
+
+Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
+
+Call Stack:
+    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
+    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
+    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
+    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
+    5.1881    4356828   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
+
 {{{
-public string uri_to_qname(string uri)
+public string uri_to_qname
 }}}
 
 Convert a URI to a QName using registered namespace prefixes<dl>
