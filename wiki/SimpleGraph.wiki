@@ -1,6 +1,5 @@
-#summary Represents an RDF graph and provides some simple functions for traversing and manipulating it.
-
 #sidebar ClassList
+#summary Represents an RDF graph and provides some simple functions for traversing and manipulating it.
 
 = Overview =
 

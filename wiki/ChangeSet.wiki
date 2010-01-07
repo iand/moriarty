@@ -1,6 +1,5 @@
-#summary Represents a changeset.
-
 #sidebar ClassList
+#summary Represents a changeset.
 
 = Overview =
 
