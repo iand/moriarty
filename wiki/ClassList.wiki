@@ -1,0 +1,67 @@
+#summary List of classes and interfaces
+#labels Featured
+
+ * [AndExpr]
+ * [AnyLiteralMatcher]
+ * [AugmentService] - Represents a store's augment service
+ * [BooleanFunction]
+ * [BooleanGenerator]
+ * [SimpleGraph] - Represents an RDF graph and provides some simple functions for traversing and manipulating it.
+  * [ChangeSet] - Represents a changeset.
+  * [NetworkResource] - Represents a simple data resource that exists on the network.
+   * [FieldPredicateMap] - Represents a field/predicate map
+   * [QueryProfile] - Represents a store's query profile.
+   * [StoreGroup] - Represents a group of stores.
+  * [StoreCollection] - Represents the collection of all platform stores.
+ * [ChangeSetBatch] - Represents a batch of changesets.
+ * [CompExpr]
+ * [Config] - A helper class to assist with configuring a store.
+ * [Contentbox] - Represents a store's contentbox
+ * [Converter] - Implements FSL specific conversions
+ * [CountFunction]
+ * [Credentials] - Represents a username and password pair for authenticating against secure services.
+ * [HttpClient]
+  * [CurlHttpClient] - A CURL based http client implementation.
+  * [PhpHttpClient] - A CURL based http client implementation.
+ * [DataTable]
+ * [DataTableResult]
+ * [ExpFunction]
+ * [FacetService] - Represents a store's facet service.
+ * [Graph] - The base class for graphs in a store.
+  * [Metabox] - Represents a store's metabox.
+  * [PrivateGraph] - Represents a private graph in a store.
+ * [GraphPath] - EXPERIMENTAL: Represents a path selecting nodes from a simple graph Based on http://www.w3.org/2005/04/fresnel-info/fsl/
+ * [HttpCache]
+ * [HttpRequest] - Represents an HTTP protocol request.
+ * [HttpRequestFactory] - A factory for creating instances of HttpRequests.
+ * [HttpResponse] - Represents an HTTP protocol response.
+ * [JobQueue] - Represents a store's job queue
+ * [Labeller] - Utility class for labelling properties
+ * [LiteralDtFunction]
+ * [LiteralGenerator]
+ * [LiteralMatcher]
+ * [LiteralValueFunction]
+ * [LocalNameFunction]
+ * [SparqlServiceBase] - Represents the base class for various sparql services.
+  * [MultiSparqlService] - Represents a store's multi sparql service
+  * [SparqlService] - Represents a store's sparql service
+ * [NamespaceUriFunction]
+ * [NormalizeSpaceFunction]
+ * [NumberGenerator]
+ * [NumberMatcher]
+ * [OAIService] - Represents a store's OAI-PMH service
+ * [OrExpr]
+ * [Path]
+ * [ResourceList] - Represents a list of resources returned from a contentbox search.
+ * [Rollback]
+ * [SelfGenerator]
+ * [Snapshots]
+ * [StepMatcher]
+ * [Store] - Represents a platform store.
+ * [StoreGroupConfig] - A helper class to assist with configuring store groups.
+ * [StringLengthFunction]
+ * [TypeMatcher]
+ * [Union] - Represents a virtual union of multiple stores
+ * [UriFunction]
+ * [ValuePool] - Deprecated
+ * [WildCardMatcher]
