@@ -12,61 +12,61 @@ Represents an RDF graph and provides some simple functions for traversing and ma
 <hr>
 
 = Constructors =
- * [#SimpleGraph SimpleGraph(mixed graph)]
+ * [#SimpleGraph SimpleGraph]
 
 = Methods =
- * [#add_graph  void add_graph(<a href="../moriarty/simplegraph.html">SimpleGraph</a> g)] - Add the triples in the supplied graph to the current graph
- * [#add_json  void add_json(string json)] - Add the triples parsed from the supplied JSON to the graph
- * [#add_labelling_property  void add_labelling_property(mixed p)]
- * [#add_literal_triple  boolean add_literal_triple(string s, string p, string o, string lang, string dt)] - Adds a triple with a literal object to the graph
- * [#add_rdf  void add_rdf(string rdf, string base)] - Add the triples parsed from the supplied RDF to the graph - let ARC guess the input
- * [#add_rdfxml  void add_rdfxml(string rdfxml, string base)] - Add the triples parsed from the supplied RDF/XML to the graph
- * [#add_resource_triple  boolean add_resource_triple(string s, string p, string o)] - Adds a triple with a resource object to the graph
- * [#add_turtle  void add_turtle(string turtle, string base)] - Add the triples parsed from the supplied Turtle to the graph
- * [#diff  array diff(array1, array2,)] - diffreturns a simpleIndex consisting of all the statements in array1 that weren't found in any of the subsequent arrays
- * [#from_json  void from_json(string json)] - Replace the triples in the graph with those parsed from the supplied JSON
- * [#from_rdfxml  void from_rdfxml(string rdfxml, string base)] - Replace the triples in the graph with those parsed from the supplied RDF/XML
- * [#from_turtle  void from_turtle(string turtle, string base)] - Replace the triples in the graph with those parsed from the supplied Turtle
- * [#get_description  void get_description(mixed resource_uri)]
- * [#get_first_literal  string get_first_literal(string s, string p, string default, mixed preferred_language)] - Fetch the first literal value for a given subject and predicate. 
- * [#get_first_resource  string get_first_resource(string s, string p, string default)] - Fetch the first resource value for a given subject and predicate. 
- * [#get_index  void get_index()] - Get a copy of the graph's triple index
- * [#get_label  void get_label(mixed resource_uri, mixed capitalize, mixed use_qnames)]
- * [#get_literal_triple_values  array get_literal_triple_values(string s, string p)] - Fetch the literal values for a given subject and predicate. 
- * [#get_prefix  void get_prefix(mixed ns)]
- * [#get_resource_triple_values  array get_resource_triple_values(string s, string p)] - Fetch the resource values for a given subject and predicate. 
- * [#get_subject_properties  array get_subject_properties(string s, boolean distinct)] - Fetch the properties of a given subject and predicate. 
- * [#get_subject_property_values  array get_subject_property_values(string s, string p)] - Fetch the values for a given subject and predicate. 
- * [#get_subject_subgraph  <a href="../moriarty/simplegraph.html">SimpleGraph</a> get_subject_subgraph(string s)] - Fetch a subgraph where all triples have given subject
- * [#get_subjects  array get_subjects()] - Fetch an array of all the subjects
- * [#get_subjects_of_type  array get_subjects_of_type(mixed t, $t the)] - Fetch an array of all the subject that have and rdf type that matches that given
- * [#get_subjects_where private  void get_subjects_where(mixed p, mixed o, mixed type)]
- * [#get_subjects_where_literal  array get_subjects_where_literal(mixed p, mixed o, $o the)] - Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a literal value
- * [#get_subjects_where_resource  array get_subjects_where_resource(mixed p, mixed o, $o the)] - Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a resource
- * [#get_triples  void get_triples()] - 
- * [#has_literal_triple  boolean has_literal_triple(string s, string p, string o, mixed lang, mixed dt)] - Tests whether the graph contains the given triple
- * [#has_resource_triple  boolean has_resource_triple(string s, string p, string o)] - Tests whether the graph contains the given triple
- * [#has_triples_about  boolean has_triples_about(string s)] - Tests whether the graph contains a triple with the given subject
- * [#is_empty  boolean is_empty()] - Tests whether the graph contains any triples
- * [#make_resource_array  array make_resource_array(string resource)] - Constructs an array containing the type of the resource and its value
- * [#merge  array merge(array1, array2,)] - mergemerges all  rdf/json-style arrays passed as parameters 
- * [#qname_to_uri  string qname_to_uri(string qname)] - Convert a QName to a URI using registered namespace prefixes
- * [#reify  void reify(mixed resources, mixed nodeID_prefix)]
- * [#remove_all_triples  void remove_all_triples()] - Clears all triples out of the graph/
- * [#remove_literal_triple  void remove_literal_triple(mixed s, mixed p, mixed o)]
- * [#remove_property_values  void remove_property_values(string s, string p)] - Removes all triples with the given subject and predicate
- * [#remove_resource_triple  void remove_resource_triple(string s, string p, string o)] - Remove a triple with a resource object from the graph
- * [#remove_triples_about  void remove_triples_about(string s)] - Remove all triples having the supplied subject
- * [#replace_resource  void replace_resource(mixed look_for, mixed replace_with)]
- * [#set_namespace_mapping  void set_namespace_mapping(string prefix, string uri)] - Map a portion of a URI to a short prefix for use when serialising the graph
- * [#subject_has_property  boolean subject_has_property(string s, string p)] - Tests whether the graph contains a triple with the given subject and predicate
- * [#to_html  string to_html(mixed s)] - Serialise the graph to HTML
- * [#to_json  string to_json()] - Serialise the graph to JSON
- * [#to_ntriples  string to_ntriples()] - Serialise the graph to N-Triples
- * [#to_rdfxml  string to_rdfxml()] - Serialise the graph to RDF/XML
- * [#to_turtle  string to_turtle()] - Serialise the graph to Turtle
- * [#update_prefix_mappings  void update_prefix_mappings()]
- * [#uri_to_qname  string uri_to_qname(string uri)] - Convert a URI to a QName using registered namespace prefixes
+ * [#add_graph add_graph] - Add the triples in the supplied graph to the current graph
+ * [#add_json add_json] - Add the triples parsed from the supplied JSON to the graph
+ * [#add_labelling_property add_labelling_property]
+ * [#add_literal_triple add_literal_triple] - Adds a triple with a literal object to the graph
+ * [#add_rdf add_rdf] - Add the triples parsed from the supplied RDF to the graph - let ARC guess the input
+ * [#add_rdfxml add_rdfxml] - Add the triples parsed from the supplied RDF/XML to the graph
+ * [#add_resource_triple add_resource_triple] - Adds a triple with a resource object to the graph
+ * [#add_turtle add_turtle] - Add the triples parsed from the supplied Turtle to the graph
+ * [#diff diff] - diffreturns a simpleIndex consisting of all the statements in array1 that weren't found in any of the subsequent arrays
+ * [#from_json from_json] - Replace the triples in the graph with those parsed from the supplied JSON
+ * [#from_rdfxml from_rdfxml] - Replace the triples in the graph with those parsed from the supplied RDF/XML
+ * [#from_turtle from_turtle] - Replace the triples in the graph with those parsed from the supplied Turtle
+ * [#get_description get_description]
+ * [#get_first_literal get_first_literal] - Fetch the first literal value for a given subject and predicate. 
+ * [#get_first_resource get_first_resource] - Fetch the first resource value for a given subject and predicate. 
+ * [#get_index get_index] - Get a copy of the graph's triple index
+ * [#get_label get_label]
+ * [#get_literal_triple_values get_literal_triple_values] - Fetch the literal values for a given subject and predicate. 
+ * [#get_prefix get_prefix]
+ * [#get_resource_triple_values get_resource_triple_values] - Fetch the resource values for a given subject and predicate. 
+ * [#get_subject_properties get_subject_properties] - Fetch the properties of a given subject and predicate. 
+ * [#get_subject_property_values get_subject_property_values] - Fetch the values for a given subject and predicate. 
+ * [#get_subject_subgraph get_subject_subgraph] - Fetch a subgraph where all triples have given subject
+ * [#get_subjects get_subjects] - Fetch an array of all the subjects
+ * [#get_subjects_of_type get_subjects_of_type] - Fetch an array of all the subject that have and rdf type that matches that given
+ * [#get_subjects_where get_subjects_where]
+ * [#get_subjects_where_literal get_subjects_where_literal] - Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a literal value
+ * [#get_subjects_where_resource get_subjects_where_resource] - Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a resource
+ * [#get_triples get_triples] - 
+ * [#has_literal_triple has_literal_triple] - Tests whether the graph contains the given triple
+ * [#has_resource_triple has_resource_triple] - Tests whether the graph contains the given triple
+ * [#has_triples_about has_triples_about] - Tests whether the graph contains a triple with the given subject
+ * [#is_empty is_empty] - Tests whether the graph contains any triples
+ * [#make_resource_array make_resource_array] - Constructs an array containing the type of the resource and its value
+ * [#merge merge] - mergemerges all  rdf/json-style arrays passed as parameters 
+ * [#qname_to_uri qname_to_uri] - Convert a QName to a URI using registered namespace prefixes
+ * [#reify reify]
+ * [#remove_all_triples remove_all_triples] - Clears all triples out of the graph/
+ * [#remove_literal_triple remove_literal_triple]
+ * [#remove_property_values remove_property_values] - Removes all triples with the given subject and predicate
+ * [#remove_resource_triple remove_resource_triple] - Remove a triple with a resource object from the graph
+ * [#remove_triples_about remove_triples_about] - Remove all triples having the supplied subject
+ * [#replace_resource replace_resource]
+ * [#set_namespace_mapping set_namespace_mapping] - Map a portion of a URI to a short prefix for use when serialising the graph
+ * [#subject_has_property subject_has_property] - Tests whether the graph contains a triple with the given subject and predicate
+ * [#to_html to_html] - Serialise the graph to HTML
+ * [#to_json to_json] - Serialise the graph to JSON
+ * [#to_ntriples to_ntriples] - Serialise the graph to N-Triples
+ * [#to_rdfxml to_rdfxml] - Serialise the graph to RDF/XML
+ * [#to_turtle to_turtle] - Serialise the graph to Turtle
+ * [#update_prefix_mappings update_prefix_mappings]
+ * [#uri_to_qname uri_to_qname] - Convert a URI to a QName using registered namespace prefixes
 
 <h2 id="detail_constr">Constructor Detail</h2>
 <h3 id="SimpleGraph()">SimpleGraph</h3>
