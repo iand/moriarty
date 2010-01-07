@@ -36,48 +36,8 @@ public ChangeSet(mixed a)
 
 == addT ==
 
-
-Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
-
-Call Stack:
-    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
-    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
-    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
-    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
-    5.0327    4260888   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
-
-
-Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
-
-Call Stack:
-    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
-    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
-    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
-    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
-    5.0327    4260888   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
-
-
-Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
-
-Call Stack:
-    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
-    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
-    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
-    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
-    5.0327    4260888   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
-
-
-Catchable fatal error: Object of class FieldDoc could not be converted to string in /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php on line 192
-
-Call Stack:
-    0.0006      68340   1. {main}() /home/iand/scripts/phpdoctor2/phpdoc.php:0
-    5.0169    3996432   2. PHPDoctor->execute() /home/iand/scripts/phpdoctor2/phpdoc.php:54
-    5.0199    4208456   3. googlewiki->__construct() /home/iand/scripts/phpdoctor2/classes/phpDoctor.php:936
-    5.0200    4209424   4. ClassWriter->__construct() /home/iand/scripts/phpdoctor2/doclets/googlewiki/googlewiki.php:152
-    5.0327    4260888   5. join() /home/iand/scripts/phpdoctor2/doclets/googlewiki/classWriter.php:192
-
 {{{
-public void addT, , , 
+public void addTs, p, o, o_type
 }}}
 
 addT  adds a triple to the internal simpleIndex holding all the changesets and statements<dl>
