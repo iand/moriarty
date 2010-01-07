@@ -1,9 +1,11 @@
 #summary Represents an RDF graph and provides some simple functions for traversing and manipulating it.
 
 <wiki:toc max_depth="1" />
-= Constructors =
+= Overview =
+
+== Constructors ==
  * [#SimpleGraph SimpleGraph]
-= Methods =
+== Methods ==
  * [#add_graph add_graph] - Add the triples in the supplied graph to the current graph
  * [#add_json add_json] - Add the triples parsed from the supplied JSON to the graph
  * [#add_labelling_property add_labelling_property]
@@ -57,9 +59,9 @@
  * [#update_prefix_mappings update_prefix_mappings]
  * [#uri_to_qname uri_to_qname] - Convert a URI to a QName using registered namespace prefixes
 
-== Constructor Detail ==
+= Constructor Detail =
 
-=== SimpleGraph ===
+== SimpleGraph ==
 
 {{{
 public SimpleGraph(mixed graph)
@@ -67,9 +69,9 @@ public SimpleGraph(mixed graph)
 
 
 
-== Method Detail ==
+= Method Detail =
 
-=== add_graph ===
+== add_graph ==
 
 {{{
 public  void add_graph(<a href="../moriarty/simplegraph.html">SimpleGraph</a> g)
@@ -81,7 +83,7 @@ Add the triples in the supplied graph to the current graph<dl>
 </dl>
 
 
-=== add_json ===
+== add_json ==
 
 {{{
 public  void add_json(string json)
@@ -95,7 +97,7 @@ Add the triples parsed from the supplied JSON to the graph<dl>
 </dl>
 
 
-=== add_labelling_property ===
+== add_labelling_property ==
 
 {{{
 public  void add_labelling_property(mixed p)
@@ -103,7 +105,7 @@ public  void add_labelling_property(mixed p)
 
 
 
-=== add_literal_triple ===
+== add_literal_triple ==
 
 {{{
 public  boolean add_literal_triple(string s, string p, string o, string lang, string dt)
@@ -121,7 +123,7 @@ Adds a triple with a literal object to the graph<dl>
 </dl>
 
 
-=== add_rdf ===
+== add_rdf ==
 
 {{{
 public  void add_rdf(string rdf, string base)
@@ -136,7 +138,7 @@ Add the triples parsed from the supplied RDF to the graph - let ARC guess the in
 </dl>
 
 
-=== add_rdfxml ===
+== add_rdfxml ==
 
 {{{
 public  void add_rdfxml(string rdfxml, string base)
@@ -149,7 +151,7 @@ Add the triples parsed from the supplied RDF/XML to the graph<dl>
 </dl>
 
 
-=== add_resource_triple ===
+== add_resource_triple ==
 
 {{{
 public  boolean add_resource_triple(string s, string p, string o)
@@ -165,7 +167,7 @@ Adds a triple with a resource object to the graph<dl>
 </dl>
 
 
-=== add_turtle ===
+== add_turtle ==
 
 {{{
 public  void add_turtle(string turtle, string base)
@@ -180,7 +182,7 @@ Add the triples parsed from the supplied Turtle to the graph<dl>
 </dl>
 
 
-=== diff ===
+== diff ==
 
 {{{
 public  array diff(array1, array2,)
@@ -194,7 +196,7 @@ diff returns a simpleIndex consisting of all the statements in array1 that weren
 </dl>
 
 
-=== from_json ===
+== from_json ==
 
 {{{
 public  void from_json(string json)
@@ -208,7 +210,7 @@ Replace the triples in the graph with those parsed from the supplied JSON<dl>
 </dl>
 
 
-=== from_rdfxml ===
+== from_rdfxml ==
 
 {{{
 public  void from_rdfxml(string rdfxml, string base)
@@ -221,7 +223,7 @@ Replace the triples in the graph with those parsed from the supplied RDF/XML<dl>
 </dl>
 
 
-=== from_turtle ===
+== from_turtle ==
 
 {{{
 public  void from_turtle(string turtle, string base)
@@ -236,7 +238,7 @@ Replace the triples in the graph with those parsed from the supplied Turtle<dl>
 </dl>
 
 
-=== get_description ===
+== get_description ==
 
 {{{
 public  void get_description(mixed resource_uri)
@@ -244,7 +246,7 @@ public  void get_description(mixed resource_uri)
 
 
 
-=== get_first_literal ===
+== get_first_literal ==
 
 {{{
 public  string get_first_literal(string s, string p, string default, mixed preferred_language)
@@ -260,7 +262,7 @@ Fetch the first literal value for a given subject and predicate. If there are mu
 </dl>
 
 
-=== get_first_resource ===
+== get_first_resource ==
 
 {{{
 public  string get_first_resource(string s, string p, string default)
@@ -276,7 +278,7 @@ Fetch the first resource value for a given subject and predicate. If there are m
 </dl>
 
 
-=== get_index ===
+== get_index ==
 
 {{{
 public  void get_index()
@@ -288,7 +290,7 @@ Get a copy of the graph's triple index<dl>
 </dl>
 
 
-=== get_label ===
+== get_label ==
 
 {{{
 public  void get_label(mixed resource_uri, mixed capitalize, mixed use_qnames)
@@ -296,7 +298,7 @@ public  void get_label(mixed resource_uri, mixed capitalize, mixed use_qnames)
 
 
 
-=== get_literal_triple_values ===
+== get_literal_triple_values ==
 
 {{{
 public  array get_literal_triple_values(string s, string p)
@@ -311,7 +313,7 @@ Fetch the literal values for a given subject and predicate.<dl>
 </dl>
 
 
-=== get_prefix ===
+== get_prefix ==
 
 {{{
 public  void get_prefix(mixed ns)
@@ -319,7 +321,7 @@ public  void get_prefix(mixed ns)
 
 
 
-=== get_resource_triple_values ===
+== get_resource_triple_values ==
 
 {{{
 public  array get_resource_triple_values(string s, string p)
@@ -334,7 +336,7 @@ Fetch the resource values for a given subject and predicate.<dl>
 </dl>
 
 
-=== get_subject_properties ===
+== get_subject_properties ==
 
 {{{
 public  array get_subject_properties(string s, boolean distinct)
@@ -349,7 +351,7 @@ Fetch the properties of a given subject and predicate.<dl>
 </dl>
 
 
-=== get_subject_property_values ===
+== get_subject_property_values ==
 
 {{{
 public  array get_subject_property_values(string s, string p)
@@ -364,7 +366,7 @@ Fetch the values for a given subject and predicate.<dl>
 </dl>
 
 
-=== get_subject_subgraph ===
+== get_subject_subgraph ==
 
 {{{
 public  <a href="../moriarty/simplegraph.html">SimpleGraph</a> get_subject_subgraph(string s)
@@ -378,7 +380,7 @@ Fetch a subgraph where all triples have given subject<dl>
 </dl>
 
 
-=== get_subjects ===
+== get_subjects ==
 
 {{{
 public  array get_subjects()
@@ -386,7 +388,7 @@ public  array get_subjects()
 
 Fetch an array of all the subjects
 
-=== get_subjects_of_type ===
+== get_subjects_of_type ==
 
 {{{
 public  array get_subjects_of_type(mixed t, $t the)
@@ -398,7 +400,7 @@ Fetch an array of all the subject that have and rdf type that matches that given
 </dl>
 
 
-=== get_subjects_where ===
+== get_subjects_where ==
 
 {{{
 private  void get_subjects_where(mixed p, mixed o, mixed type)
@@ -406,7 +408,7 @@ private  void get_subjects_where(mixed p, mixed o, mixed type)
 
 
 
-=== get_subjects_where_literal ===
+== get_subjects_where_literal ==
 
 {{{
 public  array get_subjects_where_literal(mixed p, mixed o, $o the)
@@ -419,7 +421,7 @@ Fetch an array of all the subjects where the predicate and object match a ?s $p 
 </dl>
 
 
-=== get_subjects_where_resource ===
+== get_subjects_where_resource ==
 
 {{{
 public  array get_subjects_where_resource(mixed p, mixed o, $o the)
@@ -432,7 +434,7 @@ Fetch an array of all the subjects where the predicate and object match a ?s $p 
 </dl>
 
 
-=== get_triples ===
+== get_triples ==
 
 {{{
 public  void get_triples()
@@ -444,7 +446,7 @@ public  void get_triples()
 </dl>
 
 
-=== has_literal_triple ===
+== has_literal_triple ==
 
 {{{
 public  boolean has_literal_triple(string s, string p, string o, mixed lang, mixed dt)
@@ -460,7 +462,7 @@ Tests whether the graph contains the given triple<dl>
 </dl>
 
 
-=== has_resource_triple ===
+== has_resource_triple ==
 
 {{{
 public  boolean has_resource_triple(string s, string p, string o)
@@ -476,7 +478,7 @@ Tests whether the graph contains the given triple<dl>
 </dl>
 
 
-=== has_triples_about ===
+== has_triples_about ==
 
 {{{
 public  boolean has_triples_about(string s)
@@ -490,7 +492,7 @@ Tests whether the graph contains a triple with the given subject<dl>
 </dl>
 
 
-=== is_empty ===
+== is_empty ==
 
 {{{
 public  boolean is_empty()
@@ -502,7 +504,7 @@ Tests whether the graph contains any triples<dl>
 </dl>
 
 
-=== make_resource_array ===
+== make_resource_array ==
 
 {{{
 public  array make_resource_array(string resource)
@@ -516,7 +518,7 @@ Constructs an array containing the type of the resource and its value<dl>
 </dl>
 
 
-=== merge ===
+== merge ==
 
 {{{
 public  array merge(array1, array2,)
@@ -530,7 +532,7 @@ merge merges all  rdf/json-style arrays passed as parameters<dl>
 </dl>
 
 
-=== qname_to_uri ===
+== qname_to_uri ==
 
 {{{
 public  string qname_to_uri(string qname)
@@ -544,7 +546,7 @@ Convert a QName to a URI using registered namespace prefixes<dl>
 </dl>
 
 
-=== reify ===
+== reify ==
 
 {{{
 public  void reify(mixed resources, mixed nodeID_prefix)
@@ -552,7 +554,7 @@ public  void reify(mixed resources, mixed nodeID_prefix)
 
 
 
-=== remove_all_triples ===
+== remove_all_triples ==
 
 {{{
 public  void remove_all_triples()
@@ -560,7 +562,7 @@ public  void remove_all_triples()
 
 Clears all triples out of the graph
 
-=== remove_literal_triple ===
+== remove_literal_triple ==
 
 {{{
 public  void remove_literal_triple(mixed s, mixed p, mixed o)
@@ -568,7 +570,7 @@ public  void remove_literal_triple(mixed s, mixed p, mixed o)
 
 
 
-=== remove_property_values ===
+== remove_property_values ==
 
 {{{
 public  void remove_property_values(string s, string p)
@@ -581,7 +583,7 @@ Removes all triples with the given subject and predicate<dl>
 </dl>
 
 
-=== remove_resource_triple ===
+== remove_resource_triple ==
 
 {{{
 public  void remove_resource_triple(string s, string p, string o)
@@ -595,7 +597,7 @@ Remove a triple with a resource object from the graph<dl>
 </dl>
 
 
-=== remove_triples_about ===
+== remove_triples_about ==
 
 {{{
 public  void remove_triples_about(string s)
@@ -607,7 +609,7 @@ Remove all triples having the supplied subject<dl>
 </dl>
 
 
-=== replace_resource ===
+== replace_resource ==
 
 {{{
 public  void replace_resource(mixed look_for, mixed replace_with)
@@ -615,7 +617,7 @@ public  void replace_resource(mixed look_for, mixed replace_with)
 
 
 
-=== set_namespace_mapping ===
+== set_namespace_mapping ==
 
 {{{
 public  void set_namespace_mapping(string prefix, string uri)
@@ -628,7 +630,7 @@ Map a portion of a URI to a short prefix for use when serialising the graph<dl>
 </dl>
 
 
-=== subject_has_property ===
+== subject_has_property ==
 
 {{{
 public  boolean subject_has_property(string s, string p)
@@ -643,7 +645,7 @@ Tests whether the graph contains a triple with the given subject and predicate<d
 </dl>
 
 
-=== to_html ===
+== to_html ==
 
 {{{
 public  string to_html(mixed s)
@@ -655,7 +657,7 @@ Serialise the graph to HTML<dl>
 </dl>
 
 
-=== to_json ===
+== to_json ==
 
 {{{
 public  string to_json()
@@ -669,7 +671,7 @@ Serialise the graph to JSON<dl>
 </dl>
 
 
-=== to_ntriples ===
+== to_ntriples ==
 
 {{{
 public  string to_ntriples()
@@ -683,7 +685,7 @@ Serialise the graph to N-Triples<dl>
 </dl>
 
 
-=== to_rdfxml ===
+== to_rdfxml ==
 
 {{{
 public  string to_rdfxml()
@@ -695,7 +697,7 @@ Serialise the graph to RDF/XML<dl>
 </dl>
 
 
-=== to_turtle ===
+== to_turtle ==
 
 {{{
 public  string to_turtle()
@@ -709,7 +711,7 @@ Serialise the graph to Turtle<dl>
 </dl>
 
 
-=== update_prefix_mappings ===
+== update_prefix_mappings ==
 
 {{{
 public  void update_prefix_mappings()
@@ -717,7 +719,7 @@ public  void update_prefix_mappings()
 
 
 
-=== uri_to_qname ===
+== uri_to_qname ==
 
 {{{
 public  string uri_to_qname(string uri)

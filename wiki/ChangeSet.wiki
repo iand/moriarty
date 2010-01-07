@@ -1,22 +1,22 @@
 #summary Represents a changeset.
 
-= Introduction =
+<wiki:toc max_depth="1" />
+= Overview =
 
 Represents a changeset. Can be used to create a changeset based on the difference between two bounded descriptions. The descriptions must share the same subject URI.
 
-<wiki:toc max_depth="1" />
 <dl>
 <dt>See Also:</dt>
 <dd><a href="http://n2.talis.com/wiki/Changesets">http://n2.talis.com/wiki/Changesets</a></dd>
 </dl>
-= Fields =
+== Fields ==
  * [#a $a] - Represents a changeset.
  * [#after $after] - Represents a changeset.
  * [#before $before] - Represents a changeset.
  * [#subjectIndex $subjectIndex] - Represents a changeset.
-= Constructors =
+== Constructors ==
  * [#ChangeSet ChangeSet]
-= Methods =
+== Methods ==
  * [#addT addT] - addT  adds a triple to the internal simpleIndex holding all the changesets and statements
  * [#has_changes has_changes]
  * [#toRDFXML toRDFXML]
@@ -26,9 +26,9 @@ Represents a changeset. Can be used to create a changeset based on the differenc
 <tr><th colspan="2">Methods inherited from Moriarty.SimpleGraph</th></tr>
 <tr><td><a href="../moriarty/simplegraph.html#add_graph()">add_graph</a>, <a href="../moriarty/simplegraph.html#add_json()">add_json</a>, <a href="../moriarty/simplegraph.html#add_labelling_property()">add_labelling_property</a>, <a href="../moriarty/simplegraph.html#add_literal_triple()">add_literal_triple</a>, <a href="../moriarty/simplegraph.html#add_rdf()">add_rdf</a>, <a href="../moriarty/simplegraph.html#add_rdfxml()">add_rdfxml</a>, <a href="../moriarty/simplegraph.html#add_resource_triple()">add_resource_triple</a>, <a href="../moriarty/simplegraph.html#add_turtle()">add_turtle</a>, <a href="../moriarty/simplegraph.html#diff()">diff</a>, <a href="../moriarty/simplegraph.html#from_json()">from_json</a>, <a href="../moriarty/simplegraph.html#from_rdfxml()">from_rdfxml</a>, <a href="../moriarty/simplegraph.html#from_turtle()">from_turtle</a>, <a href="../moriarty/simplegraph.html#get_description()">get_description</a>, <a href="../moriarty/simplegraph.html#get_first_literal()">get_first_literal</a>, <a href="../moriarty/simplegraph.html#get_first_resource()">get_first_resource</a>, <a href="../moriarty/simplegraph.html#get_index()">get_index</a>, <a href="../moriarty/simplegraph.html#get_label()">get_label</a>, <a href="../moriarty/simplegraph.html#get_literal_triple_values()">get_literal_triple_values</a>, <a href="../moriarty/simplegraph.html#get_prefix()">get_prefix</a>, <a href="../moriarty/simplegraph.html#get_resource_triple_values()">get_resource_triple_values</a>, <a href="../moriarty/simplegraph.html#get_subject_properties()">get_subject_properties</a>, <a href="../moriarty/simplegraph.html#get_subject_property_values()">get_subject_property_values</a>, <a href="../moriarty/simplegraph.html#get_subject_subgraph()">get_subject_subgraph</a>, <a href="../moriarty/simplegraph.html#get_subjects()">get_subjects</a>, <a href="../moriarty/simplegraph.html#get_subjects_of_type()">get_subjects_of_type</a>, <a href="../moriarty/simplegraph.html#get_subjects_where()">get_subjects_where</a>, <a href="../moriarty/simplegraph.html#get_subjects_where_literal()">get_subjects_where_literal</a>, <a href="../moriarty/simplegraph.html#get_subjects_where_resource()">get_subjects_where_resource</a>, <a href="../moriarty/simplegraph.html#get_triples()">get_triples</a>, <a href="../moriarty/simplegraph.html#has_literal_triple()">has_literal_triple</a>, <a href="../moriarty/simplegraph.html#has_resource_triple()">has_resource_triple</a>, <a href="../moriarty/simplegraph.html#has_triples_about()">has_triples_about</a>, <a href="../moriarty/simplegraph.html#is_empty()">is_empty</a>, <a href="../moriarty/simplegraph.html#make_resource_array()">make_resource_array</a>, <a href="../moriarty/simplegraph.html#merge()">merge</a>, <a href="../moriarty/simplegraph.html#qname_to_uri()">qname_to_uri</a>, <a href="../moriarty/simplegraph.html#reify()">reify</a>, <a href="../moriarty/simplegraph.html#remove_all_triples()">remove_all_triples</a>, <a href="../moriarty/simplegraph.html#remove_literal_triple()">remove_literal_triple</a>, <a href="../moriarty/simplegraph.html#remove_property_values()">remove_property_values</a>, <a href="../moriarty/simplegraph.html#remove_resource_triple()">remove_resource_triple</a>, <a href="../moriarty/simplegraph.html#remove_triples_about()">remove_triples_about</a>, <a href="../moriarty/simplegraph.html#replace_resource()">replace_resource</a>, <a href="../moriarty/simplegraph.html#set_namespace_mapping()">set_namespace_mapping</a>, <a href="../moriarty/simplegraph.html#subject_has_property()">subject_has_property</a>, <a href="../moriarty/simplegraph.html#to_html()">to_html</a>, <a href="../moriarty/simplegraph.html#to_json()">to_json</a>, <a href="../moriarty/simplegraph.html#to_ntriples()">to_ntriples</a>, <a href="../moriarty/simplegraph.html#to_rdfxml()">to_rdfxml</a>, <a href="../moriarty/simplegraph.html#to_turtle()">to_turtle</a>, <a href="../moriarty/simplegraph.html#update_prefix_mappings()">update_prefix_mappings</a>, <a href="../moriarty/simplegraph.html#uri_to_qname()">uri_to_qname</a></td></tr></table>
 
-== Field Detail ==
+= Field Detail =
 
-=== a===
+== a==
 
 {{{
 public  mixed
@@ -40,7 +40,7 @@ Create a new changeset. This will calculate the required additions and removals 
 
 <hr>
 
-=== after===
+== after==
 
 {{{
 public  mixed
@@ -52,7 +52,7 @@ $after</strong> = array()</code>
 
 <hr>
 
-=== before===
+== before==
 
 {{{
 public  mixed
@@ -64,7 +64,7 @@ $before</strong> = array()</code>
 
 <hr>
 
-=== subjectIndex===
+== subjectIndex==
 
 {{{
 public  mixed
@@ -76,9 +76,9 @@ $subjectIndex</strong> = array()</code>
 
 <hr>
 
-== Constructor Detail ==
+= Constructor Detail =
 
-=== ChangeSet ===
+== ChangeSet ==
 
 {{{
 public ChangeSet(mixed a)
@@ -86,9 +86,9 @@ public ChangeSet(mixed a)
 
 
 
-== Method Detail ==
+= Method Detail =
 
-=== addT ===
+== addT ==
 
 {{{
 public  void addT(mixed s, mixed p, mixed o, mixed o_type)
@@ -100,7 +100,7 @@ addT  adds a triple to the internal simpleIndex holding all the changesets and s
 </dl>
 
 
-=== has_changes ===
+== has_changes ==
 
 {{{
 public  void has_changes()
@@ -108,7 +108,7 @@ public  void has_changes()
 
 
 
-=== toRDFXML ===
+== toRDFXML ==
 
 {{{
 public  void toRDFXML()
@@ -116,7 +116,7 @@ public  void toRDFXML()
 
 
 
-=== to_rdfxml ===
+== to_rdfxml ==
 
 {{{
 public  string to_rdfxml()
