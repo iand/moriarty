@@ -65,13 +65,15 @@
  * [#update_prefix_mappings update_prefix_mappings]
  * [#uri_to_qname uri_to_qname] - Convert a URI to a QName using registered namespace prefixes
 
-<h2 id="detail_constr">Constructor Detail</h2>
-<h3 id="SimpleGraph()">SimpleGraph</h3>
-<code class="signature">public <strong>SimpleGraph</strong>(mixed graph)</code>
-<div class="details">
-</div>
+== Constructor Detail ==
 
-<hr>
+=== SimpleGraph ===
+
+{{{
+public SimpleGraph(mixed graph)
+}}}
+
+SimpleGraph</strong>(mixed graph)
 
 <h2 id="detail_method">Method Detail</h2>
 <h3 id="add_graph()">add_graph</h3>
