@@ -73,43 +73,50 @@
 public SimpleGraph(mixed graph)
 }}}
 
-SimpleGraph</strong>(mixed graph)
 
-<h2 id="detail_method">Method Detail</h2>
-<h3 id="add_graph()">add_graph</h3>
-<code class="signature">public  void <strong>add_graph</strong>(<a href="../moriarty/simplegraph.html">SimpleGraph</a> g)</code>
-<div class="details">
+
+== Method Detail ==
+
+=== add_graph ===
+
+{{{
+public  void add_graph(<a href="../moriarty/simplegraph.html">SimpleGraph</a> g)
+}}}
+
 Add the triples in the supplied graph to the current graph<dl>
 <dt>Parameters:</dt>
 <dd>g - the graph to read</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="add_json()">add_json</h3>
-<code class="signature">public  void <strong>add_json</strong>(string json)</code>
-<div class="details">
+=== add_json ===
+
+{{{
+public  void add_json(string json)
+}}}
+
 Add the triples parsed from the supplied JSON to the graph<dl>
 <dt>See Also:</dt>
 <dd><a href="http://n2.talis.com/wiki/RDF_JSON_Specification">http://n2.talis.com/wiki/RDF_JSON_Specification</a></dd>
 <dt>Parameters:</dt>
 <dd>json - the JSON to parse</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="add_labelling_property()">add_labelling_property</h3>
-<code class="signature">public  void <strong>add_labelling_property</strong>(mixed p)</code>
-<div class="details">
-</div>
+=== add_labelling_property ===
 
-<hr>
+{{{
+public  void add_labelling_property(mixed p)
+}}}
 
-<h3 id="add_literal_triple()">add_literal_triple</h3>
-<code class="signature">public  boolean <strong>add_literal_triple</strong>(string s, string p, string o, string lang, string dt)</code>
-<div class="details">
+
+
+=== add_literal_triple ===
+
+{{{
+public  boolean add_literal_triple(string s, string p, string o, string lang, string dt)
+}}}
+
 Adds a triple with a literal object to the graph<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
@@ -120,13 +127,14 @@ Adds a triple with a literal object to the graph<dl>
 <dt>Returns:</dt>
 <dd>true if the triple was new, false if it already existed in the graph</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="add_rdf()">add_rdf</h3>
-<code class="signature">public  void <strong>add_rdf</strong>(string rdf, string base)</code>
-<div class="details">
+=== add_rdf ===
+
+{{{
+public  void add_rdf(string rdf, string base)
+}}}
+
 Add the triples parsed from the supplied RDF to the graph - let ARC guess the input<dl>
 <dt>Parameters:</dt>
 <dd>rdf - the RDF to parse</dd>
@@ -134,25 +142,27 @@ Add the triples parsed from the supplied RDF to the graph - let ARC guess the in
 <dt>Author:</dt>
 <dd>Keith Alexander</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="add_rdfxml()">add_rdfxml</h3>
-<code class="signature">public  void <strong>add_rdfxml</strong>(string rdfxml, string base)</code>
-<div class="details">
+=== add_rdfxml ===
+
+{{{
+public  void add_rdfxml(string rdfxml, string base)
+}}}
+
 Add the triples parsed from the supplied RDF/XML to the graph<dl>
 <dt>Parameters:</dt>
 <dd>rdfxml - the RDF/XML to parse</dd>
 <dd>base - the base URI against which relative URIs in the RDF/XML document will be resolved</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="add_resource_triple()">add_resource_triple</h3>
-<code class="signature">public  boolean <strong>add_resource_triple</strong>(string s, string p, string o)</code>
-<div class="details">
+=== add_resource_triple ===
+
+{{{
+public  boolean add_resource_triple(string s, string p, string o)
+}}}
+
 Adds a triple with a resource object to the graph<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
@@ -161,13 +171,14 @@ Adds a triple with a resource object to the graph<dl>
 <dt>Returns:</dt>
 <dd>true if the triple was new, false if it already existed in the graph</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="add_turtle()">add_turtle</h3>
-<code class="signature">public  void <strong>add_turtle</strong>(string turtle, string base)</code>
-<div class="details">
+=== add_turtle ===
+
+{{{
+public  void add_turtle(string turtle, string base)
+}}}
+
 Add the triples parsed from the supplied Turtle to the graph<dl>
 <dt>See Also:</dt>
 <dd><a href="http://www.dajobe.org/2004/01/turtle">http://www.dajobe.org/2004/01/turtle</a></dd>
@@ -175,51 +186,55 @@ Add the triples parsed from the supplied Turtle to the graph<dl>
 <dd>turtle - the Turtle to parse</dd>
 <dd>base - the base URI against which relative URIs in the Turtle document will be resolved</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="diff()">diff</h3>
-<code class="signature">public  array <strong>diff</strong>(array1, array2,)</code>
-<div class="details">
+=== diff ===
+
+{{{
+public  array diff(array1, array2,)
+}}}
+
 diff returns a simpleIndex consisting of all the statements in array1 that weren't found in any of the subsequent arrays<dl>
 <dt>Parameters:</dt>
 <dd>array2, - [array3, ...]</dd>
 <dt>Author:</dt>
 <dd>Keith</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="from_json()">from_json</h3>
-<code class="signature">public  void <strong>from_json</strong>(string json)</code>
-<div class="details">
+=== from_json ===
+
+{{{
+public  void from_json(string json)
+}}}
+
 Replace the triples in the graph with those parsed from the supplied JSON<dl>
 <dt>See Also:</dt>
 <dd><a href="http://n2.talis.com/wiki/RDF_JSON_Specification">http://n2.talis.com/wiki/RDF_JSON_Specification</a></dd>
 <dt>Parameters:</dt>
 <dd>json - the JSON to parse</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="from_rdfxml()">from_rdfxml</h3>
-<code class="signature">public  void <strong>from_rdfxml</strong>(string rdfxml, string base)</code>
-<div class="details">
+=== from_rdfxml ===
+
+{{{
+public  void from_rdfxml(string rdfxml, string base)
+}}}
+
 Replace the triples in the graph with those parsed from the supplied RDF/XML<dl>
 <dt>Parameters:</dt>
 <dd>rdfxml - the RDF/XML to parse</dd>
 <dd>base - the base URI against which relative URIs in the RDF/XML document will be resolved</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="from_turtle()">from_turtle</h3>
-<code class="signature">public  void <strong>from_turtle</strong>(string turtle, string base)</code>
-<div class="details">
+=== from_turtle ===
+
+{{{
+public  void from_turtle(string turtle, string base)
+}}}
+
 Replace the triples in the graph with those parsed from the supplied Turtle<dl>
 <dt>See Also:</dt>
 <dd><a href="http://www.dajobe.org/2004/01/turtle">http://www.dajobe.org/2004/01/turtle</a></dd>
@@ -227,20 +242,22 @@ Replace the triples in the graph with those parsed from the supplied Turtle<dl>
 <dd>turtle - the Turtle to parse</dd>
 <dd>base - the base URI against which relative URIs in the Turtle document will be resolved</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="get_description()">get_description</h3>
-<code class="signature">public  void <strong>get_description</strong>(mixed resource_uri)</code>
-<div class="details">
-</div>
+=== get_description ===
 
-<hr>
+{{{
+public  void get_description(mixed resource_uri)
+}}}
 
-<h3 id="get_first_literal()">get_first_literal</h3>
-<code class="signature">public  string <strong>get_first_literal</strong>(string s, string p, string default, mixed preferred_language)</code>
-<div class="details">
+
+
+=== get_first_literal ===
+
+{{{
+public  string get_first_literal(string s, string p, string default, mixed preferred_language)
+}}}
+
 Fetch the first literal value for a given subject and predicate. If there are multiple possible values then one is selected at random.<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject to search for</dd>
@@ -249,13 +266,14 @@ Fetch the first literal value for a given subject and predicate. If there are mu
 <dt>Returns:</dt>
 <dd>the first literal value found or the supplied default if no values were found</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="get_first_resource()">get_first_resource</h3>
-<code class="signature">public  string <strong>get_first_resource</strong>(string s, string p, string default)</code>
-<div class="details">
+=== get_first_resource ===
+
+{{{
+public  string get_first_resource(string s, string p, string default)
+}}}
+
 Fetch the first resource value for a given subject and predicate. If there are multiple possible values then one is selected at random.<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject to search for</dd>
@@ -264,31 +282,34 @@ Fetch the first resource value for a given subject and predicate. If there are m
 <dt>Returns:</dt>
 <dd>the first resource value found or the supplied default if no values were found</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="get_index()">get_index</h3>
-<code class="signature">public  void <strong>get_index</strong>()</code>
-<div class="details">
+=== get_index ===
+
+{{{
+public  void get_index()
+}}}
+
 Get a copy of the graph's triple index<dl>
 <dt>See Also:</dt>
 <dd><a href="http://n2.talis.com/wiki/RDF_PHP_Specification">http://n2.talis.com/wiki/RDF_PHP_Specification</a></dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="get_label()">get_label</h3>
-<code class="signature">public  void <strong>get_label</strong>(mixed resource_uri, mixed capitalize, mixed use_qnames)</code>
-<div class="details">
-</div>
+=== get_label ===
 
-<hr>
+{{{
+public  void get_label(mixed resource_uri, mixed capitalize, mixed use_qnames)
+}}}
 
-<h3 id="get_literal_triple_values()">get_literal_triple_values</h3>
-<code class="signature">public  array <strong>get_literal_triple_values</strong>(string s, string p)</code>
-<div class="details">
+
+
+=== get_literal_triple_values ===
+
+{{{
+public  array get_literal_triple_values(string s, string p)
+}}}
+
 Fetch the literal values for a given subject and predicate.<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject to search for</dd>
@@ -296,20 +317,22 @@ Fetch the literal values for a given subject and predicate.<dl>
 <dt>Returns:</dt>
 <dd>list of literals that are the objects of triples with the supplied subject and predicate</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="get_prefix()">get_prefix</h3>
-<code class="signature">public  void <strong>get_prefix</strong>(mixed ns)</code>
-<div class="details">
-</div>
+=== get_prefix ===
 
-<hr>
+{{{
+public  void get_prefix(mixed ns)
+}}}
 
-<h3 id="get_resource_triple_values()">get_resource_triple_values</h3>
-<code class="signature">public  array <strong>get_resource_triple_values</strong>(string s, string p)</code>
-<div class="details">
+
+
+=== get_resource_triple_values ===
+
+{{{
+public  array get_resource_triple_values(string s, string p)
+}}}
+
 Fetch the resource values for a given subject and predicate.<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject to search for</dd>
@@ -317,13 +340,14 @@ Fetch the resource values for a given subject and predicate.<dl>
 <dt>Returns:</dt>
 <dd>list of URIs and blank nodes that are the objects of triples with the supplied subject and predicate</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="get_subject_properties()">get_subject_properties</h3>
-<code class="signature">public  array <strong>get_subject_properties</strong>(string s, boolean distinct)</code>
-<div class="details">
+=== get_subject_properties ===
+
+{{{
+public  array get_subject_properties(string s, boolean distinct)
+}}}
+
 Fetch the properties of a given subject and predicate.<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject to search for</dd>
@@ -331,13 +355,14 @@ Fetch the properties of a given subject and predicate.<dl>
 <dt>Returns:</dt>
 <dd>list of property URIs</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="get_subject_property_values()">get_subject_property_values</h3>
-<code class="signature">public  array <strong>get_subject_property_values</strong>(string s, string p)</code>
-<div class="details">
+=== get_subject_property_values ===
+
+{{{
+public  array get_subject_property_values(string s, string p)
+}}}
+
 Fetch the values for a given subject and predicate.<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject to search for</dd>
@@ -345,86 +370,94 @@ Fetch the values for a given subject and predicate.<dl>
 <dt>Returns:</dt>
 <dd>list of values of triples with the supplied subject and predicate</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="get_subject_subgraph()">get_subject_subgraph</h3>
-<code class="signature">public  <a href="../moriarty/simplegraph.html">SimpleGraph</a> <strong>get_subject_subgraph</strong>(string s)</code>
-<div class="details">
+=== get_subject_subgraph ===
+
+{{{
+public  <a href="../moriarty/simplegraph.html">SimpleGraph</a> get_subject_subgraph(string s)
+}}}
+
 Fetch a subgraph where all triples have given subject<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject to search for</dd>
 <dt>Returns:</dt>
 <dd>triples with the supplied subject</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="get_subjects()">get_subjects</h3>
-<code class="signature">public  array <strong>get_subjects</strong>()</code>
-<div class="details">
-Fetch an array of all the subjects</div>
+=== get_subjects ===
 
-<hr>
+{{{
+public  array get_subjects()
+}}}
 
-<h3 id="get_subjects_of_type()">get_subjects_of_type</h3>
-<code class="signature">public  array <strong>get_subjects_of_type</strong>(mixed t, $t the)</code>
-<div class="details">
+Fetch an array of all the subjects
+
+=== get_subjects_of_type ===
+
+{{{
+public  array get_subjects_of_type(mixed t, $t the)
+}}}
+
 Fetch an array of all the subject that have and rdf type that matches that given<dl>
 <dt>Parameters:</dt>
 <dd>the - type to match</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="get_subjects_where()">get_subjects_where</h3>
-<code class="signature">private  void <strong>get_subjects_where</strong>(mixed p, mixed o, mixed type)</code>
-<div class="details">
-</div>
+=== get_subjects_where ===
 
-<hr>
+{{{
+private  void get_subjects_where(mixed p, mixed o, mixed type)
+}}}
 
-<h3 id="get_subjects_where_literal()">get_subjects_where_literal</h3>
-<code class="signature">public  array <strong>get_subjects_where_literal</strong>(mixed p, mixed o, $o the)</code>
-<div class="details">
+
+
+=== get_subjects_where_literal ===
+
+{{{
+public  array get_subjects_where_literal(mixed p, mixed o, $o the)
+}}}
+
 Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a literal value<dl>
 <dt>Parameters:</dt>
 <dd>the - predicate to match</dd>
 <dd>the - resource object to match</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="get_subjects_where_resource()">get_subjects_where_resource</h3>
-<code class="signature">public  array <strong>get_subjects_where_resource</strong>(mixed p, mixed o, $o the)</code>
-<div class="details">
+=== get_subjects_where_resource ===
+
+{{{
+public  array get_subjects_where_resource(mixed p, mixed o, $o the)
+}}}
+
 Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a resource<dl>
 <dt>Parameters:</dt>
 <dd>the - predicate to match</dd>
 <dd>the - resource object to match</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="get_triples()">get_triples</h3>
-<code class="signature">public  void <strong>get_triples</strong>()</code>
-<div class="details">
+=== get_triples ===
+
+{{{
+public  void get_triples()
+}}}
+
 <dl>
 <dt>Deprecated:</dt>
 <dd>this is deprecated</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="has_literal_triple()">has_literal_triple</h3>
-<code class="signature">public  boolean <strong>has_literal_triple</strong>(string s, string p, string o, mixed lang, mixed dt)</code>
-<div class="details">
+=== has_literal_triple ===
+
+{{{
+public  boolean has_literal_triple(string s, string p, string o, mixed lang, mixed dt)
+}}}
+
 Tests whether the graph contains the given triple<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
@@ -433,13 +466,14 @@ Tests whether the graph contains the given triple<dl>
 <dt>Returns:</dt>
 <dd>true if the triple exists in the graph, false otherwise</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="has_resource_triple()">has_resource_triple</h3>
-<code class="signature">public  boolean <strong>has_resource_triple</strong>(string s, string p, string o)</code>
-<div class="details">
+=== has_resource_triple ===
+
+{{{
+public  boolean has_resource_triple(string s, string p, string o)
+}}}
+
 Tests whether the graph contains the given triple<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
@@ -448,152 +482,166 @@ Tests whether the graph contains the given triple<dl>
 <dt>Returns:</dt>
 <dd>true if the triple exists in the graph, false otherwise</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="has_triples_about()">has_triples_about</h3>
-<code class="signature">public  boolean <strong>has_triples_about</strong>(string s)</code>
-<div class="details">
+=== has_triples_about ===
+
+{{{
+public  boolean has_triples_about(string s)
+}}}
+
 Tests whether the graph contains a triple with the given subject<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
 <dt>Returns:</dt>
 <dd>true if the graph contains any triples with the specified subject, false otherwise</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="is_empty()">is_empty</h3>
-<code class="signature">public  boolean <strong>is_empty</strong>()</code>
-<div class="details">
+=== is_empty ===
+
+{{{
+public  boolean is_empty()
+}}}
+
 Tests whether the graph contains any triples<dl>
 <dt>Returns:</dt>
 <dd>true if the graph contains no triples, false otherwise</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="make_resource_array()">make_resource_array</h3>
-<code class="signature">public  array <strong>make_resource_array</strong>(string resource)</code>
-<div class="details">
+=== make_resource_array ===
+
+{{{
+public  array make_resource_array(string resource)
+}}}
+
 Constructs an array containing the type of the resource and its value<dl>
 <dt>Parameters:</dt>
 <dd>resource - a URI or blank node identifier (prefixed with _: e.g. _:name)</dd>
 <dt>Returns:</dt>
 <dd>an associative array with two keys: 'type' and 'value'. Type is either bnode or uri</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="merge()">merge</h3>
-<code class="signature">public  array <strong>merge</strong>(array1, array2,)</code>
-<div class="details">
+=== merge ===
+
+{{{
+public  array merge(array1, array2,)
+}}}
+
 merge merges all  rdf/json-style arrays passed as parameters<dl>
 <dt>Parameters:</dt>
 <dd>array2, - [array3, ...]</dd>
 <dt>Author:</dt>
 <dd>Keith</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="qname_to_uri()">qname_to_uri</h3>
-<code class="signature">public  string <strong>qname_to_uri</strong>(string qname)</code>
-<div class="details">
+=== qname_to_uri ===
+
+{{{
+public  string qname_to_uri(string qname)
+}}}
+
 Convert a QName to a URI using registered namespace prefixes<dl>
 <dt>Parameters:</dt>
 <dd>qname - the QName to convert</dd>
 <dt>Returns:</dt>
 <dd>the URI corresponding to the QName if a suitable prefix exists, null otherwise</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="reify()">reify</h3>
-<code class="signature">public  void <strong>reify</strong>(mixed resources, mixed nodeID_prefix)</code>
-<div class="details">
-</div>
+=== reify ===
 
-<hr>
+{{{
+public  void reify(mixed resources, mixed nodeID_prefix)
+}}}
 
-<h3 id="remove_all_triples()">remove_all_triples</h3>
-<code class="signature">public  void <strong>remove_all_triples</strong>()</code>
-<div class="details">
-Clears all triples out of the graph</div>
 
-<hr>
 
-<h3 id="remove_literal_triple()">remove_literal_triple</h3>
-<code class="signature">public  void <strong>remove_literal_triple</strong>(mixed s, mixed p, mixed o)</code>
-<div class="details">
-</div>
+=== remove_all_triples ===
 
-<hr>
+{{{
+public  void remove_all_triples()
+}}}
 
-<h3 id="remove_property_values()">remove_property_values</h3>
-<code class="signature">public  void <strong>remove_property_values</strong>(string s, string p)</code>
-<div class="details">
+Clears all triples out of the graph
+
+=== remove_literal_triple ===
+
+{{{
+public  void remove_literal_triple(mixed s, mixed p, mixed o)
+}}}
+
+
+
+=== remove_property_values ===
+
+{{{
+public  void remove_property_values(string s, string p)
+}}}
+
 Removes all triples with the given subject and predicate<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
 <dd>p - the predicate URI of the triple</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="remove_resource_triple()">remove_resource_triple</h3>
-<code class="signature">public  void <strong>remove_resource_triple</strong>(string s, string p, string o)</code>
-<div class="details">
+=== remove_resource_triple ===
+
+{{{
+public  void remove_resource_triple(string s, string p, string o)
+}}}
+
 Remove a triple with a resource object from the graph<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
 <dd>p - the predicate URI of the triple</dd>
 <dd>o - the object of the triple, either a URI or a blank node in the format _:name</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="remove_triples_about()">remove_triples_about</h3>
-<code class="signature">public  void <strong>remove_triples_about</strong>(string s)</code>
-<div class="details">
+=== remove_triples_about ===
+
+{{{
+public  void remove_triples_about(string s)
+}}}
+
 Remove all triples having the supplied subject<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="replace_resource()">replace_resource</h3>
-<code class="signature">public  void <strong>replace_resource</strong>(mixed look_for, mixed replace_with)</code>
-<div class="details">
-</div>
+=== replace_resource ===
 
-<hr>
+{{{
+public  void replace_resource(mixed look_for, mixed replace_with)
+}}}
 
-<h3 id="set_namespace_mapping()">set_namespace_mapping</h3>
-<code class="signature">public  void <strong>set_namespace_mapping</strong>(string prefix, string uri)</code>
-<div class="details">
+
+
+=== set_namespace_mapping ===
+
+{{{
+public  void set_namespace_mapping(string prefix, string uri)
+}}}
+
 Map a portion of a URI to a short prefix for use when serialising the graph<dl>
 <dt>Parameters:</dt>
 <dd>prefix - the namespace prefix to associate with the URI</dd>
 <dd>uri - the URI to associate with the prefix</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="subject_has_property()">subject_has_property</h3>
-<code class="signature">public  boolean <strong>subject_has_property</strong>(string s, string p)</code>
-<div class="details">
+=== subject_has_property ===
+
+{{{
+public  boolean subject_has_property(string s, string p)
+}}}
+
 Tests whether the graph contains a triple with the given subject and predicate<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
@@ -601,90 +649,95 @@ Tests whether the graph contains a triple with the given subject and predicate<d
 <dt>Returns:</dt>
 <dd>true if a matching triple exists in the graph, false otherwise</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="to_html()">to_html</h3>
-<code class="signature">public  string <strong>to_html</strong>(mixed s)</code>
-<div class="details">
+=== to_html ===
+
+{{{
+public  string to_html(mixed s)
+}}}
+
 Serialise the graph to HTML<dl>
 <dt>Returns:</dt>
 <dd>a HTML version of the graph</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="to_json()">to_json</h3>
-<code class="signature">public  string <strong>to_json</strong>()</code>
-<div class="details">
+=== to_json ===
+
+{{{
+public  string to_json()
+}}}
+
 Serialise the graph to JSON<dl>
 <dt>See Also:</dt>
 <dd><a href="http://n2.talis.com/wiki/RDF_JSON_Specification">http://n2.talis.com/wiki/RDF_JSON_Specification</a></dd>
 <dt>Returns:</dt>
 <dd>the JSON version of the graph</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="to_ntriples()">to_ntriples</h3>
-<code class="signature">public  string <strong>to_ntriples</strong>()</code>
-<div class="details">
+=== to_ntriples ===
+
+{{{
+public  string to_ntriples()
+}}}
+
 Serialise the graph to N-Triples<dl>
 <dt>See Also:</dt>
 <dd><a href="http://www.w3.org/TR/rdf-testcases/#ntriples">http://www.w3.org/TR/rdf-testcases/#ntriples</a></dd>
 <dt>Returns:</dt>
 <dd>the N-Triples version of the graph</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="to_rdfxml()">to_rdfxml</h3>
-<code class="signature">public  string <strong>to_rdfxml</strong>()</code>
-<div class="details">
+=== to_rdfxml ===
+
+{{{
+public  string to_rdfxml()
+}}}
+
 Serialise the graph to RDF/XML<dl>
 <dt>Returns:</dt>
 <dd>the RDF/XML version of the graph</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="to_turtle()">to_turtle</h3>
-<code class="signature">public  string <strong>to_turtle</strong>()</code>
-<div class="details">
+=== to_turtle ===
+
+{{{
+public  string to_turtle()
+}}}
+
 Serialise the graph to Turtle<dl>
 <dt>See Also:</dt>
 <dd><a href="http://www.dajobe.org/2004/01/turtle">http://www.dajobe.org/2004/01/turtle</a></dd>
 <dt>Returns:</dt>
 <dd>the Turtle version of the graph</dd>
 </dl>
-</div>
 
-<hr>
 
-<h3 id="update_prefix_mappings()">update_prefix_mappings</h3>
-<code class="signature">public  void <strong>update_prefix_mappings</strong>()</code>
-<div class="details">
-</div>
+=== update_prefix_mappings ===
 
-<hr>
+{{{
+public  void update_prefix_mappings()
+}}}
 
-<h3 id="uri_to_qname()">uri_to_qname</h3>
-<code class="signature">public  string <strong>uri_to_qname</strong>(string uri)</code>
-<div class="details">
+
+
+=== uri_to_qname ===
+
+{{{
+public  string uri_to_qname(string uri)
+}}}
+
 Convert a URI to a QName using registered namespace prefixes<dl>
 <dt>Parameters:</dt>
 <dd>uri - the URI to convert</dd>
 <dt>Returns:</dt>
 <dd>the QName corresponding to the URI if a suitable prefix exists, null otherwise</dd>
 </dl>
-</div>
 
-<hr>
 
 <div class="header">
 <h1>Moriarty</h1>
