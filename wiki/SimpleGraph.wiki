@@ -1,4 +1,4 @@
-#summary Represents an RDF graph and provides some simple functions for traversing and manipulating it. /
+#summary Represents an RDF graph and provides some simple functions for traversing and manipulating it.
 
 <pre class="tree"><strong>SimpleGraph</strong><br /></pre>
 
@@ -49,7 +49,7 @@
  * [#merge merge] - merge merges all  rdf/json-style arrays passed as parameters
  * [#qname_to_uri qname_to_uri] - Convert a QName to a URI using registered namespace prefixes
  * [#reify reify]
- * [#remove_all_triples remove_all_triples] - Clears all triples out of the graph /
+ * [#remove_all_triples remove_all_triples] - Clears all triples out of the graph
  * [#remove_literal_triple remove_literal_triple]
  * [#remove_property_values remove_property_values] - Removes all triples with the given subject and predicate
  * [#remove_resource_triple remove_resource_triple] - Remove a triple with a resource object from the graph
@@ -523,7 +523,7 @@ Convert a QName to a URI using registered namespace prefixes<dl>
 <h3 id="remove_all_triples()">remove_all_triples</h3>
 <code class="signature">public  void <strong>remove_all_triples</strong>()</code>
 <div class="details">
-Clears all triples out of the graph /</div>
+Clears all triples out of the graph</div>
 
 <hr>
 
