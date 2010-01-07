@@ -1,5 +1,7 @@
 #summary Represents a changeset.
 
+#sidebar ClassList
+
 = Overview =
 
 Represents a changeset. Can be used to create a changeset based on the difference between two bounded descriptions. The descriptions must share the same subject URI.
