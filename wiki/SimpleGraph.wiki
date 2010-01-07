@@ -1,7 +1,7 @@
 #summary SimpleGraph (Class)
 
 = Introduction =
-Represents an RDF graph and provides some simple functions for traversing and manipulating it./
+Represents an RDF graph and provides some simple functions for traversing and manipulating it. /
 
 <pre class="tree"><strong>SimpleGraph</strong><br /></pre>
 
@@ -23,20 +23,20 @@ Represents an RDF graph and provides some simple functions for traversing and ma
  * [#add_rdfxml add_rdfxml] - Add the triples parsed from the supplied RDF/XML to the graph
  * [#add_resource_triple add_resource_triple] - Adds a triple with a resource object to the graph
  * [#add_turtle add_turtle] - Add the triples parsed from the supplied Turtle to the graph
- * [#diff diff] - diffreturns a simpleIndex consisting of all the statements in array1 that weren't found in any of the subsequent arrays
+ * [#diff diff] - diff returns a simpleIndex consisting of all the statements in array1 that weren't found in any of the subsequent arrays
  * [#from_json from_json] - Replace the triples in the graph with those parsed from the supplied JSON
  * [#from_rdfxml from_rdfxml] - Replace the triples in the graph with those parsed from the supplied RDF/XML
  * [#from_turtle from_turtle] - Replace the triples in the graph with those parsed from the supplied Turtle
  * [#get_description get_description]
- * [#get_first_literal get_first_literal] - Fetch the first literal value for a given subject and predicate. 
- * [#get_first_resource get_first_resource] - Fetch the first resource value for a given subject and predicate. 
+ * [#get_first_literal get_first_literal] - Fetch the first literal value for a given subject and predicate.
+ * [#get_first_resource get_first_resource] - Fetch the first resource value for a given subject and predicate.
  * [#get_index get_index] - Get a copy of the graph's triple index
  * [#get_label get_label]
- * [#get_literal_triple_values get_literal_triple_values] - Fetch the literal values for a given subject and predicate. 
+ * [#get_literal_triple_values get_literal_triple_values] - Fetch the literal values for a given subject and predicate.
  * [#get_prefix get_prefix]
- * [#get_resource_triple_values get_resource_triple_values] - Fetch the resource values for a given subject and predicate. 
- * [#get_subject_properties get_subject_properties] - Fetch the properties of a given subject and predicate. 
- * [#get_subject_property_values get_subject_property_values] - Fetch the values for a given subject and predicate. 
+ * [#get_resource_triple_values get_resource_triple_values] - Fetch the resource values for a given subject and predicate.
+ * [#get_subject_properties get_subject_properties] - Fetch the properties of a given subject and predicate.
+ * [#get_subject_property_values get_subject_property_values] - Fetch the values for a given subject and predicate.
  * [#get_subject_subgraph get_subject_subgraph] - Fetch a subgraph where all triples have given subject
  * [#get_subjects get_subjects] - Fetch an array of all the subjects
  * [#get_subjects_of_type get_subjects_of_type] - Fetch an array of all the subject that have and rdf type that matches that given
@@ -49,10 +49,10 @@ Represents an RDF graph and provides some simple functions for traversing and ma
  * [#has_triples_about has_triples_about] - Tests whether the graph contains a triple with the given subject
  * [#is_empty is_empty] - Tests whether the graph contains any triples
  * [#make_resource_array make_resource_array] - Constructs an array containing the type of the resource and its value
- * [#merge merge] - mergemerges all  rdf/json-style arrays passed as parameters 
+ * [#merge merge] - merge merges all  rdf/json-style arrays passed as parameters
  * [#qname_to_uri qname_to_uri] - Convert a QName to a URI using registered namespace prefixes
  * [#reify reify]
- * [#remove_all_triples remove_all_triples] - Clears all triples out of the graph/
+ * [#remove_all_triples remove_all_triples] - Clears all triples out of the graph /
  * [#remove_literal_triple remove_literal_triple]
  * [#remove_property_values remove_property_values] - Removes all triples with the given subject and predicate
  * [#remove_resource_triple remove_resource_triple] - Remove a triple with a resource object from the graph
@@ -183,7 +183,7 @@ Add the triples parsed from the supplied Turtle to the graph<dl>
 <h3 id="diff()">diff</h3>
 <code class="signature">public  array <strong>diff</strong>(array1, array2,)</code>
 <div class="details">
-diffreturns a simpleIndex consisting of all the statements in array1 that weren't found in any of the subsequent arrays<dl>
+diff returns a simpleIndex consisting of all the statements in array1 that weren't found in any of the subsequent arrays<dl>
 <dt>Parameters:</dt>
 <dd>array2, - [array3, ...]</dd>
 <dt>Author:</dt>
@@ -242,7 +242,7 @@ Replace the triples in the graph with those parsed from the supplied Turtle<dl>
 <h3 id="get_first_literal()">get_first_literal</h3>
 <code class="signature">public  string <strong>get_first_literal</strong>(string s, string p, string default, mixed preferred_language)</code>
 <div class="details">
-Fetch the first literal value for a given subject and predicate. If there are multiple possible values then one is selected at random. <dl>
+Fetch the first literal value for a given subject and predicate. If there are multiple possible values then one is selected at random.<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject to search for</dd>
 <dd>p - the predicate to search for, or an array of predicates</dd>
@@ -257,7 +257,7 @@ Fetch the first literal value for a given subject and predicate. If there are mu
 <h3 id="get_first_resource()">get_first_resource</h3>
 <code class="signature">public  string <strong>get_first_resource</strong>(string s, string p, string default)</code>
 <div class="details">
-Fetch the first resource value for a given subject and predicate. If there are multiple possible values then one is selected at random. <dl>
+Fetch the first resource value for a given subject and predicate. If there are multiple possible values then one is selected at random.<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject to search for</dd>
 <dd>p - the predicate to search for</dd>
@@ -290,7 +290,7 @@ Get a copy of the graph's triple index<dl>
 <h3 id="get_literal_triple_values()">get_literal_triple_values</h3>
 <code class="signature">public  array <strong>get_literal_triple_values</strong>(string s, string p)</code>
 <div class="details">
-Fetch the literal values for a given subject and predicate. <dl>
+Fetch the literal values for a given subject and predicate.<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject to search for</dd>
 <dd>p - the predicate to search for</dd>
@@ -311,7 +311,7 @@ Fetch the literal values for a given subject and predicate. <dl>
 <h3 id="get_resource_triple_values()">get_resource_triple_values</h3>
 <code class="signature">public  array <strong>get_resource_triple_values</strong>(string s, string p)</code>
 <div class="details">
-Fetch the resource values for a given subject and predicate. <dl>
+Fetch the resource values for a given subject and predicate.<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject to search for</dd>
 <dd>p - the predicate to search for</dd>
@@ -325,7 +325,7 @@ Fetch the resource values for a given subject and predicate. <dl>
 <h3 id="get_subject_properties()">get_subject_properties</h3>
 <code class="signature">public  array <strong>get_subject_properties</strong>(string s, boolean distinct)</code>
 <div class="details">
-Fetch the properties of a given subject and predicate. <dl>
+Fetch the properties of a given subject and predicate.<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject to search for</dd>
 <dd>distinct - if true then duplicate properties are included only once (optional, default is true)</dd>
@@ -339,7 +339,7 @@ Fetch the properties of a given subject and predicate. <dl>
 <h3 id="get_subject_property_values()">get_subject_property_values</h3>
 <code class="signature">public  array <strong>get_subject_property_values</strong>(string s, string p)</code>
 <div class="details">
-Fetch the values for a given subject and predicate. <dl>
+Fetch the values for a given subject and predicate.<dl>
 <dt>Parameters:</dt>
 <dd>s - the subject to search for</dd>
 <dd>p - the predicate to search for</dd>
@@ -493,7 +493,7 @@ Constructs an array containing the type of the resource and its value<dl>
 <h3 id="merge()">merge</h3>
 <code class="signature">public  array <strong>merge</strong>(array1, array2,)</code>
 <div class="details">
-mergemerges all  rdf/json-style arrays passed as parameters <dl>
+merge merges all  rdf/json-style arrays passed as parameters<dl>
 <dt>Parameters:</dt>
 <dd>array2, - [array3, ...]</dd>
 <dt>Author:</dt>
@@ -526,7 +526,7 @@ Convert a QName to a URI using registered namespace prefixes<dl>
 <h3 id="remove_all_triples()">remove_all_triples</h3>
 <code class="signature">public  void <strong>remove_all_triples</strong>()</code>
 <div class="details">
-Clears all triples out of the graph/</div>
+Clears all triples out of the graph /</div>
 
 <hr>
 
