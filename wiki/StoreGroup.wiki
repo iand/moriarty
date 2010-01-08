@@ -83,7 +83,7 @@
 == StoreGroup ==
 
 {{{
-public StoreGroup(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)
+public StoreGroup(string uri, Credentials credentials)
 }}}
 
 Create a new instance of this class<dl>

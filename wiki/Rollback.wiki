@@ -11,6 +11,8 @@
  * [#revert_changes revert_changes]
  * [#to_changeset to_changeset] - to_changeset
 
+== Fields ==
+ * [#sparqlservice $sparqlservice] - to_changeset
 = Constructor Detail =
 
 == Rollback ==
@@ -60,19 +62,13 @@ to_changeset<dl>
 </dl>
 
 
-== Fields ==
- * [#sparqlservice $sparqlservice] - to_changeset
 = Field Detail =
 
-== sparqlservice==
+== sparqlservice ==
 
 {{{
 public  mixed
 }}}
 
-$sparqlservice</strong></code>
-<div class="details">
-</div>
-
-<hr>
+$
 

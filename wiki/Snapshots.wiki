@@ -10,6 +10,10 @@
  * [#get_errors get_errors] - get_errors
  * [#get_item_uris get_item_uris] - get_snapshots
 
+== Fields ==
+ * [#credentials $credentials] - get_snapshots
+ * [#errors $errors] - get_snapshots
+ * [#uri $uri] - get_snapshots
 = Constructor Detail =
 
 == Snapshots ==
@@ -46,45 +50,29 @@ get_snapshots<dl>
 </dl>
 
 
-== Fields ==
- * [#credentials $credentials] - get_snapshots
- * [#errors $errors] - get_snapshots
- * [#uri $uri] - get_snapshots
 = Field Detail =
 
-== credentials==
+== credentials ==
 
 {{{
 public  mixed
 }}}
 
-$credentials</strong></code>
-<div class="details">
-</div>
+$
 
-<hr>
-
-== errors==
+== errors ==
 
 {{{
 public  mixed
 }}}
 
-$errors</strong></code>
-<div class="details">
-</div>
+$
 
-<hr>
-
-== uri==
+== uri ==
 
 {{{
 public  mixed
 }}}
 
-$uri</strong></code>
-<div class="details">
-</div>
-
-<hr>
+$
 

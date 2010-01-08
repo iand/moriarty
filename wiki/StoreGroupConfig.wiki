@@ -16,7 +16,7 @@
 == StoreGroupConfig ==
 
 {{{
-public StoreGroupConfig(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials, mixed request_factory)
+public StoreGroupConfig(string uri, Credentials credentials, mixed request_factory)
 }}}
 
 Create a new instance of this class<dl>

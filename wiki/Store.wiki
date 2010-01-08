@@ -28,7 +28,7 @@
 == Store ==
 
 {{{
-public Store(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials, mixed request_factory)
+public Store(string uri, Credentials credentials, mixed request_factory)
 }}}
 
 <dl>

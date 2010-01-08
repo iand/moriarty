@@ -15,6 +15,9 @@
  * [#get_value get_value]
  * [#select_value select_value]
 
+== Fields ==
+ * [#bigfootMetabox $bigfootMetabox]
+ * [#bigfootSparqlService $bigfootSparqlService]
 = Method Detail =
 
 == get_candidate_values ==
@@ -41,32 +44,21 @@ public void select_value(mixed pool_uri, mixed value, mixed pool_size)
 
 
 
-== Fields ==
- * [#bigfootMetabox $bigfootMetabox]
- * [#bigfootSparqlService $bigfootSparqlService]
 = Field Detail =
 
-== bigfootMetabox==
+== bigfootMetabox ==
 
 {{{
 public  mixed
 }}}
 
-$bigfootMetabox</strong></code>
-<div class="details">
-</div>
+$
 
-<hr>
-
-== bigfootSparqlService==
+== bigfootSparqlService ==
 
 {{{
 public  mixed
 }}}
 
-$bigfootSparqlService</strong></code>
-<div class="details">
-</div>
-
-<hr>
+$
 

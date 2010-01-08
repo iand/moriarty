@@ -10,6 +10,8 @@
  * [#add add]
  * [#search search]
 
+== Fields ==
+ * [#stores $stores]
 = Method Detail =
 
 == add ==
@@ -28,19 +30,13 @@ public void search(mixed query, mixed max, mixed offset, mixed sort)
 
 
 
-== Fields ==
- * [#stores $stores]
 = Field Detail =
 
-== stores==
+== stores ==
 
 {{{
 public  mixed
 }}}
 
-$stores</strong> = array()</code>
-<div class="details">
-</div>
-
-<hr>
+$ = array()
 

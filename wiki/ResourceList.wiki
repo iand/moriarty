@@ -15,75 +15,51 @@
  * [#total_results $total_results] - Represents a list of resources returned from a contentbox search.
 = Field Detail =
 
-== description==
+== description ==
 
 {{{
 public  string
 }}}
 
-$description</strong></code>
-<div class="details">
-The description of the search results</div>
+$The description of the search results
 
-<hr>
-
-== items==
+== items ==
 
 {{{
 public  array
 }}}
 
-$items</strong></code>
-<div class="details">
-An array of the search results as a list of triples</div>
+$An array of the search results as a list of triples
 
-<hr>
-
-== items_per_page==
+== items_per_page ==
 
 {{{
 public  int
 }}}
 
-$items_per_page</strong></code>
-<div class="details">
-The number of search results returned per page.</div>
+$The number of search results returned per page.
 
-<hr>
-
-== start_index==
+== start_index ==
 
 {{{
 public  int
 }}}
 
-$start_index</strong></code>
-<div class="details">
-The index of the first search result in the current set of search results.</div>
+$The index of the first search result in the current set of search results.
 
-<hr>
-
-== title==
+== title ==
 
 {{{
 public  string
 }}}
 
-$title</strong></code>
-<div class="details">
-The title of the search results</div>
+$The title of the search results
 
-<hr>
-
-== total_results==
+== total_results ==
 
 {{{
 public  int
 }}}
 
-$total_results</strong></code>
-<div class="details">
-The total number of results matching the search terms</div>
-
-<hr>
+$The total number of results matching the search terms
 

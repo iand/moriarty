@@ -31,7 +31,7 @@
 == HttpRequest ==
 
 {{{
-public HttpRequest(string method, string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials, mixed cache)
+public HttpRequest(string method, string uri, Credentials credentials, mixed cache)
 }}}
 
 Create a new instance of this class<dl>

@@ -14,6 +14,12 @@
  * [#to_html to_html] - Obtain an html representation of this response
  * [#to_string to_string] - Obtain a string representation of this response
 
+== Fields ==
+ * [#body $body] - Obtain a string representation of this response
+ * [#headers $headers] - Obtain a string representation of this response
+ * [#info $info] - Obtain a string representation of this response
+ * [#request $request] - Obtain a string representation of this response
+ * [#status_code $status_code] - Obtain a string representation of this response
 = Constructor Detail =
 
 == HttpResponse ==
@@ -70,71 +76,45 @@ public string to_string()
 
 Obtain a string representation of this response
 
-== Fields ==
- * [#body $body] - Obtain a string representation of this response
- * [#headers $headers] - Obtain a string representation of this response
- * [#info $info] - Obtain a string representation of this response
- * [#request $request] - Obtain a string representation of this response
- * [#status_code $status_code] - Obtain a string representation of this response
 = Field Detail =
 
-== body==
+== body ==
 
 {{{
 public  string
 }}}
 
-$body</strong></code>
-<div class="details">
-The entity body returned with the response</div>
+$The entity body returned with the response
 
-<hr>
-
-== headers==
+== headers ==
 
 {{{
 public  array
 }}}
 
-$headers</strong> = array()</code>
-<div class="details">
-The HTTP headers returned with this response. This is an associative array whose keys are the header name and values are the header values.</div>
+$ = array()The HTTP headers returned with this response. This is an associative array whose keys are the header name and values are the header values.
 
-<hr>
-
-== info==
+== info ==
 
 {{{
 public  array
 }}}
 
-$info</strong> = array()</code>
-<div class="details">
-Additional information about this response</div>
+$ = array()Additional information about this response
 
-<hr>
-
-== request==
+== request ==
 
 {{{
 public  <a href="../moriarty/httprequest.html">HttpRequest</a>
 }}}
 
-$request</strong></code>
-<div class="details">
-The request that was responsible for generating this response</div>
+$The request that was responsible for generating this response
 
-<hr>
-
-== status_code==
+== status_code ==
 
 {{{
 public  int
 }}}
 
-$status_code</strong></code>
-<div class="details">
-The HTTP status code of the response</div>
-
-<hr>
+$The HTTP status code of the response
 
