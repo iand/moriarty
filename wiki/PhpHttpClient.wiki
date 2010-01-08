@@ -12,9 +12,9 @@
 
 == Methods inherited from Moriarty.HttpClient ==
 
- *Create
- *get_response_for
- *send_request
+ * [HttpClient#Create Create]
+ * [HttpClient#get_response_for get_response_for]
+ * [HttpClient#send_request send_request]
 = Method Detail =
 
 == get_response_for ==

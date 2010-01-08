@@ -8,13 +8,13 @@
 
 == Methods inherited from Moriarty.Graph ==
 
- *apply_changeset
- *apply_changeset_rdfxml
- *apply_versioned_changeset
- *apply_versioned_changeset_rdfxml
- *describe
- *describe_to_simple_graph
- *describe_to_triple_list
- *has_description
- *submit_rdfxml
- *submit_turtle
+ * [Graph#apply_changeset apply_changeset]
+ * [Graph#apply_changeset_rdfxml apply_changeset_rdfxml]
+ * [Graph#apply_versioned_changeset apply_versioned_changeset]
+ * [Graph#apply_versioned_changeset_rdfxml apply_versioned_changeset_rdfxml]
+ * [Graph#describe describe]
+ * [Graph#describe_to_simple_graph describe_to_simple_graph]
+ * [Graph#describe_to_triple_list describe_to_triple_list]
+ * [Graph#has_description has_description]
+ * [Graph#submit_rdfxml submit_rdfxml]
+ * [Graph#submit_turtle submit_turtle]

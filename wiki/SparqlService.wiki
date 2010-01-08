@@ -12,17 +12,17 @@
 </dl>
 == Methods inherited from Moriarty.SparqlServiceBase ==
 
- *ask
- *construct_to_simple_graph
- *construct_to_triple_list
- *describe
- *describe_to_simple_graph
- *describe_to_triple_list
- *graph
- *graph_to_simple_graph
- *graph_to_triple_list
- *parse_ask_results
- *parse_select_results
- *query
- *select
- *select_to_array
+ * [SparqlServiceBase#ask ask]
+ * [SparqlServiceBase#construct_to_simple_graph construct_to_simple_graph]
+ * [SparqlServiceBase#construct_to_triple_list construct_to_triple_list]
+ * [SparqlServiceBase#describe describe]
+ * [SparqlServiceBase#describe_to_simple_graph describe_to_simple_graph]
+ * [SparqlServiceBase#describe_to_triple_list describe_to_triple_list]
+ * [SparqlServiceBase#graph graph]
+ * [SparqlServiceBase#graph_to_simple_graph graph_to_simple_graph]
+ * [SparqlServiceBase#graph_to_triple_list graph_to_triple_list]
+ * [SparqlServiceBase#parse_ask_results parse_ask_results]
+ * [SparqlServiceBase#parse_select_results parse_select_results]
+ * [SparqlServiceBase#query query]
+ * [SparqlServiceBase#select select]
+ * [SparqlServiceBase#select_to_array select_to_array]

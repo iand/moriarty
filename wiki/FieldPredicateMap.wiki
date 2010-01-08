@@ -19,67 +19,67 @@
 
 == Methods inherited from Moriarty.NetworkResource ==
 
- *delete_from_network
- *get_comment
- *get_from_network
- *get_label
- *put_to_network
- *set_comment
- *set_label
+ * [NetworkResource#delete_from_network delete_from_network]
+ * [NetworkResource#get_comment get_comment]
+ * [NetworkResource#get_from_network get_from_network]
+ * [NetworkResource#get_label get_label]
+ * [NetworkResource#put_to_network put_to_network]
+ * [NetworkResource#set_comment set_comment]
+ * [NetworkResource#set_label set_label]
 == Methods inherited from Moriarty.SimpleGraph ==
 
- *add_graph
- *add_json
- *add_labelling_property
- *add_literal_triple
- *add_rdf
- *add_rdfxml
- *add_resource_triple
- *add_turtle
- *diff
- *from_json
- *from_rdfxml
- *from_turtle
- *get_description
- *get_first_literal
- *get_first_resource
- *get_index
- *get_label
- *get_literal_triple_values
- *get_prefix
- *get_resource_triple_values
- *get_subject_properties
- *get_subject_property_values
- *get_subject_subgraph
- *get_subjects
- *get_subjects_of_type
- *get_subjects_where
- *get_subjects_where_literal
- *get_subjects_where_resource
- *get_triples
- *has_literal_triple
- *has_resource_triple
- *has_triples_about
- *is_empty
- *make_resource_array
- *merge
- *qname_to_uri
- *reify
- *remove_all_triples
- *remove_literal_triple
- *remove_property_values
- *remove_resource_triple
- *remove_triples_about
- *replace_resource
- *set_namespace_mapping
- *subject_has_property
- *to_html
- *to_json
- *to_ntriples
- *to_rdfxml
- *to_turtle
- *update_prefix_mappings
- *uri_to_qname
+ * [SimpleGraph#add_graph add_graph]
+ * [SimpleGraph#add_json add_json]
+ * [SimpleGraph#add_labelling_property add_labelling_property]
+ * [SimpleGraph#add_literal_triple add_literal_triple]
+ * [SimpleGraph#add_rdf add_rdf]
+ * [SimpleGraph#add_rdfxml add_rdfxml]
+ * [SimpleGraph#add_resource_triple add_resource_triple]
+ * [SimpleGraph#add_turtle add_turtle]
+ * [SimpleGraph#diff diff]
+ * [SimpleGraph#from_json from_json]
+ * [SimpleGraph#from_rdfxml from_rdfxml]
+ * [SimpleGraph#from_turtle from_turtle]
+ * [SimpleGraph#get_description get_description]
+ * [SimpleGraph#get_first_literal get_first_literal]
+ * [SimpleGraph#get_first_resource get_first_resource]
+ * [SimpleGraph#get_index get_index]
+ * [SimpleGraph#get_label get_label]
+ * [SimpleGraph#get_literal_triple_values get_literal_triple_values]
+ * [SimpleGraph#get_prefix get_prefix]
+ * [SimpleGraph#get_resource_triple_values get_resource_triple_values]
+ * [SimpleGraph#get_subject_properties get_subject_properties]
+ * [SimpleGraph#get_subject_property_values get_subject_property_values]
+ * [SimpleGraph#get_subject_subgraph get_subject_subgraph]
+ * [SimpleGraph#get_subjects get_subjects]
+ * [SimpleGraph#get_subjects_of_type get_subjects_of_type]
+ * [SimpleGraph#get_subjects_where get_subjects_where]
+ * [SimpleGraph#get_subjects_where_literal get_subjects_where_literal]
+ * [SimpleGraph#get_subjects_where_resource get_subjects_where_resource]
+ * [SimpleGraph#get_triples get_triples]
+ * [SimpleGraph#has_literal_triple has_literal_triple]
+ * [SimpleGraph#has_resource_triple has_resource_triple]
+ * [SimpleGraph#has_triples_about has_triples_about]
+ * [SimpleGraph#is_empty is_empty]
+ * [SimpleGraph#make_resource_array make_resource_array]
+ * [SimpleGraph#merge merge]
+ * [SimpleGraph#qname_to_uri qname_to_uri]
+ * [SimpleGraph#reify reify]
+ * [SimpleGraph#remove_all_triples remove_all_triples]
+ * [SimpleGraph#remove_literal_triple remove_literal_triple]
+ * [SimpleGraph#remove_property_values remove_property_values]
+ * [SimpleGraph#remove_resource_triple remove_resource_triple]
+ * [SimpleGraph#remove_triples_about remove_triples_about]
+ * [SimpleGraph#replace_resource replace_resource]
+ * [SimpleGraph#set_namespace_mapping set_namespace_mapping]
+ * [SimpleGraph#subject_has_property subject_has_property]
+ * [SimpleGraph#to_html to_html]
+ * [SimpleGraph#to_json to_json]
+ * [SimpleGraph#to_ntriples to_ntriples]
+ * [SimpleGraph#to_rdfxml to_rdfxml]
+ * [SimpleGraph#to_turtle to_turtle]
+ * [SimpleGraph#update_prefix_mappings update_prefix_mappings]
+ * [SimpleGraph#uri_to_qname uri_to_qname]
 = Constructor Detail =
 
 == FieldPredicateMap ==
