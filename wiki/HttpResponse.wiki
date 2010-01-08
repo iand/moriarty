@@ -81,7 +81,7 @@ Obtain a string representation of this response
 == body ==
 
 {{{
-public  string $
+public string $body
 }}}
 
 The entity body returned with the response
@@ -89,7 +89,7 @@ The entity body returned with the response
 == headers ==
 
 {{{
-public  array $ = array()
+public array $headers = array()
 }}}
 
 The HTTP headers returned with this response. This is an associative array whose keys are the header name and values are the header values.
@@ -97,7 +97,7 @@ The HTTP headers returned with this response. This is an associative array whose
 == info ==
 
 {{{
-public  array $ = array()
+public array $info = array()
 }}}
 
 Additional information about this response
@@ -105,7 +105,7 @@ Additional information about this response
 == request ==
 
 {{{
-public  HttpRequest $
+public HttpRequest $request
 }}}
 
 The request that was responsible for generating this response
@@ -113,7 +113,7 @@ The request that was responsible for generating this response
 == status_code ==
 
 {{{
-public  int $
+public int $status_code
 }}}
 
 The HTTP status code of the response

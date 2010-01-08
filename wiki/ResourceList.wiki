@@ -18,7 +18,7 @@
 == description ==
 
 {{{
-public  string $
+public string $description
 }}}
 
 The description of the search results
@@ -26,7 +26,7 @@ The description of the search results
 == items ==
 
 {{{
-public  array $
+public array $items
 }}}
 
 An array of the search results as a list of triples
@@ -34,7 +34,7 @@ An array of the search results as a list of triples
 == items_per_page ==
 
 {{{
-public  int $
+public int $items_per_page
 }}}
 
 The number of search results returned per page.
@@ -42,7 +42,7 @@ The number of search results returned per page.
 == start_index ==
 
 {{{
-public  int $
+public int $start_index
 }}}
 
 The index of the first search result in the current set of search results.
@@ -50,7 +50,7 @@ The index of the first search result in the current set of search results.
 == title ==
 
 {{{
-public  string $
+public string $title
 }}}
 
 The title of the search results
@@ -58,7 +58,7 @@ The title of the search results
 == total_results ==
 
 {{{
-public  int $
+public int $total_results
 }}}
 
 The total number of results matching the search terms

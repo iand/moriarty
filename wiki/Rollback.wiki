@@ -67,7 +67,7 @@ to_changeset<dl>
 == sparqlservice ==
 
 {{{
-public  mixed $
+public mixed $sparqlservice
 }}}
 
 

@@ -79,7 +79,7 @@ public void to_rdfxml()
 == a ==
 
 {{{
-public  mixed $
+public mixed $a
 }}}
 
 
@@ -87,7 +87,7 @@ public  mixed $
 == after ==
 
 {{{
-public  mixed $
+public mixed $after
 }}}
 
 
@@ -95,7 +95,7 @@ public  mixed $
 == before ==
 
 {{{
-public  mixed $
+public mixed $before
 }}}
 
 
@@ -103,7 +103,7 @@ public  mixed $
 == subjectIndex ==
 
 {{{
-public  mixed $ = array()
+public mixed $subjectIndex = array()
 }}}
 
 
@@ -111,7 +111,7 @@ public  mixed $ = array()
 == utils ==
 
 {{{
-public  mixed $
+public mixed $utils
 }}}
 
 
