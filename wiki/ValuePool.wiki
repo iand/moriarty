@@ -49,16 +49,16 @@ public void select_value(mixed pool_uri, mixed value, mixed pool_size)
 == bigfootMetabox ==
 
 {{{
-public  mixed
+public  mixed $
 }}}
 
-$
+
 
 == bigfootSparqlService ==
 
 {{{
-public  mixed
+public  mixed $
 }}}
 
-$
+
 

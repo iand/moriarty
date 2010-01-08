@@ -81,40 +81,40 @@ Obtain a string representation of this response
 == body ==
 
 {{{
-public  string
+public  string $
 }}}
 
-$The entity body returned with the response
+The entity body returned with the response
 
 == headers ==
 
 {{{
-public  array
+public  array $ = array()
 }}}
 
-$ = array()The HTTP headers returned with this response. This is an associative array whose keys are the header name and values are the header values.
+The HTTP headers returned with this response. This is an associative array whose keys are the header name and values are the header values.
 
 == info ==
 
 {{{
-public  array
+public  array $ = array()
 }}}
 
-$ = array()Additional information about this response
+Additional information about this response
 
 == request ==
 
 {{{
-public  <a href="../moriarty/httprequest.html">HttpRequest</a>
+public  <a href="../moriarty/httprequest.html">HttpRequest</a> $
 }}}
 
-$The request that was responsible for generating this response
+The request that was responsible for generating this response
 
 == status_code ==
 
 {{{
-public  int
+public  int $
 }}}
 
-$The HTTP status code of the response
+The HTTP status code of the response
 

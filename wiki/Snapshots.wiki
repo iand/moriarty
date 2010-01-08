@@ -55,24 +55,24 @@ get_snapshots<dl>
 == credentials ==
 
 {{{
-public  mixed
+public  mixed $
 }}}
 
-$
+
 
 == errors ==
 
 {{{
-public  mixed
+public  mixed $
 }}}
 
-$
+
 
 == uri ==
 
 {{{
-public  mixed
+public  mixed $
 }}}
 
-$
+
 
