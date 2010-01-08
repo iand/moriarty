@@ -14,10 +14,11 @@
  * [#processCurlMessage processCurlMessage]
  * [#send_request send_request]
 
-<table class="inherit">
-<tr><th colspan="2">Methods inherited from Moriarty.HttpClient</th></tr>
-<tr><td><a href="../moriarty/httpclient.html#Create()">Create</a>, <a href="../moriarty/httpclient.html#get_response_for()">get_response_for</a>, <a href="../moriarty/httpclient.html#send_request()">send_request</a></td></tr></table>
+== Methods inherited from Moriarty.HttpClient ==
 
+ *Create
+ *get_response_for
+ *send_request
 = Constructor Detail =
 
 == CurlHttpClient ==

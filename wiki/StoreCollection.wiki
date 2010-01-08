@@ -13,10 +13,60 @@
  * [#get_store_uris get_store_uris] - Obtain the list of store URIs.
  * [#retrieve retrieve] - 
 
-<table class="inherit">
-<tr><th colspan="2">Methods inherited from Moriarty.SimpleGraph</th></tr>
-<tr><td><a href="../moriarty/simplegraph.html#add_graph()">add_graph</a>, <a href="../moriarty/simplegraph.html#add_json()">add_json</a>, <a href="../moriarty/simplegraph.html#add_labelling_property()">add_labelling_property</a>, <a href="../moriarty/simplegraph.html#add_literal_triple()">add_literal_triple</a>, <a href="../moriarty/simplegraph.html#add_rdf()">add_rdf</a>, <a href="../moriarty/simplegraph.html#add_rdfxml()">add_rdfxml</a>, <a href="../moriarty/simplegraph.html#add_resource_triple()">add_resource_triple</a>, <a href="../moriarty/simplegraph.html#add_turtle()">add_turtle</a>, <a href="../moriarty/simplegraph.html#diff()">diff</a>, <a href="../moriarty/simplegraph.html#from_json()">from_json</a>, <a href="../moriarty/simplegraph.html#from_rdfxml()">from_rdfxml</a>, <a href="../moriarty/simplegraph.html#from_turtle()">from_turtle</a>, <a href="../moriarty/simplegraph.html#get_description()">get_description</a>, <a href="../moriarty/simplegraph.html#get_first_literal()">get_first_literal</a>, <a href="../moriarty/simplegraph.html#get_first_resource()">get_first_resource</a>, <a href="../moriarty/simplegraph.html#get_index()">get_index</a>, <a href="../moriarty/simplegraph.html#get_label()">get_label</a>, <a href="../moriarty/simplegraph.html#get_literal_triple_values()">get_literal_triple_values</a>, <a href="../moriarty/simplegraph.html#get_prefix()">get_prefix</a>, <a href="../moriarty/simplegraph.html#get_resource_triple_values()">get_resource_triple_values</a>, <a href="../moriarty/simplegraph.html#get_subject_properties()">get_subject_properties</a>, <a href="../moriarty/simplegraph.html#get_subject_property_values()">get_subject_property_values</a>, <a href="../moriarty/simplegraph.html#get_subject_subgraph()">get_subject_subgraph</a>, <a href="../moriarty/simplegraph.html#get_subjects()">get_subjects</a>, <a href="../moriarty/simplegraph.html#get_subjects_of_type()">get_subjects_of_type</a>, <a href="../moriarty/simplegraph.html#get_subjects_where()">get_subjects_where</a>, <a href="../moriarty/simplegraph.html#get_subjects_where_literal()">get_subjects_where_literal</a>, <a href="../moriarty/simplegraph.html#get_subjects_where_resource()">get_subjects_where_resource</a>, <a href="../moriarty/simplegraph.html#get_triples()">get_triples</a>, <a href="../moriarty/simplegraph.html#has_literal_triple()">has_literal_triple</a>, <a href="../moriarty/simplegraph.html#has_resource_triple()">has_resource_triple</a>, <a href="../moriarty/simplegraph.html#has_triples_about()">has_triples_about</a>, <a href="../moriarty/simplegraph.html#is_empty()">is_empty</a>, <a href="../moriarty/simplegraph.html#make_resource_array()">make_resource_array</a>, <a href="../moriarty/simplegraph.html#merge()">merge</a>, <a href="../moriarty/simplegraph.html#qname_to_uri()">qname_to_uri</a>, <a href="../moriarty/simplegraph.html#reify()">reify</a>, <a href="../moriarty/simplegraph.html#remove_all_triples()">remove_all_triples</a>, <a href="../moriarty/simplegraph.html#remove_literal_triple()">remove_literal_triple</a>, <a href="../moriarty/simplegraph.html#remove_property_values()">remove_property_values</a>, <a href="../moriarty/simplegraph.html#remove_resource_triple()">remove_resource_triple</a>, <a href="../moriarty/simplegraph.html#remove_triples_about()">remove_triples_about</a>, <a href="../moriarty/simplegraph.html#replace_resource()">replace_resource</a>, <a href="../moriarty/simplegraph.html#set_namespace_mapping()">set_namespace_mapping</a>, <a href="../moriarty/simplegraph.html#subject_has_property()">subject_has_property</a>, <a href="../moriarty/simplegraph.html#to_html()">to_html</a>, <a href="../moriarty/simplegraph.html#to_json()">to_json</a>, <a href="../moriarty/simplegraph.html#to_ntriples()">to_ntriples</a>, <a href="../moriarty/simplegraph.html#to_rdfxml()">to_rdfxml</a>, <a href="../moriarty/simplegraph.html#to_turtle()">to_turtle</a>, <a href="../moriarty/simplegraph.html#update_prefix_mappings()">update_prefix_mappings</a>, <a href="../moriarty/simplegraph.html#uri_to_qname()">uri_to_qname</a></td></tr></table>
+== Methods inherited from Moriarty.SimpleGraph ==
 
+ *add_graph
+ *add_json
+ *add_labelling_property
+ *add_literal_triple
+ *add_rdf
+ *add_rdfxml
+ *add_resource_triple
+ *add_turtle
+ *diff
+ *from_json
+ *from_rdfxml
+ *from_turtle
+ *get_description
+ *get_first_literal
+ *get_first_resource
+ *get_index
+ *get_label
+ *get_literal_triple_values
+ *get_prefix
+ *get_resource_triple_values
+ *get_subject_properties
+ *get_subject_property_values
+ *get_subject_subgraph
+ *get_subjects
+ *get_subjects_of_type
+ *get_subjects_where
+ *get_subjects_where_literal
+ *get_subjects_where_resource
+ *get_triples
+ *has_literal_triple
+ *has_resource_triple
+ *has_triples_about
+ *is_empty
+ *make_resource_array
+ *merge
+ *qname_to_uri
+ *reify
+ *remove_all_triples
+ *remove_literal_triple
+ *remove_property_values
+ *remove_resource_triple
+ *remove_triples_about
+ *replace_resource
+ *set_namespace_mapping
+ *subject_has_property
+ *to_html
+ *to_json
+ *to_ntriples
+ *to_rdfxml
+ *to_turtle
+ *update_prefix_mappings
+ *uri_to_qname
 = Constructor Detail =
 
 == StoreCollection ==
