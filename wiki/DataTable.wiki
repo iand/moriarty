@@ -13,7 +13,7 @@ DataTable is the class that constructs the queries. DataTableResult (in datatabl
 
 DataTable uses method chaining to make the code more compact and readable. All of the following are equivalent:
 
-<pre><code>
+<code>
 $dt->select('name')->from('person')->limit(5);
 
 $dt->select('name');
@@ -21,7 +21,7 @@ $dt->from('person');
 $dt->limit(5);
 $dt->select('name')->limit(5);
 $dt->from('person');
-</code></pre>
+</code>
 
 == Constructors ==
  * [#DataTable DataTable]
