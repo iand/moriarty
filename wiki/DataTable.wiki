@@ -152,7 +152,9 @@ The following are equivalent:
 <code language="php">
 $dt->map('http://xmlns.com/foaf/0.1/name', 'name');
 $dt->map('http://xmlns.com/foaf/0.1/nick', 'nick');
+</code>
 
+<code language="php">
 $dt->map( array('http://xmlns.com/foaf/0.1/name' => 'name', 'http://xmlns.com/foaf/0.1/nick' => 'nick'));
 </code>
 
