@@ -27,8 +27,8 @@ $dt->from('person');
 == Constructors ==
  * [#DataTable DataTable] - The DataTable constructor requires the URI of the Talis Platform store as its first parameter, e.g.:   $dt = new DataTable('http://api.talis.com/stores/mystore');   Optionally a Credentials object can be supplied as the second parameter.
 == Methods ==
- * [#distinct distinct]
- * [#from from]
+ * [#distinct distinct] - Specifies that the query results must be distinct (i.e.
+ * [#from from] - Specifies types of the resources you want to select in your query.
  * [#get get] - Runs the constructed query and returns the results as an instance of DataTableResult
  * [#get_data_as_graph get_data_as_graph]
  * [#get_differences get_differences]
@@ -36,7 +36,7 @@ $dt->from('person');
  * [#get_sparql get_sparql]
  * [#get_update_changeset get_update_changeset]
  * [#insert insert]
- * [#limit limit]
+ * [#limit limit] - Specifies the maximum number of rows to return in the query and, optionally, an offset row number to start from.
  * [#map map] - Maps a URI to a short name.
  * [#optional optional]
  * [#order_by order_by]
@@ -73,7 +73,23 @@ Advanced: A third, optional, parameter allows an alternate HttpRequestFactory to
 public void distinct()
 }}}
 
+Specifies that the query results must be distinct (i.e. without duplicate rows).
 
+All of the following are valid:
+
+<code language="php">
+$dt->from('person');
+$dt->from('document,book');
+</code>
+
+The following code will select the unique foaf:names of every resource in a store:
+
+<code language="php">
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->select('name')->distinct();
+$dt->get();  
+</code>
 
 == from ==
 
@@ -81,7 +97,24 @@ public void distinct()
 public void from(mixed type_list)
 }}}
 
+Specifies types of the resources you want to select in your query. It takes a single parameter which is a comma separated list of types (which must be mapped short names). If multiple types are specified then the selected resources must have an rdf:type triple for every one of the types.
 
+All of the following are valid:
+
+<code language="php">
+$dt->from('person');
+$dt->from('document,book');
+</code>
+
+The following code will select the foaf:names of every foaf:Person in a store:
+
+<code language="php">
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->map('http://xmlns.com/foaf/0.1/Person', 'person');
+$dt->select('name')->from('person');
+$dt->get();
+</code>
 
 == get ==
 
@@ -145,7 +178,21 @@ public void insert(mixed type_list)
 public void limit(mixed value, mixed offset)
 }}}
 
+Specifies the maximum number of rows to return in the query and, optionally, an offset row number to start from. This could be used to implement a paging scheme. The default offset is zero.
 
+Select the first five names in a store:
+
+<code language="php">
+$dt->select('name')->limit(5);
+</code>
+
+Select names 15 through to 19 in a store:
+
+<code language="php">
+$dt->select('name')->distinct()->limit(5, 15);
+</code>
+
+Note: Using offset without specifying a sort order may lead to unpredictable results.
 
 == map ==
 
