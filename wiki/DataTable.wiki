@@ -25,7 +25,7 @@ $dt->from('person');
 </code>
 
 == Constructors ==
- * [#DataTable DataTable] - 
+ * [#DataTable DataTable] - The DataTable constructor requires the URI of the Talis Platform store as its first parameter, e.g.:   $dt = new DataTable('http://api.talis.com/stores/mystore');   Optionally a Credentials object can be supplied as the second parameter.
 == Methods ==
  * [#distinct distinct]
  * [#from from]
@@ -55,7 +55,15 @@ $dt->from('person');
 public DataTable(mixed store_uri, mixed credentials, mixed request_factory)
 }}}
 
+The DataTable constructor requires the URI of the Talis Platform store as its first parameter, e.g.:
 
+<code language="php">
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+</code>
+
+Optionally a Credentials object can be supplied as the second parameter.
+
+Advanced: A third, optional, parameter allows an alternate HttpRequestFactory to be specified for when you need an alternate HTTP implementation to the default cURL-based one
 
 = Method Detail =
 
