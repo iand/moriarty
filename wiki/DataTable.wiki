@@ -25,11 +25,11 @@ $dt->from('person');
 </code>
 
 == Constructors ==
- * [#DataTable DataTable]
+ * [#DataTable DataTable] - 
 == Methods ==
  * [#distinct distinct]
  * [#from from]
- * [#get get]
+ * [#get get] - Runs the constructed query and returns the results as an instance of DataTableResult
  * [#get_data_as_graph get_data_as_graph]
  * [#get_differences get_differences]
  * [#get_insert_graph get_insert_graph]
@@ -81,7 +81,7 @@ public void from(mixed type_list)
 public void get()
 }}}
 
-
+Runs the constructed query and returns the results as an instance of DataTableResult
 
 == get_data_as_graph ==
 
