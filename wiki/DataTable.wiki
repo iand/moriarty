@@ -6,7 +6,7 @@
 
 = Overview =
 
-DataTable is Moriarty's implementation of the Active Record pattern for RDF data. It provides a very simple way to create and run SPARQL queries.   DataTable is the class that constructs the queries. DataTableResult (in datatableresult.class.php) is a class that represents the results of a query. The interface to DataTable takes inspiration from CodeIgniter's Active Record class, adapted slightly for some RDF specifics. DataTable uses method chaining to make the code more compact and readable. All of the following are equivalent:  $dt->select('name')->from('person')->limit(5);  $dt->select('name'); $dt->from('person'); $dt->limit(5); $dt->select('name')->limit(5); $dt->from('person');
+DataTable is Moriarty's implementation of the Active Record pattern for RDF data. It provides a very simple way to create and run SPARQL queries.   DataTable is the class that constructs the queries. DataTableResult (in datatableresult.class.php) is a class that represents the results of a query. The interface to DataTable takes inspiration from CodeIgniter's Active Record class, adapted slightly for some RDF specifics.  DataTable uses method chaining to make the code more compact and readable. All of the following are equivalent:  <pre><code> $dt->select('name')->from('person')->limit(5);  $dt->select('name'); $dt->from('person'); $dt->limit(5); $dt->select('name')->limit(5); $dt->from('person'); </code></pre>
 
 == Constructors ==
  * [#DataTable DataTable]
