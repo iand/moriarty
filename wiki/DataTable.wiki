@@ -386,7 +386,7 @@ $dt->where('name', 'shaggy');
 $response = $dt->update();
 </code>
 
-The special variable "_uri" can be used to refer to a specific resource.
+The special variable "!_uri" can be used to refer to a specific resource.
 
 Update the resource description for http://example.com/thing to have a name of "scooby"
 
