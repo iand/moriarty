@@ -34,7 +34,7 @@ $dt->from('person');
  * [#get_differences get_differences]
  * [#get_insert_graph get_insert_graph]
  * [#get_sparql get_sparql] - Returns the generated SPARQL query
- * [#get_update_changeset get_update_changeset]
+ * [#get_update_changeset get_update_changeset] - Get the changeset that would be applied by the update method.
  * [#insert insert] - Inserts data into a platform store.
  * [#limit limit] - Specifies the maximum number of rows to return in the query and, optionally, an offset row number to start from.
  * [#map map] - Maps a URI to a short name.
@@ -43,7 +43,7 @@ $dt->from('person');
  * [#select select] - Specifies the variables you want to select in your query.
  * [#set set] - Sets the value of a field for use with the insert() method.
  * [#set_field_defaults set_field_defaults] - Specifies default metadata for a field.
- * [#update update]
+ * [#update update] - Updates data in a platform store.
  * [#where where] - Specifies a constraint on a literal value.
  * [#where_uri where_uri] - Specifies a constraint on a resource value.
 
@@ -159,15 +159,15 @@ Returns the generated SPARQL query
 == get_update_changeset ==
 
 {{{
-public void get_update_changeset()
+public ChangeSet get_update_changeset()
 }}}
 
-
+Get the changeset that would be applied by the update method.
 
 == insert ==
 
 {{{
-public void insert(mixed type_list)
+public HttpResponse insert(mixed type_list)
 }}}
 
 Inserts data into a platform store. It optionally takes a single parameter which is a comma separated list of types (which must be mapped short names). These are added as rdf:type properties for the inserted resource. If multiple types are specified then multiple rdf:types will be added.
@@ -371,10 +371,32 @@ $dt->set('created', 'literal', 'http://www.w3.org/2001/XMLSchema#dateTime');
 == update ==
 
 {{{
-public void update()
+public HttpResponse update()
 }}}
 
+Updates data in a platform store.
 
+Update the resource description for anything with a name of "shaggy" to have a name of "scooby":
+
+<code language="php">
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://example.org/name', 'name');
+$dt->set('name', 'scooby');
+$dt->where('name', 'shaggy');
+$response = $dt->update();
+</code>
+
+The special variable "_uri" can be used to refer to a specific resource.
+
+Update the resource description for http://example.com/thing to have a name of "scooby"
+
+<code language="php">
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://example.org/name', 'name');
+$dt->set('name', 'scooby');
+$dt->where('_uri', 'http://example.com/thing');
+$response = $dt->update();
+</code>
 
 == where ==
 
