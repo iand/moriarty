@@ -79,7 +79,13 @@ public void make_facet_uri(mixed query, mixed fields, mixed top)
 public array parse_facet_xml(string xml)
 }}}
 
-Parse the response from a facet query into an array.  This method returns an associative array where the keys correspond to field name and the values are  associative arrays with two keys:  <ul>  <li><em>value</em> => the value of the field</li>  <li><em>number</em> => the associated number returned by the facet service</li>  </ul><dl>
+Parse the response from a facet query into an array.
+This method returns an associative array where the keys correspond to field name and the values are
+associative arrays with two keys:
+<ul>
+<li><em>value</em> => the value of the field</li>
+<li><em>number</em> => the associated number returned by the facet service</li>
+</ul><dl>
 <dt>Parameters:</dt>
 <dd>xml - the facet response as an XML document</dd>
 </dl>

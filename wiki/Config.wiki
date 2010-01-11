@@ -45,7 +45,11 @@ Obtain a reference to the store's field/predicate map. This needs to be subseque
 public string get_first_fpmap_uri()
 }}}
 
-Gets the URI of the first field/predicate map in the store. This is much more complicated than first appears since a store can be configured (by Talis) to hold its field/predicate map anywhere. This method understands all the existing stores and their URI layouts.
+Gets the URI of the first field/predicate map in the store.
+This is much more complicated than first appears since a store
+can be configured (by Talis) to hold its field/predicate map
+anywhere. This method understands all the existing stores and their
+URI layouts.
 
 == get_first_query_profile ==
 
@@ -61,7 +65,11 @@ Obtain a reference to the store's query profile. This needs to be subsequently f
 public string get_first_query_profile_uri()
 }}}
 
-Gets the URI of the first query profile in the store. This is much more complicated than first appears since a store can be configured (by Talis) to hold its field/predicate map anywhere. This method understands all the existing stores and their URI layouts.
+Gets the URI of the first query profile in the store.
+This is much more complicated than first appears since a store
+can be configured (by Talis) to hold its field/predicate map
+anywhere. This method understands all the existing stores and their
+URI layouts.
 
 
 

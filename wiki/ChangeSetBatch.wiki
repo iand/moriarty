@@ -44,7 +44,8 @@ public ChangeSetBatch(mixed a)
 public void addT(mixed s, mixed p, mixed o, mixed o_type)
 }}}
 
-addT adds a triple to the internal simpleIndex holding all the changesets and statements<dl>
+addT
+adds a triple to the internal simpleIndex holding all the changesets and statements<dl>
 <dt>Author:</dt>
 <dd>Keith</dd>
 </dl>

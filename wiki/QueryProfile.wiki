@@ -111,7 +111,14 @@ Adds the field and weight to the query profile<dl>
 public QueryProfile copy_to(mixed new_uri)
 }}}
 
-Copies the field weights and other properties into new query profile.  Any URIs that are prefixed by the source query profile URI will be converted to  be prefixed with this query profile's URI    For example    http://example.org/source/queryprofile/1#name  Would become    http://example.org/destination/queryprofile/1#name
+Copies the field weights and other properties into new query profile.
+Any URIs that are prefixed by the source query profile URI will be converted to
+be prefixed with this query profile's URI
+
+For example
+  http://example.org/source/queryprofile/1#name
+Would become
+  http://example.org/destination/queryprofile/1#name
 
 == remove_field_weight ==
 

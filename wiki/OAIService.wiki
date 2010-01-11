@@ -60,7 +60,12 @@ public void make_list_records_uri(mixed resumption_token)
 public array parse_oai_xml(string xml)
 }}}
 
-Parse the response from an OAI query into an array.  This method returns an associative array with two keys  <ul>  <li><em>token</em> => the resumption token</li>  <li><em>items</em> => an array of items, each being an associative array with a single key called uri</li>  </ul><dl>
+Parse the response from an OAI query into an array.
+This method returns an associative array with two keys
+<ul>
+<li><em>token</em> => the resumption token</li>
+<li><em>items</em> => an array of items, each being an associative array with a single key called uri</li>
+</ul><dl>
 <dt>Parameters:</dt>
 <dd>xml - the OAI response as an XML document</dd>
 </dl>

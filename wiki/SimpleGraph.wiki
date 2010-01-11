@@ -191,7 +191,8 @@ Add the triples parsed from the supplied Turtle to the graph<dl>
 public array diff(array1, array2,)
 }}}
 
-diff returns a simpleIndex consisting of all the statements in array1 that weren't found in any of the subsequent arrays<dl>
+diff
+returns a simpleIndex consisting of all the statements in array1 that weren't found in any of the subsequent arrays<dl>
 <dt>Parameters:</dt>
 <dd>array2, - [array3, ...]</dd>
 <dt>Author:</dt>
@@ -527,7 +528,8 @@ Constructs an array containing the type of the resource and its value<dl>
 public array merge(array1, array2,)
 }}}
 
-merge merges all  rdf/json-style arrays passed as parameters<dl>
+merge
+merges all  rdf/json-style arrays passed as parameters<dl>
 <dt>Parameters:</dt>
 <dd>array2, - [array3, ...]</dd>
 <dt>Author:</dt>

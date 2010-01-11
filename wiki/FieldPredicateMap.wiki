@@ -117,7 +117,14 @@ Add a mapping between a predicate URI and a short name. Returns the URI of the n
 public FieldPredicateMap copy_to(mixed new_uri)
 }}}
 
-Copies the mappings and other properties into new field/predicate map.  Any URIs that are prefixed by the source field/predicate map's URI will be converted to  be prefixed with this field/predicate map's URI    For example<br/>    http://example.org/source/fpmaps/1#name<br/>  Would become<br/>    http://example.org/destination/fpmaps/1#name<br/><dl>
+Copies the mappings and other properties into new field/predicate map.
+Any URIs that are prefixed by the source field/predicate map's URI will be converted to
+be prefixed with this field/predicate map's URI
+
+For example<br/>
+  http://example.org/source/fpmaps/1#name<br/>
+Would become<br/>
+  http://example.org/destination/fpmaps/1#name<br/><dl>
 <dt>Author:</dt>
 <dd>Ian Davis</dd>
 </dl>

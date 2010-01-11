@@ -83,7 +83,15 @@ public void construct_to_triple_list(mixed query)
 public HttpResponse describe(mixed uri, string type, mixed output)
 }}}
 
-Obtain a bounded description of a given resource. Various types of description are supported:  <ul>  <li><em>cbd</em> - concise bounded description</li>  <li><em>scbd</em> - symmetric bounded description</li>  <li><em>lcbd</em> - labelled bounded description</li>  <li><em>slcbd</em> - symmetric labelled bounded description</li>  </ul>  See http://n2.talis.com/wiki/Bounded_Descriptions_in_RDF for more information on these types of description  Only cbd type is supported for arrays of URIs<dl>
+Obtain a bounded description of a given resource. Various types of description are supported:
+<ul>
+<li><em>cbd</em> - concise bounded description</li>
+<li><em>scbd</em> - symmetric bounded description</li>
+<li><em>lcbd</em> - labelled bounded description</li>
+<li><em>slcbd</em> - symmetric labelled bounded description</li>
+</ul>
+See http://n2.talis.com/wiki/Bounded_Descriptions_in_RDF for more information on these types of description
+Only cbd type is supported for arrays of URIs<dl>
 <dt>Parameters:</dt>
 <dd>uri - the URI of the resource to be described or an array of URIs</dd>
 <dd>type - the type of bounded description to be obtained (optional)</dd>
@@ -170,7 +178,16 @@ Parse the SPARQL XML results format from an ask query.<dl>
 public array parse_select_results(string xml)
 }}}
 
-Parse the SPARQL XML results format into an array. The array consist of one element per result.   Each element is an associative array where the keys correspond to the variable name and the values are  another associative array with the following keys:  <ul>  <li><em>type</em> => the type of the result binding, one of 'uri', 'literal' or 'bnode'</li>  <li><em>value</em> => the value of the result binding</li>  <li><em>lang</em> => the language code (if any) of the result binding</li>  <li><em>datatype</em> => the datatype uri (if any) of the result binding</li>  </ul>  For example: $results[2]['foo']['value'] will obtain the value of the foo variable for the third result<dl>
+Parse the SPARQL XML results format into an array. The array consist of one element per result. 
+Each element is an associative array where the keys correspond to the variable name and the values are
+another associative array with the following keys:
+<ul>
+<li><em>type</em> => the type of the result binding, one of 'uri', 'literal' or 'bnode'</li>
+<li><em>value</em> => the value of the result binding</li>
+<li><em>lang</em> => the language code (if any) of the result binding</li>
+<li><em>datatype</em> => the datatype uri (if any) of the result binding</li>
+</ul>
+For example: $results[2]['foo']['value'] will obtain the value of the foo variable for the third result<dl>
 <dt>Parameters:</dt>
 <dd>xml - the results XML to parse</dd>
 </dl>
