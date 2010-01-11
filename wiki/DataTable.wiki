@@ -37,7 +37,7 @@ $dt->from('person');
  * [#get_update_changeset get_update_changeset]
  * [#insert insert]
  * [#limit limit]
- * [#map map]
+ * [#map map] - Maps a URI to a short name.
  * [#optional optional]
  * [#order_by order_by]
  * [#select select]
@@ -145,7 +145,16 @@ public void limit(mixed value, mixed offset)
 public void map(mixed uri_or_array, mixed short_name)
 }}}
 
+Maps a URI to a short name. The first parameter can either be a URI or an associative array of uri and shortname mappings in which case the second parameter is ignored. Short names are used by other methods to refer to property and class URIs.
 
+The following are equivalent:
+
+<code language="php">
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->map('http://xmlns.com/foaf/0.1/nick', 'nick');
+
+$dt->map( array('http://xmlns.com/foaf/0.1/name' => 'name', 'http://xmlns.com/foaf/0.1/nick' => 'nick'));
+</code>
 
 == optional ==
 
