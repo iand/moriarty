@@ -141,7 +141,7 @@ public void m_literal(mixed v)
 == m_literalgenerator ==
 
 {{{
-public void m_literalgenerator(mixed v)
+private void m_literalgenerator(mixed v)
 }}}
 
 

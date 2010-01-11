@@ -24,7 +24,7 @@
  * [HttpClient]
   * [CurlHttpClient] - A CURL based http client implementation.
   * [PhpHttpClient] - A CURL based http client implementation.
- * [DataTable]
+ * [DataTable] - DataTable is Moriarty's implementation of the Active Record pattern for RDF data.
  * [DataTableResult]
  * [ExpFunction]
  * [FacetService] - Represents a store's facet service.
