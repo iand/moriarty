@@ -1,6 +1,7 @@
 #summary List of classes and interfaces
 #labels Featured
 
+ * [GraphPath] - EXPERIMENTAL: Represents a path selecting nodes from a simple graph Based on http://www.w3.org/2005/04/fresnel-info/fsl
  * [AndExpr]
  * [AnyLiteralMatcher]
  * [AugmentService] - Represents a store's augment service
@@ -30,7 +31,6 @@
  * [Graph] - The base class for graphs in a store.
   * [Metabox] - Represents a store's metabox.
   * [PrivateGraph] - Represents a private graph in a store.
- * [GraphPath] - EXPERIMENTAL: Represents a path selecting nodes from a simple graph Based on http://www.w3.org/2005/04/fresnel-info/fsl/
  * [HttpCache]
  * [HttpRequest] - Represents an HTTP protocol request.
  * [HttpRequestFactory] - A factory for creating instances of HttpRequests.
