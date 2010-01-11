@@ -40,7 +40,7 @@ $dt->from('person');
  * [#map map] - Maps a URI to a short name.
  * [#optional optional]
  * [#order_by order_by]
- * [#select select]
+ * [#select select] - Specifies the variables you want to select in your query.
  * [#set set]
  * [#set_field_defaults set_field_defaults]
  * [#update update]
@@ -188,7 +188,43 @@ public void order_by(mixed field, mixed ordering)
 public void select(mixed field_list)
 }}}
 
+Specifies the variables you want to select in your query. It takes a single parameter which is a comma separated list of field names (which must be mapped short names) or "dotted path names", explained below.
 
+All of the following are valid:
+
+<code language="php">
+$dt->select('name');
+$dt->select('name,age');
+$dt->select(' name  , age');
+</code>
+
+The following code will select the foaf:names of every resource in a store:
+
+<code language="php">
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->select('name');
+$dt->get();
+</code>
+
+In addition to mapped field names, DataTable supports an extended syntax for expressing traversal of the relationships in the RDF. Dotted path names are a pair of mapped names delimited by a full stop, e.g. friend.name
+
+Both parts of a dotted path name must be mapped short names. They can be interpreted as a join between resources in the data. friend.name can be translated as "the name of the resource that is the value of the matching result's friend property". In the query resules the dotted path name is referenced by replacing the dot with an underscore, so friend.name becomes a field called friend_name
+
+The following code will select the foaf:names of every resource in a store and the foaf:names of everyone they know:
+
+<code language="php">
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->map('http://xmlns.com/foaf/0.1/knows', 'knows');
+$dt->select('name,knows.name');
+$dt->get();
+$res = $dt->get();
+foreach ($res->result() as $row) {
+   echo $row->name;
+   echo $row->knows_name;
+}  
+</code>
 
 == set ==
 
