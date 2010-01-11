@@ -1,0 +1,107 @@
+#summary Examples of how to use DataTable
+#labels Example
+
+The following examples are based on the n² blog post [http://blogs.talis.com/n2/archives/818 SPARQLing data.gov.uk: Edubase Data]. You may find it useful to compare the code here with the SPARQL queries in that post. The numbering of the examples correspond to the numbering used in that blog post.
+
+All of these examples use the same set of mappings:
+{{{
+$mappings = array(
+  'http://education.data.gov.uk/def/school/School' => 'school',
+  'http://education.data.gov.uk/def/school/establishmentName' => 'name',
+  'http://education.data.gov.uk/def/school/districtAdministrative' => 'district',
+  'http://education.data.gov.uk/def/school/nurseryProvision' => 'nursery',
+  'http://education.data.gov.uk/def/school/statutoryLowAge' => 'lowage',
+  'http://education.data.gov.uk/def/school/statutoryHighAge' => 'highage',
+  'http://education.data.gov.uk/def/school/schoolCapacity' => 'capacity',
+  'http://education.data.gov.uk/def/school/pupilTeacherRatio' => 'ratio',
+  'http://education.data.gov.uk/def/school/openDate' => 'date',
+  'http://education.data.gov.uk/def/school/easting' => 'easting',
+  'http://education.data.gov.uk/def/school/northing' => 'northing',
+  'http://education.data.gov.uk/def/school/establishmentStatus' => 'status',
+  'http://education.data.gov.uk/def/school/reasonEstablishmentClosed' => 'reason',
+  'http://education.data.gov.uk/def/school/address' => 'address',
+  'http://education.data.gov.uk/def/school/address1' => 'address1',
+  'http://education.data.gov.uk/def/school/address2' => 'address2',
+  'http://education.data.gov.uk/def/school/postcode' => 'postcode',
+  'http://education.data.gov.uk/def/school/town' => 'town',
+  'http://education.data.gov.uk/def/school/parliamentaryConstituency' => 'cons',
+  'http://www.w3.org/2000/01/rdf-schema#label' => 'label',
+);
+}}}
+
+The datatable instance is created like this:
+
+{{{
+$dt = new DataTable('http://api.talis.com/stores/govuk-education');
+$dt->map($mappings);
+}}}
+
+
+== Example 1 ==
+Select the names of schools in the Administrative District of the City of London Ordering results by name of the school
+{{{
+$dt->select('name')->from('school')->order_by('name');
+$dt->where_uri('district', 'http://statistics.data.gov.uk/id/local-authority-district/00AA');
+}}}
+
+== Example 2 ==
+Which schools in the BANES area have a nursery?
+
+{{{
+$dt->select('name')->from('school')->order_by('name');
+$dt->where_uri('district', 'http://statistics.data.gov.uk/id/local-authority-district/00HA')->where('nursery', TRUE);
+}}}
+
+== Example 3 ==
+Select the names and addresses of schools in the Administrative District of the City of London
+
+{{{
+$dt->select('name,address.address1,address.address2,address.postcode,address.town')->from('school')->order_by('name');
+$dt->where_uri('district', 'http://statistics.data.gov.uk/id/local-authority-district/00AA');
+}}}
+
+== Example 4 ==
+Select the name, lowest and highest age ranges, capacity and pupil:teacher ratio for all schools in the Bath & North East Somerset district
+
+{{{
+$dt->select('name')->from('school')->order_by('name');
+$dt->where_uri('district', 'http://statistics.data.gov.uk/id/local-authority-district/00HA');
+$dt->optional('lowage');
+$dt->optional('highage');
+$dt->optional('capacity');
+$dt->optional('ratio');
+}}}
+
+
+== Example 5 ==
+What is the uri, name, and opening date of the oldest school in the UK?
+
+{{{
+$dt->select('name,date')->from('school')->order_by('date')->limit(1);
+}}}
+
+== Example 6 ==
+Select the name, easting and northing for the 100 newest schools in the UK
+
+{{{
+$dt->select('name,date')->from('school')->order_by('date','desc')->limit(100);
+$dt->optional('easting');
+$dt->optional('northing');
+}}}
+
+== Example 8 ==
+Select the uri, name, and the reason for closing for all schools that are currently scheduled for closure.
+
+{{{
+$dt->select('name,reason')->from('school');
+$dt->where_uri('status','http://education.data.gov.uk/def/school/EstablishmentStatus_Open_but_proposed_to_close');
+}}}
+
+== Example 9 ==
+In which parliamentary constituencies did schools close in 2008?
+
+{{{
+$dt->select('cons,label,cons.label')->from('school')->where_uri('status','http://education.data.gov.uk/def/school/EstablishmentStatus_Closed')->order_by('cons');
+$dt->where('date >', '2008-01-01');
+$dt->where('date <', '2009-01-01');
+}}}
