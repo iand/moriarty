@@ -33,19 +33,19 @@ $dt->from('person');
  * [#get_data_as_graph get_data_as_graph]
  * [#get_differences get_differences]
  * [#get_insert_graph get_insert_graph]
- * [#get_sparql get_sparql]
+ * [#get_sparql get_sparql] - Returns the generated SPARQL query
  * [#get_update_changeset get_update_changeset]
- * [#insert insert]
+ * [#insert insert] - Inserts data into a platform store.
  * [#limit limit] - Specifies the maximum number of rows to return in the query and, optionally, an offset row number to start from.
  * [#map map] - Maps a URI to a short name.
- * [#optional optional]
- * [#order_by order_by]
+ * [#optional optional] - Specifies the variables you want to optionally select in your query.
+ * [#order_by order_by] - Specifies a sort order for the query results.
  * [#select select] - Specifies the variables you want to select in your query.
- * [#set set]
- * [#set_field_defaults set_field_defaults]
+ * [#set set] - Sets the value of a field for use with the insert() method.
+ * [#set_field_defaults set_field_defaults] - Specifies default metadata for a field.
  * [#update update]
- * [#where where]
- * [#where_uri where_uri]
+ * [#where where] - Specifies a constraint on a literal value.
+ * [#where_uri where_uri] - Specifies a constraint on a resource value.
 
 = Constructor Detail =
 
@@ -154,7 +154,7 @@ public void get_insert_graph(mixed type_list)
 public void get_sparql()
 }}}
 
-
+Returns the generated SPARQL query
 
 == get_update_changeset ==
 
@@ -170,7 +170,17 @@ public void get_update_changeset()
 public void insert(mixed type_list)
 }}}
 
+Inserts data into a platform store. It optionally takes a single parameter which is a comma separated list of types (which must be mapped short names). These are added as rdf:type properties for the inserted resource. If multiple types are specified then multiple rdf:types will be added.
 
+Insert a new resource description for something with a name of "scooby" and a type of http://example.org/person:
+
+<code language="php">
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://example.org/name', 'name');
+$dt->map('http://example.org/person', 'person');
+$dt->set('name', 'scooby');
+$response = $dt->insert('person');
+</code>
 
 == limit ==
 
@@ -219,7 +229,16 @@ $dt->map( array('http://xmlns.com/foaf/0.1/name' => 'name', 'http://xmlns.com/fo
 public void optional(mixed field_list)
 }}}
 
+Specifies the variables you want to optionally select in your query. It takes a single parameter which is a comma separated list of field names (which must be mapped short names). Optional variables will be returned only if there is matching data for them, otherwise they have a null value. In contrast the select method requires that all results must have values for the fields specified. At least one variable must be specified by select before any optional variables can be used.
 
+Select the names of all the resources in a store and the nicknames of those resources that have them:
+
+<code language="php">
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->map('http://xmlns.com/foaf/0.1/nick', 'nick');
+$dt->select('name')->optional('nick');
+</code>
 
 == order_by ==
 
@@ -227,7 +246,27 @@ public void optional(mixed field_list)
 public void order_by(mixed field, mixed ordering)
 }}}
 
+Specifies a sort order for the query results. The first parameter is required and specifies the field name to sort by (which must be a mapped short name). The second parameter is optional and specifies the ordering of the results. It must be one of 'asc' (meaning ascending order) or 'desc' (meaning descending order). The default ordering is 'asc'.
 
+Select names and ages in a store and return them in age order
+
+<code language="php">
+$dt->select('name,age')->order_by('age');
+</code>
+
+Select names in a store and return them in descending order
+
+<code language="php">
+$dt->select('name')->order_by('name', 'desc');
+</code>
+
+Multiple orderings can be specified by repeating this method call:
+
+Select names and ages in a store and return them in age order. For example to sort by age and then by name descending:
+
+<code language="php">
+$dt->select('name,age')->order_by('age')->order_by('name', 'desc');   
+</code>
 
 == select ==
 
@@ -279,7 +318,31 @@ foreach ($res->result() as $row) {
 public void set(mixed field, mixed value, mixed type, mixed lang, mixed dt)
 }}}
 
+Sets the value of a field for use with the insert() method. The first parameter is required and specifies the field name to assign the value to (which must be a mapped short name). The second parameter is also required and specifies the new value for the field. Optionally a third parameter can be supplied to specify the type of the value, one of 'literal', 'uri' or 'bnode'. This will default to 'literal'. If the third parameter is 'literal', two further optional parameters may be supplied to specify the language or datatype of the value.
 
+Set value of 'name' to be the literal 'chocolate':
+
+<code language="php">
+$dt->set('name', 'chocolate');
+</code>
+
+Set value of 'name' to be the literal 'chocolate' with language code 'en':
+
+<code language="php">
+$dt->set('name', 'chocolate', 'literal', 'en');
+</code>
+
+Set value of 'age' to be the literal '34' with datatype of xsd:integer:
+
+<code language="php">
+$dt->set('age', '34', 'literal', null, 'http://www.w3.org/2001/XMLSchema#integer');
+</code>
+
+Set value of 'father' to be the URI 'http://example.org/bob':
+
+<code language="php">
+$dt->set('name', 'http://example.org/bob', 'uri');
+</code>
 
 == set_field_defaults ==
 
@@ -287,7 +350,23 @@ public void set(mixed field, mixed value, mixed type, mixed lang, mixed dt)
 public void set_field_defaults(mixed field, mixed type, mixed datatype)
 }}}
 
+Specifies default metadata for a field. These will be used by the set() method to set values for type and datatype for the specified field. The first parameter is required and specifies the field name (which must be a mapped short name). The second parameter is also required and specifies the type of the field, one of 'literal', 'uri' or 'bnode'. If the second parameter is 'literal' then a third optional parameter can be supplied which specifies a default datatype URI for the field.
 
+Use of this method can simplify and clarify code using set() and insert()
+
+Note: Values for type and datatype supplied via the set() method will override any default values set using this method.
+
+Set the default type for the 'name' field to be literal:
+
+<code language="php">
+$dt->set('name', 'literal');
+</code>
+
+Set the default datatype for the 'created' field to be xsd:dateTime:
+
+<code language="php">
+$dt->set('created', 'literal', 'http://www.w3.org/2001/XMLSchema#dateTime');  
+</code>
 
 == update ==
 
@@ -303,7 +382,46 @@ public void update()
 public void where(mixed field, mixed value)
 }}}
 
+Specifies a constraint on a literal value. Multiple calls to this method are conjunctive, i.e. all the constraints must apply to the resources.
 
+Select all names where the person has a nickname of santa:
+
+<code language="php">
+$dt = new DataTable('http://api.talis.com/stores/mystore');
+$dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+$dt->map('http://xmlns.com/foaf/0.1/nick', 'nick');
+$dt->select('name')->where('nick', 'santa');
+</code>
+
+Select all names where the person has a nickname of santa and a shoe size of 9:
+
+<code language="php">
+$dt->select('name')->where('nick', 'santa')->where('shoesize', 9);
+</code>
+
+The field name can be suffixed by a boolean operator, one of =, >, <, !=, <=, >=
+
+Select names of all resources that are older than 68
+
+<code language="php">
+$dt->select('name')->where('age >', 68);
+</code>
+
+Select names of all resources that do not have a nickname of santa:
+
+<code language="php">
+$dt->select('name')->where('nick !=', 'santa');
+</code>
+
+Boolean, floats and integer types are compared as those specific types, not strings:
+
+<code language="php">
+$dt->select('name')->where('jolly', TRUE);
+$dt->select('name')->where('age >=', 21);
+$dt->select('name')->where('shoesize <', 12.76);
+</code>
+
+SPARQL Note:* These constraints are implemented as filters with appropriate casts based on the type of variable supplied for the second parameter.
 
 == where_uri ==
 
@@ -311,7 +429,15 @@ public void where(mixed field, mixed value)
 public void where_uri(mixed field, mixed uri)
 }}}
 
+Specifies a constraint on a resource value. Multiple calls to this method are conjunctive, i.e. all the constraints must apply to the resources. The first parameter is required and specifies the field name to test (which must be a mapped short name). The second parameter is also required and specifies a URI against which the field name is tested.
 
+Select names of all resources that have a location of http://sws.geonames.org/6269203/
+
+<code language="php">
+$dt->select('name')->where('location', 'http://sws.geonames.org/6269203/');
+</code>
+ 
+SPARQL Note:* These constraints are implemented as additional graph patterns.
 
 
 
