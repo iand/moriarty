@@ -4,6 +4,8 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 /**
  * EXPERIMENTAL: Represents a path selecting nodes from a simple graph
  * Based on http://www.w3.org/2005/04/fresnel-info/fsl/
+ * 
+ * @package GraphPath
  */
 class GraphPath {
 
@@ -194,7 +196,7 @@ class GraphPath {
   }
 
 
-  function m_literalgenerator($v) {
+  private function m_literalgenerator($v) {
     if ((list($r, $v) = $this->m_string($v)) && $r !== FALSE) {
       return array(new LiteralGenerator($r), $v);
     }

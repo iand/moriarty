@@ -1,1 +1,1 @@
-See http://n2.talis.com/wiki/Moriarty for more information
+See http://code.google.com/p/moriarty/ for more information

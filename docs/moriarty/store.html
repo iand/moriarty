@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Tue, 09 Dec 2008 09:11:43 +0000">
+<meta name="when" content="Thu, 07 Jan 2010 15:45:52 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -55,12 +55,16 @@ Represents a platform store.
 <table id="summary_constr">
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
-<td class="description"><p class="name"><a href="#Store()">Store</a>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</p><p class="description"></p></td>
+<td class="description"><p class="name"><a href="#Store()">Store</a>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials, mixed request_factory)</p><p class="description"></p></td>
 </tr>
 </table>
 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#describe()">describe</a>(mixed uri, mixed type, mixed output)</p></td>
+</tr>
 <tr>
 <td class="type"> <a href="../moriarty/augmentservice.html">AugmentService</a></td>
 <td class="description"><p class="name"><a href="#get_augment_service()">get_augment_service</a>()</p><p class="description">
@@ -97,6 +101,11 @@ Obtain a reference to this store's metabox</p></td>
 Obtain a reference to this store's multisparql service</p></td>
 </tr>
 <tr>
+<td class="type"> <a href="../moriarty/oaiservice.html">OAIService</a></td>
+<td class="description"><p class="name"><a href="#get_oai_service()">get_oai_service</a>()</p><p class="description">
+Obtain a reference to this store's OAI service</p></td>
+</tr>
+<tr>
 <td class="type"> <a href="../moriarty/snapshots.html">Snapshots</a></td>
 <td class="description"><p class="name"><a href="#get_snapshots()">get_snapshots</a>()</p><p class="description">
 Obtain a reference to this store's snapshot collection</p></td>
@@ -106,11 +115,19 @@ Obtain a reference to this store's snapshot collection</p></td>
 <td class="description"><p class="name"><a href="#get_sparql_service()">get_sparql_service</a>()</p><p class="description">
 Obtain a reference to this store's sparql service</p></td>
 </tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#search()">search</a>(mixed query, mixed max, mixed offset, mixed sort)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#search_and_facet()">search_and_facet</a>(mixed query, mixed fields, mixed max, mixed offset, mixed sort, mixed top)</p></td>
+</tr>
 </table>
 
 <h2 id="detail_constr">Constructor Detail</h2>
 <h3 id="Store()">Store</h3>
-<code class="signature">public <strong>Store</strong>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</code>
+<code class="signature">public <strong>Store</strong>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials, mixed request_factory)</code>
 <div class="details">
 <p></p><dl>
 <dt>Parameters:</dt>
@@ -122,6 +139,13 @@ Obtain a reference to this store's sparql service</p></td>
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
+<h3 id="describe()">describe</h3>
+<code class="signature">public  void <strong>describe</strong>(mixed uri, mixed type, mixed output)</code>
+<div class="details">
+</div>
+
+<hr>
+
 <h3 id="get_augment_service()">get_augment_service</h3>
 <code class="signature">public  <a href="../moriarty/augmentservice.html">AugmentService</a> <strong>get_augment_service</strong>()</code>
 <div class="details">
@@ -206,6 +230,18 @@ Obtain a reference to this store's multisparql service</p><dl>
 
 <hr>
 
+<h3 id="get_oai_service()">get_oai_service</h3>
+<code class="signature">public  <a href="../moriarty/oaiservice.html">OAIService</a> <strong>get_oai_service</strong>()</code>
+<div class="details">
+<p>
+Obtain a reference to this store's OAI service</p><dl>
+<dt>See Also:</dt>
+<dd><a href="http://n2.talis.com/wiki/Store_OAI_Service">http://n2.talis.com/wiki/Store_OAI_Service</a></dd>
+</dl>
+</div>
+
+<hr>
+
 <h3 id="get_snapshots()">get_snapshots</h3>
 <code class="signature">public  <a href="../moriarty/snapshots.html">Snapshots</a> <strong>get_snapshots</strong>()</code>
 <div class="details">
@@ -226,6 +262,20 @@ Obtain a reference to this store's sparql service</p><dl>
 <dt>See Also:</dt>
 <dd><a href="http://n2.talis.com/wiki/Store_Sparql_Service">http://n2.talis.com/wiki/Store_Sparql_Service</a></dd>
 </dl>
+</div>
+
+<hr>
+
+<h3 id="search()">search</h3>
+<code class="signature">public  void <strong>search</strong>(mixed query, mixed max, mixed offset, mixed sort)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="search_and_facet()">search_and_facet</h3>
+<code class="signature">public  void <strong>search_and_facet</strong>(mixed query, mixed fields, mixed max, mixed offset, mixed sort, mixed top)</code>
+<div class="details">
 </div>
 
 <hr>
@@ -252,7 +302,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </div>
 <hr>
 
-<p id="footer">This document was generated by <a href="http://phpdoctor.sourceforge.net/">PHPDoctor: The PHP Documentation Creator</a></p>
+<p id="footer">Get Moriarty from <a href=http://code.google.com/p/moriarty/>Google Code</a>. This document was generated by <a href=http://phpdoctor.sourceforge.net/>PHPDoctor: The PHP Documentation Creator</a></p>
 
 </body>
 

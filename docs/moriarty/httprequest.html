@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Tue, 09 Dec 2008 09:11:43 +0000">
+<meta name="when" content="Thu, 07 Jan 2010 15:45:51 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -55,7 +55,7 @@ Represents an HTTP protocol request.
 <table id="summary_constr">
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
-<td class="description"><p class="name"><a href="#HttpRequest()">HttpRequest</a>(string method, string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</p><p class="description">
+<td class="description"><p class="name"><a href="#HttpRequest()">HttpRequest</a>(string method, string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials, mixed cache)</p><p class="description">
 Create a new instance of this class</p></td>
 </tr>
 </table>
@@ -63,9 +63,25 @@ Create a new instance of this class</p></td>
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#always_validate_cache()">always_validate_cache</a>(mixed val)</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#cache_id()">cache_id</a>()</p></td>
+</tr>
+<tr>
 <td class="type"> <a href="../moriarty/httpresponse.html">HttpResponse</a></td>
 <td class="description"><p class="name"><a href="#execute()">execute</a>()</p><p class="description">
 Issue the HTTP request</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#execute_async()">execute_async</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#get_async_response()">get_async_response</a>()</p></td>
 </tr>
 <tr>
 <td class="type"> string</td>
@@ -78,10 +94,6 @@ Get the content to be sent with the request</p></td>
 Obtain the HTTP headers to be sent with this request</p></td>
 </tr>
 <tr>
-<td class="type">private  void</td>
-<td class="description"><p class="name"><a href="#parse_response()">parse_response</a>(mixed response)</p><p class="description"></p></td>
-</tr>
-<tr>
 <td class="type"> void</td>
 <td class="description"><p class="name"><a href="#set_accept()">set_accept</a>(string val)</p><p class="description">
 Set the HTTP accept header for the request</p></td>
@@ -90,6 +102,10 @@ Set the HTTP accept header for the request</p></td>
 <td class="type"> void</td>
 <td class="description"><p class="name"><a href="#set_body()">set_body</a>(string val)</p><p class="description">
 Set content to be sent with the request</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#set_cache()">set_cache</a>(mixed cache)</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
@@ -107,15 +123,23 @@ Set the HTTP if-match header for the request</p></td>
 Set the HTTP if-none-match header for the request</p></td>
 </tr>
 <tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#set_proxy()">set_proxy</a>(mixed val)</p></td>
+</tr>
+<tr>
 <td class="type"> string</td>
 <td class="description"><p class="name"><a href="#to_string()">to_string</a>()</p><p class="description">
 Obtain a string representation of this request</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#use_stale_response_on_failure()">use_stale_response_on_failure</a>(mixed val)</p></td>
 </tr>
 </table>
 
 <h2 id="detail_constr">Constructor Detail</h2>
 <h3 id="HttpRequest()">HttpRequest</h3>
-<code class="signature">public <strong>HttpRequest</strong>(string method, string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</code>
+<code class="signature">public <strong>HttpRequest</strong>(string method, string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials, mixed cache)</code>
 <div class="details">
 <p>
 Create a new instance of this class</p><dl>
@@ -129,11 +153,39 @@ Create a new instance of this class</p><dl>
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
+<h3 id="always_validate_cache()">always_validate_cache</h3>
+<code class="signature">public  void <strong>always_validate_cache</strong>(mixed val)</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="cache_id()">cache_id</h3>
+<code class="signature">public  void <strong>cache_id</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
 <h3 id="execute()">execute</h3>
 <code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>execute</strong>()</code>
 <div class="details">
 <p>
 Issue the HTTP request</p></div>
+
+<hr>
+
+<h3 id="execute_async()">execute_async</h3>
+<code class="signature">public  void <strong>execute_async</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="get_async_response()">get_async_response</h3>
+<code class="signature">public  void <strong>get_async_response</strong>()</code>
+<div class="details">
+</div>
 
 <hr>
 
@@ -161,13 +213,6 @@ Obtain the HTTP headers to be sent with this request</p><dl>
 
 <hr>
 
-<h3 id="parse_response()">parse_response</h3>
-<code class="signature">private  void <strong>parse_response</strong>(mixed response)</code>
-<div class="details">
-<p></p></div>
-
-<hr>
-
 <h3 id="set_accept()">set_accept</h3>
 <code class="signature">public  void <strong>set_accept</strong>(string val)</code>
 <div class="details">
@@ -188,6 +233,13 @@ Set content to be sent with the request</p><dl>
 <dt>Parameters:</dt>
 <dd>val - the content to be sent</dd>
 </dl>
+</div>
+
+<hr>
+
+<h3 id="set_cache()">set_cache</h3>
+<code class="signature">public  void <strong>set_cache</strong>(mixed cache)</code>
+<div class="details">
 </div>
 
 <hr>
@@ -228,11 +280,25 @@ Set the HTTP if-none-match header for the request</p><dl>
 
 <hr>
 
+<h3 id="set_proxy()">set_proxy</h3>
+<code class="signature">public  void <strong>set_proxy</strong>(mixed val)</code>
+<div class="details">
+</div>
+
+<hr>
+
 <h3 id="to_string()">to_string</h3>
 <code class="signature">public  string <strong>to_string</strong>()</code>
 <div class="details">
 <p>
 Obtain a string representation of this request</p></div>
+
+<hr>
+
+<h3 id="use_stale_response_on_failure()">use_stale_response_on_failure</h3>
+<code class="signature">public  void <strong>use_stale_response_on_failure</strong>(mixed val)</code>
+<div class="details">
+</div>
 
 <hr>
 
@@ -258,7 +324,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </div>
 <hr>
 
-<p id="footer">This document was generated by <a href="http://phpdoctor.sourceforge.net/">PHPDoctor: The PHP Documentation Creator</a></p>
+<p id="footer">Get Moriarty from <a href=http://code.google.com/p/moriarty/>Google Code</a>. This document was generated by <a href=http://phpdoctor.sourceforge.net/>PHPDoctor: The PHP Documentation Creator</a></p>
 
 </body>
 

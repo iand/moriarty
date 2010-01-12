@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Tue, 09 Dec 2008 09:11:43 +0000">
+<meta name="when" content="Thu, 07 Jan 2010 15:45:51 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -57,7 +57,7 @@ Represents a simple data resource that exists on the network.
 <table id="summary_constr">
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
-<td class="description"><p class="name"><a href="#NetworkResource()">NetworkResource</a>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</p><p class="description">
+<td class="description"><p class="name"><a href="#NetworkResource()">NetworkResource</a>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials, mixed request_factory)</p><p class="description">
 Create a new instance of this class</p></td>
 </tr>
 </table>
@@ -81,7 +81,7 @@ Perform an HTTP GET on the resource's URI to obtain an RDF/XML document containi
 </tr>
 <tr>
 <td class="type"> string</td>
-<td class="description"><p class="name"><a href="#get_label()">get_label</a>()</p><p class="description">
+<td class="description"><p class="name"><a href="#get_label()">get_label</a>(mixed resource_uri, mixed capitalize, mixed use_qnames)</p><p class="description">
 Obtain the value of the resource's label property</p></td>
 </tr>
 <tr>
@@ -103,11 +103,11 @@ Set the value of the resource's label property</p></td>
 
 <table class="inherit">
 <tr><th colspan="2">Methods inherited from Moriarty.SimpleGraph</th></tr>
-<tr><td><a href="../moriarty/simplegraph.html#add_graph()">add_graph</a>, <a href="../moriarty/simplegraph.html#add_literal_triple()">add_literal_triple</a>, <a href="../moriarty/simplegraph.html#add_rdfxml()">add_rdfxml</a>, <a href="../moriarty/simplegraph.html#add_resource_triple()">add_resource_triple</a>, <a href="../moriarty/simplegraph.html#add_turtle()">add_turtle</a>, <a href="../moriarty/simplegraph.html#from_json()">from_json</a>, <a href="../moriarty/simplegraph.html#from_rdfxml()">from_rdfxml</a>, <a href="../moriarty/simplegraph.html#from_turtle()">from_turtle</a>, <a href="../moriarty/simplegraph.html#get_first_literal()">get_first_literal</a>, <a href="../moriarty/simplegraph.html#get_first_resource()">get_first_resource</a>, <a href="../moriarty/simplegraph.html#get_index()">get_index</a>, <a href="../moriarty/simplegraph.html#get_literal_triple_values()">get_literal_triple_values</a>, <a href="../moriarty/simplegraph.html#get_resource_triple_values()">get_resource_triple_values</a>, <a href="../moriarty/simplegraph.html#get_subject_property_values()">get_subject_property_values</a>, <a href="../moriarty/simplegraph.html#get_triples()">get_triples</a>, <a href="../moriarty/simplegraph.html#has_literal_triple()">has_literal_triple</a>, <a href="../moriarty/simplegraph.html#has_resource_triple()">has_resource_triple</a>, <a href="../moriarty/simplegraph.html#is_empty()">is_empty</a>, <a href="../moriarty/simplegraph.html#remove_all_triples()">remove_all_triples</a>, <a href="../moriarty/simplegraph.html#remove_property_values()">remove_property_values</a>, <a href="../moriarty/simplegraph.html#remove_resource_triple()">remove_resource_triple</a>, <a href="../moriarty/simplegraph.html#remove_triples_about()">remove_triples_about</a>, <a href="../moriarty/simplegraph.html#set_namespace_mapping()">set_namespace_mapping</a>, <a href="../moriarty/simplegraph.html#subject_has_property()">subject_has_property</a>, <a href="../moriarty/simplegraph.html#to_json()">to_json</a>, <a href="../moriarty/simplegraph.html#to_ntriples()">to_ntriples</a>, <a href="../moriarty/simplegraph.html#to_rdfxml()">to_rdfxml</a>, <a href="../moriarty/simplegraph.html#to_turtle()">to_turtle</a></td></tr></table>
+<tr><td><a href="../moriarty/simplegraph.html#add_graph()">add_graph</a>, <a href="../moriarty/simplegraph.html#add_json()">add_json</a>, <a href="../moriarty/simplegraph.html#add_labelling_property()">add_labelling_property</a>, <a href="../moriarty/simplegraph.html#add_literal_triple()">add_literal_triple</a>, <a href="../moriarty/simplegraph.html#add_rdf()">add_rdf</a>, <a href="../moriarty/simplegraph.html#add_rdfxml()">add_rdfxml</a>, <a href="../moriarty/simplegraph.html#add_resource_triple()">add_resource_triple</a>, <a href="../moriarty/simplegraph.html#add_turtle()">add_turtle</a>, <a href="../moriarty/simplegraph.html#diff()">diff</a>, <a href="../moriarty/simplegraph.html#from_json()">from_json</a>, <a href="../moriarty/simplegraph.html#from_rdfxml()">from_rdfxml</a>, <a href="../moriarty/simplegraph.html#from_turtle()">from_turtle</a>, <a href="../moriarty/simplegraph.html#get_description()">get_description</a>, <a href="../moriarty/simplegraph.html#get_first_literal()">get_first_literal</a>, <a href="../moriarty/simplegraph.html#get_first_resource()">get_first_resource</a>, <a href="../moriarty/simplegraph.html#get_index()">get_index</a>, <a href="../moriarty/simplegraph.html#get_label()">get_label</a>, <a href="../moriarty/simplegraph.html#get_literal_triple_values()">get_literal_triple_values</a>, <a href="../moriarty/simplegraph.html#get_prefix()">get_prefix</a>, <a href="../moriarty/simplegraph.html#get_resource_triple_values()">get_resource_triple_values</a>, <a href="../moriarty/simplegraph.html#get_subject_properties()">get_subject_properties</a>, <a href="../moriarty/simplegraph.html#get_subject_property_values()">get_subject_property_values</a>, <a href="../moriarty/simplegraph.html#get_subject_subgraph()">get_subject_subgraph</a>, <a href="../moriarty/simplegraph.html#get_subjects()">get_subjects</a>, <a href="../moriarty/simplegraph.html#get_subjects_of_type()">get_subjects_of_type</a>, <a href="../moriarty/simplegraph.html#get_subjects_where()">get_subjects_where</a>, <a href="../moriarty/simplegraph.html#get_subjects_where_literal()">get_subjects_where_literal</a>, <a href="../moriarty/simplegraph.html#get_subjects_where_resource()">get_subjects_where_resource</a>, <a href="../moriarty/simplegraph.html#get_triples()">get_triples</a>, <a href="../moriarty/simplegraph.html#has_literal_triple()">has_literal_triple</a>, <a href="../moriarty/simplegraph.html#has_resource_triple()">has_resource_triple</a>, <a href="../moriarty/simplegraph.html#has_triples_about()">has_triples_about</a>, <a href="../moriarty/simplegraph.html#is_empty()">is_empty</a>, <a href="../moriarty/simplegraph.html#make_resource_array()">make_resource_array</a>, <a href="../moriarty/simplegraph.html#merge()">merge</a>, <a href="../moriarty/simplegraph.html#qname_to_uri()">qname_to_uri</a>, <a href="../moriarty/simplegraph.html#reify()">reify</a>, <a href="../moriarty/simplegraph.html#remove_all_triples()">remove_all_triples</a>, <a href="../moriarty/simplegraph.html#remove_literal_triple()">remove_literal_triple</a>, <a href="../moriarty/simplegraph.html#remove_property_values()">remove_property_values</a>, <a href="../moriarty/simplegraph.html#remove_resource_triple()">remove_resource_triple</a>, <a href="../moriarty/simplegraph.html#remove_triples_about()">remove_triples_about</a>, <a href="../moriarty/simplegraph.html#replace_resource()">replace_resource</a>, <a href="../moriarty/simplegraph.html#set_namespace_mapping()">set_namespace_mapping</a>, <a href="../moriarty/simplegraph.html#subject_has_property()">subject_has_property</a>, <a href="../moriarty/simplegraph.html#to_html()">to_html</a>, <a href="../moriarty/simplegraph.html#to_json()">to_json</a>, <a href="../moriarty/simplegraph.html#to_ntriples()">to_ntriples</a>, <a href="../moriarty/simplegraph.html#to_rdfxml()">to_rdfxml</a>, <a href="../moriarty/simplegraph.html#to_turtle()">to_turtle</a>, <a href="../moriarty/simplegraph.html#update_prefix_mappings()">update_prefix_mappings</a>, <a href="../moriarty/simplegraph.html#uri_to_qname()">uri_to_qname</a></td></tr></table>
 
 <h2 id="detail_constr">Constructor Detail</h2>
 <h3 id="NetworkResource()">NetworkResource</h3>
-<code class="signature">public <strong>NetworkResource</strong>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</code>
+<code class="signature">public <strong>NetworkResource</strong>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials, mixed request_factory)</code>
 <div class="details">
 <p>
 Create a new instance of this class</p><dl>
@@ -145,7 +145,7 @@ Perform an HTTP GET on the resource's URI to obtain an RDF/XML document containi
 <hr>
 
 <h3 id="get_label()">get_label</h3>
-<code class="signature">public  string <strong>get_label</strong>()</code>
+<code class="signature">public  string <strong>get_label</strong>(mixed resource_uri, mixed capitalize, mixed use_qnames)</code>
 <div class="details">
 <p>
 Obtain the value of the resource's label property</p></div>
@@ -206,7 +206,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </div>
 <hr>
 
-<p id="footer">This document was generated by <a href="http://phpdoctor.sourceforge.net/">PHPDoctor: The PHP Documentation Creator</a></p>
+<p id="footer">Get Moriarty from <a href=http://code.google.com/p/moriarty/>Google Code</a>. This document was generated by <a href=http://phpdoctor.sourceforge.net/>PHPDoctor: The PHP Documentation Creator</a></p>
 
 </body>
 
