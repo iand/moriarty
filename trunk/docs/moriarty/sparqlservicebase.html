@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Tue, 09 Dec 2008 09:11:43 +0000">
+<meta name="when" content="Thu, 07 Jan 2010 15:45:52 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -55,7 +55,7 @@ Represents the base class for various sparql services.
 <table id="summary_constr">
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
-<td class="description"><p class="name"><a href="#SparqlServiceBase()">SparqlServiceBase</a>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</p><p class="description">
+<td class="description"><p class="name"><a href="#SparqlServiceBase()">SparqlServiceBase</a>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials, mixed request_factory)</p><p class="description">
 Create a new instance of this class</p></td>
 </tr>
 </table>
@@ -77,12 +77,12 @@ Execute an ask sparql query</p></td>
 </tr>
 <tr>
 <td class="type"> <a href="../moriarty/httpresponse.html">HttpResponse</a></td>
-<td class="description"><p class="name"><a href="#describe()">describe</a>(mixed uri)</p><p class="description">
-Obtain a bounded description of a given resource</p></td>
+<td class="description"><p class="name"><a href="#describe()">describe</a>(mixed uri, string type, mixed output)</p><p class="description">
+Obtain a bounded description of a given resource. </p></td>
 </tr>
 <tr>
 <td class="type"> <a href="../moriarty/simplegraph.html">SimpleGraph</a></td>
-<td class="description"><p class="name"><a href="#describe_to_simple_graph()">describe_to_simple_graph</a>(mixed uri)</p><p class="description">
+<td class="description"><p class="name"><a href="#describe_to_simple_graph()">describe_to_simple_graph</a>(mixed uri, mixed type)</p><p class="description">
 Obtain a bounded description of a given resource as a SimpleGraph. </p></td>
 </tr>
 <tr>
@@ -91,7 +91,7 @@ Obtain a bounded description of a given resource as a SimpleGraph. </p></td>
 </tr>
 <tr>
 <td class="type"> <a href="../moriarty/httpresponse.html">HttpResponse</a></td>
-<td class="description"><p class="name"><a href="#graph()">graph</a>(string query)</p><p class="description">
+<td class="description"><p class="name"><a href="#graph()">graph</a>(string query, mixed output)</p><p class="description">
 Execute a graph type sparql query, i.e. </p></td>
 </tr>
 <tr>
@@ -132,7 +132,7 @@ Execute a select sparql query and return the results as an array. </p></td>
 
 <h2 id="detail_constr">Constructor Detail</h2>
 <h3 id="SparqlServiceBase()">SparqlServiceBase</h3>
-<code class="signature">public <strong>SparqlServiceBase</strong>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials)</code>
+<code class="signature">public <strong>SparqlServiceBase</strong>(string uri, <a href="../moriarty/credentials.html">Credentials</a> credentials, mixed request_factory)</code>
 <div class="details">
 <p>
 Create a new instance of this class</p><dl>
@@ -180,19 +180,28 @@ Execute an ask sparql query</p><dl>
 <hr>
 
 <h3 id="describe()">describe</h3>
-<code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>describe</strong>(mixed uri)</code>
+<code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>describe</strong>(mixed uri, string type, mixed output)</code>
 <div class="details">
 <p>
-Obtain a bounded description of a given resource</p><dl>
+Obtain a bounded description of a given resource. Various types of description are supported:
+<ul>
+<li><em>cbd</em> - concise bounded description</li>
+<li><em>scbd</em> - symmetric bounded description</li>
+<li><em>lcbd</em> - labelled bounded description</li>
+<li><em>slcbd</em> - symmetric labelled bounded description</li>
+</ul>
+See http://n2.talis.com/wiki/Bounded_Descriptions_in_RDF for more information on these types of description
+Only cbd type is supported for arrays of URIs</p><dl>
 <dt>Parameters:</dt>
 <dd>uri - the URI of the resource to be described or an array of URIs</dd>
+<dd>type - the type of bounded description to be obtained (optional)</dd>
 </dl>
 </div>
 
 <hr>
 
 <h3 id="describe_to_simple_graph()">describe_to_simple_graph</h3>
-<code class="signature">public  <a href="../moriarty/simplegraph.html">SimpleGraph</a> <strong>describe_to_simple_graph</strong>(mixed uri)</code>
+<code class="signature">public  <a href="../moriarty/simplegraph.html">SimpleGraph</a> <strong>describe_to_simple_graph</strong>(mixed uri, mixed type)</code>
 <div class="details">
 <p>
 Obtain a bounded description of a given resource as a SimpleGraph. An empty SimpleGraph is returned if any HTTP errors occur.</p><dl>
@@ -215,7 +224,7 @@ Obtain a bounded description of a given resource as a SimpleGraph. An empty Simp
 <hr>
 
 <h3 id="graph()">graph</h3>
-<code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>graph</strong>(string query)</code>
+<code class="signature">public  <a href="../moriarty/httpresponse.html">HttpResponse</a> <strong>graph</strong>(string query, mixed output)</code>
 <div class="details">
 <p>
 Execute a graph type sparql query, i.e. a describe or a construct</p><dl>
@@ -345,7 +354,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </div>
 <hr>
 
-<p id="footer">This document was generated by <a href="http://phpdoctor.sourceforge.net/">PHPDoctor: The PHP Documentation Creator</a></p>
+<p id="footer">Get Moriarty from <a href=http://code.google.com/p/moriarty/>Google Code</a>. This document was generated by <a href=http://phpdoctor.sourceforge.net/>PHPDoctor: The PHP Documentation Creator</a></p>
 
 </body>
 

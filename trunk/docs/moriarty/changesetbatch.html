@@ -4,7 +4,7 @@
 <head>
 
 <meta name="generator" content="PHPDoctor 2RC2 (http://phpdoctor.sourceforge.net/)">
-<meta name="when" content="Tue, 09 Dec 2008 09:11:43 +0000">
+<meta name="when" content="Thu, 07 Jan 2010 15:45:51 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -55,75 +55,133 @@ Represents a batch of changesets. Can be used to create changesets based on the 
 </dl>
 <hr>
 
+<table id="summary_field">
+<tr><th colspan="2">Field Summary</th></tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#a">$a</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#after">$after</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#before">$before</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#subjectIndex">$subjectIndex</a></p></td>
+</tr>
+<tr>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#utils">$utils</a></p></td>
+</tr>
+</table>
+
 <table id="summary_constr">
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
-<td class="description"><p class="name"><a href="#ChangeSetBatch()">ChangeSetBatch</a>(array args)</p><p class="description">
-Create a new changeset batch. </p></td>
+<td class="description"><p class="name"><a href="#ChangeSetBatch()">ChangeSetBatch</a>(mixed a)</p></td>
 </tr>
 </table>
 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
-<td class="type"> array</td>
-<td class="description"><p class="name"><a href="#get_changesets()">get_changesets</a>()</p><p class="description">
-Returns the list of changesets constructed from the input graphs</p></td>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#addT()">addT</a>(mixed s, mixed p, mixed o, mixed o_type)</p><p class="description">
+addT
+adds a triple to the internal simpleIndex holding all the changesets and statements</p></td>
 </tr>
 <tr>
-<td class="type">private  void</td>
-<td class="description"><p class="name"><a href="#init()">init</a>()</p></td>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#hasChanges()">hasChanges</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#toRDFXML()">toRDFXML</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#to_rdfxml()">to_rdfxml</a>()</p></td>
 </tr>
 </table>
 
+<h2 id="detail_field">Field Detail</h2>
+<h3 id="a">a</h3>
+<code class="signature">public  mixed <strong>$a</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="after">after</h3>
+<code class="signature">public  mixed <strong>$after</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="before">before</h3>
+<code class="signature">public  mixed <strong>$before</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="subjectIndex">subjectIndex</h3>
+<code class="signature">public  mixed <strong>$subjectIndex</strong> = array()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="utils">utils</h3>
+<code class="signature">public  mixed <strong>$utils</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
 <h2 id="detail_constr">Constructor Detail</h2>
 <h3 id="ChangeSetBatch()">ChangeSetBatch</h3>
-<code class="signature">public <strong>ChangeSetBatch</strong>(array args)</code>
+<code class="signature">public <strong>ChangeSetBatch</strong>(mixed a)</code>
 <div class="details">
-<p>
-Create a new changeset batch. This will calculate the required additions and removals based on before and after versions of a graph. The args parameter is an associative array that may have the following fields:
-<ul>
-  <li><em>subjectOfChange</em> => a string representing the URI of the changeset's subject of change</li>
-  <li><em>createdDate</em> => a string representing the date of the changeset</li>
-  <li><em>creatorName</em> => a string representing the creator of the changeset</li>
-  <li><em>changeReason</em> => a string representing the reason for the changeset</li>
-  <li><em>after</em> => an array of triples representing the required state of the graph after the changeset would be applied</li>
-  <li><em>before</em> => an array of triples representing the state of the graph before the changeset is applied</li>
-  <li><em>after_rdfxml</em> => a string of RDF/XML representing the required state of the graph after the changeset would be applied. This is parsed and used to overwrite the 'after' parameter, if any</li>
-  <li><em>before_rdfxml</em> => a string of RDF/XML representing the state of the graph before the changeset is applied. This is parsed and used to overwrite the 'begin' parameter, if any.</li>
-</ul>
-If none of 'after', 'before', 'after_rdfxml' or 'before_rdfxml' is supplied then an empty changeset is constructed. <br />
-The 'after' and 'before' arrays are simple arrays where each element is a triple array with the following structure:
-<ul>
-  <li><em>s</em> => the subject URI</li>
-  <li><em>p</em> => the predicate URI</li>
-  <li><em>o</em> => the value of the object</li>
-  <li><em>o_type</em> => one of 'uri', 'bnode' or 'literal'</li>
-  <li><em>o_lang</em> => the language of the literal if any</li>
-  <li><em>o_datatype</em> => the data type URI of the literal if any</li>
-</ul></p><dl>
-<dt>Parameters:</dt>
-<dd>args - an associative array of parameters to use when constructing the changeset</dd>
-</dl>
 </div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<h3 id="get_changesets()">get_changesets</h3>
-<code class="signature">public  array <strong>get_changesets</strong>()</code>
+<h3 id="addT()">addT</h3>
+<code class="signature">public  void <strong>addT</strong>(mixed s, mixed p, mixed o, mixed o_type)</code>
 <div class="details">
 <p>
-Returns the list of changesets constructed from the input graphs</p><dl>
-<dt>Returns:</dt>
-<dd>the list of changesets</dd>
+addT
+adds a triple to the internal simpleIndex holding all the changesets and statements</p><dl>
+<dt>Author:</dt>
+<dd>Keith</dd>
 </dl>
 </div>
 
 <hr>
 
-<h3 id="init()">init</h3>
-<code class="signature">private  void <strong>init</strong>()</code>
+<h3 id="hasChanges()">hasChanges</h3>
+<code class="signature">public  void <strong>hasChanges</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="toRDFXML()">toRDFXML</h3>
+<code class="signature">public  void <strong>toRDFXML</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<h3 id="to_rdfxml()">to_rdfxml</h3>
+<code class="signature">public  void <strong>to_rdfxml</strong>()</code>
 <div class="details">
 </div>
 
@@ -151,7 +209,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </div>
 <hr>
 
-<p id="footer">This document was generated by <a href="http://phpdoctor.sourceforge.net/">PHPDoctor: The PHP Documentation Creator</a></p>
+<p id="footer">Get Moriarty from <a href=http://code.google.com/p/moriarty/>Google Code</a>. This document was generated by <a href=http://phpdoctor.sourceforge.net/>PHPDoctor: The PHP Documentation Creator</a></p>
 
 </body>
 

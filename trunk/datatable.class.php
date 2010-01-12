@@ -3,6 +3,27 @@ require_once MORIARTY_DIR. 'store.class.php';
 require_once MORIARTY_DIR. 'datatableresult.class.php';
 require_once MORIARTY_DIR. 'simplegraph.class.php';
 
+/**
+ * DataTable is Moriarty's implementation of the Active Record pattern for RDF data. It provides a very simple way to create and run SPARQL queries. See   DataTableExamples  for examples of how to use DataTable
+ *
+ * 
+ * DataTable is the class that constructs the queries. DataTableResult (in datatableresult.class.php) is a class that represents the results of a query. The interface to DataTable takes inspiration from CodeIgniter's Active Record class, adapted slightly for some RDF specifics.
+ * 
+ * DataTable uses method chaining to make the code more compact and readable. All of the following are equivalent:
+ *
+ * <code language="php">
+ * $dt->select('name')->from('person')->limit(5);
+ *
+ * $dt->select('name');
+ * $dt->from('person');
+ * $dt->limit(5);
+ * 
+ * $dt->select('name')->limit(5);
+ * $dt->from('person');
+ * </code>
+ * 
+*/
+
 class DataTable {
   var $_store_uri = '';
   var $_credentials = '';
@@ -26,12 +47,37 @@ class DataTable {
   var $_data = array();
   var $_field_defaults = array();
 
+  /**
+  * The DataTable constructor requires the URI of the Talis Platform store as its first parameter, e.g.:
+  * 
+  * <code language="php">
+  * $dt = new DataTable('http://api.talis.com/stores/mystore');
+  * </code>
+  * 
+  * Optionally a Credentials object can be supplied as the second parameter.
+  * 
+  * Advanced: A third, optional, parameter allows an alternate HttpRequestFactory to be specified for when you need an alternate HTTP implementation to the default cURL-based one 
+  */
   function __construct($store_uri, $credentials = null, $request_factory = null) {
     $this->_store_uri = $store_uri;
     $this->_credentials = $credentials;
     $this->_request_factory = $request_factory;
   }
 
+  /**
+  * Maps a URI to a short name. The first parameter can either be a URI or an associative array of uri and shortname mappings in which case the second parameter is ignored. Short names are used by other methods to refer to property and class URIs.
+  * 
+  * The following are equivalent:
+  * 
+  * <code language="php">
+  * $dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+  * $dt->map('http://xmlns.com/foaf/0.1/nick', 'nick');
+  * </code>
+  * 
+  * <code language="php">
+  * $dt->map( array('http://xmlns.com/foaf/0.1/name' => 'name', 'http://xmlns.com/foaf/0.1/nick' => 'nick'));
+  * </code>
+  */
   function map($uri_or_array, $short_name = null) {
     if (is_array($uri_or_array)) {
       foreach ($uri_or_array as $uri => $short_name) {
@@ -46,11 +92,68 @@ class DataTable {
     return $this;
   }
   
+  /**
+   * Specifies the maximum number of rows to return in the query and, optionally, an offset row number to start from. This could be used to implement a paging scheme. The default offset is zero.
+   * 
+   * Select the first five names in a store:
+   * 
+   * <code language="php">
+   * $dt->select('name')->limit(5);
+   * </code>
+   * 
+   * Select names 15 through to 19 in a store:
+   * 
+   * <code language="php">
+   * $dt->select('name')->distinct()->limit(5, 15);
+   * </code>
+   * 
+   * Note: Using offset without specifying a sort order may lead to unpredictable results. 
+   */
   function limit($value, $offset = 0) {
     $this->_limit = $value;
     $this->_offset = $offset;
     return $this;
   }
+  
+  /**
+  * Specifies the variables you want to select in your query. It takes a single parameter which is a comma separated list of field names (which must be mapped short names) or "dotted path names", explained below.
+  * 
+  * All of the following are valid:
+  * 
+  * <code language="php">
+  * $dt->select('name');
+  * $dt->select('name,age');
+  * $dt->select(' name  , age');
+  * </code>
+  * 
+  * The following code will select the foaf:names of every resource in a store:
+  * 
+  * <code language="php">
+  * $dt = new DataTable('http://api.talis.com/stores/mystore');
+  * $dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+  * $dt->select('name');
+  * $dt->get();
+  * </code>
+  * 
+  * In addition to mapped field names, DataTable supports an extended syntax for expressing traversal of the relationships in the RDF. Dotted path names are a pair of mapped names delimited by a full stop, e.g. friend.name
+  * 
+  * Both parts of a dotted path name must be mapped short names. They can be interpreted as a join between resources in the data. friend.name can be translated as "the name of the resource that is the value of the matching result's friend property". In the query resules the dotted path name is referenced by replacing the dot with an underscore, so friend.name becomes a field called friend_name
+  * 
+  * The following code will select the foaf:names of every resource in a store and the foaf:names of everyone they know:
+  * 
+  * <code language="php">
+  * $dt = new DataTable('http://api.talis.com/stores/mystore');
+  * $dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+  * $dt->map('http://xmlns.com/foaf/0.1/knows', 'knows');
+  * $dt->select('name,knows.name');
+  * $dt->get();
+  * $res = $dt->get();
+  *   * foreach ($res->result() as $row) {
+  *    echo $row->name;
+  *    echo $row->knows_name;
+  * }  
+  * </code>
+  */
   
   function select($field_list) {
     $field_list = trim($field_list);
@@ -70,7 +173,18 @@ class DataTable {
     return $this;
   }
 
-  
+  /**
+   * Specifies the variables you want to optionally select in your query. It takes a single parameter which is a comma separated list of field names (which must be mapped short names). Optional variables will be returned only if there is matching data for them, otherwise they have a null value. In contrast the select method requires that all results must have values for the fields specified. At least one variable must be specified by select before any optional variables can be used.
+   * 
+   * Select the names of all the resources in a store and the nicknames of those resources that have them:
+   * 
+   * <code language="php">
+   * $dt = new DataTable('http://api.talis.com/stores/mystore');
+   * $dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+   * $dt->map('http://xmlns.com/foaf/0.1/nick', 'nick');
+   * $dt->select('name')->optional('nick');
+   * </code>
+   */
   function optional($field_list) {
     $field_list = trim($field_list);
     $fields = explode(',', $field_list);
@@ -83,6 +197,26 @@ class DataTable {
     return $this;
   }
 
+  /**
+   * Specifies types of the resources you want to select in your query. It takes a single parameter which is a comma separated list of types (which must be mapped short names). If multiple types are specified then the selected resources must have an rdf:type triple for every one of the types.
+   * 
+   * All of the following are valid:
+   * 
+   * <code language="php">
+   * $dt->from('person');
+   * $dt->from('document,book');
+   * </code>
+   * 
+   * The following code will select the foaf:names of every foaf:Person in a store:
+   * 
+   * <code language="php">
+   * $dt = new DataTable('http://api.talis.com/stores/mystore');
+   * $dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+   * $dt->map('http://xmlns.com/foaf/0.1/Person', 'person');
+   * $dt->select('name')->from('person');
+   * $dt->get();
+   * </code>
+   */ 
   function from($type_list) {
     $type_list = trim($type_list);
     $types = explode(',', $type_list);
@@ -93,16 +227,100 @@ class DataTable {
     return $this;
   }
   
+  /**
+   * Specifies that the query results must be distinct (i.e. without duplicate rows).
+   * 
+   * All of the following are valid:
+   * 
+   * <code language="php">
+   * $dt->from('person');
+   * $dt->from('document,book');
+   * </code>
+   * 
+   * The following code will select the unique foaf:names of every resource in a store:
+   * 
+   * <code language="php">
+   * $dt = new DataTable('http://api.talis.com/stores/mystore');
+   * $dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+   * $dt->select('name')->distinct();
+   * $dt->get();  
+   * </code>
+   */
   function distinct() {
     $this->_is_distinct = TRUE;
     return $this;
-  }  
-
+  } 
+   
+  /**
+   * Specifies a sort order for the query results. The first parameter is required and specifies the field name to sort by (which must be a mapped short name). The second parameter is optional and specifies the ordering of the results. It must be one of 'asc' (meaning ascending order) or 'desc' (meaning descending order). The default ordering is 'asc'.
+   * 
+   * Select names and ages in a store and return them in age order
+   * 
+   * <code language="php">
+   * $dt->select('name,age')->order_by('age');
+   * </code>
+   * 
+   * Select names in a store and return them in descending order
+   * 
+   * <code language="php">
+   * $dt->select('name')->order_by('name', 'desc');
+   * </code>
+   * 
+   * Multiple orderings can be specified by repeating this method call:
+   * 
+   * Select names and ages in a store and return them in age order. For example to sort by age and then by name descending:
+   * 
+   * <code language="php">
+   * $dt->select('name,age')->order_by('age')->order_by('name', 'desc');   
+   * </code>
+   */
   function order_by($field, $ordering='ASC') {
     $this->_orders[] = array('field' => $field, 'ordering' => $ordering);
     return $this;
   }
 
+   /**
+   * Specifies a constraint on a literal value. Multiple calls to this method are conjunctive, i.e. all the constraints must apply to the resources.
+   * 
+   * Select all names where the person has a nickname of santa:
+   * 
+   * <code language="php">
+   * $dt = new DataTable('http://api.talis.com/stores/mystore');
+   * $dt->map('http://xmlns.com/foaf/0.1/name', 'name');
+   * $dt->map('http://xmlns.com/foaf/0.1/nick', 'nick');
+   * $dt->select('name')->where('nick', 'santa');
+   * </code>
+   * 
+   * Select all names where the person has a nickname of santa and a shoe size of 9:
+   * 
+   * <code language="php">
+   * $dt->select('name')->where('nick', 'santa')->where('shoesize', 9);
+   * </code>
+   * 
+   * The field name can be suffixed by a boolean operator, one of =, >, <, !=, <=, >=
+   * 
+   * Select names of all resources that are older than 68
+   * 
+   * <code language="php">
+   * $dt->select('name')->where('age >', 68);
+   * </code>
+   * 
+   * Select names of all resources that do not have a nickname of santa:
+   * 
+   * <code language="php">
+   * $dt->select('name')->where('nick !=', 'santa');
+   * </code>
+   * 
+   * Boolean, floats and integer types are compared as those specific types, not strings:
+   * 
+   * <code language="php">
+   * $dt->select('name')->where('jolly', TRUE);
+   * $dt->select('name')->where('age >=', 21);
+   * $dt->select('name')->where('shoesize <', 12.76);
+   * </code>
+   * 
+   * *SPARQL Note:* These constraints are implemented as filters with appropriate casts based on the type of variable supplied for the second parameter. 
+   */
   function where($field, $value) {
     if ($field === '_uri') {
       $this->_subject = $value;
@@ -120,11 +338,25 @@ class DataTable {
     return $this;
   }
 
+  /**
+   * Specifies a constraint on a resource value. Multiple calls to this method are conjunctive, i.e. all the constraints must apply to the resources. The first parameter is required and specifies the field name to test (which must be a mapped short name). The second parameter is also required and specifies a URI against which the field name is tested.
+   * 
+   * Select names of all resources that have a location of http://sws.geonames.org/6269203/
+   * 
+   * <code language="php">
+   * $dt->select('name')->where('location', 'http://sws.geonames.org/6269203/');
+   * </code>
+   *  
+   * *SPARQL Note:* These constraints are implemented as additional graph patterns. 
+   */
   function where_uri($field, $uri) {
     $this->_patterns[] = array('field'=>$field, 'value'=> '<' . $uri . '>');
     return $this;
   }
 
+  /**
+   * Returns the generated SPARQL query 
+   */
   function get_sparql() {
     $prefixes  = array();
 
@@ -299,6 +531,10 @@ class DataTable {
     return $this->_sparql;
   }
   
+  
+  /**
+   * Runs the constructed query and returns the results as an instance of DataTableResult 
+   */
   function get() {
     $store = new Store($this->_store_uri, $this->_credentials, $this->_request_factory);
     $ss = $store->get_sparql_service();
@@ -313,7 +549,35 @@ class DataTable {
     }
 
   }
-  
+
+
+  /**
+   * Sets the value of a field for use with the insert() method. The first parameter is required and specifies the field name to assign the value to (which must be a mapped short name). The second parameter is also required and specifies the new value for the field. Optionally a third parameter can be supplied to specify the type of the value, one of 'literal', 'uri' or 'bnode'. This will default to 'literal'. If the third parameter is 'literal', two further optional parameters may be supplied to specify the language or datatype of the value.
+   * 
+   * Set value of 'name' to be the literal 'chocolate':
+   * 
+   * <code language="php">
+   * $dt->set('name', 'chocolate');
+   * </code>
+   * 
+   * Set value of 'name' to be the literal 'chocolate' with language code 'en':
+   * 
+   * <code language="php">
+   * $dt->set('name', 'chocolate', 'literal', 'en');
+   * </code>
+   * 
+   * Set value of 'age' to be the literal '34' with datatype of xsd:integer:
+   * 
+   * <code language="php">
+   * $dt->set('age', '34', 'literal', null, 'http://www.w3.org/2001/XMLSchema#integer');
+   * </code>
+   * 
+   * Set value of 'father' to be the URI 'http://example.org/bob':
+   * 
+   * <code language="php">
+   * $dt->set('name', 'http://example.org/bob', 'uri');
+   * </code>
+   */
   function set($field, $value, $type=null, $lang=null, $dt=null) {
     if ($field === '_uri') {
       if ($value) {
@@ -334,6 +598,25 @@ class DataTable {
     return $this;
   }
 
+  /**
+   * Specifies default metadata for a field. These will be used by the set() method to set values for type and datatype for the specified field. The first parameter is required and specifies the field name (which must be a mapped short name). The second parameter is also required and specifies the type of the field, one of 'literal', 'uri' or 'bnode'. If the second parameter is 'literal' then a third optional parameter can be supplied which specifies a default datatype URI for the field.
+   * 
+   * Use of this method can simplify and clarify code using set() and insert()
+   * 
+   * Note: Values for type and datatype supplied via the set() method will override any default values set using this method.
+   * 
+   * Set the default type for the 'name' field to be literal:
+   * 
+   * <code language="php">
+   * $dt->set('name', 'literal');
+   * </code>
+   * 
+   * Set the default datatype for the 'created' field to be xsd:dateTime:
+   * 
+   * <code language="php">
+   * $dt->set('created', 'literal', 'http://www.w3.org/2001/XMLSchema#dateTime');  
+   * </code>
+   */
   function set_field_defaults($field, $type, $datatype = null) {
     $this->_field_defaults[$field] = array('type' => $type, 'datatype' => $datatype);
   }
@@ -395,6 +678,21 @@ class DataTable {
     return $g;
   }
 
+  /**
+   * Inserts data into a platform store. It optionally takes a single parameter which is a comma separated list of types (which must be mapped short names). These are added as rdf:type properties for the inserted resource. If multiple types are specified then multiple rdf:types will be added.
+   * 
+   * Insert a new resource description for something with a name of "scooby" and a type of http://example.org/person:
+   * 
+   * <code language="php">
+   * $dt = new DataTable('http://api.talis.com/stores/mystore');
+   * $dt->map('http://example.org/name', 'name');
+   * $dt->map('http://example.org/person', 'person');
+   * $dt->set('name', 'scooby');
+   * $response = $dt->insert('person');
+   * </code>
+   *
+   * @return HttpResponse
+   */
   function insert($type_list = '') {
     $store = new Store($this->_store_uri, $this->_credentials, $this->_request_factory);
     $mb = $store->get_metabox();
@@ -488,7 +786,11 @@ class DataTable {
     return $diffs;
   }
   
-  
+  /**
+   * Get the changeset that would be applied by the update method.
+   *
+   * @return ChangeSet
+   */
   function get_update_changeset() {
     $store = new Store($this->_store_uri, $this->_credentials, $this->_request_factory);
 
@@ -557,7 +859,33 @@ class DataTable {
     return $cs;
   }
   
-  
+  /**
+   * Updates data in a platform store.
+   * 
+   * Update the resource description for anything with a name of "shaggy" to have a name of "scooby":
+   * 
+   * <code language="php">
+   * $dt = new DataTable('http://api.talis.com/stores/mystore');
+   * $dt->map('http://example.org/name', 'name');
+   * $dt->set('name', 'scooby');
+   * $dt->where('name', 'shaggy');
+   * $response = $dt->update();
+   * </code>
+   *
+   * The special variable "!_uri" can be used to refer to a specific resource.
+   * 
+   * Update the resource description for http://example.com/thing to have a name of "scooby"
+   * 
+   * <code language="php">
+   * $dt = new DataTable('http://api.talis.com/stores/mystore');
+   * $dt->map('http://example.org/name', 'name');
+   * $dt->set('name', 'scooby');
+   * $dt->where('_uri', 'http://example.com/thing');
+   * $response = $dt->update();
+   * </code>
+   *
+   * @return HttpResponse
+   */  
   function update() {
     $cs= $this->get_update_changeset();
 

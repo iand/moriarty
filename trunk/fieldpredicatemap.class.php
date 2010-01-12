@@ -60,7 +60,7 @@ class FieldPredicateMap extends NetworkResource {
   }
 
   /**
-   * Copies the mappings and other properties into new field/predicate map
+   * Copies the mappings and other properties into new field/predicate map.
    * Any URIs that are prefixed by the source field/predicate map's URI will be converted to
    * be prefixed with this field/predicate map's URI
    *
