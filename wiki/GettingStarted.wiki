@@ -1,18 +1,18 @@
-#summary The basics of using Moriarty
+#summary An introduction to using Moriarty for the first time
 #labels Featured
 #sidebar Sidebar
 
 = Introduction =
 
-Moriarty is a simple PHP library for accessing the Talis Platform. It follows the Platform API very closely and wraps up many common tasks into convenient classes while remaining very lightweight. It also provides some simple classes for working with RDF in general. Moriarty is being developed by small community of developers and is in continual beta, subject to a slow stream of updates.
+Moriarty is a simple PHP library for accessing the [http://www.talis.com/platform Talis Platform]. It follows the Platform API very closely and wraps up many common tasks into convenient classes while remaining very lightweight. It also provides some simple classes for working with RDF in general. Moriarty is being developed by small community of developers and is in continual beta, subject to a slow stream of updates.
 
 = Dependencies =
 
-Moriarty requires Benjamin Novack's excellent [http://arc.semsol.org/ ARC libary for RDF processing] (later than version 2008-08-04). If you want to run the unit tests (you probably do) then you will also need [http://www.phpunit.de/ PHPUnit] version 3.3.0 or later
+Moriarty requires Benjamin Novack's excellent [http://arc.semsol.org/ ARC libary for RDF processing] (later than version 2008-08-04). If you want to run the unit tests (you probably do) then you will also need [http://www.phpunit.de/ PHPUnit] version 3.3.0 or later.
 
 = Environment =
 
-Moriarty uses a couple of constants to locate itself and its dependencies such as ARC. You should set these to the appropriate paths before you use Moriarty like this:
+Rather than mess around with system paths, Moriarty uses a couple of constants to locate itself and its dependencies such as ARC. You should set these to the appropriate paths before you use Moriarty like this:
 
 <code language="php">
 define('MORIARTY_DIR', '/var/www/lib/moriarty/');
@@ -29,21 +29,85 @@ To include a set of useful constants for popular property and class URIs add the
 require_once MORIARTY_DIR . 'moriarty.inc.php';
 </code>
 
+= Stores =
 
-= Hello, World!= 
+The main class for working with Talis Platform stores is, unimaginatively, called [Store]. It contains methods for accessing different parts of the [http://n2.talis.com/wiki/API_Site_Map Platform API]
 
-The Hello World for any Platform app is performing a simple search on a store. Here's how you could do that using Moriarty:
+To create a instance of the Store class bound to your store you pass the store's URI to the constructor (without a trailing slash):
 
 <code language="php">
-require_once 'store.class.php';
-require_once 'constants.inc.php';
- 
-$store = new Store('http://api.talis.com/stores/ukbib');
-$contentbox = $store->get_contentbox();
- 
-$results = $contentbox->search_to_resource_list("feynman", 10, 0);
-echo '<h1>' . $results->title . '</h1>';
-foreach ($results->items as $item) {
-  echo '<p><a href="' . $item[RSS_LINK][0] . '">' . $item[RSS_TITLE][0] . '</a></p>';
+require_once MORIARTY_DIR . 'store.class.php';
+$store = new Store('http://api.talis.com/stores/mystore');
+</code>
+
+Typically to perform an action on the store, you get a reference to one of the store's services and work with that. For example to perform a describe using the store's metabox you would use the get_metabox method like this:
+
+<code language="php">
+$store = new Store('http://api.talis.com/stores/mystore');
+$mb = $store->get_metabox();
+$response = $mb->describe('http://example.com/foo');
+</code>
+
+The describe method returns an [HttpResponse HTTP response] which you can check to get information about the result of the request. Moriarty doesn't try and pretend that the network doesn't exist so most calls to store services return the raw HTTP response. This might contain valuable information about the success or failure of your request. The response contains a useful method called is_success which returns true if the HTTP response code was in the range 200 to 299. This leads to the following common pattern:
+
+<code language="php">
+$store = new Store('http://api.talis.com/stores/mystore');
+$mb = $store->get_metabox();
+$response = $mb->describe('http://example.com/foo');
+if ( $response->is_success() ) {
+  // do something...
 }
+else {
+  // try something else
+}
+</code>
+
+Not getting direct results from method calls might take some getting used to, but we think it's really important not to hide the characteristics of the network that will always sit between your application and the Talis Platform. This kind of programming is not the same as having a single database on the same server as your application: networked applications need to be written differently to those operating on a single machine. Networks have latency, so it’s not wise to be calling these methods a thousand times a second and they are unreliable so you need to be able to handle failure gracefully and be prepared to retry (these are a couple of the [http://www.rgoarchitects.com/Files/fallacies.pdf 8 Fallacies of Distributed Computing]). Moriarty doesn’t try to hide these issues from the developer.
+
+= SPARQL =
+
+
+= Authentication =
+
+Most stores require authentication before you can submit content or rdf to them. The Platform uses a capability model (see [http://n2.talis.com/wiki/Capabilities Capabilities]) to determine what each user can do. Each service operation requires a specific capability. Moriarty handles all this with a Credentials class. Just pass a Credentials object to the Store's constructor and Moriarty will use it for subsequent interactions with that store.
+
+<code language="php">
+require_once MORIARTY_DIR . 'store.class.php';
+require_once MORIARTY_DIR . 'credentials.class.php';
+$credentials = new Credentials('user', 'mypassword');
+$store = new Store('http://api.talis.com/stores/mystore', $credentials );
+</code>
+
+*Note:* there is a known problem with some versions of the cURL libraries used by PHP where the authentication credentials are used even when the Platform doesn't issue a challenge (e.g. when you are simply searching a public store). You can work around this by using one instance of the Store class without credentials for unauthenticated requests and another instance with credentials for authenticated requests such as submitting RDF. Moriarty also supports using Manuel Lemos' pure-PHP httpclient as an alternative to cURL. You can find more information in [http://blogs.talis.com/n2/archives/89 this blog post].
+
+= Submitting RDF =
+
+Submitting RDF to a store is done by calling one of the metabox's submit methods. You can currently use submit_rdfxml or submit_turtle. Other submit methods will be added over time:
+
+<code language="php">
+$store = new Store('http://api.talis.com/stores/mystore', $credentials);
+$mb = $store->get_metabox();
+$response = $mb->submit_rdfxml( $my_rdf );
+if ( $response->is_success() ) {
+  // do something...  
+}
+</code>
+
+= Clearing A Store =
+
+Now you've put some random RDF into the store, you probably want to clear it out. This is pretty simple with Moriarty, just get the store's Scheduled Job Collection and schedule a Reset Data Job:
+
+<code language="php">
+require_once MORIARTY_DIR . 'store.class.php';
+require_once MORIARTY_DIR . 'credentials.class.php';
+ 
+$store = new Store('http://api.talis.com/stores/mystore', new Credentials('user', 'mypassword') );
+$queue = $store->get_job_queue();
+$queue->schedule_reset_data();
+</code>
+
+If you want it to occur at a specific time then just pass in the time to the schedule_reset_data method:
+
+<code language="php">
+$queue->schedule_reset_data( gmmktime(10, 11, 0, 12, 6, 2007) );
 </code>
