@@ -811,7 +811,7 @@ class DataTable {
       $cs->add_resource_triple($cs_subj, RDF_TYPE, CS_CHANGESET);
       $cs->add_resource_triple($cs_subj, CS_SUBJECTOFCHANGE, $s);
       $cs->add_literal_triple($cs_subj, CS_CHANGEREASON, "Update from DataTable");
-      $cs->add_literal_triple($cs_subj, CS_CREATEDDATE, date(DATE_ATOM));
+      $cs->add_literal_triple($cs_subj, CS_CREATEDDATE, gmdate(DATE_ATOM));
       $cs->add_literal_triple($cs_subj, CS_CREATORNAME, "Moriarty DataTable");
       
       if (count($removals) > 0) {
