@@ -106,8 +106,10 @@ $queue = $store->get_job_queue();
 $queue->schedule_reset_data();
 </code>
 
-If you want it to occur at a specific time then just pass in the time to the schedule_reset_data method:
+If you want it to occur at a specific time then just pass in the time to the [JobQueue#schedule_reset_data schedule_reset_data] method:
 
 <code language="php">
 $queue->schedule_reset_data( gmmktime(10, 11, 0, 12, 6, 2007) );
 </code>
+
+The [JobQueue] class also contains methods for scheduling [JobQueue#schedule_reindex reindexes], [JobQueue#schedule_snapshot snapshots] and [JobQueue#schedule_restore restores]
