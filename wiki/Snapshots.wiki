@@ -29,10 +29,12 @@ public Snapshots(mixed uri, mixed credentials)
 == get_errors ==
 
 {{{
-public array get_errors()
+public void get_errors()
 }}}
 
 get_errors<dl>
+<dt>Return:</dt>
+<dd>array</dd>
 <dt>Author:</dt>
 <dd>Keith Alexander</dd>
 </dl>
@@ -41,10 +43,12 @@ get_errors<dl>
 == get_item_uris ==
 
 {{{
-public array get_item_uris()
+public void get_item_uris()
 }}}
 
 get_snapshots<dl>
+<dt>Return:</dt>
+<dd>array</dd>
 <dt>Author:</dt>
 <dd>Keith Alexander</dd>
 </dl>

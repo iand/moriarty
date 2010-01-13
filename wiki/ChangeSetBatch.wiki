@@ -9,8 +9,8 @@
 Represents a batch of changesets. Can be used to create changesets based on the difference between two graphs.
 
 <dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Metabox#Batch_Updating">http://n2.talis.com/wiki/Metabox#Batch_Updating</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Metabox#Batch_Updating</dd>
 </dl>
 == Constructors ==
  * [#ChangeSetBatch ChangeSetBatch]
@@ -46,6 +46,8 @@ public void addT(mixed s, mixed p, mixed o, mixed o_type)
 
 addT
 adds a triple to the internal simpleIndex holding all the changesets and statements<dl>
+<dt>Return:</dt>
+<dd>void</dd>
 <dt>Author:</dt>
 <dd>Keith</dd>
 </dl>

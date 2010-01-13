@@ -77,26 +77,26 @@ public SimpleGraph(mixed graph)
 == add_graph ==
 
 {{{
-public void add_graph(SimpleGraph g)
+public void add_graph(mixed g)
 }}}
 
 Add the triples in the supplied graph to the current graph<dl>
-<dt>Parameters:</dt>
-<dd>g - the graph to read</dd>
+<dt>Param:</dt>
+<dd>SimpleGraph g the graph to read</dd>
 </dl>
 
 
 == add_json ==
 
 {{{
-public void add_json(string json)
+public void add_json(mixed json)
 }}}
 
 Add the triples parsed from the supplied JSON to the graph<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/RDF_JSON_Specification">http://n2.talis.com/wiki/RDF_JSON_Specification</a></dd>
-<dt>Parameters:</dt>
-<dd>json - the JSON to parse</dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/RDF_JSON_Specification</dd>
+<dt>Param:</dt>
+<dd>string json the JSON to parse</dd>
 </dl>
 
 
@@ -111,31 +111,31 @@ public void add_labelling_property(mixed p)
 == add_literal_triple ==
 
 {{{
-public boolean add_literal_triple(string s, string p, string o, string lang, string dt)
+public void add_literal_triple(mixed s, mixed p, mixed o, mixed lang, mixed dt)
 }}}
 
 Adds a triple with a literal object to the graph<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
-<dd>p - the predicate of the triple as a URI</dd>
-<dd>o - the object of the triple as a string</dd>
-<dd>lang - the language code of the triple's object (optional)</dd>
-<dd>dt - the datatype URI of the triple's object (optional)</dd>
-<dt>Returns:</dt>
-<dd>true if the triple was new, false if it already existed in the graph</dd>
+<dt>Param:</dt>
+<dd>string s the subject of the triple, either a URI or a blank node in the format _:name</dd>
+<dd>string p the predicate of the triple as a URI</dd>
+<dd>string o the object of the triple as a string</dd>
+<dd>string lang the language code of the triple's object (optional)</dd>
+<dd>string dt the datatype URI of the triple's object (optional)</dd>
+<dt>Return:</dt>
+<dd>boolean true if the triple was new, false if it already existed in the graph</dd>
 </dl>
 
 
 == add_rdf ==
 
 {{{
-public void add_rdf(string rdf, string base)
+public void add_rdf(mixed rdf, mixed base)
 }}}
 
 Add the triples parsed from the supplied RDF to the graph - let ARC guess the input<dl>
-<dt>Parameters:</dt>
-<dd>rdf - the RDF to parse</dd>
-<dd>base - the base URI against which relative URIs in the RDF document will be resolved</dd>
+<dt>Param:</dt>
+<dd>string rdf the RDF to parse</dd>
+<dd>string base the base URI against which relative URIs in the RDF document will be resolved</dd>
 <dt>Author:</dt>
 <dd>Keith Alexander</dd>
 </dl>
@@ -144,57 +144,59 @@ Add the triples parsed from the supplied RDF to the graph - let ARC guess the in
 == add_rdfxml ==
 
 {{{
-public void add_rdfxml(string rdfxml, string base)
+public void add_rdfxml(mixed rdfxml, mixed base)
 }}}
 
 Add the triples parsed from the supplied RDF/XML to the graph<dl>
-<dt>Parameters:</dt>
-<dd>rdfxml - the RDF/XML to parse</dd>
-<dd>base - the base URI against which relative URIs in the RDF/XML document will be resolved</dd>
+<dt>Param:</dt>
+<dd>string rdfxml the RDF/XML to parse</dd>
+<dd>string base the base URI against which relative URIs in the RDF/XML document will be resolved</dd>
 </dl>
 
 
 == add_resource_triple ==
 
 {{{
-public boolean add_resource_triple(string s, string p, string o)
+public void add_resource_triple(mixed s, mixed p, mixed o)
 }}}
 
 Adds a triple with a resource object to the graph<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
-<dd>p - the predicate URI of the triple</dd>
-<dd>o - the object of the triple, either a URI or a blank node in the format _:name</dd>
-<dt>Returns:</dt>
-<dd>true if the triple was new, false if it already existed in the graph</dd>
+<dt>Param:</dt>
+<dd>string s the subject of the triple, either a URI or a blank node in the format _:name</dd>
+<dd>string p the predicate URI of the triple</dd>
+<dd>string o the object of the triple, either a URI or a blank node in the format _:name</dd>
+<dt>Return:</dt>
+<dd>boolean true if the triple was new, false if it already existed in the graph</dd>
 </dl>
 
 
 == add_turtle ==
 
 {{{
-public void add_turtle(string turtle, string base)
+public void add_turtle(mixed turtle, mixed base)
 }}}
 
 Add the triples parsed from the supplied Turtle to the graph<dl>
-<dt>See Also:</dt>
-<dd><a href="http://www.dajobe.org/2004/01/turtle">http://www.dajobe.org/2004/01/turtle</a></dd>
-<dt>Parameters:</dt>
-<dd>turtle - the Turtle to parse</dd>
-<dd>base - the base URI against which relative URIs in the Turtle document will be resolved</dd>
+<dt>See:</dt>
+<dd>http://www.dajobe.org/2004/01/turtle</dd>
+<dt>Param:</dt>
+<dd>string turtle the Turtle to parse</dd>
+<dd>string base the base URI against which relative URIs in the Turtle document will be resolved</dd>
 </dl>
 
 
 == diff ==
 
 {{{
-public array diff(array1, array2,)
+public void diff()
 }}}
 
 diff
 returns a simpleIndex consisting of all the statements in array1 that weren't found in any of the subsequent arrays<dl>
-<dt>Parameters:</dt>
-<dd>array2, - [array3, ...]</dd>
+<dt>Param:</dt>
+<dd>array1, array2, [array3, ...]</dd>
+<dt>Return:</dt>
+<dd>array</dd>
 <dt>Author:</dt>
 <dd>Keith</dd>
 </dl>
@@ -203,42 +205,42 @@ returns a simpleIndex consisting of all the statements in array1 that weren't fo
 == from_json ==
 
 {{{
-public void from_json(string json)
+public void from_json(mixed json)
 }}}
 
 Replace the triples in the graph with those parsed from the supplied JSON<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/RDF_JSON_Specification">http://n2.talis.com/wiki/RDF_JSON_Specification</a></dd>
-<dt>Parameters:</dt>
-<dd>json - the JSON to parse</dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/RDF_JSON_Specification</dd>
+<dt>Param:</dt>
+<dd>string json the JSON to parse</dd>
 </dl>
 
 
 == from_rdfxml ==
 
 {{{
-public void from_rdfxml(string rdfxml, string base)
+public void from_rdfxml(mixed rdfxml, mixed base)
 }}}
 
 Replace the triples in the graph with those parsed from the supplied RDF/XML<dl>
-<dt>Parameters:</dt>
-<dd>rdfxml - the RDF/XML to parse</dd>
-<dd>base - the base URI against which relative URIs in the RDF/XML document will be resolved</dd>
+<dt>Param:</dt>
+<dd>string rdfxml the RDF/XML to parse</dd>
+<dd>string base the base URI against which relative URIs in the RDF/XML document will be resolved</dd>
 </dl>
 
 
 == from_turtle ==
 
 {{{
-public void from_turtle(string turtle, string base)
+public void from_turtle(mixed turtle, mixed base)
 }}}
 
 Replace the triples in the graph with those parsed from the supplied Turtle<dl>
-<dt>See Also:</dt>
-<dd><a href="http://www.dajobe.org/2004/01/turtle">http://www.dajobe.org/2004/01/turtle</a></dd>
-<dt>Parameters:</dt>
-<dd>turtle - the Turtle to parse</dd>
-<dd>base - the base URI against which relative URIs in the Turtle document will be resolved</dd>
+<dt>See:</dt>
+<dd>http://www.dajobe.org/2004/01/turtle</dd>
+<dt>Param:</dt>
+<dd>string turtle the Turtle to parse</dd>
+<dd>string base the base URI against which relative URIs in the Turtle document will be resolved</dd>
 </dl>
 
 
@@ -253,32 +255,32 @@ public void get_description(mixed resource_uri)
 == get_first_literal ==
 
 {{{
-public string get_first_literal(string s, string p, string default, mixed preferred_language)
+public void get_first_literal(mixed s, mixed p, mixed default, mixed preferred_language)
 }}}
 
 Fetch the first literal value for a given subject and predicate. If there are multiple possible values then one is selected at random.<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject to search for</dd>
-<dd>p - the predicate to search for, or an array of predicates</dd>
-<dd>default - a default value to use if no literal values are found</dd>
-<dt>Returns:</dt>
-<dd>the first literal value found or the supplied default if no values were found</dd>
+<dt>Param:</dt>
+<dd>string s the subject to search for</dd>
+<dd>string p the predicate to search for, or an array of predicates</dd>
+<dd>string default a default value to use if no literal values are found</dd>
+<dt>Return:</dt>
+<dd>string the first literal value found or the supplied default if no values were found</dd>
 </dl>
 
 
 == get_first_resource ==
 
 {{{
-public string get_first_resource(string s, string p, string default)
+public void get_first_resource(mixed s, mixed p, mixed default)
 }}}
 
 Fetch the first resource value for a given subject and predicate. If there are multiple possible values then one is selected at random.<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject to search for</dd>
-<dd>p - the predicate to search for</dd>
-<dd>default - a default value to use if no literal values are found</dd>
-<dt>Returns:</dt>
-<dd>the first resource value found or the supplied default if no values were found</dd>
+<dt>Param:</dt>
+<dd>string s the subject to search for</dd>
+<dd>string p the predicate to search for</dd>
+<dd>string default a default value to use if no literal values are found</dd>
+<dt>Return:</dt>
+<dd>string the first resource value found or the supplied default if no values were found</dd>
 </dl>
 
 
@@ -289,8 +291,8 @@ public void get_index()
 }}}
 
 Get a copy of the graph's triple index<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/RDF_PHP_Specification">http://n2.talis.com/wiki/RDF_PHP_Specification</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/RDF_PHP_Specification</dd>
 </dl>
 
 
@@ -305,15 +307,15 @@ public void get_label(mixed resource_uri, mixed capitalize, mixed use_qnames)
 == get_literal_triple_values ==
 
 {{{
-public array get_literal_triple_values(string s, string p)
+public void get_literal_triple_values(mixed s, mixed p)
 }}}
 
 Fetch the literal values for a given subject and predicate.<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject to search for</dd>
-<dd>p - the predicate to search for</dd>
-<dt>Returns:</dt>
-<dd>list of literals that are the objects of triples with the supplied subject and predicate</dd>
+<dt>Param:</dt>
+<dd>string s the subject to search for</dd>
+<dd>string p the predicate to search for</dd>
+<dt>Return:</dt>
+<dd>array list of literals that are the objects of triples with the supplied subject and predicate</dd>
 </dl>
 
 
@@ -328,79 +330,85 @@ public void get_prefix(mixed ns)
 == get_resource_triple_values ==
 
 {{{
-public array get_resource_triple_values(string s, string p)
+public void get_resource_triple_values(mixed s, mixed p)
 }}}
 
 Fetch the resource values for a given subject and predicate.<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject to search for</dd>
-<dd>p - the predicate to search for</dd>
-<dt>Returns:</dt>
-<dd>list of URIs and blank nodes that are the objects of triples with the supplied subject and predicate</dd>
+<dt>Param:</dt>
+<dd>string s the subject to search for</dd>
+<dd>string p the predicate to search for</dd>
+<dt>Return:</dt>
+<dd>array list of URIs and blank nodes that are the objects of triples with the supplied subject and predicate</dd>
 </dl>
 
 
 == get_subject_properties ==
 
 {{{
-public array get_subject_properties(string s, boolean distinct)
+public void get_subject_properties(mixed s, mixed distinct)
 }}}
 
 Fetch the properties of a given subject and predicate.<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject to search for</dd>
-<dd>distinct - if true then duplicate properties are included only once (optional, default is true)</dd>
-<dt>Returns:</dt>
-<dd>list of property URIs</dd>
+<dt>Param:</dt>
+<dd>string s the subject to search for</dd>
+<dd>boolean distinct if true then duplicate properties are included only once (optional, default is true)</dd>
+<dt>Return:</dt>
+<dd>array list of property URIs</dd>
 </dl>
 
 
 == get_subject_property_values ==
 
 {{{
-public array get_subject_property_values(string s, string p)
+public void get_subject_property_values(mixed s, mixed p)
 }}}
 
 Fetch the values for a given subject and predicate.<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject to search for</dd>
-<dd>p - the predicate to search for</dd>
-<dt>Returns:</dt>
-<dd>list of values of triples with the supplied subject and predicate</dd>
+<dt>Param:</dt>
+<dd>string s the subject to search for</dd>
+<dd>string p the predicate to search for</dd>
+<dt>Return:</dt>
+<dd>array list of values of triples with the supplied subject and predicate</dd>
 </dl>
 
 
 == get_subject_subgraph ==
 
 {{{
-public SimpleGraph get_subject_subgraph(string s)
+public void get_subject_subgraph(mixed s)
 }}}
 
 Fetch a subgraph where all triples have given subject<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject to search for</dd>
-<dt>Returns:</dt>
-<dd>triples with the supplied subject</dd>
+<dt>Param:</dt>
+<dd>string s the subject to search for</dd>
+<dt>Return:</dt>
+<dd>SimpleGraph triples with the supplied subject</dd>
 </dl>
 
 
 == get_subjects ==
 
 {{{
-public array get_subjects()
+public void get_subjects()
 }}}
 
-Fetch an array of all the subjects
+Fetch an array of all the subjects<dl>
+<dt>Return:</dt>
+<dd>array</dd>
+</dl>
+
 
 == get_subjects_of_type ==
 
 {{{
-public array get_subjects_of_type(mixed t, $t the)
+public void get_subjects_of_type(mixed t)
 }}}
 
 Fetch an array of all the subject that have and rdf type that matches that given<dl>
-<dt>Parameters:</dt>
-<dd>the - type to match</dd>
+<dt>Param:</dt>
+<dd>$t the type to match</dd>
+<dt>Return:</dt>
+<dd>array</dd>
 </dl>
 
 
@@ -415,26 +423,30 @@ private void get_subjects_where(mixed p, mixed o, mixed type)
 == get_subjects_where_literal ==
 
 {{{
-public array get_subjects_where_literal(mixed p, mixed o, $o the)
+public void get_subjects_where_literal(mixed p, mixed o)
 }}}
 
 Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a literal value<dl>
-<dt>Parameters:</dt>
-<dd>the - predicate to match</dd>
-<dd>the - resource object to match</dd>
+<dt>Param:</dt>
+<dd>$p the predicate to match</dd>
+<dd>$o the resource object to match</dd>
+<dt>Return:</dt>
+<dd>array</dd>
 </dl>
 
 
 == get_subjects_where_resource ==
 
 {{{
-public array get_subjects_where_resource(mixed p, mixed o, $o the)
+public void get_subjects_where_resource(mixed p, mixed o)
 }}}
 
 Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a resource<dl>
-<dt>Parameters:</dt>
-<dd>the - predicate to match</dd>
-<dd>the - resource object to match</dd>
+<dt>Param:</dt>
+<dd>$p the predicate to match</dd>
+<dd>$o the resource object to match</dd>
+<dt>Return:</dt>
+<dd>array</dd>
 </dl>
 
 
@@ -453,85 +465,87 @@ public void get_triples()
 == has_literal_triple ==
 
 {{{
-public boolean has_literal_triple(string s, string p, string o, mixed lang, mixed dt)
+public void has_literal_triple(mixed s, mixed p, mixed o, mixed lang, mixed dt)
 }}}
 
 Tests whether the graph contains the given triple<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
-<dd>p - the predicate URI of the triple</dd>
-<dd>o - the object of the triple as a literal value</dd>
-<dt>Returns:</dt>
-<dd>true if the triple exists in the graph, false otherwise</dd>
+<dt>Param:</dt>
+<dd>string s the subject of the triple, either a URI or a blank node in the format _:name</dd>
+<dd>string p the predicate URI of the triple</dd>
+<dd>string o the object of the triple as a literal value</dd>
+<dt>Return:</dt>
+<dd>boolean true if the triple exists in the graph, false otherwise</dd>
 </dl>
 
 
 == has_resource_triple ==
 
 {{{
-public boolean has_resource_triple(string s, string p, string o)
+public void has_resource_triple(mixed s, mixed p, mixed o)
 }}}
 
 Tests whether the graph contains the given triple<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
-<dd>p - the predicate URI of the triple</dd>
-<dd>o - the object of the triple, either a URI or a blank node in the format _:name</dd>
-<dt>Returns:</dt>
-<dd>true if the triple exists in the graph, false otherwise</dd>
+<dt>Param:</dt>
+<dd>string s the subject of the triple, either a URI or a blank node in the format _:name</dd>
+<dd>string p the predicate URI of the triple</dd>
+<dd>string o the object of the triple, either a URI or a blank node in the format _:name</dd>
+<dt>Return:</dt>
+<dd>boolean true if the triple exists in the graph, false otherwise</dd>
 </dl>
 
 
 == has_triples_about ==
 
 {{{
-public boolean has_triples_about(string s)
+public void has_triples_about(mixed s)
 }}}
 
 Tests whether the graph contains a triple with the given subject<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
-<dt>Returns:</dt>
-<dd>true if the graph contains any triples with the specified subject, false otherwise</dd>
+<dt>Param:</dt>
+<dd>string s the subject of the triple, either a URI or a blank node in the format _:name</dd>
+<dt>Return:</dt>
+<dd>boolean true if the graph contains any triples with the specified subject, false otherwise</dd>
 </dl>
 
 
 == is_empty ==
 
 {{{
-public boolean is_empty()
+public void is_empty()
 }}}
 
 Tests whether the graph contains any triples<dl>
-<dt>Returns:</dt>
-<dd>true if the graph contains no triples, false otherwise</dd>
+<dt>Return:</dt>
+<dd>boolean true if the graph contains no triples, false otherwise</dd>
 </dl>
 
 
 == make_resource_array ==
 
 {{{
-public array make_resource_array(string resource)
+public void make_resource_array(mixed resource)
 }}}
 
 Constructs an array containing the type of the resource and its value<dl>
-<dt>Parameters:</dt>
-<dd>resource - a URI or blank node identifier (prefixed with _: e.g. _:name)</dd>
-<dt>Returns:</dt>
-<dd>an associative array with two keys: 'type' and 'value'. Type is either bnode or uri</dd>
+<dt>Param:</dt>
+<dd>string resource a URI or blank node identifier (prefixed with _: e.g. _:name)</dd>
+<dt>Return:</dt>
+<dd>array an associative array with two keys: 'type' and 'value'. Type is either bnode or uri</dd>
 </dl>
 
 
 == merge ==
 
 {{{
-public array merge(array1, array2,)
+public void merge()
 }}}
 
 merge
 merges all  rdf/json-style arrays passed as parameters<dl>
-<dt>Parameters:</dt>
-<dd>array2, - [array3, ...]</dd>
+<dt>Param:</dt>
+<dd>array1, array2, [array3, ...]</dd>
+<dt>Return:</dt>
+<dd>array</dd>
 <dt>Author:</dt>
 <dd>Keith</dd>
 </dl>
@@ -540,14 +554,14 @@ merges all  rdf/json-style arrays passed as parameters<dl>
 == qname_to_uri ==
 
 {{{
-public string qname_to_uri(string qname)
+public void qname_to_uri(mixed qname)
 }}}
 
 Convert a QName to a URI using registered namespace prefixes<dl>
-<dt>Parameters:</dt>
-<dd>qname - the QName to convert</dd>
-<dt>Returns:</dt>
-<dd>the URI corresponding to the QName if a suitable prefix exists, null otherwise</dd>
+<dt>Param:</dt>
+<dd>string qname the QName to convert</dd>
+<dt>Return:</dt>
+<dd>string the URI corresponding to the QName if a suitable prefix exists, null otherwise</dd>
 </dl>
 
 
@@ -578,39 +592,39 @@ public void remove_literal_triple(mixed s, mixed p, mixed o)
 == remove_property_values ==
 
 {{{
-public void remove_property_values(string s, string p)
+public void remove_property_values(mixed s, mixed p)
 }}}
 
 Removes all triples with the given subject and predicate<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
-<dd>p - the predicate URI of the triple</dd>
+<dt>Param:</dt>
+<dd>string s the subject of the triple, either a URI or a blank node in the format _:name</dd>
+<dd>string p the predicate URI of the triple</dd>
 </dl>
 
 
 == remove_resource_triple ==
 
 {{{
-public void remove_resource_triple(string s, string p, string o)
+public void remove_resource_triple(mixed s, mixed p, mixed o)
 }}}
 
 Remove a triple with a resource object from the graph<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
-<dd>p - the predicate URI of the triple</dd>
-<dd>o - the object of the triple, either a URI or a blank node in the format _:name</dd>
+<dt>Param:</dt>
+<dd>string s the subject of the triple, either a URI or a blank node in the format _:name</dd>
+<dd>string p the predicate URI of the triple</dd>
+<dd>string o the object of the triple, either a URI or a blank node in the format _:name</dd>
 </dl>
 
 
 == remove_triples_about ==
 
 {{{
-public void remove_triples_about(string s)
+public void remove_triples_about(mixed s)
 }}}
 
 Remove all triples having the supplied subject<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
+<dt>Param:</dt>
+<dd>string s the subject of the triple, either a URI or a blank node in the format _:name</dd>
 </dl>
 
 
@@ -625,94 +639,94 @@ public void replace_resource(mixed look_for, mixed replace_with)
 == set_namespace_mapping ==
 
 {{{
-public void set_namespace_mapping(string prefix, string uri)
+public void set_namespace_mapping(mixed prefix, mixed uri)
 }}}
 
 Map a portion of a URI to a short prefix for use when serialising the graph<dl>
-<dt>Parameters:</dt>
-<dd>prefix - the namespace prefix to associate with the URI</dd>
-<dd>uri - the URI to associate with the prefix</dd>
+<dt>Param:</dt>
+<dd>string prefix the namespace prefix to associate with the URI</dd>
+<dd>string uri the URI to associate with the prefix</dd>
 </dl>
 
 
 == subject_has_property ==
 
 {{{
-public boolean subject_has_property(string s, string p)
+public void subject_has_property(mixed s, mixed p)
 }}}
 
 Tests whether the graph contains a triple with the given subject and predicate<dl>
-<dt>Parameters:</dt>
-<dd>s - the subject of the triple, either a URI or a blank node in the format _:name</dd>
-<dd>p - the predicate URI of the triple</dd>
-<dt>Returns:</dt>
-<dd>true if a matching triple exists in the graph, false otherwise</dd>
+<dt>Param:</dt>
+<dd>string s the subject of the triple, either a URI or a blank node in the format _:name</dd>
+<dd>string p the predicate URI of the triple</dd>
+<dt>Return:</dt>
+<dd>boolean true if a matching triple exists in the graph, false otherwise</dd>
 </dl>
 
 
 == to_html ==
 
 {{{
-public string to_html(mixed s)
+public void to_html(mixed s)
 }}}
 
 Serialise the graph to HTML<dl>
-<dt>Returns:</dt>
-<dd>a HTML version of the graph</dd>
+<dt>Return:</dt>
+<dd>string a HTML version of the graph</dd>
 </dl>
 
 
 == to_json ==
 
 {{{
-public string to_json()
+public void to_json()
 }}}
 
 Serialise the graph to JSON<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/RDF_JSON_Specification">http://n2.talis.com/wiki/RDF_JSON_Specification</a></dd>
-<dt>Returns:</dt>
-<dd>the JSON version of the graph</dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/RDF_JSON_Specification</dd>
+<dt>Return:</dt>
+<dd>string the JSON version of the graph</dd>
 </dl>
 
 
 == to_ntriples ==
 
 {{{
-public string to_ntriples()
+public void to_ntriples()
 }}}
 
 Serialise the graph to N-Triples<dl>
-<dt>See Also:</dt>
-<dd><a href="http://www.w3.org/TR/rdf-testcases/#ntriples">http://www.w3.org/TR/rdf-testcases/#ntriples</a></dd>
-<dt>Returns:</dt>
-<dd>the N-Triples version of the graph</dd>
+<dt>See:</dt>
+<dd>http://www.w3.org/TR/rdf-testcases/#ntriples</dd>
+<dt>Return:</dt>
+<dd>string the N-Triples version of the graph</dd>
 </dl>
 
 
 == to_rdfxml ==
 
 {{{
-public string to_rdfxml()
+public void to_rdfxml()
 }}}
 
 Serialise the graph to RDF/XML<dl>
-<dt>Returns:</dt>
-<dd>the RDF/XML version of the graph</dd>
+<dt>Return:</dt>
+<dd>string the RDF/XML version of the graph</dd>
 </dl>
 
 
 == to_turtle ==
 
 {{{
-public string to_turtle()
+public void to_turtle()
 }}}
 
 Serialise the graph to Turtle<dl>
-<dt>See Also:</dt>
-<dd><a href="http://www.dajobe.org/2004/01/turtle">http://www.dajobe.org/2004/01/turtle</a></dd>
-<dt>Returns:</dt>
-<dd>the Turtle version of the graph</dd>
+<dt>See:</dt>
+<dd>http://www.dajobe.org/2004/01/turtle</dd>
+<dt>Return:</dt>
+<dd>string the Turtle version of the graph</dd>
 </dl>
 
 
@@ -727,14 +741,14 @@ public void update_prefix_mappings()
 == uri_to_qname ==
 
 {{{
-public string uri_to_qname(string uri)
+public void uri_to_qname(mixed uri)
 }}}
 
 Convert a URI to a QName using registered namespace prefixes<dl>
-<dt>Parameters:</dt>
-<dd>uri - the URI to convert</dd>
-<dt>Returns:</dt>
-<dd>the QName corresponding to the URI if a suitable prefix exists, null otherwise</dd>
+<dt>Param:</dt>
+<dd>string uri the URI to convert</dd>
+<dt>Return:</dt>
+<dd>string the QName corresponding to the URI if a suitable prefix exists, null otherwise</dd>
 </dl>
 
 

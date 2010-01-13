@@ -261,12 +261,14 @@ public void m_unaryexpr(mixed v)
 == match ==
 
 {{{
-public array match(SimpleGraph g, mixed trace)
+public void match(mixed g, mixed trace)
 }}}
 
 Evaluate the path against a graph<dl>
-<dt>Returns:</dt>
-<dd>nodes that match the path</dd>
+<dt>Param:</dt>
+<dd>SimpleGraph g</dd>
+<dt>Return:</dt>
+<dd>array nodes that match the path</dd>
 </dl>
 
 

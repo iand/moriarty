@@ -28,13 +28,15 @@ public Rollback(mixed sparqlservice)
 == resource_to_date ==
 
 {{{
-public HTTPResponse resource_to_date(mixed uri, mixed date, $date -)
+public void resource_to_date(mixed uri, mixed date)
 }}}
 
 resource_to_date<dl>
-<dt>Parameters:</dt>
-<dd>- - uri of resource</dd>
-<dd>- - date of resource state to revert back to</dd>
+<dt>Param:</dt>
+<dd>$uri - uri of resource</dd>
+<dd>$date - date of resource state to revert back to</dd>
+<dt>Return:</dt>
+<dd>HTTPResponse</dd>
 <dt>Author:</dt>
 <dd>Keith</dd>
 </dl>
@@ -51,12 +53,14 @@ public void revert_changes(mixed rdfphp)
 == to_changeset ==
 
 {{{
-public HTTPResponse to_changeset(mixed cs_uri, $cs_uri -)
+public void to_changeset(mixed cs_uri)
 }}}
 
 to_changeset<dl>
-<dt>Parameters:</dt>
-<dd>- - uri of changeset to revert back to</dd>
+<dt>Param:</dt>
+<dd>$cs_uri - uri of changeset to revert back to</dd>
+<dt>Return:</dt>
+<dd>HTTPResponse</dd>
 <dt>Author:</dt>
 <dd>Keith</dd>
 </dl>

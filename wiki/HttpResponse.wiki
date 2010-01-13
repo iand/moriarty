@@ -25,12 +25,12 @@
 == HttpResponse ==
 
 {{{
-public HttpResponse(int status_code)
+public HttpResponse(mixed status_code)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>status_code - the status code of the response</dd>
+<dt>Param:</dt>
+<dd>int status_code the status code of the response</dd>
 </dl>
 
 
@@ -39,42 +39,50 @@ Create a new instance of this class<dl>
 == is_cacheable ==
 
 {{{
-public boolean is_cacheable()
+public void is_cacheable()
 }}}
 
 Tests whether this response is suitable for caching<dl>
-<dt>Returns:</dt>
-<dd>true if the response can be cached, false otherwise</dd>
+<dt>Return:</dt>
+<dd>boolean true if the response can be cached, false otherwise</dd>
 </dl>
 
 
 == is_success ==
 
 {{{
-public boolean is_success()
+public void is_success()
 }}}
 
 Tests whether the response indicates the request was successful<dl>
-<dt>Returns:</dt>
-<dd>true if the status code is between 200 and 299 inclusive, false otherwise</dd>
+<dt>Return:</dt>
+<dd>boolean true if the status code is between 200 and 299 inclusive, false otherwise</dd>
 </dl>
 
 
 == to_html ==
 
 {{{
-public string to_html()
+public void to_html()
 }}}
 
-Obtain an html representation of this response
+Obtain an html representation of this response<dl>
+<dt>Return:</dt>
+<dd>string</dd>
+</dl>
+
 
 == to_string ==
 
 {{{
-public string to_string()
+public void to_string()
 }}}
 
-Obtain a string representation of this response
+Obtain a string representation of this response<dl>
+<dt>Return:</dt>
+<dd>string</dd>
+</dl>
+
 
 = Field Detail =
 

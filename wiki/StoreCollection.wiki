@@ -72,13 +72,13 @@
 == StoreCollection ==
 
 {{{
-public StoreCollection(string uri, Credentials credentials, mixed request_factory)
+public StoreCollection(mixed uri, mixed credentials, mixed request_factory)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>uri - URI of the store collection</dd>
-<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+<dt>Param:</dt>
+<dd>string uri URI of the store collection</dd>
+<dd>Credentials credentials the credentials to use for authenticated requests (optional)</dd>
 </dl>
 
 
@@ -87,23 +87,29 @@ Create a new instance of this class<dl>
 == create_store ==
 
 {{{
-public HttpRequest create_store(string name, string template_uri)
+public void create_store(mixed name, mixed template_uri)
 }}}
 
 Create a new store on the platform. This is currently restricted to Talis administrators.<dl>
-<dt>Parameters:</dt>
-<dd>name - the name of the store</dd>
-<dd>template_uri - the URI of the store template to use</dd>
+<dt>Param:</dt>
+<dd>string name the name of the store</dd>
+<dd>string template_uri the URI of the store template to use</dd>
+<dt>Return:</dt>
+<dd>HttpRequest</dd>
 </dl>
 
 
 == get_store_uris ==
 
 {{{
-public array get_store_uris()
+public void get_store_uris()
 }}}
 
-Obtain the list of store URIs. The retrieve method must be called first.
+Obtain the list of store URIs. The retrieve method must be called first.<dl>
+<dt>Return:</dt>
+<dd>array</dd>
+</dl>
+
 
 == retrieve ==
 

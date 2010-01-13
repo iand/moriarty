@@ -7,8 +7,8 @@
 = Overview =
 
 <dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Augment_Service">http://n2.talis.com/wiki/Augment_Service</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Augment_Service</dd>
 </dl>
 == Constructors ==
  * [#AugmentService AugmentService] - Create a new instance of this class
@@ -21,13 +21,13 @@
 == AugmentService ==
 
 {{{
-public AugmentService(string uri, Credentials credentials, mixed request_factory)
+public AugmentService(mixed uri, mixed credentials, mixed request_factory)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>uri - URI of the augment service</dd>
-<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+<dt>Param:</dt>
+<dd>string uri URI of the augment service</dd>
+<dd>Credentials credentials the credentials to use for authenticated requests (optional)</dd>
 </dl>
 
 
@@ -36,24 +36,28 @@ Create a new instance of this class<dl>
 == augment ==
 
 {{{
-public HttpResponse augment(string uri)
+public void augment(mixed uri)
 }}}
 
 <dl>
-<dt>Parameters:</dt>
-<dd>uri - the URI of the RSS feed that the augment service will fetch and augment</dd>
+<dt>Param:</dt>
+<dd>string $uri the URI of the RSS feed that the augment service will fetch and augment</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == augment_graph ==
 
 {{{
-public HttpResponse augment_graph(SimpleGraph graph)
+public void augment_graph(mixed graph)
 }}}
 
 Warning - this method is incomplete<dl>
-<dt>Parameters:</dt>
-<dd>graph - an RDF graph that should be augmented</dd>
+<dt>Param:</dt>
+<dd>SimpleGraph $graph an RDF graph that should be augmented</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 

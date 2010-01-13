@@ -7,8 +7,8 @@
 = Overview =
 
 <dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Contentbox">http://n2.talis.com/wiki/Contentbox</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Contentbox</dd>
 </dl>
 == Constructors ==
  * [#Contentbox Contentbox] - Create a new instance of this class
@@ -26,13 +26,13 @@
 == Contentbox ==
 
 {{{
-public Contentbox(string uri, Credentials credentials, mixed request_factory)
+public Contentbox(mixed uri, mixed credentials, mixed request_factory)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>uri - URI of the contentbox</dd>
-<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+<dt>Param:</dt>
+<dd>string uri URI of the contentbox</dd>
+<dd>Credentials credentials the credentials to use for authenticated requests (optional)</dd>
 </dl>
 
 
@@ -41,24 +41,28 @@ Create a new instance of this class<dl>
 == get_item ==
 
 {{{
-public HttpResponse get_item(string uri)
+public void get_item(mixed uri)
 }}}
 
 Get an item from the contentbox<dl>
-<dt>Parameters:</dt>
-<dd>uri - the full uri of the item in the content box.</dd>
+<dt>Param:</dt>
+<dd>string uri the full uri of the item in the content box.</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == get_item_by_path ==
 
 {{{
-public HttpResponse get_item_by_path(string path)
+public void get_item_by_path(mixed path)
 }}}
 
 Get an item from the contentbox using only it's path<dl>
-<dt>Parameters:</dt>
-<dd>path - the path of the item in the content box.</dd>
+<dt>Param:</dt>
+<dd>string path the path of the item in the content box.</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
@@ -73,42 +77,48 @@ public void make_search_uri(mixed query, mixed max, mixed offset, mixed sort)
 == parse_results_xml ==
 
 {{{
-public ResourceList parse_results_xml(string uri, string xml)
+public void parse_results_xml(mixed uri, mixed xml)
 }}}
 
 Parse the results of a search on the contentbox.<dl>
-<dt>Parameters:</dt>
-<dd>uri - the URI used to obtain the search</dd>
-<dd>xml - the xml returned from a search request</dd>
+<dt>Param:</dt>
+<dd>string uri the URI used to obtain the search</dd>
+<dd>string xml the xml returned from a search request</dd>
+<dt>Return:</dt>
+<dd>ResourceList</dd>
 </dl>
 
 
 == search ==
 
 {{{
-public HttpResponse search(string query, int max, int offset, string sort)
+public void search(mixed query, mixed max, mixed offset, mixed sort)
 }}}
 
 Perform a search on the contentbox<dl>
-<dt>Parameters:</dt>
-<dd>query - the query expression used to query the content box.</dd>
-<dd>max - maximum number of results for a search. (optional, defaults to 10)</dd>
-<dd>offset - an offset into search results. Use with max to implement paging. (optional, defaults to 0)</dd>
-<dd>sort - a comma separated list of field names that should be used to order the results.</dd>
+<dt>Param:</dt>
+<dd>string query the query expression used to query the content box.</dd>
+<dd>int max maximum number of results for a search. (optional, defaults to 10)</dd>
+<dd>int offset an offset into search results. Use with max to implement paging. (optional, defaults to 0)</dd>
+<dd>string sort a comma separated list of field names that should be used to order the results.</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == search_to_resource_list ==
 
 {{{
-public ResourceList search_to_resource_list(string query, int max, int offset)
+public void search_to_resource_list(mixed query, mixed max, mixed offset)
 }}}
 
 Perform a search on the contentbox. This method returns an empty ResourceList if the HTTP request fails for any reason.<dl>
-<dt>Parameters:</dt>
-<dd>query - the query expression used to query the content box.</dd>
-<dd>max - maximum number of results for a search. (optional, defaults to 10)</dd>
-<dd>offset - an offset into search results. Use with max to implement paging. (optional, defaults to 0)</dd>
+<dt>Param:</dt>
+<dd>string query the query expression used to query the content box.</dd>
+<dd>int max maximum number of results for a search. (optional, defaults to 10)</dd>
+<dd>int offset an offset into search results. Use with max to implement paging. (optional, defaults to 0)</dd>
+<dt>Return:</dt>
+<dd>ResourceList</dd>
 </dl>
 
 

@@ -81,13 +81,13 @@
 == QueryProfile ==
 
 {{{
-public QueryProfile(string uri, Credentials credentials, mixed request_factory)
+public QueryProfile(mixed uri, mixed credentials, mixed request_factory)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>uri - URI of the query profile</dd>
-<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+<dt>Param:</dt>
+<dd>string uri URI of the query profile</dd>
+<dd>Credentials credentials the credentials to use for authenticated requests (optional)</dd>
 </dl>
 
 
@@ -96,19 +96,19 @@ Create a new instance of this class<dl>
 == add_field_weight ==
 
 {{{
-public string add_field_weight(mixed name, mixed weight)
+public void add_field_weight(mixed name, mixed weight)
 }}}
 
 Adds the field and weight to the query profile<dl>
-<dt>Returns:</dt>
-<dd>URI of the added field weight</dd>
+<dt>Return:</dt>
+<dd>string URI of the added field weight</dd>
 </dl>
 
 
 == copy_to ==
 
 {{{
-public QueryProfile copy_to(mixed new_uri)
+public void copy_to(mixed new_uri)
 }}}
 
 Copies the field weights and other properties into new query profile.
@@ -118,15 +118,21 @@ be prefixed with this query profile's URI
 For example
   http://example.org/source/queryprofile/1#name
 Would become
-  http://example.org/destination/queryprofile/1#name
+  http://example.org/destination/queryprofile/1#name<dl>
+<dt>Return:</dt>
+<dd>QueryProfile</dd>
+</dl>
+
 
 == remove_field_weight ==
 
 {{{
-public nothing remove_field_weight(mixed name)
+public void remove_field_weight(mixed name)
 }}}
 
 Removes the weight for the named field<dl>
+<dt>Return:</dt>
+<dd>nothing</dd>
 <dt>Author:</dt>
 <dd>Ian Davis</dd>
 </dl>

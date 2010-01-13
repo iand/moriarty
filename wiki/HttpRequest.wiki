@@ -31,14 +31,14 @@
 == HttpRequest ==
 
 {{{
-public HttpRequest(string method, string uri, Credentials credentials, mixed cache)
+public HttpRequest(mixed method, mixed uri, mixed credentials, mixed cache)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>method - the HTTP method to issue (i.e. GET, POST, PUT etc)</dd>
-<dd>uri - the URI to issue the request to</dd>
-<dd>credentials - the credentials to use for secure requests (optional)</dd>
+<dt>Param:</dt>
+<dd>string method the HTTP method to issue (i.e. GET, POST, PUT etc)</dd>
+<dd>string uri the URI to issue the request to</dd>
+<dd>Credentials credentials the credentials to use for secure requests (optional)</dd>
 </dl>
 
 
@@ -63,10 +63,14 @@ public void cache_id()
 == execute ==
 
 {{{
-public HttpResponse execute()
+public void execute()
 }}}
 
-Issue the HTTP request
+Issue the HTTP request<dl>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
+</dl>
+
 
 == execute_async ==
 
@@ -87,48 +91,48 @@ public void get_async_response()
 == get_body ==
 
 {{{
-public string get_body()
+public void get_body()
 }}}
 
 Get the content to be sent with the request<dl>
-<dt>Returns:</dt>
-<dd>the content to be sent</dd>
+<dt>Return:</dt>
+<dd>string the content to be sent</dd>
 </dl>
 
 
 == get_headers ==
 
 {{{
-public array get_headers()
+public void get_headers()
 }}}
 
 Obtain the HTTP headers to be sent with this request<dl>
-<dt>Returns:</dt>
-<dd>headers in the format "name:value"</dd>
+<dt>Return:</dt>
+<dd>array headers in the format "name:value"</dd>
 </dl>
 
 
 == set_accept ==
 
 {{{
-public void set_accept(string val)
+public void set_accept(mixed val)
 }}}
 
 Set the HTTP accept header for the request<dl>
-<dt>Parameters:</dt>
-<dd>val - the media types to be used as the accept header value</dd>
+<dt>Param:</dt>
+<dd>string val the media types to be used as the accept header value</dd>
 </dl>
 
 
 == set_body ==
 
 {{{
-public void set_body(string val)
+public void set_body(mixed val)
 }}}
 
 Set content to be sent with the request<dl>
-<dt>Parameters:</dt>
-<dd>val - the content to be sent</dd>
+<dt>Param:</dt>
+<dd>string val the content to be sent</dd>
 </dl>
 
 
@@ -143,36 +147,36 @@ public void set_cache(mixed cache)
 == set_content_type ==
 
 {{{
-public void set_content_type(string val)
+public void set_content_type(mixed val)
 }}}
 
 Set the HTTP content-type header for the request<dl>
-<dt>Parameters:</dt>
-<dd>val - the media type to be used as the content-type header value</dd>
+<dt>Param:</dt>
+<dd>string val the media type to be used as the content-type header value</dd>
 </dl>
 
 
 == set_if_match ==
 
 {{{
-public void set_if_match(string val)
+public void set_if_match(mixed val)
 }}}
 
 Set the HTTP if-match header for the request<dl>
-<dt>Parameters:</dt>
-<dd>val - the etag to be used as the if-match header value</dd>
+<dt>Param:</dt>
+<dd>string val the etag to be used as the if-match header value</dd>
 </dl>
 
 
 == set_if_none_match ==
 
 {{{
-public void set_if_none_match(string val)
+public void set_if_none_match(mixed val)
 }}}
 
 Set the HTTP if-none-match header for the request<dl>
-<dt>Parameters:</dt>
-<dd>val - the etag to be used as the if-none-match header value</dd>
+<dt>Param:</dt>
+<dd>string val the etag to be used as the if-none-match header value</dd>
 </dl>
 
 
@@ -187,10 +191,14 @@ public void set_proxy(mixed val)
 == to_string ==
 
 {{{
-public string to_string()
+public void to_string()
 }}}
 
-Obtain a string representation of this request
+Obtain a string representation of this request<dl>
+<dt>Return:</dt>
+<dd>string</dd>
+</dl>
+
 
 == use_stale_response_on_failure ==
 

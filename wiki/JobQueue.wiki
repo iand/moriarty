@@ -7,8 +7,8 @@
 = Overview =
 
 <dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Job_Queue">http://n2.talis.com/wiki/Job_Queue</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Job_Queue</dd>
 </dl>
 == Constructors ==
  * [#JobQueue JobQueue] - Create a new instance of this class
@@ -26,13 +26,13 @@
 == JobQueue ==
 
 {{{
-public JobQueue(string uri, Credentials credentials, mixed request_factory)
+public JobQueue(mixed uri, mixed credentials, mixed request_factory)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>uri - URI of the job queue</dd>
-<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+<dt>Param:</dt>
+<dd>string uri URI of the job queue</dd>
+<dd>Credentials credentials the credentials to use for authenticated requests (optional)</dd>
 </dl>
 
 
@@ -41,12 +41,12 @@ Create a new instance of this class<dl>
 == get_item_uris ==
 
 {{{
-public array get_item_uris()
+public void get_item_uris()
 }}}
 
 Get a list of URIs of jobs that have been scheduled. This returns an empty array if any HTTP errors occur.<dl>
-<dt>Returns:</dt>
-<dd>list of job URIs</dd>
+<dt>Return:</dt>
+<dd>array list of job URIs</dd>
 </dl>
 
 
@@ -69,60 +69,68 @@ private void schedule_job(mixed job)
 == schedule_reindex ==
 
 {{{
-public HttpResponse schedule_reindex(string time, string label)
+public void schedule_reindex(mixed time, mixed label)
 }}}
 
 Schedule a reindex data job in the queue<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Reindex_Job">http://n2.talis.com/wiki/Reindex_Job</a></dd>
-<dt>Parameters:</dt>
-<dd>time - the time at which the job should commence (optional, defaults to current date and time)</dd>
-<dd>label - a descriptive label to give the job (optional, defaults to boilerplate text)</dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Reindex_Job</dd>
+<dt>Param:</dt>
+<dd>string time the time at which the job should commence (optional, defaults to current date and time)</dd>
+<dd>string label a descriptive label to give the job (optional, defaults to boilerplate text)</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == schedule_reset_data ==
 
 {{{
-public HttpResponse schedule_reset_data(string time, string label)
+public void schedule_reset_data(mixed time, mixed label)
 }}}
 
 Schedule a reset data job in the queue<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Reset_Data_Job">http://n2.talis.com/wiki/Reset_Data_Job</a></dd>
-<dt>Parameters:</dt>
-<dd>time - the time at which the job should commence (optional, defaults to current date and time)</dd>
-<dd>label - a descriptive label to give the job (optional, defaults to boilerplate text)</dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Reset_Data_Job</dd>
+<dt>Param:</dt>
+<dd>string time the time at which the job should commence (optional, defaults to current date and time)</dd>
+<dd>string label a descriptive label to give the job (optional, defaults to boilerplate text)</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == schedule_restore ==
 
 {{{
-public HttpResponse schedule_restore(mixed snapshot_uri, string time, string label)
+public void schedule_restore(mixed snapshot_uri, mixed time, mixed label)
 }}}
 
 Schedule a restore data job in the queue<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Restore_Job">http://n2.talis.com/wiki/Restore_Job</a></dd>
-<dt>Parameters:</dt>
-<dd>time - the time at which the job should commence (optional, defaults to current date and time)</dd>
-<dd>label - a descriptive label to give the job (optional, defaults to boilerplate text)</dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Restore_Job</dd>
+<dt>Param:</dt>
+<dd>string time the time at which the job should commence (optional, defaults to current date and time)</dd>
+<dd>string label a descriptive label to give the job (optional, defaults to boilerplate text)</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == schedule_snapshot ==
 
 {{{
-public HttpResponse schedule_snapshot(string time, string label)
+public void schedule_snapshot(mixed time, mixed label)
 }}}
 
 Schedule a snaphot job in the queue<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Snapshot_Job">http://n2.talis.com/wiki/Snapshot_Job</a></dd>
-<dt>Parameters:</dt>
-<dd>time - the time at which the job should commence (optional, defaults to current date and time)</dd>
-<dd>label - a descriptive label to give the job (optional, defaults to boilerplate text)</dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Snapshot_Job</dd>
+<dt>Param:</dt>
+<dd>string time the time at which the job should commence (optional, defaults to current date and time)</dd>
+<dd>string label a descriptive label to give the job (optional, defaults to boilerplate text)</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 

@@ -7,8 +7,8 @@
 = Overview =
 
 <dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Field_Predicate_Map">http://n2.talis.com/wiki/Field_Predicate_Map</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Field_Predicate_Map</dd>
 </dl>
 == Constructors ==
  * [#FieldPredicateMap FieldPredicateMap] - Create a new instance of this class
@@ -85,13 +85,13 @@
 == FieldPredicateMap ==
 
 {{{
-public FieldPredicateMap(string uri, Credentials credentials)
+public FieldPredicateMap(mixed uri, mixed credentials)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>uri - URI of the field/predicate map</dd>
-<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+<dt>Param:</dt>
+<dd>string uri URI of the field/predicate map</dd>
+<dd>Credentials credentials the credentials to use for authenticated requests (optional)</dd>
 </dl>
 
 
@@ -100,21 +100,23 @@ Create a new instance of this class<dl>
 == add_mapping ==
 
 {{{
-public string add_mapping(string p, string name, string analyzer)
+public void add_mapping(mixed p, mixed name, mixed analyzer)
 }}}
 
 Add a mapping between a predicate URI and a short name. Returns the URI of the new mapping.<dl>
-<dt>Parameters:</dt>
-<dd>p - the URI of the predicate to map</dd>
-<dd>name - the short name to assign to the predicate</dd>
-<dd>analyzer - the URI of the analyzer to apply to this predicate (optional)</dd>
+<dt>Param:</dt>
+<dd>string p the URI of the predicate to map</dd>
+<dd>string name the short name to assign to the predicate</dd>
+<dd>string analyzer the URI of the analyzer to apply to this predicate (optional)</dd>
+<dt>Return:</dt>
+<dd>string</dd>
 </dl>
 
 
 == copy_to ==
 
 {{{
-public FieldPredicateMap copy_to(mixed new_uri)
+public void copy_to(mixed new_uri)
 }}}
 
 Copies the mappings and other properties into new field/predicate map.
@@ -125,6 +127,8 @@ For example<br/>
   http://example.org/source/fpmaps/1#name<br/>
 Would become<br/>
   http://example.org/destination/fpmaps/1#name<br/><dl>
+<dt>Return:</dt>
+<dd>FieldPredicateMap</dd>
 <dt>Author:</dt>
 <dd>Ian Davis</dd>
 </dl>
@@ -133,13 +137,13 @@ Would become<br/>
 == remove_mapping ==
 
 {{{
-public void remove_mapping(string p, string name)
+public void remove_mapping(mixed p, mixed name)
 }}}
 
 Remove a mapping between a predicate URI and a short name.<dl>
-<dt>Parameters:</dt>
-<dd>p - the URI of the predicate being mapped</dd>
-<dd>name - the short name assigned to the predicate</dd>
+<dt>Param:</dt>
+<dd>string p the URI of the predicate being mapped</dd>
+<dd>string name the short name assigned to the predicate</dd>
 </dl>
 
 

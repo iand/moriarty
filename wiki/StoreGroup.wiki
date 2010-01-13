@@ -83,13 +83,13 @@
 == StoreGroup ==
 
 {{{
-public StoreGroup(string uri, Credentials credentials)
+public StoreGroup(mixed uri, mixed credentials)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>uri - URI of the store group</dd>
-<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+<dt>Param:</dt>
+<dd>string uri URI of the store group</dd>
+<dd>Credentials credentials the credentials to use for authenticated requests (optional)</dd>
 </dl>
 
 
@@ -98,48 +98,54 @@ Create a new instance of this class<dl>
 == add_store_by_uri ==
 
 {{{
-public void add_store_by_uri(string store_uri)
+public void add_store_by_uri(mixed store_uri)
 }}}
 
 Add a store to this group. Save the changes by calling put_to_network.<dl>
-<dt>Parameters:</dt>
-<dd>store_uri - the URI of the store to add to this group.</dd>
+<dt>Param:</dt>
+<dd>string store_uri the URI of the store to add to this group.</dd>
 </dl>
 
 
 == get_config ==
 
 {{{
-public StoreGroupConfig get_config()
+public void get_config()
 }}}
 
 Obtain a reference to this store group's configuration<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Store_Configuration">http://n2.talis.com/wiki/Store_Configuration</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Store_Configuration</dd>
+<dt>Return:</dt>
+<dd>StoreGroupConfig</dd>
 </dl>
 
 
 == get_contentbox ==
 
 {{{
-public Contentbox get_contentbox()
+public void get_contentbox()
 }}}
 
 Obtain a reference to this store group's contentbox<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Contentbox">http://n2.talis.com/wiki/Contentbox</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Contentbox</dd>
+<dt>Return:</dt>
+<dd>Contentbox</dd>
 </dl>
 
 
 == get_sparql_service ==
 
 {{{
-public SparqlService get_sparql_service()
+public void get_sparql_service()
 }}}
 
 Obtain a reference to this store group's sparql service<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Store_Sparql_Service">http://n2.talis.com/wiki/Store_Sparql_Service</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Store_Sparql_Service</dd>
+<dt>Return:</dt>
+<dd>SparqlService</dd>
 </dl>
 
 

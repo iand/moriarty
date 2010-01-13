@@ -29,13 +29,13 @@
 == SparqlServiceBase ==
 
 {{{
-public SparqlServiceBase(string uri, Credentials credentials, mixed request_factory)
+public SparqlServiceBase(mixed uri, mixed credentials, mixed request_factory)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>uri - URI of the sparql service</dd>
-<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+<dt>Param:</dt>
+<dd>string uri URI of the sparql service</dd>
+<dd>Credentials credentials the credentials to use for authenticated requests (optional)</dd>
 </dl>
 
 
@@ -44,12 +44,14 @@ Create a new instance of this class<dl>
 == ask ==
 
 {{{
-public HttpResponse ask(string query)
+public void ask(mixed query)
 }}}
 
 Execute an ask sparql query<dl>
-<dt>Parameters:</dt>
-<dd>query - the ask query to execute</dd>
+<dt>Param:</dt>
+<dd>string query the ask query to execute</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
@@ -80,7 +82,7 @@ public void construct_to_triple_list(mixed query)
 == describe ==
 
 {{{
-public HttpResponse describe(mixed uri, string type, mixed output)
+public void describe(mixed uri, mixed type, mixed output)
 }}}
 
 Obtain a bounded description of a given resource. Various types of description are supported:
@@ -92,21 +94,25 @@ Obtain a bounded description of a given resource. Various types of description a
 </ul>
 See http://n2.talis.com/wiki/Bounded_Descriptions_in_RDF for more information on these types of description
 Only cbd type is supported for arrays of URIs<dl>
-<dt>Parameters:</dt>
-<dd>uri - the URI of the resource to be described or an array of URIs</dd>
-<dd>type - the type of bounded description to be obtained (optional)</dd>
+<dt>Param:</dt>
+<dd>mixed uri the URI of the resource to be described or an array of URIs</dd>
+<dd>string type the type of bounded description to be obtained (optional)</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == describe_to_simple_graph ==
 
 {{{
-public SimpleGraph describe_to_simple_graph(mixed uri, mixed type)
+public void describe_to_simple_graph(mixed uri, mixed type)
 }}}
 
 Obtain a bounded description of a given resource as a SimpleGraph. An empty SimpleGraph is returned if any HTTP errors occur.<dl>
-<dt>Parameters:</dt>
-<dd>uri - the URI of the resource to be described or an array of URIs</dd>
+<dt>Param:</dt>
+<dd>mixed uri the URI of the resource to be described or an array of URIs</dd>
+<dt>Return:</dt>
+<dd>SimpleGraph</dd>
 </dl>
 
 
@@ -125,24 +131,28 @@ public void describe_to_triple_list(mixed uri)
 == graph ==
 
 {{{
-public HttpResponse graph(string query, mixed output)
+public void graph(mixed query, mixed output)
 }}}
 
 Execute a graph type sparql query, i.e. a describe or a construct<dl>
-<dt>Parameters:</dt>
-<dd>query - the describe or construct query to execute</dd>
+<dt>Param:</dt>
+<dd>string query the describe or construct query to execute</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == graph_to_simple_graph ==
 
 {{{
-public SimpleGraph graph_to_simple_graph(string query)
+public void graph_to_simple_graph(mixed query)
 }}}
 
 Execute a graph type sparql query and obtain the result as a SimpleGraph. An empty SimpleGraph is returned if any HTTP errors occur.<dl>
-<dt>Parameters:</dt>
-<dd>query - the describe or construct query to execute</dd>
+<dt>Param:</dt>
+<dd>string query the describe or construct query to execute</dd>
+<dt>Return:</dt>
+<dd>SimpleGraph</dd>
 </dl>
 
 
@@ -161,21 +171,21 @@ public void graph_to_triple_list(mixed query)
 == parse_ask_results ==
 
 {{{
-public array parse_ask_results(string xml)
+public void parse_ask_results(mixed xml)
 }}}
 
 Parse the SPARQL XML results format from an ask query.<dl>
-<dt>Parameters:</dt>
-<dd>xml - the results XML to parse</dd>
-<dt>Returns:</dt>
-<dd>true if the query result was true, false otherwise</dd>
+<dt>Param:</dt>
+<dd>string xml the results XML to parse</dd>
+<dt>Return:</dt>
+<dd>array true if the query result was true, false otherwise</dd>
 </dl>
 
 
 == parse_select_results ==
 
 {{{
-public array parse_select_results(string xml)
+public void parse_select_results(mixed xml)
 }}}
 
 Parse the SPARQL XML results format into an array. The array consist of one element per result. 
@@ -188,47 +198,53 @@ another associative array with the following keys:
 <li><em>datatype</em> => the datatype uri (if any) of the result binding</li>
 </ul>
 For example: $results[2]['foo']['value'] will obtain the value of the foo variable for the third result<dl>
-<dt>Parameters:</dt>
-<dd>xml - the results XML to parse</dd>
+<dt>Param:</dt>
+<dd>string xml the results XML to parse</dd>
+<dt>Return:</dt>
+<dd>array</dd>
 </dl>
 
 
 == query ==
 
 {{{
-public HttpResponse query(string query, string mime)
+public void query(mixed query, mixed mime)
 }}}
 
 Execute an arbitrary query on the sparql service<dl>
-<dt>Parameters:</dt>
-<dd>query - the query to execute</dd>
-<dd>mime - the media type of the expected response (optional, defaults to RDF/XML and SPARQL results XML)</dd>
+<dt>Param:</dt>
+<dd>string query the query to execute</dd>
+<dd>string mime the media type of the expected response (optional, defaults to RDF/XML and SPARQL results XML)</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == select ==
 
 {{{
-public HttpResponse select(string query)
+public void select(mixed query)
 }}}
 
 Execute a select sparql query<dl>
-<dt>Parameters:</dt>
-<dd>query - the select query to execute</dd>
+<dt>Param:</dt>
+<dd>string query the select query to execute</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == select_to_array ==
 
 {{{
-public array select_to_array(string query)
+public void select_to_array(mixed query)
 }}}
 
 Execute a select sparql query and return the results as an array. An empty array is returned if any HTTP errors occur.<dl>
-<dt>Parameters:</dt>
-<dd>query - the select query to execute</dd>
-<dt>Returns:</dt>
-<dd>parsed results in format returned by parse_select_results method</dd>
+<dt>Param:</dt>
+<dd>string query the select query to execute</dd>
+<dt>Return:</dt>
+<dd>array parsed results in format returned by parse_select_results method</dd>
 </dl>
 
 

@@ -93,7 +93,7 @@ if ( $response->is_success() ) {
 }
 </code>
 
-= Clearing A Store =
+= Clearing a Store =
 
 Now you've put some random RDF into the store, you probably want to clear it out. This is pretty simple with Moriarty, just get the store's Scheduled Job Collection and schedule a Reset Data Job:
 

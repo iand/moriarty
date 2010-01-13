@@ -70,41 +70,41 @@ public void label_graph(mixed graph)
 == qname_to_uri ==
 
 {{{
-public string qname_to_uri(string qname)
+public void qname_to_uri(mixed qname)
 }}}
 
 Convert a QName to a URI using registered namespace prefixes<dl>
-<dt>Parameters:</dt>
-<dd>qname - the QName to convert</dd>
-<dt>Returns:</dt>
-<dd>the URI corresponding to the QName if a suitable prefix exists, null otherwise</dd>
+<dt>Param:</dt>
+<dd>string qname the QName to convert</dd>
+<dt>Return:</dt>
+<dd>string the URI corresponding to the QName if a suitable prefix exists, null otherwise</dd>
 </dl>
 
 
 == set_namespace_mapping ==
 
 {{{
-public void set_namespace_mapping(string prefix, string uri)
+public void set_namespace_mapping(mixed prefix, mixed uri)
 }}}
 
 Map a portion of a URI to a short prefix for use when serialising the graph<dl>
-<dt>Parameters:</dt>
-<dd>prefix - the namespace prefix to associate with the URI</dd>
-<dd>uri - the URI to associate with the prefix</dd>
+<dt>Param:</dt>
+<dd>string prefix the namespace prefix to associate with the URI</dd>
+<dd>string uri the URI to associate with the prefix</dd>
 </dl>
 
 
 == uri_to_qname ==
 
 {{{
-public string uri_to_qname(string uri)
+public void uri_to_qname(mixed uri)
 }}}
 
 Convert a URI to a QName using registered namespace prefixes<dl>
-<dt>Parameters:</dt>
-<dd>uri - the URI to convert</dd>
-<dt>Returns:</dt>
-<dd>the QName corresponding to the URI if a suitable prefix exists, null otherwise</dd>
+<dt>Param:</dt>
+<dd>string uri the URI to convert</dd>
+<dt>Return:</dt>
+<dd>string the QName corresponding to the URI if a suitable prefix exists, null otherwise</dd>
 </dl>
 
 

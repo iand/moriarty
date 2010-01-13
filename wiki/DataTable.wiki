@@ -159,15 +159,19 @@ Returns the generated SPARQL query
 == get_update_changeset ==
 
 {{{
-public ChangeSet get_update_changeset()
+public void get_update_changeset()
 }}}
 
-Get the changeset that would be applied by the update method.
+Get the changeset that would be applied by the update method.<dl>
+<dt>Return:</dt>
+<dd>ChangeSet</dd>
+</dl>
+
 
 == insert ==
 
 {{{
-public HttpResponse insert(mixed type_list)
+public void insert(mixed type_list)
 }}}
 
 Inserts data into a platform store. It optionally takes a single parameter which is a comma separated list of types (which must be mapped short names). These are added as rdf:type properties for the inserted resource. If multiple types are specified then multiple rdf:types will be added.
@@ -180,7 +184,11 @@ $dt->map('http://example.org/name', 'name');
 $dt->map('http://example.org/person', 'person');
 $dt->set('name', 'scooby');
 $response = $dt->insert('person');
-</code>
+</code><dl>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
+</dl>
+
 
 == limit ==
 
@@ -371,7 +379,7 @@ $dt->set('created', 'literal', 'http://www.w3.org/2001/XMLSchema#dateTime');
 == update ==
 
 {{{
-public HttpResponse update()
+public void update()
 }}}
 
 Updates data in a platform store.
@@ -396,7 +404,11 @@ $dt->map('http://example.org/name', 'name');
 $dt->set('name', 'scooby');
 $dt->where('_uri', 'http://example.com/thing');
 $response = $dt->update();
-</code>
+</code><dl>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
+</dl>
+
 
 == where ==
 

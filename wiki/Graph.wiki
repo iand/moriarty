@@ -25,13 +25,13 @@
 == Graph ==
 
 {{{
-public Graph(string uri, Credentials credentials, mixed request_factory)
+public Graph(mixed uri, mixed credentials, mixed request_factory)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>uri - URI of the graph</dd>
-<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+<dt>Param:</dt>
+<dd>string uri URI of the graph</dd>
+<dd>Credentials credentials the credentials to use for authenticated requests (optional)</dd>
 </dl>
 
 
@@ -40,77 +40,89 @@ Create a new instance of this class<dl>
 == apply_changeset ==
 
 {{{
-public HttpResponse apply_changeset(ChangeSet cs)
+public void apply_changeset(mixed cs)
 }}}
 
 Apply a changeset to the graph<dl>
-<dt>Parameters:</dt>
-<dd>cs - the changeset to apply</dd>
+<dt>Param:</dt>
+<dd>ChangeSet cs the changeset to apply</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == apply_changeset_rdfxml ==
 
 {{{
-public HttpResponse apply_changeset_rdfxml(string rdfxml)
+public void apply_changeset_rdfxml(mixed rdfxml)
 }}}
 
 Apply a changeset to the graph<dl>
-<dt>Parameters:</dt>
-<dd>rdfxml - the changeset to apply, serialised as RDF/XML</dd>
+<dt>Param:</dt>
+<dd>string rdfxml the changeset to apply, serialised as RDF/XML</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == apply_versioned_changeset ==
 
 {{{
-public HttpResponse apply_versioned_changeset(ChangeSet cs)
+public void apply_versioned_changeset(mixed cs)
 }}}
 
 Apply a changeset in a versioned manner to the graph<dl>
-<dt>Parameters:</dt>
-<dd>cs - the changeset to apply</dd>
+<dt>Param:</dt>
+<dd>ChangeSet cs the changeset to apply</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == apply_versioned_changeset_rdfxml ==
 
 {{{
-public HttpResponse apply_versioned_changeset_rdfxml(string rdfxml)
+public void apply_versioned_changeset_rdfxml(mixed rdfxml)
 }}}
 
 Apply a changeset in a versioned manner to the graph<dl>
-<dt>Parameters:</dt>
-<dd>rdfxml - the changeset to apply, serialised as RDF/XML</dd>
+<dt>Param:</dt>
+<dd>string rdfxml the changeset to apply, serialised as RDF/XML</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == describe ==
 
 {{{
-public HttpResponse describe(string uri, string output)
+public void describe(mixed uri, mixed output)
 }}}
 
 Obtain the graph's bounded description of a given resource<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Metabox#Describing_a_Resource">http://n2.talis.com/wiki/Metabox#Describing_a_Resource</a></dd>
-<dt>Parameters:</dt>
-<dd>uri - the URI of the resource to be described</dd>
-<dd>output - the desired output format of the response (e.g. rdf, xml, json, ntriples, turtle)</dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Metabox#Describing_a_Resource</dd>
+<dt>Param:</dt>
+<dd>string uri the URI of the resource to be described</dd>
+<dd>string output the desired output format of the response (e.g. rdf, xml, json, ntriples, turtle)</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == describe_to_simple_graph ==
 
 {{{
-public SimpleGraph describe_to_simple_graph(string uri)
+public void describe_to_simple_graph(mixed uri)
 }}}
 
 Obtain the graph's bounded description of a given resource. This is designed to be fast since it uses RDF/JSON which requires no parsing by the SimpleGraph class. This method always returns a SimpleGraph, which will be empty if any HTTP errors occured.<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Metabox#Describing_a_Resource">http://n2.talis.com/wiki/Metabox#Describing_a_Resource</a></dd>
-<dt>Parameters:</dt>
-<dd>uri - the URI of the resource to be described</dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Metabox#Describing_a_Resource</dd>
+<dt>Param:</dt>
+<dd>string uri the URI of the resource to be described</dd>
+<dt>Return:</dt>
+<dd>SimpleGraph</dd>
 </dl>
 
 
@@ -129,40 +141,44 @@ Obtain the graph's bounded description of a given resource<dl>
 == has_description ==
 
 {{{
-public boolean has_description(string uri)
+public void has_description(mixed uri)
 }}}
 
 Tests whether the graph contains a bounded description of a given resource. This uses a conditional GET.<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Metabox#Describing_a_Resource">http://n2.talis.com/wiki/Metabox#Describing_a_Resource</a></dd>
-<dt>Parameters:</dt>
-<dd>uri - the URI of the resource to be described</dd>
-<dt>Returns:</dt>
-<dd>true if the graph contains triples with the resource as a subject, false otherwise</dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Metabox#Describing_a_Resource</dd>
+<dt>Param:</dt>
+<dd>string uri the URI of the resource to be described</dd>
+<dt>Return:</dt>
+<dd>boolean true if the graph contains triples with the resource as a subject, false otherwise</dd>
 </dl>
 
 
 == submit_rdfxml ==
 
 {{{
-public HttpResponse submit_rdfxml(string rdfxml)
+public void submit_rdfxml(mixed rdfxml)
 }}}
 
 Submit some RDF/XML to be added to the graph<dl>
-<dt>Parameters:</dt>
-<dd>rdfxml - the RDF to be submitted, serialised as RDF/XML</dd>
+<dt>Param:</dt>
+<dd>string rdfxml the RDF to be submitted, serialised as RDF/XML</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == submit_turtle ==
 
 {{{
-public HttpResponse submit_turtle(string turtle)
+public void submit_turtle(mixed turtle)
 }}}
 
 Submit some Turtle to be added to the graph<dl>
-<dt>Parameters:</dt>
-<dd>turtle - the RDF to be submitted, serialised as Turtle</dd>
+<dt>Param:</dt>
+<dd>string turtle the RDF to be submitted, serialised as Turtle</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 

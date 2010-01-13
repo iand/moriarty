@@ -7,8 +7,8 @@
 = Overview =
 
 <dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Store_Sparql_Service">http://n2.talis.com/wiki/Store_Sparql_Service</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Store_Sparql_Service</dd>
 </dl>
 == Methods inherited from Moriarty.SparqlServiceBase ==
 

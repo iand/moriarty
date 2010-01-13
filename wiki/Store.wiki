@@ -28,13 +28,13 @@
 == Store ==
 
 {{{
-public Store(string uri, Credentials credentials, mixed request_factory)
+public Store(mixed uri, mixed credentials, mixed request_factory)
 }}}
 
 <dl>
-<dt>Parameters:</dt>
-<dd>uri - URI of the store</dd>
-<dd></dd>
+<dt>Param:</dt>
+<dd>string $uri URI of the store</dd>
+<dd>Credentials $credentials</dd>
 </dl>
 
 
@@ -51,120 +51,140 @@ public void describe(mixed uri, mixed type, mixed output)
 == get_augment_service ==
 
 {{{
-public AugmentService get_augment_service()
+public void get_augment_service()
 }}}
 
 Obtain a reference to this store's augment service<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Augment_Service">http://n2.talis.com/wiki/Augment_Service</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Augment_Service</dd>
+<dt>Return:</dt>
+<dd>AugmentService</dd>
 </dl>
 
 
 == get_config ==
 
 {{{
-public Config get_config()
+public void get_config()
 }}}
 
 Obtain a reference to this store's configuration<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Store_Configuration">http://n2.talis.com/wiki/Store_Configuration</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Store_Configuration</dd>
+<dt>Return:</dt>
+<dd>Config</dd>
 </dl>
 
 
 == get_contentbox ==
 
 {{{
-public Contentbox get_contentbox()
+public void get_contentbox()
 }}}
 
 Obtain a reference to this store's contentbox<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Contentbox">http://n2.talis.com/wiki/Contentbox</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Contentbox</dd>
+<dt>Return:</dt>
+<dd>Contentbox</dd>
 </dl>
 
 
 == get_facet_service ==
 
 {{{
-public FacetService get_facet_service()
+public void get_facet_service()
 }}}
 
 Obtain a reference to this store's facet service<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Facet_Service">http://n2.talis.com/wiki/Facet_Service</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Facet_Service</dd>
+<dt>Return:</dt>
+<dd>FacetService</dd>
 </dl>
 
 
 == get_job_queue ==
 
 {{{
-public JobQueue get_job_queue()
+public void get_job_queue()
 }}}
 
 Obtain a reference to this store's job queue<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Scheduled_Job_Collection">http://n2.talis.com/wiki/Scheduled_Job_Collection</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Scheduled_Job_Collection</dd>
+<dt>Return:</dt>
+<dd>JobQueue</dd>
 </dl>
 
 
 == get_metabox ==
 
 {{{
-public Metabox get_metabox()
+public void get_metabox()
 }}}
 
 Obtain a reference to this store's metabox<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Metabox">http://n2.talis.com/wiki/Metabox</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Metabox</dd>
+<dt>Return:</dt>
+<dd>Metabox</dd>
 </dl>
 
 
 == get_multisparql_service ==
 
 {{{
-public MultiSparqlService get_multisparql_service()
+public void get_multisparql_service()
 }}}
 
 Obtain a reference to this store's multisparql service<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Store_Multisparql_Service">http://n2.talis.com/wiki/Store_Multisparql_Service</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Store_Multisparql_Service</dd>
+<dt>Return:</dt>
+<dd>MultiSparqlService</dd>
 </dl>
 
 
 == get_oai_service ==
 
 {{{
-public OAIService get_oai_service()
+public void get_oai_service()
 }}}
 
 Obtain a reference to this store's OAI service<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Store_OAI_Service">http://n2.talis.com/wiki/Store_OAI_Service</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Store_OAI_Service</dd>
+<dt>Return:</dt>
+<dd>OAIService</dd>
 </dl>
 
 
 == get_snapshots ==
 
 {{{
-public Snapshots get_snapshots()
+public void get_snapshots()
 }}}
 
 Obtain a reference to this store's snapshot collection<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Snapshot_Collection">http://n2.talis.com/wiki/Snapshot_Collection</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Snapshot_Collection</dd>
+<dt>Return:</dt>
+<dd>Snapshots</dd>
 </dl>
 
 
 == get_sparql_service ==
 
 {{{
-public SparqlService get_sparql_service()
+public void get_sparql_service()
 }}}
 
 Obtain a reference to this store's sparql service<dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Store_Sparql_Service">http://n2.talis.com/wiki/Store_Sparql_Service</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Store_Sparql_Service</dd>
+<dt>Return:</dt>
+<dd>SparqlService</dd>
 </dl>
 
 

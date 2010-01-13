@@ -7,8 +7,8 @@
 = Overview =
 
 <dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Store_Multisparql_Service">http://n2.talis.com/wiki/Store_Multisparql_Service</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Store_Multisparql_Service</dd>
 </dl>
 == Methods ==
  * [#describe describe] - Obtain a bounded description of a given resource
@@ -35,13 +35,15 @@
 == describe ==
 
 {{{
-public HttpResponse describe(mixed uri, array graphs, string type, mixed output)
+public void describe(mixed uri, mixed graphs, mixed type, mixed output)
 }}}
 
 Obtain a bounded description of a given resource<dl>
-<dt>Parameters:</dt>
-<dd>uri - the URI of the resource to be described or an array of URIs</dd>
-<dd>graphs - the list of graph URIs the description should be drawn from</dd>
+<dt>Param:</dt>
+<dd>mixed uri the URI of the resource to be described or an array of URIs</dd>
+<dd>array graphs the list of graph URIs the description should be drawn from</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 

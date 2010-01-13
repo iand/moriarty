@@ -6,9 +6,59 @@
 
 = Overview =
 
+Represents a store's facet service.
+
+You use it in the usual way. Either indirectly via the Store:
+
+<code language="php">
+$store = new Store("http://api.talis.com/stores/mystore");
+$fs = $store->get_facet_service();
+</code>
+
+Or directly if you know its URI:
+
+<code language="php">
+$fs = new FacetService("http://api.talis.com/stores/mystore/service/facet");
+</code>
+
+Using the FacetService class is pretty simple: just call the facets method passing in the query, an array of fields to facet on and optionally the number of terms to return for each facet. As usual this method returns an HttpResponse:
+
+<code language="php">
+$response = $fs->facets('query', array('field1','field2'));
+if ($response->is_success()) {
+  // do something useful
+}
+else {
+  // mummy...
+}
+</code>
+
+You can parse the XML response using the parse_facet_xml method which returns a nested array of data representing the facet data:
+
+<code language="php">
+array (
+  'field1' => array (
+        0 => array ( 'value' => 'term1', 'number' => '5' ),
+        1 => array ( 'value' => 'term2', 'number' => '4' ),
+        1 => array ( 'value' => 'term3', 'number' => '2' ),
+       ),
+  'field2' => array (
+        0 => array ( 'value' => 'term4', 'number' => '5' ),
+        1 => array ( 'value' => 'term5', 'number' => '4' ),
+        1 => array ( 'value' => 'term6', 'number' => '2' ),
+       ),
+) 
+</code>
+
+If you like living dangerously then you can combine both the previous steps into one using facets_to_array. If an error occurs this method simply returns an empty array:
+
+<code language="php">
+$facets = $fs->facets_to_array('query', array('field1','field2'));
+</code>
+
 <dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Facet_Service">http://n2.talis.com/wiki/Facet_Service</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Facet_Service</dd>
 </dl>
 == Constructors ==
  * [#FacetService FacetService] - Create a new instance of this class
@@ -23,13 +73,13 @@
 == FacetService ==
 
 {{{
-public FacetService(string uri, Credentials credentials, mixed request_factory)
+public FacetService(mixed uri, mixed credentials, mixed request_factory)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>uri - URI of the facet service</dd>
-<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+<dt>Param:</dt>
+<dd>string uri URI of the facet service</dd>
+<dd>Credentials credentials the credentials to use for authenticated requests (optional)</dd>
 </dl>
 
 
@@ -38,30 +88,32 @@ Create a new instance of this class<dl>
 == facets ==
 
 {{{
-public HttpResponse facets(string query, array fields, in top)
+public void facets(mixed query, mixed fields, mixed top)
 }}}
 
 Perform a facet query<dl>
-<dt>Parameters:</dt>
-<dd>query - the query to execute</dd>
-<dd>fields - the list of fields to facet on</dd>
-<dd>top - the number of facet results to return</dd>
+<dt>Param:</dt>
+<dd>string query the query to execute</dd>
+<dd>array fields the list of fields to facet on</dd>
+<dd>in top the number of facet results to return</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
 == facets_to_array ==
 
 {{{
-public array facets_to_array(string query, array fields, in top)
+public void facets_to_array(mixed query, mixed fields, mixed top)
 }}}
 
 Perform a facet query and return the results as an array. An empty array is returned if there are any HTTP errors.<dl>
-<dt>Parameters:</dt>
-<dd>query - the query to execute</dd>
-<dd>fields - the list of fields to facet on</dd>
-<dd>top - the number of facet results to return</dd>
-<dt>Returns:</dt>
-<dd>see parse_facet_xml for the structure of this array</dd>
+<dt>Param:</dt>
+<dd>string query the query to execute</dd>
+<dd>array fields the list of fields to facet on</dd>
+<dd>in top the number of facet results to return</dd>
+<dt>Return:</dt>
+<dd>array see parse_facet_xml for the structure of this array</dd>
 </dl>
 
 
@@ -76,7 +128,7 @@ public void make_facet_uri(mixed query, mixed fields, mixed top)
 == parse_facet_xml ==
 
 {{{
-public array parse_facet_xml(string xml)
+public void parse_facet_xml(mixed xml)
 }}}
 
 Parse the response from a facet query into an array.
@@ -86,8 +138,10 @@ associative arrays with two keys:
 <li><em>value</em> => the value of the field</li>
 <li><em>number</em> => the associated number returned by the facet service</li>
 </ul><dl>
-<dt>Parameters:</dt>
-<dd>xml - the facet response as an XML document</dd>
+<dt>Param:</dt>
+<dd>string xml the facet response as an XML document</dd>
+<dt>Return:</dt>
+<dd>array</dd>
 </dl>
 
 

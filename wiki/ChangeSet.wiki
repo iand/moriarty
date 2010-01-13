@@ -9,8 +9,8 @@
 Represents a changeset. Can be used to create a changeset based on the difference between two bounded descriptions. The descriptions must share the same subject URI.
 
 <dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Changesets">http://n2.talis.com/wiki/Changesets</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Changesets</dd>
 </dl>
 == Constructors ==
  * [#ChangeSet ChangeSet]
@@ -99,6 +99,8 @@ public void addT(mixed s, mixed p, mixed o, mixed o_type)
 
 addT
 adds a triple to the internal simpleIndex holding all the changesets and statements<dl>
+<dt>Return:</dt>
+<dd>void</dd>
 <dt>Author:</dt>
 <dd>Keith</dd>
 </dl>
@@ -123,12 +125,12 @@ public void toRDFXML()
 == to_rdfxml ==
 
 {{{
-public string to_rdfxml()
+public void to_rdfxml()
 }}}
 
 Serialise the graph to RDF/XML<dl>
-<dt>Returns:</dt>
-<dd>the RDF/XML version of the graph</dd>
+<dt>Return:</dt>
+<dd>string the RDF/XML version of the graph</dd>
 </dl>
 
 
@@ -160,7 +162,11 @@ The 'after' and 'before' arrays are simple arrays where each element is a triple
   <li><em>o_type</em> => one of 'uri', 'bnode' or 'literal'</li>
   <li><em>o_lang</em> => the language of the literal if any</li>
   <li><em>o_datatype</em> => the data type URI of the literal if any</li>
-</ul>
+</ul><dl>
+<dt>Param:</dt>
+<dd>array args an associative array of parameters to use when constructing the changeset</dd>
+</dl>
+
 
 == after ==
 

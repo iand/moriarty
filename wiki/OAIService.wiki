@@ -7,8 +7,8 @@
 = Overview =
 
 <dl>
-<dt>See Also:</dt>
-<dd><a href="http://n2.talis.com/wiki/Store_OAI_Service">http://n2.talis.com/wiki/Store_OAI_Service</a></dd>
+<dt>See:</dt>
+<dd>http://n2.talis.com/wiki/Store_OAI_Service</dd>
 </dl>
 == Constructors ==
  * [#OAIService OAIService] - Create a new instance of this class
@@ -22,13 +22,13 @@
 == OAIService ==
 
 {{{
-public OAIService(string uri, Credentials credentials, mixed request_factory)
+public OAIService(mixed uri, mixed credentials, mixed request_factory)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>uri - URI of the augment service</dd>
-<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+<dt>Param:</dt>
+<dd>string uri URI of the augment service</dd>
+<dd>Credentials credentials the credentials to use for authenticated requests (optional)</dd>
 </dl>
 
 
@@ -37,12 +37,14 @@ Create a new instance of this class<dl>
 == list_records ==
 
 {{{
-public HttpResponse list_records(string resumption_token)
+public void list_records(mixed resumption_token)
 }}}
 
 List records available via the OAI service<dl>
-<dt>Parameters:</dt>
-<dd>resumption_token - a valid resumption token for paging results</dd>
+<dt>Param:</dt>
+<dd>string $resumption_token a valid resumption token for paging results</dd>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
 </dl>
 
 
@@ -57,7 +59,7 @@ public void make_list_records_uri(mixed resumption_token)
 == parse_oai_xml ==
 
 {{{
-public array parse_oai_xml(string xml)
+public void parse_oai_xml(mixed xml)
 }}}
 
 Parse the response from an OAI query into an array.
@@ -66,8 +68,10 @@ This method returns an associative array with two keys
 <li><em>token</em> => the resumption token</li>
 <li><em>items</em> => an array of items, each being an associative array with a single key called uri</li>
 </ul><dl>
-<dt>Parameters:</dt>
-<dd>xml - the OAI response as an XML document</dd>
+<dt>Param:</dt>
+<dd>string xml the OAI response as an XML document</dd>
+<dt>Return:</dt>
+<dd>array</dd>
 </dl>
 
 

@@ -76,13 +76,13 @@
 == NetworkResource ==
 
 {{{
-public NetworkResource(string uri, Credentials credentials, mixed request_factory)
+public NetworkResource(mixed uri, mixed credentials, mixed request_factory)
 }}}
 
 Create a new instance of this class<dl>
-<dt>Parameters:</dt>
-<dd>uri - URI of the resource</dd>
-<dd>credentials - the credentials to use for authenticated requests (optional)</dd>
+<dt>Param:</dt>
+<dd>string uri URI of the resource</dd>
+<dd>Credentials credentials the credentials to use for authenticated requests (optional)</dd>
 </dl>
 
 
@@ -91,64 +91,84 @@ Create a new instance of this class<dl>
 == delete_from_network ==
 
 {{{
-public HttpResponse delete_from_network()
+public void delete_from_network()
 }}}
 
-Issue an HTTP DELETE to the resource's URI
+Issue an HTTP DELETE to the resource's URI<dl>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
+</dl>
+
 
 == get_comment ==
 
 {{{
-public string get_comment()
+public void get_comment()
 }}}
 
-Obtain the value of the resource's comment property
+Obtain the value of the resource's comment property<dl>
+<dt>Return:</dt>
+<dd>string</dd>
+</dl>
+
 
 == get_from_network ==
 
 {{{
-public HttpResponse get_from_network()
+public void get_from_network()
 }}}
 
-Perform an HTTP GET on the resource's URI to obtain an RDF/XML document containing data associated with the resource
+Perform an HTTP GET on the resource's URI to obtain an RDF/XML document containing data associated with the resource<dl>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
+</dl>
+
 
 == get_label ==
 
 {{{
-public string get_label(mixed resource_uri, mixed capitalize, mixed use_qnames)
+public void get_label(mixed resource_uri, mixed capitalize, mixed use_qnames)
 }}}
 
-Obtain the value of the resource's label property
+Obtain the value of the resource's label property<dl>
+<dt>Return:</dt>
+<dd>string</dd>
+</dl>
+
 
 == put_to_network ==
 
 {{{
-public HttpResponse put_to_network()
+public void put_to_network()
 }}}
 
-Construct an RDF/XML document containing data associated with the resource and send it using HTTP PUT to the resource's URI
+Construct an RDF/XML document containing data associated with the resource and send it using HTTP PUT to the resource's URI<dl>
+<dt>Return:</dt>
+<dd>HttpResponse</dd>
+</dl>
+
 
 == set_comment ==
 
 {{{
-public void set_comment(mixed value, string comment)
+public void set_comment(mixed value)
 }}}
 
 Set the value of the resource's comment property<dl>
-<dt>Parameters:</dt>
-<dd>comment - the new comment</dd>
+<dt>Param:</dt>
+<dd>string comment the new comment</dd>
 </dl>
 
 
 == set_label ==
 
 {{{
-public void set_label(string label)
+public void set_label(mixed label)
 }}}
 
 Set the value of the resource's label property<dl>
-<dt>Parameters:</dt>
-<dd>label - the new label</dd>
+<dt>Param:</dt>
+<dd>string label the new label</dd>
 </dl>
 
 
