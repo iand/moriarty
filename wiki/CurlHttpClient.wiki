@@ -10,8 +10,6 @@
  * [#CurlHttpClient CurlHttpClient]
 == Methods ==
  * [#get_response_for get_response_for]
- * [#parse_response parse_response] - 
- * [#processCurlMessage processCurlMessage]
  * [#send_request send_request]
 
 == Methods inherited from Moriarty.HttpClient ==
@@ -35,22 +33,6 @@ public CurlHttpClient()
 
 {{{
 public void get_response_for(mixed key, mixed request)
-}}}
-
-
-
-== parse_response ==
-
-{{{
-private void parse_response(mixed response)
-}}}
-
-
-
-== processCurlMessage ==
-
-{{{
-private void processCurlMessage(mixed done)
 }}}
 
 

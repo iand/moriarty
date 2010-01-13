@@ -20,6 +20,7 @@
  * [#info $info] - Obtain a string representation of this response
  * [#request $request] - Obtain a string representation of this response
  * [#status_code $status_code] - Obtain a string representation of this response
+
 = Constructor Detail =
 
 == HttpResponse ==

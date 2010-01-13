@@ -26,6 +26,7 @@ Represents a batch of changesets. Can be used to create changesets based on the 
  * [#before $before]
  * [#subjectIndex $subjectIndex]
  * [#utils $utils]
+
 = Constructor Detail =
 
 == ChangeSetBatch ==

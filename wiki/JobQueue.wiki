@@ -14,8 +14,6 @@
  * [#JobQueue JobQueue] - Create a new instance of this class
 == Methods ==
  * [#get_item_uris get_item_uris] - Get a list of URIs of jobs that have been scheduled.
- * [#make_job_request make_job_request] - 
- * [#schedule_job schedule_job] - 
  * [#schedule_reindex schedule_reindex] - Schedule a reindex data job in the queue
  * [#schedule_reset_data schedule_reset_data] - Schedule a reset data job in the queue
  * [#schedule_restore schedule_restore] - Schedule a restore data job in the queue
@@ -48,22 +46,6 @@ Get a list of URIs of jobs that have been scheduled. This returns an empty array
 <dt>Return:</dt>
 <dd>array list of job URIs</dd>
 </dl>
-
-
-== make_job_request ==
-
-{{{
-private void make_job_request(mixed jobtype, mixed time, mixed label)
-}}}
-
-
-
-== schedule_job ==
-
-{{{
-private void schedule_job(mixed job)
-}}}
-
 
 
 == schedule_reindex ==

@@ -13,6 +13,7 @@
  * [#start_index $start_index] - Represents a list of resources returned from a contentbox search.
  * [#title $title] - Represents a list of resources returned from a contentbox search.
  * [#total_results $total_results] - Represents a list of resources returned from a contentbox search.
+
 = Field Detail =
 
 == description ==

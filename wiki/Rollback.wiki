@@ -13,6 +13,7 @@
 
 == Fields ==
  * [#sparqlservice $sparqlservice] - to_changeset
+
 = Constructor Detail =
 
 == Rollback ==

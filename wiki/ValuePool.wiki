@@ -18,6 +18,7 @@
 == Fields ==
  * [#bigfootMetabox $bigfootMetabox]
  * [#bigfootSparqlService $bigfootSparqlService]
+
 = Method Detail =
 
 == get_candidate_values ==

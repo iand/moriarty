@@ -12,34 +12,9 @@ Based on http://www.w3.org/2005/04/fresnel-info/fsl
 == Constructors ==
  * [#GraphPath GraphPath]
 == Methods ==
- * [#add_error add_error] - 
  * [#get_errors get_errors]
  * [#has_errors has_errors]
- * [#m m] - 
- * [#m_andexpr m_andexpr] - 
- * [#m_axis m_axis] - 
- * [#m_booleangenerator m_booleangenerator] - 
- * [#m_closebracket m_closebracket] - 
- * [#m_compexpr m_compexpr] - 
- * [#m_functioncall m_functioncall] - 
- * [#m_literal m_literal] - 
- * [#m_literalgenerator m_literalgenerator] - 
- * [#m_locationpath m_locationpath] - 
- * [#m_number m_number] - 
- * [#m_numbergenerator m_numbergenerator] - 
- * [#m_oneargument m_oneargument] - 
- * [#m_openbracket m_openbracket] - 
- * [#m_operator m_operator] - 
- * [#m_orexpr m_orexpr] - 
- * [#m_slash m_slash] - 
- * [#m_split m_split] - 
- * [#m_step m_step] - 
- * [#m_string m_string] - 
- * [#m_test m_test] - 
- * [#m_textfunction m_textfunction] - 
- * [#m_unaryexpr m_unaryexpr] - 
  * [#match match] - Evaluate the path against a graph
- * [#to_string to_string] - 
 
 = Constructor Detail =
 
@@ -52,14 +27,6 @@ public GraphPath(mixed path)
 
 
 = Method Detail =
-
-== add_error ==
-
-{{{
-private void add_error(mixed err)
-}}}
-
-
 
 == get_errors ==
 
@@ -77,190 +44,6 @@ public void has_errors()
 
 
 
-== m ==
-
-{{{
-private void m(mixed re, mixed v, mixed options)
-}}}
-
-
-
-== m_andexpr ==
-
-{{{
-private void m_andexpr(mixed v)
-}}}
-
-
-
-== m_axis ==
-
-{{{
-private void m_axis(mixed v)
-}}}
-
-
-
-== m_booleangenerator ==
-
-{{{
-private void m_booleangenerator(mixed v)
-}}}
-
-
-
-== m_closebracket ==
-
-{{{
-private void m_closebracket(mixed v)
-}}}
-
-
-
-== m_compexpr ==
-
-{{{
-private void m_compexpr(mixed v)
-}}}
-
-
-
-== m_functioncall ==
-
-{{{
-private void m_functioncall(mixed v)
-}}}
-
-
-
-== m_literal ==
-
-{{{
-private void m_literal(mixed v)
-}}}
-
-
-
-== m_literalgenerator ==
-
-{{{
-private void m_literalgenerator(mixed v)
-}}}
-
-
-
-== m_locationpath ==
-
-{{{
-private void m_locationpath(mixed v)
-}}}
-
-
-
-== m_number ==
-
-{{{
-private void m_number(mixed v)
-}}}
-
-
-
-== m_numbergenerator ==
-
-{{{
-private void m_numbergenerator(mixed v)
-}}}
-
-
-
-== m_oneargument ==
-
-{{{
-private void m_oneargument(mixed v)
-}}}
-
-
-
-== m_openbracket ==
-
-{{{
-private void m_openbracket(mixed v)
-}}}
-
-
-
-== m_operator ==
-
-{{{
-private void m_operator(mixed v)
-}}}
-
-
-
-== m_orexpr ==
-
-{{{
-private void m_orexpr(mixed v)
-}}}
-
-
-
-== m_slash ==
-
-{{{
-private void m_slash(mixed v)
-}}}
-
-
-
-== m_split ==
-
-{{{
-private void m_split(mixed pattern, mixed v)
-}}}
-
-
-
-== m_step ==
-
-{{{
-private void m_step(mixed v)
-}}}
-
-
-
-== m_string ==
-
-{{{
-private void m_string(mixed v)
-}}}
-
-
-
-== m_test ==
-
-{{{
-private void m_test(mixed v)
-}}}
-
-
-
-== m_textfunction ==
-
-{{{
-private void m_textfunction(mixed v)
-}}}
-
-
-
-== m_unaryexpr ==
-
-{{{
-private void m_unaryexpr(mixed v)
-}}}
-
-
-
 == match ==
 
 {{{
@@ -273,14 +56,6 @@ Evaluate the path against a graph<dl>
 <dt>Return:</dt>
 <dd>array nodes that match the path</dd>
 </dl>
-
-
-== to_string ==
-
-{{{
-private void to_string()
-}}}
-
 
 
 

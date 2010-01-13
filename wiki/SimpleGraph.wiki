@@ -34,7 +34,6 @@
  * [#get_subject_subgraph get_subject_subgraph] - Fetch a subgraph where all triples have given subject
  * [#get_subjects get_subjects] - Fetch an array of all the subjects
  * [#get_subjects_of_type get_subjects_of_type] - Fetch an array of all the subject that have and rdf type that matches that given
- * [#get_subjects_where get_subjects_where]
  * [#get_subjects_where_literal get_subjects_where_literal] - Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a literal value
  * [#get_subjects_where_resource get_subjects_where_resource] - Fetch an array of all the subjects where the predicate and object match a ?s $p $o triple in the graph and the object is a resource
  * [#get_triples get_triples] - 
@@ -63,7 +62,7 @@
  * [#uri_to_qname uri_to_qname] - Convert a URI to a QName using registered namespace prefixes
 
 == Fields ==
- * [#_ns $_ns] - Convert a URI to a QName using registered namespace prefixes
+
 = Constructor Detail =
 
 == SimpleGraph ==
@@ -414,14 +413,6 @@ Fetch an array of all the subject that have and rdf type that matches that given
 </dl>
 
 
-== get_subjects_where ==
-
-{{{
-private void get_subjects_where(mixed p, mixed o, mixed type)
-}}}
-
-
-
 == get_subjects_where_literal ==
 
 {{{
@@ -755,15 +746,6 @@ Convert a URI to a QName using registered namespace prefixes<dl>
 
 
 = Field Detail =
-
-== _ns ==
-
-{{{
-protected mixed $_ns = array (
-                    'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
-}}}
-
-
 
 
 

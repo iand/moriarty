@@ -15,7 +15,6 @@
 == Methods ==
  * [#create_store create_store] - Create a new store on the platform.
  * [#get_store_uris get_store_uris] - Obtain the list of store URIs.
- * [#retrieve retrieve] - 
 
 == Methods inherited from Moriarty.SimpleGraph ==
 
@@ -112,18 +111,6 @@ public void get_store_uris()
 Obtain the list of store URIs. The retrieve method must be called first.<dl>
 <dt>Return:</dt>
 <dd>array</dd>
-</dl>
-
-
-== retrieve ==
-
-{{{
-private void retrieve()
-}}}
-
-<dl>
-<dt>Deprecated:</dt>
-<dd>this should be compatible with NetworkResource</dd>
 </dl>
 
 

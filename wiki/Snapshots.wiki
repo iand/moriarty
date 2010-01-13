@@ -14,6 +14,7 @@
  * [#credentials $credentials] - get_snapshots
  * [#errors $errors] - get_snapshots
  * [#uri $uri] - get_snapshots
+
 = Constructor Detail =
 
 == Snapshots ==

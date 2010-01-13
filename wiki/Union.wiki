@@ -12,6 +12,7 @@
 
 == Fields ==
  * [#stores $stores]
+
 = Method Detail =
 
 == add ==

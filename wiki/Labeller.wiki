@@ -18,8 +18,7 @@
  * [#uri_to_qname uri_to_qname] - Convert a URI to a QName using registered namespace prefixes
 
 == Fields ==
- * [#_label_properties $_label_properties] - Convert a URI to a QName using registered namespace prefixes
- * [#_ns $_ns] - Convert a URI to a QName using registered namespace prefixes
+
 = Method Detail =
 
 == add_labelling_property ==
@@ -112,23 +111,6 @@ Convert a URI to a QName using registered namespace prefixes<dl>
 
 
 = Field Detail =
-
-== _label_properties ==
-
-{{{
-protected mixed $_label_properties = array()
-}}}
-
-
-
-== _ns ==
-
-{{{
-protected mixed $_ns = array (
-                    'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#'
-}}}
-
-
 
 
 
