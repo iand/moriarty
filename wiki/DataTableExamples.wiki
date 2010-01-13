@@ -1,8 +1,6 @@
 #summary Examples of how to use DataTable
 #labels Example
 
-<toc>
-
 The following examples are based on the n² blog post [http://blogs.talis.com/n2/archives/818 SPARQLing data.gov.uk: Edubase Data]. You may find it useful to compare the code here with the SPARQL queries in that post. The numbering of the examples correspond to the numbering used in that blog post.
 
 All of these examples use the same set of mappings:
