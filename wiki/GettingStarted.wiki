@@ -55,6 +55,7 @@ $store = new Store('http://api.talis.com/stores/mystore');
 $mb = $store->get_metabox();
 $response = $mb->describe('http://example.com/foo');
 if ( $response->is_success() ) {
+  $body = $response->bodyy;
   // do something...
 }
 else {
@@ -66,6 +67,45 @@ Not getting direct results from method calls might take some getting used to, bu
 
 = SPARQL =
 
+Every store has an associated [http://n2.talis.com/wiki/Store_Sparql_Service SPARQL service] which can be obtained like this:
+
+<code language="php">
+$store = new Store('http://api.talis.com/stores/mystore');
+$ss = $store->get_sparql_service();
+</code>
+
+The describe method allows you to get RDF descriptions of resources in a store. 
+
+<code language="php">
+$store = new Store('http://api.talis.com/stores/mystore');
+$ss = $store->get_sparql_service();
+$response = $ss->describe('http://example.com/foo');
+if ( $response->is_success() ) {
+  // do something...
+}
+</code>
+
+Whereas the metabox describe method only allows a single URI as a parameter, the sparql class allows you to pass in an array. 
+
+<code language="php">
+$response = $ss->describe( array('http://example.com/foo',
+                                 'http://example.com/bar',
+                                 'http://example.com/baz' )
+                          );
+</code>
+
+It also allows you to specify the type of description you want (but not with arrays of URIs):
+
+<code language="php">
+$response = $ss->describe( array('http://example.com/foo', 'scbd' );
+</code>
+
+The following description types are supported
+
+ * cbd - [http://n2.talis.com/wiki/Bounded_Descriptions_in_RDF#Concise_Bounded_Description concise bounded description]
+ * scbd - [http://n2.talis.com/wiki/Bounded_Descriptions_in_RDF#Symmetric_Concise_Bounded_Description symmetric bounded description]
+ * lcbd - [http://n2.talis.com/wiki/Bounded_Descriptions_in_RDF#Labelled_Concise_Bounded_Description labelled bounded description]
+ * slcbd - symmetric labelled bounded description
 
 = Authentication =
 
