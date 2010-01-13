@@ -20,7 +20,7 @@
  * [#graph_to_triple_list graph_to_triple_list] - 
  * [#parse_ask_results parse_ask_results] - Parse the SPARQL XML results format from an ask query.
  * [#parse_select_results parse_select_results] - Parse the SPARQL XML results format into an array.
- * [#query query] - Execute an arbitrary query on the sparql service
+ * [#query query] - Execute an arbitrary query on the sparql service.
  * [#select select] - Execute a select sparql query
  * [#select_to_array select_to_array] - Execute a select sparql query and return the results as an array.
 
@@ -97,6 +97,7 @@ Only cbd type is supported for arrays of URIs<dl>
 <dt>Param:</dt>
 <dd>mixed uri the URI of the resource to be described or an array of URIs</dd>
 <dd>string type the type of bounded description to be obtained (optional)</dd>
+<dd>string output the format of the RDF to return - one of rdf, turtle, ntriples or json (optional)</dd>
 <dt>Return:</dt>
 <dd>HttpResponse</dd>
 </dl>
@@ -211,10 +212,10 @@ For example: $results[2]['foo']['value'] will obtain the value of the foo variab
 public void query(mixed query, mixed mime)
 }}}
 
-Execute an arbitrary query on the sparql service<dl>
+Execute an arbitrary query on the sparql service. Will use GET for short queries to enhance cacheability.<dl>
 <dt>Param:</dt>
 <dd>string query the query to execute</dd>
-<dd>string mime the media type of the expected response (optional, defaults to RDF/XML and SPARQL results XML)</dd>
+<dd>string mime the media type of the expected response or the short name as listed at http://n2.talis.com/wiki/Store_Sparql_Service#Output_Formats (optional, defaults to RDF/XML and SPARQL results XML)</dd>
 <dt>Return:</dt>
 <dd>HttpResponse</dd>
 </dl>
