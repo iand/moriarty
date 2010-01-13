@@ -120,9 +120,10 @@ The output format can be one of [http://n2.talis.com/wiki/Store_Sparql_Service#O
 If you have a more general SPARQL query then you can use the [SparqlServiceBase#query query] method:
 
 <code language="php">
+$query = 'select ?person where { ?person a <http://xmlns.com/foaf/0.1/Person> .} limit 5';
 $store = new Store('http://api.talis.com/stores/mystore');
 $ss = $store->get_sparql_service();
-$response = $ss->query('select ?person where { ?person a <http://xmlns.com/foaf/0.1/Person> .} limit 5', 'json');
+$response = $ss->query( $query, 'json');
 if ( $response->is_success() ) {
   $results = json_decode($response->body, true);
   // do something with results array...
