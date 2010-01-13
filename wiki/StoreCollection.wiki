@@ -6,6 +6,10 @@
 
 = Overview =
 
+<table class="inherit">
+== Fields inherited from Moriarty.SimpleGraph ==
+
+ * [SimpleGraph#_ns _ns]
 == Constructors ==
  * [#StoreCollection StoreCollection] - Create a new instance of this class
 == Methods ==

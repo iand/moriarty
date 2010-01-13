@@ -62,6 +62,8 @@
  * [#update_prefix_mappings update_prefix_mappings]
  * [#uri_to_qname uri_to_qname] - Convert a URI to a QName using registered namespace prefixes
 
+== Fields ==
+ * [#_ns $_ns] - Convert a URI to a QName using registered namespace prefixes
 = Constructor Detail =
 
 == SimpleGraph ==
@@ -750,6 +752,17 @@ Convert a URI to a QName using registered namespace prefixes<dl>
 <dt>Return:</dt>
 <dd>string the QName corresponding to the URI if a suitable prefix exists, null otherwise</dd>
 </dl>
+
+
+= Field Detail =
+
+== _ns ==
+
+{{{
+protected mixed $_ns = array (
+                    'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+}}}
+
 
 
 

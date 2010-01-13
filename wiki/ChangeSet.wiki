@@ -12,6 +12,10 @@ Represents a changeset. Can be used to create a changeset based on the differenc
 <dt>See:</dt>
 <dd>http://n2.talis.com/wiki/Changesets</dd>
 </dl>
+<table class="inherit">
+== Fields inherited from Moriarty.SimpleGraph ==
+
+ * [SimpleGraph#_ns _ns]
 == Constructors ==
  * [#ChangeSet ChangeSet]
 == Methods ==
@@ -77,8 +81,17 @@ Represents a changeset. Can be used to create a changeset based on the differenc
 == Fields ==
  * [#a $a] - Serialise the graph to RDF/XML
  * [#after $after] - Serialise the graph to RDF/XML
+ * [#after_rdfxml $after_rdfxml] - Serialise the graph to RDF/XML
  * [#before $before] - Serialise the graph to RDF/XML
+ * [#before_rdfxml $before_rdfxml] - Serialise the graph to RDF/XML
+ * [#changeReason $changeReason] - Serialise the graph to RDF/XML
+ * [#createdDate $createdDate] - Serialise the graph to RDF/XML
+ * [#creatorName $creatorName] - Serialise the graph to RDF/XML
+ * [#cs_resource $cs_resource] - Serialise the graph to RDF/XML
+ * [#has_changes $has_changes] - Serialise the graph to RDF/XML
+ * [#include_count $include_count] - Serialise the graph to RDF/XML
  * [#subjectIndex $subjectIndex] - Serialise the graph to RDF/XML
+ * [#subjectOfChange $subjectOfChange] - Serialise the graph to RDF/XML
 = Constructor Detail =
 
 == ChangeSet ==
@@ -176,6 +189,14 @@ public mixed $after = array()
 
 
 
+== after_rdfxml ==
+
+{{{
+protected mixed $after_rdfxml
+}}}
+
+
+
 == before ==
 
 {{{
@@ -184,10 +205,74 @@ public mixed $before = array()
 
 
 
+== before_rdfxml ==
+
+{{{
+protected mixed $before_rdfxml
+}}}
+
+
+
+== changeReason ==
+
+{{{
+protected mixed $changeReason = null
+}}}
+
+
+
+== createdDate ==
+
+{{{
+protected mixed $createdDate = null
+}}}
+
+
+
+== creatorName ==
+
+{{{
+protected mixed $creatorName = null
+}}}
+
+
+
+== cs_resource ==
+
+{{{
+protected mixed $cs_resource = null
+}}}
+
+
+
+== has_changes ==
+
+{{{
+protected mixed $has_changes = false
+}}}
+
+
+
+== include_count ==
+
+{{{
+protected mixed $include_count
+}}}
+
+
+
 == subjectIndex ==
 
 {{{
 public mixed $subjectIndex = array()
+}}}
+
+
+
+== subjectOfChange ==
+
+{{{
+protected mixed $subjectOfChange
 }}}
 
 
