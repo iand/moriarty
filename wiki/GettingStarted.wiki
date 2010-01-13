@@ -2,9 +2,15 @@
 #labels Featured
 #sidebar Sidebar
 
+= Introduction =
+
 Moriarty is a simple PHP library for accessing the Talis Platform. It follows the Platform API very closely and wraps up many common tasks into convenient classes while remaining very lightweight. It also provides some simple classes for working with RDF in general. Moriarty is being developed by small community of developers and is in continual beta, subject to a slow stream of updates.
 
+= Dependencies =
+
 Moriarty requires Benjamin Novack's excellent [http://arc.semsol.org/ ARC libary for RDF processing] (later than version 2008-08-04). If you want to run the unit tests (you probably do) then you will also need [http://www.phpunit.de/ PHPUnit] version 3.3.0 or later
+
+= Environment =
 
 Moriarty uses a couple of constants to locate itself and its dependencies such as ARC. You should set these to the appropriate paths before you use Moriarty like this:
 
