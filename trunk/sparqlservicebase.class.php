@@ -42,6 +42,7 @@ class SparqlServiceBase {
    * Only cbd type is supported for arrays of URIs
    * @param mixed uri the URI of the resource to be described or an array of URIs
    * @param string type the type of bounded description to be obtained (optional)
+   * @param string output the format of the RDF to return - one of rdf, turtle, ntriples or json (optional)
    * @return HttpResponse
    */
   function describe( $uri, $type = 'cbd', $output = OUTPUT_TYPE_RDF ) {
@@ -107,9 +108,9 @@ class SparqlServiceBase {
   }
 
   /**
-   * Execute an arbitrary query on the sparql service
+   * Execute an arbitrary query on the sparql service. Will use GET for short queries to enhance cacheability.
    * @param string query the query to execute
-   * @param string mime the media type of the expected response (optional, defaults to RDF/XML and SPARQL results XML)
+   * @param string mime the media type of the expected response or the short name as listed at http://n2.talis.com/wiki/Store_Sparql_Service#Output_Formats (optional, defaults to RDF/XML and SPARQL results XML)
    * @return HttpResponse
    */
   function query($query, $mime=''){

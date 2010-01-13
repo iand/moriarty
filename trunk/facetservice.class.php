@@ -3,6 +3,60 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 
 /**
  * Represents a store's facet service.
+ * 
+ * You use it in the usual way. Either indirectly via the Store:
+ *
+ * <code language="php">
+ * $store = new Store("http://api.talis.com/stores/mystore");
+ * $fs = $store->get_facet_service();
+ * </code>
+ * 
+ * Or directly if you know its URI:
+ * 
+ * <code language="php">
+ * $fs = new FacetService("http://api.talis.com/stores/mystore/service/facet");
+ * </code>
+ * 
+ * Using the FacetService class is pretty simple: just call the facets method passing in the query, an array of fields to facet on and optionally the number of terms to return for each facet. As usual this method returns an HttpResponse:
+ * 
+ * <code language="php">
+ * $response = $fs->facets('query', array('field1','field2'));
+ * if ($response->is_success()) {
+ *   // do something useful
+ * }
+ * else {
+ *   // mummy...
+ * }
+ * </code>
+ * 
+ * You can parse the XML response using the parse_facet_xml method which returns a nested array of data representing the facet data:
+ * 
+ * <code language="php">
+ * array (
+ *   'field1' => array (
+ *         0 => array ( 'value' => 'term1', 'number' => '5' ),
+ *         1 => array ( 'value' => 'term2', 'number' => '4' ),
+ *         1 => array ( 'value' => 'term3', 'number' => '2' ),
+ *        ),
+ *   'field2' => array (
+ *         0 => array ( 'value' => 'term4', 'number' => '5' ),
+ *         1 => array ( 'value' => 'term5', 'number' => '4' ),
+ *         1 => array ( 'value' => 'term6', 'number' => '2' ),
+ *        ),
+ * ) 
+ * </code>
+ * 
+ * If you like living dangerously then you can combine both the previous steps into one using facets_to_array. If an error occurs this method simply returns an empty array:
+ * 
+ * <code language="php">
+ * $facets = $fs->facets_to_array('query', array('field1','field2'));
+ * </code>
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * @see http://n2.talis.com/wiki/Facet_Service
  */
 class FacetService {
