@@ -24,6 +24,10 @@ $dt->select('name')->limit(5);
 $dt->from('person');
 </code>
 
+<dl>
+<dt>See:</dt>
+<dd>http://blogs.talis.com/n2/archives/965</dd>
+</dl>
 == Constructors ==
  * [#DataTable DataTable] - The DataTable constructor requires the URI of the Talis Platform store as its first parameter, e.g.:   $dt = new DataTable('http://api.talis.com/stores/mystore');   Optionally a Credentials object can be supplied as the second parameter.
 == Methods ==
