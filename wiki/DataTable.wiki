@@ -8,6 +8,7 @@
 
 DataTable is Moriarty's implementation of the Active Record pattern for RDF data. It provides a very simple way to create and run SPARQL queries. See   DataTableExamples  for examples of how to use DataTable
 
+See http://blogs.talis.com/n2/archives/965 for an introduction to DataTable.
 
 DataTable is the class that constructs the queries. DataTableResult (in datatableresult.class.php) is a class that represents the results of a query. The interface to DataTable takes inspiration from CodeIgniter's Active Record class, adapted slightly for some RDF specifics.
 
@@ -24,10 +25,6 @@ $dt->select('name')->limit(5);
 $dt->from('person');
 </code>
 
-<dl>
-<dt>See:</dt>
-<dd>http://blogs.talis.com/n2/archives/965</dd>
-</dl>
 == Constructors ==
  * [#DataTable DataTable] - The DataTable constructor requires the URI of the Talis Platform store as its first parameter, e.g.:   $dt = new DataTable('http://api.talis.com/stores/mystore');   Optionally a Credentials object can be supplied as the second parameter.
 == Methods ==
