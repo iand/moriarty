@@ -176,6 +176,8 @@ public void insert(mixed type_list)
 
 Inserts data into a platform store. It optionally takes a single parameter which is a comma separated list of types (which must be mapped short names). These are added as rdf:type properties for the inserted resource. If multiple types are specified then multiple rdf:types will be added.
 
+Note that this method is in beta: it has been tested but there may be unusual corner cases that could result in data corruption
+
 Insert a new resource description for something with a name of "scooby" and a type of http://example.org/person:
 
 <code language="php">
@@ -382,7 +384,9 @@ $dt->set('created', 'literal', 'http://www.w3.org/2001/XMLSchema#dateTime');
 public void update()
 }}}
 
-Updates data in a platform store.
+Updates data in a platform store. 
+
+Note that this method is in beta: it has been tested but there may be unusual corner cases that could result in data corruption
 
 Update the resource description for anything with a name of "shaggy" to have a name of "scooby":
 

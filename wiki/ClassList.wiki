@@ -18,7 +18,7 @@
   * [CurlHttpClient] - A CURL based http client implementation.
   * [PhpHttpClient] - A CURL based http client implementation.
  * [DataTable] - DataTable is Moriarty's implementation of the Active Record pattern for RDF data.
- * [DataTableResult]
+ * [DataTableResult] - Represents a set of results returned from a DataTable query.
  * [FacetService] - Represents a store's facet service.
  * [Graph] - The base class for graphs in a store.
   * [Metabox] - Represents a store's metabox.
