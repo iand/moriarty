@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<project name="Moriarty" basedir="." default="test">
+	<target name="test">
+		<phpunit bootstrap="etc/phingBootstrap-ab.php">
+			<formatter type="plain" usefile="false" />
+			<batchtest>
+				<fileset dir="tests">
+					<include name="*.test.php" />
+					<!-- Seems to be a problem with this test below... -->
+					<exclude name="graphpath.test.php" />
+				</fileset>
+			</batchtest>
+		</phpunit>
+	</target>
+</project>
