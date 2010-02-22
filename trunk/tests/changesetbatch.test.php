@@ -125,6 +125,8 @@ class ChangeSetBatchTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals("scooby doo",  $objects[0]['value']);
   }
 
+/*
+ * DEPRECATED TEST - changeset batch is now a single graph
   function test_changesets_have_change_reason_if_supplied() {
     $csb = new ChangeSetBatch( array( 'after_rdfxml'=>$this->_single_triple, 'changeReason'=>'cos i wanna' ) );
     $cslist = $csb->get_changesets();
@@ -139,7 +141,10 @@ class ChangeSetBatchTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals("literal",  $objects[0]["type"]);
     $this->assertEquals("cos i wanna",  $objects[0]['value']);
   }
+*/
 
+/*
+ * DEPRECATED TEST - changeset batch is now a single graph
   function test_before() {
 
 
@@ -160,7 +165,7 @@ class ChangeSetBatchTest extends PHPUnit_Framework_TestCase {
     // $this->assertEquals("foo",  $cs->to_rdfxml() );
     $this->assertEquals(1,  count( $objects ));
   }
-
+*/
 
 
 }
