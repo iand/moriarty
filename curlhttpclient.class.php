@@ -124,7 +124,7 @@ class CurlHttpClient extends HttpClient
       $response->request = $this->requests[$key];
 
       $this->responses[$key] = $response;
-        
+
       curl_multi_remove_handle($this->multicurl, $done['handle']);
       curl_close($done['handle']);
       unset($this->curl_handles[$key]);

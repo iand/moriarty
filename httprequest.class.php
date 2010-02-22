@@ -8,257 +8,266 @@ require_once MORIARTY_DIR . 'httpresponse.class.php';
  * Represents an HTTP protocol request.
  */
 class HttpRequest {
-	/**
-	 * @access private
-	 */
-	var $method;
-	/**
-	 * @access private
-	 */
-	var $uri;
-	/**
-	 * @access private
-	 */
-	var $headers = array();
-	/**
-	 * @access private
-	 */
-	var $client;
-	/**
-	 * @access private
-	 */
-	var $body;
-	/**
-	 * @access private
-	 */
-	var $credentials;
+  /**
+   * @access private
+   */
+  var $method;
+  /**
+   * @access private
+   */
+  var $uri;
+  /**
+   * @access private
+   */
+  var $headers = array();
+  /**
+   * @access private
+   */
+  var $client;
+  /**
+   * @access private
+   */
+  var $body;
+  /**
+   * @access private
+   */
+  var $credentials;
 
 
-	var $_cache = null;
-	var $_always_validate_cache = TRUE;
-	var $_use_stale_response_on_failure = FALSE;
+  var $_cache = null;
+  var $_read_from_cache = TRUE;
+  var $_always_validate_cache = TRUE;
+  var $_use_stale_response_on_failure = FALSE;
 
-	var $_proxy = null;
+  var $_proxy = null;
 
-	var $_async_key = null;
+  var $_async_key = null;
 
-	var $_response_from_cache = null;
+  var $_response_from_cache = null;
 
-	/**
-	 * Create a new instance of this class
-	 * @param string method the HTTP method to issue (i.e. GET, POST, PUT etc)
-	 * @param string uri the URI to issue the request to
-	 * @param Credentials credentials the credentials to use for secure requests (optional)
-	 */
-	function __construct($method, $uri, $credentials = null, $cache = null) {
-		$this->uri = $uri;
-		$this->method = strtoupper($method);
-		if ( $credentials != null ) {
-			$this->credentials = $credentials;
-		}
-		else {
-			$this->credentials = null;
-		}
+  /**
+   * Create a new instance of this class
+   * @param string method the HTTP method to issue (i.e. GET, POST, PUT etc)
+   * @param string uri the URI to issue the request to
+   * @param Credentials credentials the credentials to use for secure requests (optional)
+   */
+  function __construct($method, $uri, $credentials = null, $cache = null) {
+    $this->uri = $uri;
+    $this->method = strtoupper($method);
+    if ( $credentials != null ) {
+      $this->credentials = $credentials;
+    }
+    else {
+      $this->credentials = null;
+    }
 
-		$this->headers = array();
-		$this->headers['Accept'] = '*/*';
-
-
-		$this->options = array();
-		$this->body = null;
+    $this->headers = array();
+    $this->headers['Accept'] = '*/*';
 
 
-	}
-
-	function set_cache($cache) {
-		$this->_cache = $cache;
-	}
-
-	function always_validate_cache($val) {
-		$this->_always_validate_cache = $val;
-	}
-
-	function use_stale_response_on_failure($val) {
-		$this->_use_stale_response_on_failure = $val;
-	}
-
-	function set_proxy($val) {
-		$this->_proxy = $val;
-	}
-
-	/**
-	 * Issue the HTTP request
-	 * @return HttpResponse
-	 */
-	function execute() {
-		$this->execute_async();
-		return $this->get_async_response();
-	}
-
-	function execute_async() {
-
-		if ( $this->_cache ) {
-			$cached_response = $this->_cache->load($this->cache_id(), $this->_use_stale_response_on_failure);
-			if ($cached_response) {
-				if ($this->_always_validate_cache ) {
-					if ( isset($cached_response->headers['etag']) ) {
-						$this->set_if_none_match($cached_response->headers['etag']);
-					}
-				}
-				else {
-					$cached_response->request = $this;
-					$this->_response_from_cache = $cached_response;
-					return;
-				}
-			}
-		}
-
-		$this->client = HttpClient::Create();
-		$this->_async_key = $this->client->send_request($this);
-	}
-
-	function get_async_response()
-	{
-		$response = null;
-		if ($this->_response_from_cache === null)
-		{
-			$response = $this->client->get_response_for($this->_async_key);
-		}
-
-		if ( $response === null ) {
-			if ( $this->_cache && $this->_response_from_cache) {
-				return $this->_response_from_cache;
-			}
-
-			$response_code = $response_info['http_code'];
-			$response_body = "Request failed: " . $response_error;
-			$response_headers = array();
-		}
+    $this->options = array();
+    $this->body = null;
 
 
-		/*
-		 echo '<p>The HTTP request sent was:</p>';
-		 echo '<pre>' . htmlspecialchars($this->to_string()) . '</pre>';
-		 echo '<p>The server response was:</p>';
-		 echo '<pre>' . htmlspecialchars($response->to_string()) . '</pre>';
-		 */
+  }
 
-		if ( $this->_cache ) {
-			if ( $this->_response_from_cache && $response_code == 304) {
-				$this->_response_from_cache->request = $this;
-				return $this->_response_from_cache;
-			}
+  function set_cache($cache) {
+    $this->_cache = $cache;
+  }
 
+  function always_validate_cache($val) {
+    $this->_always_validate_cache = $val;
+  }
 
-			if (! $this->_response_from_cache ) {
-				$max_age = FALSE;
-				if ( defined('MORIARTY_ALWAYS_CACHE_EVERYTHING') || ($this->method == 'GET' && $response->is_cacheable())  ) {
-					$cache_control = $response->headers['cache-control'];
-					$cache_control_tokens = split(',', $cache_control);
-					foreach ( $cache_control_tokens as $token) {
-						$token = trim($token);
-						if ( preg_match('/max-age=(.+)/', $token, $m) ) {
-							$max_age = $m[1];
-							break;
-						}
-					}
+  function use_stale_response_on_failure($val) {
+    $this->_use_stale_response_on_failure = $val;
+  }
 
-					$this->_cache->save($response, $this->cache_id(), array(), $max_age);
-				}
-			}
-		}
+  /**
+   * Whether to read from the cache.
+   * When set to FALSE, the request will be written to the cache but not read from it
+   */
+  function read_from_cache($val) {
+    $this->_read_from_cache = $val;
+  }
 
-		return $response;
+  function set_proxy($val) {
+    $this->_proxy = $val;
+  }
 
-	}
+  /**
+   * Issue the HTTP request
+   * @return HttpResponse
+   */
+  function execute() {
+    $this->execute_async();
+    return $this->get_async_response();
+  }
 
-	/**
-	 * Obtain the HTTP headers to be sent with this request
-	 * @return array headers in the format "name:value"
-	 */
-	function get_headers() {
-		$flat_headers = array();
-		foreach ($this->headers as $k=>$v) {
-			$flat_headers[] = "$k: $v";
-		}
-		return $flat_headers;
-	}
+  function execute_async() {
 
-	/**
-	 * Set content to be sent with the request
-	 * @param string val the content to be sent
-	 */
-	function set_body($val) {
-		$this->body = $val;
-	}
+    if ( $this->_cache && $this->_read_from_cache ) {
 
-	/**
-	 * Get the content to be sent with the request
-	 * @return string the content to be sent
-	 */
-	function get_body() {
-		return $this->body;
-	}
+      $cached_response = $this->_cache->load($this->cache_id(), $this->_use_stale_response_on_failure);
+      if ($cached_response) {
+        if ($this->_always_validate_cache ) {
+          if ( isset($cached_response->headers['etag']) ) {
+            $this->set_if_none_match($cached_response->headers['etag']);
+          }
+        }
+        else {
+          $cached_response->request = $this;
+          $this->_response_from_cache = $cached_response;
+          return;
+        }
+      }
+    }
 
-	/**
-	 * Set the HTTP accept header for the request
-	 * @param string val the media types to be used as the accept header value
-	 */
-	function set_accept($val) {
-		$this->headers['Accept'] = $val;
-	}
+    $this->client = HttpClient::Create();
+    $this->_async_key = $this->client->send_request($this);
+  }
 
-	/**
-	 * Set the HTTP content-type header for the request
-	 * @param string val the media type to be used as the content-type header value
-	 */
-	function set_content_type($val) {
-		$this->headers['Content-Type'] = $val;
-	}
+  function get_async_response()
+  {
+    $response = null;
+    if ($this->_response_from_cache === null)
+    {
+      $response = $this->client->get_response_for($this->_async_key);
+    }
 
-	/**
-	 * Set the HTTP if-match header for the request
-	 * @param string val the etag to be used as the if-match header value
-	 */
-	function set_if_match($val) {
-		$this->headers['If-Match'] = $val;
-	}
+    if ( $response === null ) {
+      if ( $this->_cache && $this->_response_from_cache) {
+        return $this->_response_from_cache;
+      }
 
-	/**
-	 * Set the HTTP if-none-match header for the request
-	 * @param string val the etag to be used as the if-none-match header value
-	 */
-	function set_if_none_match($val) {
-		$this->headers['If-None-Match'] = $val;
-	}
+      $response_code = $response_info['http_code'];
+      $response_body = "Request failed: " . $response_error;
+      $response_headers = array();
+    }
 
 
-	function cache_id() {
-		$accept = '*/*';
-		if (array_key_exists('Accept', $this->headers)) {
-			$accept = $this->headers['Accept'];
-		}
+    /*
+     echo '<p>The HTTP request sent was:</p>';
+     echo '<pre>' . htmlspecialchars($this->to_string()) . '</pre>';
+     echo '<p>The server response was:</p>';
+     echo '<pre>' . htmlspecialchars($response->to_string()) . '</pre>';
+     */
 
-		$accept_parts = split(',', $accept);
-		sort($accept_parts);
-		$accept = join(',', $accept_parts);
-		return md5('<' . $this->uri . '>' . $accept . $this->get_body());
-	}
+    if ( $this->_cache ) {
+      if ( $this->_read_from_cache && $this->_response_from_cache && $response_code == 304) {
+        $this->_response_from_cache->request = $this;
+        return $this->_response_from_cache;
+      }
 
-	/**
-	 * Obtain a string representation of this request
-	 * @return string
-	 */
-	function to_string() {
-		$ret = strtoupper($this->method) . ' ' . $this->uri . "\n";
-		foreach ($this->headers as $k=>$v) {
-			$ret .= "$k: $v\n";
-		}
-		$ret .= "\n";
-		$ret .= $this->get_body();
+      if (! $this->_response_from_cache ) {
+        $max_age = FALSE;
+        if ( defined('MORIARTY_ALWAYS_CACHE_EVERYTHING') || ($this->method == 'GET' && $response->is_cacheable())  ) {
+          $cache_control = $response->headers['cache-control'];
+          $cache_control_tokens = split(',', $cache_control);
+          foreach ( $cache_control_tokens as $token) {
+            $token = trim($token);
+            if ( preg_match('/max-age=(.+)/', $token, $m) ) {
+              $max_age = $m[1];
+              break;
+            }
+          }
 
-		return $ret;
-	}
+          $this->_cache->save($response, $this->cache_id(), array(), $max_age);
+        }
+      }
+    }
+
+    return $response;
+
+  }
+
+  /**
+   * Obtain the HTTP headers to be sent with this request
+   * @return array headers in the format "name:value"
+   */
+  function get_headers() {
+    $flat_headers = array();
+    foreach ($this->headers as $k=>$v) {
+      $flat_headers[] = "$k: $v";
+    }
+    return $flat_headers;
+  }
+
+  /**
+   * Set content to be sent with the request
+   * @param string val the content to be sent
+   */
+  function set_body($val) {
+    $this->body = $val;
+  }
+
+  /**
+   * Get the content to be sent with the request
+   * @return string the content to be sent
+   */
+  function get_body() {
+    return $this->body;
+  }
+
+  /**
+   * Set the HTTP accept header for the request
+   * @param string val the media types to be used as the accept header value
+   */
+  function set_accept($val) {
+    $this->headers['Accept'] = $val;
+  }
+
+  /**
+   * Set the HTTP content-type header for the request
+   * @param string val the media type to be used as the content-type header value
+   */
+  function set_content_type($val) {
+    $this->headers['Content-Type'] = $val;
+  }
+
+  /**
+   * Set the HTTP if-match header for the request
+   * @param string val the etag to be used as the if-match header value
+   */
+  function set_if_match($val) {
+    $this->headers['If-Match'] = $val;
+  }
+
+  /**
+   * Set the HTTP if-none-match header for the request
+   * @param string val the etag to be used as the if-none-match header value
+   */
+  function set_if_none_match($val) {
+    $this->headers['If-None-Match'] = $val;
+  }
+
+
+  function cache_id() {
+    $accept = '*/*';
+    if (array_key_exists('Accept', $this->headers)) {
+      $accept = $this->headers['Accept'];
+    }
+
+    $accept_parts = split(',', $accept);
+    sort($accept_parts);
+    $accept = join(',', $accept_parts);
+    return md5('<' . $this->uri . '>' . $accept . $this->get_body());
+  }
+
+  /**
+   * Obtain a string representation of this request
+   * @return string
+   */
+  function to_string() {
+    $ret = strtoupper($this->method) . ' ' . $this->uri . "\n";
+    foreach ($this->headers as $k=>$v) {
+      $ret .= "$k: $v\n";
+    }
+    $ret .= "\n";
+    $ret .= $this->get_body();
+
+    return $ret;
+  }
 
 }
 

@@ -4,9 +4,8 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 }
 
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'constants.inc.php';
-
-require_once MORIARTY_PHPUNIT_DIR . 'PHPUnit' . DIRECTORY_SEPARATOR . 'Framework.php';
-require_once MORIARTY_PHPUNIT_DIR . 'PHPUnit' . DIRECTORY_SEPARATOR . 'TextUI' . DIRECTORY_SEPARATOR . 'TestRunner.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/TextUI/TestRunner.php';
 
 require_once MORIARTY_TEST_DIR . 'fakehttprequest.class.php';
 require_once MORIARTY_TEST_DIR . 'fakerequestfactory.class.php';

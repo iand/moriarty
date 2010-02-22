@@ -23,7 +23,7 @@ class SparqlServiceBase {
    * Create a new instance of this class
    * @param string uri URI of the sparql service
    * @param Credentials credentials the credentials to use for authenticated requests (optional)
-   */ 
+   */
   function __construct($uri, $credentials = null, $request_factory = null) {
     $this->uri = $uri;
     $this->credentials = $credentials;
@@ -51,7 +51,7 @@ class SparqlServiceBase {
     }
     else {
       if ($type == 'scbd') {
-        $query = "CONSTRUCT {<$uri> ?p ?o . ?s ?p2 <$uri> .} WHERE { {<$uri> ?p ?o .} UNION {?s ?p2 <$uri> .} }"; 
+        $query = "CONSTRUCT {<$uri> ?p ?o . ?s ?p2 <$uri> .} WHERE { {<$uri> ?p ?o .} UNION {?s ?p2 <$uri> .} }";
       }
       else if ($type == 'lcbd') {
 //        $query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> CONSTRUCT {<$uri> ?p ?o . ?o rdfs:label ?label . ?o rdfs:comment ?comment . ?o rdfs:seeAlso ?seealso.} WHERE {<$uri> ?p ?o . OPTIONAL { ?o rdfs:label ?label .} OPTIONAL {?o rdfs:comment ?comment . } OPTIONAL {?o rdfs:seeAlso ?seealso.}}";
@@ -63,7 +63,7 @@ class SparqlServiceBase {
       else {
         $query="DESCRIBE <$uri>";
       }
-      
+
 
     }
     return $this->graph($query, $output);
@@ -118,7 +118,7 @@ class SparqlServiceBase {
       $this->request_factory = new HttpRequestFactory();
     }
 
-    
+
     $params = 'query=' . urlencode($query);
     if ( !empty($mime) && strstr($mime, '/') === FALSE) {
       $params .= '&output=' . $mime;
@@ -138,8 +138,9 @@ class SparqlServiceBase {
       $request->set_content_type(MIME_FORMENCODED);
       $request->set_body( $params );
     }
+
     return $request->execute();
-  
+
   }
 
   /**
@@ -228,7 +229,7 @@ class SparqlServiceBase {
   }
 
   /**
-   * Parse the SPARQL XML results format into an array. The array consist of one element per result. 
+   * Parse the SPARQL XML results format into an array. The array consist of one element per result.
    * Each element is an associative array where the keys correspond to the variable name and the values are
    * another associative array with the following keys:
    * <ul>
@@ -342,7 +343,7 @@ class SparqlServiceBase {
   }
 
   /**
-   * Parse the SPARQL XML results format from an ask query. 
+   * Parse the SPARQL XML results format from an ask query.
    * @param string xml the results XML to parse
    * @return array true if the query result was true, false otherwise
    */
