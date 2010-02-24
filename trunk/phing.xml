@@ -5,7 +5,7 @@
 
     If you have PHPUnit installed as recommended through Pear and also Phing installed
     (I installed this through Pear too) then you only need an environment variable
-    set (MORIARTY_ARC_DIR) pointing to your local ARC directory (inc the trainling slash)
+    set (MORIARTY_ARC_DIR) pointing to your local ARC directory (inc the trailing slash)
     for this to work.  No changes needed in this code.
 
     e.g.  phing -f phing.xml
@@ -64,7 +64,4 @@
     </phpunit>
   </target>
 
-
 </project>
-
-

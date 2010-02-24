@@ -225,7 +225,44 @@ class ConfigTest extends PHPUnit_Framework_TestCase {
 
   }
 
+  function test_get_access_status() {
+    $accessStatusUri = 'http://example.org/store/config/access-status';  
+      
+    $dummyGraph = new SimpleGraph();
+    $dummyGraph->add_resource_triple($accessStatusUri, 'http://schemas.talis.com/2006/bigfoot/configuration#accessMode', 'http://expected');
+    $response = new HttpResponse(200);
+    $response->body = $dummyGraph->to_rdfxml();
+    
+    $mockRequest = $this->getMock('HttpRequest', array('set_accept', 'execute'), array('GET', $accessStatusUri));
+    $mockRequest->expects($this->once())->method('set_accept')->with(MIME_RDFXML);
+    $mockRequest->expects($this->once())->method('execute')->will($this->returnValue($response));
+    
+    $mockRequestFactory = $this->getMock('HttpRequestFactory', array('make'));  
+    $mockRequestFactory->expects($this->once())->method('make')->will($this->returnValue($mockRequest));
+      
+    $config = new Config("http://example.org/store/config", null, $mockRequestFactory);
+    $actual = $config->get_access_status();
+    
+    $this->assertEquals('http://expected', $actual, 'Access status should be correct');
+  }
 
+  function test_get_access_status_error() {
+    $accessStatusUri = 'http://example.org/store/config/access-status';  
+      
+    $response = new HttpResponse(500);
+    
+    $mockRequest = $this->getMock('HttpRequest', array('set_accept', 'execute'), array('GET', $accessStatusUri));
+    $mockRequest->expects($this->once())->method('set_accept')->with(MIME_RDFXML);
+    $mockRequest->expects($this->once())->method('execute')->will($this->returnValue($response));
+    
+    $mockRequestFactory = $this->getMock('HttpRequestFactory', array('make'));  
+    $mockRequestFactory->expects($this->once())->method('make')->will($this->returnValue($mockRequest));
+      
+    $this->setExpectedException('Exception', 'Error determining access status:');
+    
+    $config = new Config("http://example.org/store/config", null, $mockRequestFactory);
+    $actual = $config->get_access_status();
+  }
 
 }
 ?>
