@@ -160,6 +160,32 @@ class Config {
     }
     return $this->uri . '/queryprofiles/1';
   }
+  
+  /**
+   * Return the current access status for the store.
+   */
+  function get_access_status()
+  {
+    $accessStatusUri = $this->uri.'/access-status';
+      
+    if (empty( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
+      
+    $request = $this->request_factory->make( 'GET', $accessStatusUri, $this->credentials );
+    $request->set_accept(MIME_RDFXML);
+    $response = $request->execute();
+    
+    if ($response->is_success())
+    {
+        $graph = new SimpleGraph($response->body);
+        $accessMode = $graph->get_first_resource($accessStatusUri, 'http://schemas.talis.com/2006/bigfoot/configuration#accessMode');
+        return $accessMode;
+    }
+    else
+    {
+        throw new Exception('Error determining access status: '.$response->to_string());
+    }
+  }
 }
-
 ?>
