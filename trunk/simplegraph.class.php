@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'labeller.class.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'httprequestfactory.class.php';
 require_once MORIARTY_ARC_DIR . "ARC2.php";
 
 /**
@@ -8,12 +9,12 @@ require_once MORIARTY_ARC_DIR . "ARC2.php";
  */
 class SimpleGraph {
   var $_index = array();
-  var $_image_properties =  array( 'http://xmlns.com/foaf/0.1/depiction', 'http://xmlns.com/foaf/0.1/img'); 
-  var $_property_order =  array('http://www.w3.org/2004/02/skos/core#prefLabel', RDFS_LABEL, 'http://purl.org/dc/terms/title', DC_TITLE, FOAF_NAME, 'http://www.w3.org/2004/02/skos/core#definition', RDFS_COMMENT, 'http://purl.org/dc/terms/description', DC_DESCRIPTION, 'http://purl.org/vocab/bio/0.1/olb', RDF_TYPE); 
+  var $_image_properties =  array( 'http://xmlns.com/foaf/0.1/depiction', 'http://xmlns.com/foaf/0.1/img');
+  var $_property_order =  array('http://www.w3.org/2004/02/skos/core#prefLabel', RDFS_LABEL, 'http://purl.org/dc/terms/title', DC_TITLE, FOAF_NAME, 'http://www.w3.org/2004/02/skos/core#definition', RDFS_COMMENT, 'http://purl.org/dc/terms/description', DC_DESCRIPTION, 'http://purl.org/vocab/bio/0.1/olb', RDF_TYPE);
+  var $request_factory = false;
   protected $_ns = array (
                     'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
                     'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
-//                    'owl' => 'http://www.w3.org/2002/07/owl#',
                     'cs' => 'http://purl.org/vocab/changeset/schema#',
                     'bf' => 'http://schemas.talis.com/2006/bigfoot/configuration#',
                     'frm' => 'http://schemas.talis.com/2006/frame/schema#',
@@ -21,17 +22,11 @@ class SimpleGraph {
                     'dc' => 'http://purl.org/dc/elements/1.1/',
                     'dct' => 'http://purl.org/dc/terms/',
                     'dctype' => 'http://purl.org/dc/dcmitype/',
-
-//                    'foaf' => 'http://xmlns.com/foaf/0.1/',
-//                    'bio' => 'http://purl.org/vocab/bio/0.1/',
                     'geo' => 'http://www.w3.org/2003/01/geo/wgs84_pos#',
                     'rel' => 'http://purl.org/vocab/relationship/',
-//                    'rss' => 'http://purl.org/rss/1.0/',
                     'wn' => 'http://xmlns.com/wordnet/1.6/',
                     'air' => 'http://www.daml.org/2001/10/html/airport-ont#',
                     'contact' => 'http://www.w3.org/2000/10/swap/pim/contact#',
-//                    'ical' => 'http://www.w3.org/2002/12/cal/ical#',
-//                    'icaltzd' => 'http://www.w3.org/2002/12/cal/icaltzd#',
                     'frbr' => 'http://purl.org/vocab/frbr/core#',
 
                     'ad' => 'http://schemas.talis.com/2005/address/schema#',
@@ -48,9 +43,9 @@ class SimpleGraph {
                     'void' => 'http://rdfs.org/ns/void#',
                     'xsd' => 'http://www.w3.org/2001/XMLSchema#',
                   );
-                  
+
   var $_labeller;
-  
+
   function __construct($graph=false){
     $this->_labeller = new Labeller();
     if($graph){
@@ -60,12 +55,16 @@ class SimpleGraph {
         $this->_index = $graph;
       }
     }
-    
+
   }
-                
+
   function __destruct(){
     unset($this->_index);
     unset($this);
+  }
+
+  function set_request_factory($request_factory) {
+    $this->request_factory = $request_factory;
   }
 
 
@@ -73,7 +72,7 @@ class SimpleGraph {
    * Map a portion of a URI to a short prefix for use when serialising the graph
    * @param string prefix the namespace prefix to associate with the URI
    * @param string uri the URI to associate with the prefix
-   */                  
+   */
   function set_namespace_mapping($prefix, $uri) {
     $this->_labeller->set_namespace_mapping($prefix, $uri);
   }
@@ -82,7 +81,7 @@ class SimpleGraph {
    * Convert a QName to a URI using registered namespace prefixes
    * @param string qname the QName to convert
    * @return string the URI corresponding to the QName if a suitable prefix exists, null otherwise
-   */                  
+   */
   function qname_to_uri($qname) {
     return $this->_labeller->qname_to_uri($qname);
   }
@@ -91,7 +90,7 @@ class SimpleGraph {
    * Convert a URI to a QName using registered namespace prefixes
    * @param string uri the URI to convert
    * @return string the QName corresponding to the URI if a suitable prefix exists, null otherwise
-   */                  
+   */
   function uri_to_qname($uri) {
     return $this->_labeller->uri_to_qname($uri);
   }
@@ -99,7 +98,7 @@ class SimpleGraph {
   function get_prefix($ns) {
     return $this->_labeller->get_prefix($ns);
   }
-  
+
   function add_labelling_property($p)  {
     $this->_labeller->add_labelling_property($p);
   }
@@ -108,9 +107,9 @@ class SimpleGraph {
   function update_prefix_mappings() {
     foreach ($this->_index as $s => $p_list) {
       foreach ($p_list as $p => $v_list) {
-        $prefix = $this->_labeller->uri_to_qname($p);  
+        $prefix = $this->_labeller->uri_to_qname($p);
       }
-    }  
+    }
   }
 
 
@@ -158,7 +157,7 @@ class SimpleGraph {
   }
 
   private function _add_triple($s, $p, $o_info) {
-    if (!isset($this->_index[$s])) { 
+    if (!isset($this->_index[$s])) {
       $this->_index[$s] = array();
       $this->_index[$s][$p] = array( $o_info );
       return true;
@@ -167,13 +166,13 @@ class SimpleGraph {
       $this->_index[$s][$p] = array( $o_info);
       return true;
     }
-    else {          
+    else {
       if ( ! in_array( $o_info, $this->_index[$s][$p] ) ) {
-        $this->_index[$s][$p][] = $o_info;       
+        $this->_index[$s][$p][] = $o_info;
         return true;
       }
     }
-    return false;  
+    return false;
   }
 
   /**
@@ -249,7 +248,7 @@ class SimpleGraph {
   function to_html($s = null) {
     $this->update_prefix_mappings();
     $h = '';
-    
+
     if ($s) {
       if (is_array($s)) {
         $subjects = array_intersect($s, $this->get_subjects());
@@ -267,19 +266,19 @@ class SimpleGraph {
     else {
       $subjects = $this->get_subjects();
     }
-    
-    
+
+
     if (count($subjects) > 0) {
       foreach ($subjects as $subject) {
         if (count($subjects) > 1) {
           $h .= '<h1><a href="' . htmlspecialchars($subject) . '">' . htmlspecialchars($this->get_label($subject)) . '</a></h1>' . "\n";
         }
         $h .= '<table>' . "\n";
-        
+
         $properties = $this->get_subject_properties($subject, TRUE);
         $priority_properties = array_intersect($properties, $this->_property_order);
         $properties = array_merge($priority_properties, array_diff($properties, $priority_properties));
-        
+
         foreach ($properties as $p) {
           $h .= '<tr><th valign="top"><a href="' . htmlspecialchars($p). '">' . htmlspecialchars($this->get_label($p)). '</a></th>';
           $h .= '<td valign="top">';
@@ -301,16 +300,16 @@ class SimpleGraph {
     return $h;
   }
 
-  
+
   /**
-   * Fetch the first literal value for a given subject and predicate. If there are multiple possible values then one is selected at random. 
+   * Fetch the first literal value for a given subject and predicate. If there are multiple possible values then one is selected at random.
    * @param string s the subject to search for
    * @param string p the predicate to search for, or an array of predicates
    * @param string default a default value to use if no literal values are found
    * @return string the first literal value found or the supplied default if no values were found
    */
   function get_first_literal($s, $p, $default = null, $preferred_language = null) {
-    
+
     $best_literal = $default;
     if ( array_key_exists($s, $this->_index)) {
       if (is_array($p)) {
@@ -326,13 +325,13 @@ class SimpleGraph {
                     return $value['value'];
                   }
                   else {
-                    $best_literal = $value['value'];  
+                    $best_literal = $value['value'];
                   }
                 }
               }
             }
-          }         
-        }       
+          }
+        }
       }
       else if(array_key_exists($p, $this->_index[$s]) ) {
         foreach ($this->_index[$s][$p] as $value) {
@@ -345,7 +344,7 @@ class SimpleGraph {
                 return $value['value'];
               }
               else {
-                $best_literal = $value['value'];  
+                $best_literal = $value['value'];
               }
             }
           }
@@ -357,7 +356,7 @@ class SimpleGraph {
   }
 
   /**
-   * Fetch the first resource value for a given subject and predicate. If there are multiple possible values then one is selected at random. 
+   * Fetch the first resource value for a given subject and predicate. If there are multiple possible values then one is selected at random.
    * @param string s the subject to search for
    * @param string p the predicate to search for
    * @param string default a default value to use if no literal values are found
@@ -434,7 +433,7 @@ class SimpleGraph {
       $this->add_rdfxml($rdfxml, $base);
     }
   }
-  
+
   /**
    * Replace the triples in the graph with those parsed from the supplied JSON
    * @see http://n2.talis.com/wiki/RDF_JSON_Specification
@@ -474,8 +473,6 @@ class SimpleGraph {
       unset($parser);
     }
   }
-
-
 
   /**
    * Add the triples parsed from the supplied RDF/XML to the graph
@@ -533,30 +530,56 @@ class SimpleGraph {
           if ($this->_add_triple($s, $p, $o_info) ) {
             $triples_were_added = true;
           }
-        } 
-      } 
-    } 
+        }
+      }
+    }
     return $triples_were_added;
   }
 
+
   private function _add_arc2_triple_list(&$triples) {
+    $bnode_index = array();
+
+    // We can safely preserve bnode labels if the graph is empty, otherwise we need to rewrite them
+    $rewrite_bnode_labels = $this->is_empty() ? FALSE : TRUE;
+
     foreach ($triples as $t) {
       $obj = array();
-      $obj['value'] = $t['o'];
+
+      if ($rewrite_bnode_labels && $t['o_type'] == 'bnode') {
+        if (!array_key_exists($t['o'], $bnode_index)) {
+          $bnode_index[$t['o']] = uniqid('_:mor');
+        }
+        $obj['value'] = $bnode_index[$t['o']];
+      }
+      else {
+        $obj['value'] = $t['o'];
+      }
+
+      if ($rewrite_bnode_labels && strpos($t['s'], '_:' ) === 0) {
+        if (!array_key_exists($t['s'], $bnode_index)) {
+          $bnode_index[$t['s']] = uniqid('_:mor');
+        }
+        $t['s'] = $bnode_index[$t['s']];
+      }
+
+
       if ($t['o_type'] === 'iri' ) {
         $obj['type'] = 'uri';
       }
-      elseif ($t['o_type'] === 'literal1' ||  
-              $t['o_type'] === 'literal2' || 
-              $t['o_type'] === 'long_literal1' || 
-              $t['o_type'] === 'long_literal2' 
+      elseif ($t['o_type'] === 'literal1' ||
+              $t['o_type'] === 'literal2' ||
+              $t['o_type'] === 'long_literal1' ||
+              $t['o_type'] === 'long_literal2'
       ) {
         $obj['type'] = 'literal';
       }
       else {
         $obj['type'] = $t['o_type'];
       }
-      
+
+
+
       if ($obj['type'] == 'literal') {
         if ( isset( $t['o_dt'] ) && $t['o_dt'] ) {
           $obj['datatype'] = $t['o_dt'];
@@ -567,18 +590,18 @@ class SimpleGraph {
         if ( isset( $t['o_lang']) && $t['o_lang'])  {
           $obj['lang'] = $t['o_lang'];
         }
-      }         
+      }
 
-      if (!isset($this->_index[$t['s']])) { 
+      if (!isset($this->_index[$t['s']])) {
         $this->_index[$t['s']] = array();
         $this->_index[$t['s']][$t['p']] = array($obj);
       }
       elseif (!isset($this->_index[$t['s']][$t['p']])) {
         $this->_index[$t['s']][$t['p']] = array($obj);
       }
-      else {          
+      else {
         if ( ! in_array( $obj, $this->_index[$t['s']][$t['p']] ) ) {
-          $this->_index[$t['s']][$t['p']][] = $obj;       
+          $this->_index[$t['s']][$t['p']][] = $obj;
         }
       }
     }
@@ -661,7 +684,7 @@ class SimpleGraph {
   }
 
   /**
-   * Fetch the resource values for a given subject and predicate. 
+   * Fetch the resource values for a given subject and predicate.
    * @param string s the subject to search for
    * @param string p the predicate to search for
    * @return array list of URIs and blank nodes that are the objects of triples with the supplied subject and predicate
@@ -679,9 +702,9 @@ class SimpleGraph {
     }
     return $values;
   }
-  
+
   /**
-   * Fetch the literal values for a given subject and predicate. 
+   * Fetch the literal values for a given subject and predicate.
    * @param string s the subject to search for
    * @param string p the predicate to search for
    * @return array list of literals that are the objects of triples with the supplied subject and predicate
@@ -697,8 +720,8 @@ class SimpleGraph {
                 $values[] = $value['value'];
               }
             }
-          }         
-        }       
+          }
+        }
       }
       else if(array_key_exists($p, $this->_index[$s]) ) {
         foreach ($this->_index[$s][$p] as $value) {
@@ -712,9 +735,9 @@ class SimpleGraph {
     return $values;
   }
 
-  
+
   /**
-   * Fetch the values for a given subject and predicate. 
+   * Fetch the values for a given subject and predicate.
    * @param string s the subject to search for
    * @param string p the predicate to search for
    * @return array list of values of triples with the supplied subject and predicate
@@ -732,8 +755,8 @@ class SimpleGraph {
       }
     }
     return $values;
-  }    
-  
+  }
+
   /**
    * Fetch a subgraph where all triples have given subject
    * @param string s the subject to search for
@@ -746,7 +769,7 @@ class SimpleGraph {
     }
     return $sub;
   }
-  
+
   /**
    * Fetch an array of all the subjects
    * @return array
@@ -784,7 +807,7 @@ class SimpleGraph {
   function get_subjects_where_literal($p, $o) {
     return $this->get_subjects_where($p, $o, 'literal');
   }
-  
+
   private function get_subjects_where($p, $o, $type)
   {
     $subjects = array();
@@ -802,11 +825,11 @@ class SimpleGraph {
         }
       }
     }
-    return $subjects;   
+    return $subjects;
   }
-  
+
   /**
-   * Fetch the properties of a given subject and predicate. 
+   * Fetch the properties of a given subject and predicate.
    * @param string s the subject to search for
    * @param boolean distinct if true then duplicate properties are included only once (optional, default is true)
    * @return array list of property URIs
@@ -821,14 +844,14 @@ class SimpleGraph {
         else {
           for ($i = 0; $i < count($prop_values); $i++) {
             $values[] = $prop;
-          } 
+          }
         }
       }
     }
     return $values;
-  }      
-      
-  
+  }
+
+
   /**
    * Tests whether the graph contains a triple with the given subject and predicate
    * @param string s the subject of the triple, either a URI or a blank node in the format _:name
@@ -840,8 +863,8 @@ class SimpleGraph {
       return (array_key_exists($p, $this->_index[$s]) );
     }
     return false;
-  }  
-  
+  }
+
   /**
    * Tests whether the graph contains a triple with the given subject
    * @param string s the subject of the triple, either a URI or a blank node in the format _:name
@@ -849,14 +872,14 @@ class SimpleGraph {
    */
   function has_triples_about($s) {
     return array_key_exists($s, $this->_index);
-  }  
-    
-  
+  }
+
+
   /**
    * Removes all triples with the given subject and predicate
    * @param string s the subject of the triple, either a URI or a blank node in the format _:name
    * @param string p the predicate URI of the triple
-   */ 
+   */
   function remove_property_values($s, $p) {
     unset($this->_index[$s][$p]);
   }
@@ -876,14 +899,14 @@ class SimpleGraph {
     return ( count($this->_index) == 0);
   }
 
-  
+
   function get_label($resource_uri, $capitalize = false, $use_qnames = FALSE) {
     return $this->_labeller->get_label($resource_uri, $this, $capitalize, $use_qnames);
   }
 
   function get_description($resource_uri = null) {
     if ($resource_uri == null) {
-      $resource_uri = $this->_primary_resource; 
+      $resource_uri = $this->_primary_resource;
     }
     $text = $this->get_first_literal($resource_uri,'http://purl.org/dc/terms/description', '', 'en');
     if ( strlen($text) == 0) {
@@ -900,9 +923,9 @@ class SimpleGraph {
     }
     if ( strlen($text) == 0) {
       $text = $this->get_first_literal($resource_uri,'http://purl.org/vocab/bio/0.1/olb', '', 'en');
-    }   
+    }
     return $text;
-  }  
+  }
 
 
 
@@ -926,11 +949,11 @@ class SimpleGraph {
             $RDF.'predicate' => array(array('type'=>'uri','value'=>$property)),
             $RDF.'object' => array($object),
                 );
-          
+
         }
       }
     }
-    
+
     return ($reified);
   }
 
@@ -940,7 +963,7 @@ class SimpleGraph {
    * @param array1, array2, [array3, ...]
    * @return array
    * @author Keith
-   **/  
+   **/
     function diff(){
       $indices = func_get_args();
       if(count($indices)==1){
@@ -957,12 +980,12 @@ class SimpleGraph {
         foreach($indices as $index){
           if(!isset($index[$base_uri])) {
             $diff[$base_uri] = $base_ps;
-          } 
+          }
           else {
             foreach($base_ps as $base_p => $base_obs) {
               if(!isset($index[$base_uri][$base_p])) {
                 $diff[$base_uri][$base_p] = $base_obs;
-              } 
+              }
               else {
                 foreach($base_obs as $base_o){
                   if(!in_array($base_o, $index[$base_uri][$base_p])) {
@@ -980,14 +1003,14 @@ class SimpleGraph {
 
 /**
  * merge
- * merges all  rdf/json-style arrays passed as parameters 
+ * merges all  rdf/json-style arrays passed as parameters
  * @param array1, array2, [array3, ...]
  * @return array
  * @author Keith
- **/  
+ **/
 
   function merge(){
-    
+
     $old_bnodeids = array();
     $indices = func_get_args();
     if(count($indices)==1){
@@ -999,7 +1022,7 @@ class SimpleGraph {
     {
       foreach($newGraph as $uri => $properties)
       {
-        /* Make sure that bnode ids don't overlap: 
+        /* Make sure that bnode ids don't overlap:
         _:a in g1 isn't the same as _:a in g2 */
 
         if(substr($uri,0,2)=='_:')//bnode
@@ -1007,7 +1030,7 @@ class SimpleGraph {
           $old_id = $uri;
           $count = 1;
 
-          while(isset($current[$uri]) OR 
+          while(isset($current[$uri]) OR
           ( $old_id!=$uri AND isset($newGraph[$uri]) )
           OR isset($old_bnodeids[$uri])
           )
@@ -1032,7 +1055,7 @@ class SimpleGraph {
               {
                   $old_bnode_id = $bnode;
                   $count=1;
-                  while(isset($current[$bnode]) OR 
+                  while(isset($current[$bnode]) OR
                   ( $object['value']!=$bnode AND isset($newGraph[$bnode]) )
                   OR isset($old_bnodeids[$uri])
                   )
@@ -1074,11 +1097,11 @@ class SimpleGraph {
                 $remove_list_literals[] = array($look_for, $look_for, $o_info['value'], $lang, $dt);
                 $add_list_literals[] = array($replace_with, $replace_with, $o_info['value'], $lang, $dt);
               }
-              else  { 
+              else  {
                 if ($o_info['value'] == $look_for) {
                   $remove_list_resources[] = array($look_for, $look_for, $look_for);
                   $add_list_resources[] = array($replace_with, $replace_with, $replace_with);
-                } 
+                }
                 else {
                   $remove_list_resources[] = array($look_for, $look_for, $o_info['value']);
                   $add_list_resources[] = array($replace_with, $replace_with, $o_info['value']);
@@ -1095,11 +1118,11 @@ class SimpleGraph {
                 $remove_list_literals[] = array($look_for, $p, $o_info['value'], $lang, $dt);
                 $add_list_literals[] = array($replace_with, $p, $o_info['value'], $lang, $dt);
               }
-              else  { 
+              else  {
                 if ($o_info['value'] == $look_for) {
                   $remove_list_resources[] = array($look_for, $p, $look_for);
                   $add_list_resources[] = array($replace_with, $p, $replace_with);
-                } 
+                }
                 else {
                   $remove_list_resources[] = array($look_for, $p, $o_info['value']);
                   $add_list_resources[] = array($replace_with, $p, $o_info['value']);
@@ -1110,7 +1133,7 @@ class SimpleGraph {
         }
       }
       else {
-      
+
         foreach ($p_list as $p => $o_list) {
           if ($p == $look_for) {
             foreach ($o_list as $o_info) {
@@ -1121,17 +1144,17 @@ class SimpleGraph {
                 $remove_list_literals[] = array($s, $look_for, $o_info['value'], $lang, $dt);
                 $add_list_literals[] = array($s, $replace_with, $o_info['value'], $lang, $dt);
               }
-              else  { 
+              else  {
                 if ($o_info['value'] == $look_for) {
                   $remove_list_resources[] = array($s, $look_for, $look_for);
                   $add_list_resources[] = array($s, $replace_with, $replace_with);
-                } 
+                }
                 else {
                   $remove_list_resources[] = array($s, $look_for, $o_info['value']);
                   $add_list_resources[] = array($s, $replace_with, $o_info['value']);
                 }
               }
-            } 
+            }
           }
           else {
             foreach ($o_list as $o_info) {
@@ -1139,12 +1162,12 @@ class SimpleGraph {
                 $remove_list_resources[] = array($s, $p, $look_for);
                 $add_list_resources[] = array($s, $p, $replace_with);
               }
-            } 
+            }
           }
-        } 
+        }
       }
-    } 
-  
+    }
+
     foreach ($remove_list_resources as $t) {
       $this->remove_resource_triple($t[0], $t[1], $t[2]);
     }
@@ -1161,6 +1184,49 @@ class SimpleGraph {
 
   }
 
+  /**
+   * Read RDF from the supplied URIs and add to the current graph
+   * @param Any uri_list a URI, or array of URIs to fetch
+   * @param boolean include_response when TRUE include RDF about each retrieval operation
+   */
+  function read_data($uri_list, $include_response = FALSE) {
+    if (empty( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
 
+    if (! is_array($uri_list)) {
+      $uri_list= array($uri_list);
+    }
+
+    $requests = array();
+    foreach ($uri_list as $uri) {
+      $request = $this->request_factory->make( 'GET', $uri );
+      $request->set_accept('application/json, text/turtle, text/n3, text/rdf+n3, application/x-turtle, application/rdf+xml;q=0.8,application/xml;q=0.6, */*');
+      $request->execute_async();
+      $requests[] = $request;
+    }
+
+    foreach ($requests as $request) {
+      $response = $request->get_async_response();
+      if ($include_response) {
+        $this->add_turtle($response->to_turtle());
+      }
+      if ($response->is_success()) {
+        if (    $response->headers['content-type'] == 'application/rdf+xml'
+             || $response->headers['content-type'] == 'application/xml') {
+          $this->add_rdfxml($response->body);
+        }
+        else if (    $response->headers['content-type'] == 'text/turtle'
+                  || $response->headers['content-type'] == 'text/n3'
+                  || $response->headers['content-type'] == 'text/rdf+n3'
+                  || $response->headers['content-type'] == 'application/x-turtle') {
+          $this->add_turtle($response->body);
+        }
+        else if (    $response->headers['content-type'] == 'application/json') {
+          $this->add_json($response->body);
+        }
+      }
+    }
+  }
 }
 
