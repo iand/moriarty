@@ -1,6 +1,9 @@
 <?php
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'constants.inc.php';
 require_once MORIARTY_DIR . 'simplegraph.class.php';
+require_once MORIARTY_TEST_DIR . 'fakerequestfactory.class.php';
+require_once MORIARTY_TEST_DIR . 'fakehttprequest.class.php';
+require_once MORIARTY_TEST_DIR . 'fakehttpresponse.class.php';
 
 class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     var $_single_triple =  '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ex="http://example.org/">
@@ -289,6 +292,17 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals("literal", $index['http://example.org/subj']['http://example.org/pred'][0]['type']);
   }
 
+  function test_add_turtle_does_not_merge_bnodes_with_same_name() {
+    $g = new SimpleGraph();
+    $g->add_turtle('_:foo <http://example.org/pred> "foo".');
+    $g->add_turtle('_:foo <http://example.org/pred> "foo".');
+    $this->assertEquals( 2, count($g->get_triples()));
+
+    $index = $g->get_index();
+    $this->assertEquals( 2, count($index)); // two different subjects
+  }
+
+
   function test_from_turtle() {
     $g = new SimpleGraph();
     $g->from_turtle($this->_single_triple_turtle);
@@ -306,7 +320,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $index = $g->get_index();
     $this->assertEquals("foo", $index['http://example.org/subj']['http://example.org/pred'][0]['value']);
   }
-  
+
   function test_add_json_appends_new_triples() {
     $g = new SimpleGraph();
     $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred1', 'http://example.org/obj1');
@@ -317,7 +331,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals("http://example.org/obj1", $index['http://example.org/subj']['http://example.org/pred1'][0]['value']);
     $this->assertEquals("foo", $index['http://example.org/subj']['http://example.org/pred'][0]['value']);
     $this->assertEquals("literal", $index['http://example.org/subj']['http://example.org/pred'][0]['type']);
-  }  
+  }
 
 
   function test_is_empty() {
@@ -327,11 +341,11 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred1', 'http://example.org/obj1');
 
     $this->assertFalse( $g->is_empty() );
-    
+
   }
 
   function test_from_turtle_parses_datatypes() {
-    
+
     $g = new SimpleGraph();
     $g->from_turtle('<http://example.org/subj> <http://example.org/pred> "1390"^^<http://www.w3.org/2001/XMLSchema#gYear> .');
     $this->assertEquals( 1, count($g->get_triples()));
@@ -340,7 +354,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals("1390", $index['http://example.org/subj']['http://example.org/pred'][0]['value']);
     $this->assertEquals("http://www.w3.org/2001/XMLSchema#gYear", $index['http://example.org/subj']['http://example.org/pred'][0]['datatype']);
   }
-  
+
   function test_qname_to_uri() {
     $g = new SimpleGraph();
     $g->set_namespace_mapping('ex', 'http://example.org/');
@@ -381,14 +395,14 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( "fr", $g->get_first_literal('http://example.org/subj', 'http://example.org/pred', null, 'fr'));
     $this->assertEquals( "de", $g->get_first_literal('http://example.org/subj', 'http://example.org/pred', null, 'de'));
   }
-  
+
   function test_get_subjects_of_type() {
     $g = new SimpleGraph();
     $g->add_resource_triple('http://example.org/subj1', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_1');
     $g->add_resource_triple('http://example.org/subj2', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_2');
     $g->add_resource_triple('http://example.org/subj3', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_1');
     $g->add_literal_triple('http://example.org/subj4', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_1');
-    
+
     $subjects = $g->get_subjects_of_type('http://example.org/type_1');
     $this->assertEquals(2, count($subjects), 'The returned subjects should be exactly 2');
     $this->assertContains('http://example.org/subj1', $subjects, 'subj1 matches and should be returned');
@@ -414,7 +428,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertContains('http://example.org/subj2', $subjects, 'subj2 matches and should be returned');
     $this->assertNotContains('http://example.org/subj3', $subjects, 'subj3 does not match and should not be returned');
   }
-  
+
   function test_get_subjects_where_resource_no_match_on_predicate() {
     $g = new SimpleGraph();
     $g->add_resource_triple('http://example.org/subj1', 'http://example.org/pred', 'http://example.org/obj1');
@@ -422,7 +436,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $subjects = $g->get_subjects_where_resource('http://example.org/pred_foo', 'http://example.org/obj1');
     $this->assertTrue(empty($subjects), 'The returned subjects should be empty');
   }
-  
+
   function test_get_subjects_where_resource_no_match_on_object() {
     $g = new SimpleGraph();
     $g->add_resource_triple('http://example.org/subj1', 'http://example.org/pred', 'http://example.org/obj1');
@@ -430,7 +444,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $subjects = $g->get_subjects_where_resource('http://example.org/pred', 'http://example.org/obj_foo');
     $this->assertTrue(empty($subjects), 'The returned subjects should be empty');
   }
-  
+
   function test_get_subjects_where_literal() {
     $g = new SimpleGraph();
     $g->add_resource_triple('http://example.org/subj1', 'http://example.org/pred', 'http://example.org/obj1');
@@ -448,7 +462,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertContains('http://example.org/subj3', $subjects, 'subj3 matches and should be returned');
     $this->assertNotContains('http://example.org/subj2', $subjects, 'subj2 does not match and should not be returned');
   }
-  
+
   function test_get_subjects_where_literal_no_match_on_predicate() {
     $g = new SimpleGraph();
     $g->add_literal_triple('http://example.org/subj1', 'http://example.org/pred', 'http://example.org/obj1');
@@ -456,7 +470,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $subjects = $g->get_subjects_where_literal('http://example.org/pred_foo', 'http://example.org/obj1');
     $this->assertTrue(empty($subjects), 'The returned subjects should be empty');
   }
-  
+
   function test_get_subjects_where_literal_no_match_on_object() {
     $g = new SimpleGraph();
     $g->add_literal_triple('http://example.org/subj1', 'http://example.org/pred', 'http://example.org/obj1');
@@ -464,7 +478,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $subjects = $g->get_subjects_where_literal('http://example.org/pred', 'http://example.org/obj_foo');
     $this->assertTrue(empty($subjects), 'The returned subjects should be empty');
   }
-  
+
   function test_reify(){
 
     $triple = array(
@@ -497,20 +511,20 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
                 'value' => '#bar',
               )
           ),
-        
+
         )
       );
     $actual = SimpleGraph::reify($triple);
-    
+
     $this->assertEquals($expected, $actual);
   }
-  
+
   function test_diff_static_call(){
-  
+
     $_1 = array(
       '#x' => array('#name' => array(array('value'=> 'Keith'),), '#nick'=> array(array('value'=> 'keithA')), '#foo' => array(array('value'=>'foo')) )
-      );  
-    
+      );
+
     $_2 = array(
         '#x' => array('#name' => array(array('value'=> 'Keith'),), '#nick'=> array(array('value'=> 'keithAlexander')), '#foo' => array(array('value'=>'foo')) )
         );
@@ -521,13 +535,13 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
 
     $this->assertEquals( $expected, $actual);
   }
-  
+
   function test_diff_object_call(){
-  
+
     $_1 = array(
       '#x' => array('#name' => array(array('value'=> 'Keith'),), '#nick'=> array(array('value'=> 'keithA')), '#foo' => array(array('value'=>'foo')) )
-      );  
-    
+      );
+
     $_2 = array(
         '#x' => array('#name' => array(array('value'=> 'Keith'),), '#nick'=> array(array('value'=> 'keithAlexander')), '#foo' => array(array('value'=>'foo')) )
         );
@@ -538,9 +552,9 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $actual = $object->diff($_2);
     $this->assertEquals( $expected, $actual);
   }
-  
+
   function test_merge_static(){
-    
+
     $g1 = array(            //uri
       '#x' => array(            //prop
           'name' => array(        //obj
@@ -580,41 +594,41 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
         );
 
       $g3 = array (
-        '#x' => 
+        '#x' =>
         array (
-          'name' => 
+          'name' =>
           array (
-            0 => 
+            0 =>
             array (
               'value' => 'Joe',
               'type' => 'literal',
             ),
           ),
-          'knows' => 
+          'knows' =>
           array (
-            0 => 
+            0 =>
             array (
               'value' => '_:y1',
               'type' => 'bnode',
             ),
           ),
         ),
-        '_:y' => 
+        '_:y' =>
         array (
-          'name' => 
+          'name' =>
           array (
-            0 => 
+            0 =>
             array (
               'value' => 'Joan',
               'type' => 'literal',
             ),
           ),
         ),
-        '_:y1' => 
+        '_:y1' =>
         array (
-          'name' => 
+          'name' =>
           array (
-            0 => 
+            0 =>
             array (
               'value' => 'Susan',
               'type' => 'literal',
@@ -637,7 +651,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
 
 
   function test_merge_object_call(){
-    
+
     $g1 = array(            //uri
       '#x' => array(            //prop
           'name' => array(        //obj
@@ -677,41 +691,41 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
         );
 
       $g3 = array (
-        '#x' => 
+        '#x' =>
         array (
-          'name' => 
+          'name' =>
           array (
-            0 => 
+            0 =>
             array (
               'value' => 'Joe',
               'type' => 'literal',
             ),
           ),
-          'knows' => 
+          'knows' =>
           array (
-            0 => 
+            0 =>
             array (
               'value' => '_:y1',
               'type' => 'bnode',
             ),
           ),
         ),
-        '_:y' => 
+        '_:y' =>
         array (
-          'name' => 
+          'name' =>
           array (
-            0 => 
+            0 =>
             array (
               'value' => 'Joan',
               'type' => 'literal',
             ),
           ),
         ),
-        '_:y1' => 
+        '_:y1' =>
         array (
-          'name' => 
+          'name' =>
           array (
-            0 => 
+            0 =>
             array (
               'value' => 'Susan',
               'type' => 'literal',
@@ -771,7 +785,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( $g->has_resource_triple('http://example.org/subj', 'http://example.org/other', 'http://example.org/other'));
     $this->assertFalse( $g->has_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/pred'));
   }
-  
+
   function test_replace_resource_subject() {
     $g = new SimpleGraph();
     $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
@@ -798,7 +812,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( $g->has_resource_triple('http://example.org/other', 'http://example.org/other', 'http://example.org/obj'));
     $this->assertFalse( $g->has_resource_triple('http://example.org/subj', 'http://example.org/subj', 'http://example.org/obj'));
   }
-    
+
   function test_replace_resource_all_components() {
     $g = new SimpleGraph();
     $g->add_resource_triple('http://example.org/subj', 'http://example.org/subj', 'http://example.org/subj');
@@ -815,7 +829,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/subj2', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_2');
     $g->add_resource_triple('http://example.org/subj3', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_1');
     $g->add_literal_triple('http://example.org/subj4', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://example.org/type_1');
-    
+
     $subjects = $g->get_subjects();
     $this->assertEquals(4, count($subjects), 'The returned subjects should be exactly 4');
     $this->assertContains('http://example.org/subj1', $subjects, 'subj1 matches and should be returned');
@@ -823,6 +837,202 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertContains('http://example.org/subj3', $subjects, 'subj3 matches and should be returned');
     $this->assertContains('http://example.org/subj4', $subjects, 'subj4 matches and should be returned');
   }
+
+
+  function test_read_data_fetches_single_url() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_single_triple;
+    $fake_response->headers['content-type'] = 'application/rdf+xml';
+
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', 'http://example.org/thing', $fake_request );
+
+    $g = new SimpleGraph();
+    $g->set_request_factory($fake_request_factory);
+    $g->read_data('http://example.org/thing');
+
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+
+  function test_read_data_sets_accept() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_single_triple;
+    $fake_response->headers['content-type'] = 'application/rdf+xml';
+
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', 'http://example.org/thing', $fake_request );
+
+    $g = new SimpleGraph();
+    $g->set_request_factory($fake_request_factory);
+    $g->read_data('http://example.org/thing');
+
+    $this->assertTrue( in_array('Accept: application/json, text/turtle, text/n3, text/rdf+n3, application/x-turtle, application/rdf+xml;q=0.8,application/xml;q=0.6, */*', $fake_request->get_headers() ) );
+  }
+
+  function test_read_data_parses_application_rdfxml() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_single_triple;
+    $fake_response->headers['content-type'] = 'application/rdf+xml';
+
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', 'http://example.org/thing', $fake_request );
+
+    $g = new SimpleGraph();
+    $g->set_request_factory($fake_request_factory);
+    $g->read_data('http://example.org/thing');
+
+    $this->assertTrue($g->has_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo'));
+  }
+
+  function test_read_data_parses_application_xml() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_single_triple;
+    $fake_response->headers['content-type'] = 'application/xml';
+
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', 'http://example.org/thing', $fake_request );
+
+    $g = new SimpleGraph();
+    $g->set_request_factory($fake_request_factory);
+    $g->read_data('http://example.org/thing');
+
+    $this->assertTrue($g->has_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo'));
+  }
+
+  function test_read_data_parses_text_turtle() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_single_triple_turtle;
+    $fake_response->headers['content-type'] = 'text/turtle';
+
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', 'http://example.org/thing', $fake_request );
+
+    $g = new SimpleGraph();
+    $g->set_request_factory($fake_request_factory);
+    $g->read_data('http://example.org/thing');
+
+    $this->assertTrue($g->has_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo'));
+  }
+
+  function test_read_data_parses_text_n3() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_single_triple_turtle;
+    $fake_response->headers['content-type'] = 'text/n3';
+
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', 'http://example.org/thing', $fake_request );
+
+    $g = new SimpleGraph();
+    $g->set_request_factory($fake_request_factory);
+    $g->read_data('http://example.org/thing');
+
+    $this->assertTrue($g->has_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo'));
+  }
+
+  function test_read_data_parses_application_x_turtle() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_single_triple_turtle;
+    $fake_response->headers['content-type'] = 'application/x-turtle';
+
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', 'http://example.org/thing', $fake_request );
+
+    $g = new SimpleGraph();
+    $g->set_request_factory($fake_request_factory);
+    $g->read_data('http://example.org/thing');
+
+    $this->assertTrue($g->has_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo'));
+  }
+
+  function test_read_data_parses_text_rdf_n3() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_single_triple_turtle;
+    $fake_response->headers['content-type'] = 'text/rdf+n3';
+
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', 'http://example.org/thing', $fake_request );
+
+    $g = new SimpleGraph();
+    $g->set_request_factory($fake_request_factory);
+    $g->read_data('http://example.org/thing');
+
+    $this->assertTrue($g->has_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo'));
+  }
+  function test_read_data_parses_application_json() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_single_triple_json;
+    $fake_response->headers['content-type'] = 'application/json';
+
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', 'http://example.org/thing', $fake_request );
+
+    $g = new SimpleGraph();
+    $g->set_request_factory($fake_request_factory);
+    $g->read_data('http://example.org/thing');
+
+    $this->assertTrue($g->has_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo'));
+  }
+
+  function test_read_data_does_not_add_body_triples_on_failed_request() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 404;
+    $fake_response->body = $this->_single_triple;
+    $fake_response->headers['content-type'] = 'application/rdf+xml';
+
+    $fake_request = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', 'http://example.org/thing', $fake_request );
+
+    $g = new SimpleGraph();
+    $g->set_request_factory($fake_request_factory);
+    $g->read_data('http://example.org/thing');
+
+    $this->assertFalse($g->has_literal_triple('http://example.org/subj', 'http://example.org/pred', 'foo'));
+  }
+
+
+  function test_read_data_fetches_multiple_urls() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_response = new HttpResponse();
+    $fake_response->status_code = 200;
+    $fake_response->body = $this->_single_triple;
+    $fake_response->headers['content-type'] = 'application/rdf+xml';
+
+    $fake_request1 = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', 'http://example.org/thing1', $fake_request1 );
+    $fake_request2 = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', 'http://example.org/thing2', $fake_request2 );
+    $fake_request3 = new FakeHttpRequest( $fake_response );
+    $fake_request_factory->register('GET', 'http://example.org/thing3', $fake_request3 );
+
+    $g = new SimpleGraph();
+    $g->set_request_factory($fake_request_factory);
+    $g->read_data(array('http://example.org/thing1', 'http://example.org/thing2', 'http://example.org/thing3'));
+
+    $this->assertTrue( $fake_request1->was_executed() );
+    $this->assertTrue( $fake_request2->was_executed() );
+    $this->assertTrue( $fake_request3->was_executed() );
+  }
+
+
 
 }
 ?>

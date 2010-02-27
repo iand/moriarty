@@ -35,15 +35,16 @@ class CurlHttpClient extends HttpClient
 
     curl_setopt($curl_handle, CURLOPT_FRESH_CONNECT,TRUE);
     curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER,1);
-    
+
     /**
      * @see http://bugs.typo3.org/view.php?id=4292
      */
-    if (ini_get('open_basedir') == '' && ini_get('safe_mode' == 'Off'))
+
+    if ( !(ini_get('open_basedir')) && ini_get('safe_mode') !== 'On')
     {
         curl_setopt($curl_handle, CURLOPT_FOLLOWLOCATION, TRUE);
     }
-    
+
     curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 5);
     curl_setopt($curl_handle, CURLOPT_TIMEOUT, 600);
     curl_setopt($curl_handle, CURLOPT_HEADER, 1);
@@ -104,7 +105,7 @@ class CurlHttpClient extends HttpClient
     }
     while (count($this->curl_handles) > 0);
 
-    throw new Exception("bollocks");
+    throw new Exception("Request did not return");
 
     }
 
