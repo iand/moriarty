@@ -420,12 +420,14 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $g->add_literal_triple('http://example.org/subj2', 'http://example.org/pred', 'http://example.org/obj2');
 
     $g->add_resource_triple('http://example.org/subj3', 'http://example.org/pred', 'http://example.org/obj2');
+    $g->add_resource_triple('_:bnode', 'http://example.org/pred', 'http://example.org/obj1');
     $g->add_literal_triple('http://example.org/subj3', 'http://example.org/pred', 'http://example.org/obj1');
 
     $subjects = $g->get_subjects_where_resource('http://example.org/pred', 'http://example.org/obj1');
-    $this->assertEquals(2, count($subjects), 'The returned subjects should be exactly 2');
+    $this->assertEquals(3, count($subjects), 'The returned subjects should be exactly 3');
     $this->assertContains('http://example.org/subj1', $subjects, 'subj1 matches and should be returned');
     $this->assertContains('http://example.org/subj2', $subjects, 'subj2 matches and should be returned');
+    $this->assertContains('_:bnode', $subjects, 'bnodes match and should be returned');
     $this->assertNotContains('http://example.org/subj3', $subjects, 'subj3 does not match and should not be returned');
   }
 

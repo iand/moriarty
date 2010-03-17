@@ -795,7 +795,7 @@ class SimpleGraph {
    * @return array
    */
   function get_subjects_where_resource($p, $o) {
-    return $this->get_subjects_where($p, $o, 'uri');
+    return array_merge($this->get_subjects_where($p, $o, 'uri'), $this->get_subjects_where($p, $o, 'bnode'));
   }
 
   /**
