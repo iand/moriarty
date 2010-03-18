@@ -162,16 +162,17 @@ class HttpRequest {
       if (! $this->_response_from_cache ) {
         $max_age = FALSE;
         if ( defined('MORIARTY_ALWAYS_CACHE_EVERYTHING') || ($this->method == 'GET' && $response->is_cacheable())  ) {
-          $cache_control = $response->headers['cache-control'];
-          $cache_control_tokens = split(',', $cache_control);
-          foreach ( $cache_control_tokens as $token) {
-            $token = trim($token);
-            if ( preg_match('/max-age=(.+)/', $token, $m) ) {
-              $max_age = $m[1];
-              break;
+            if(isset($response->headers['cache-control'])){
+                  $cache_control = $response->headers['cache-control'];
+                  $cache_control_tokens = split(',', $cache_control);
+                  foreach ( $cache_control_tokens as $token) {
+                    $token = trim($token);
+                    if ( preg_match('/max-age=(.+)/', $token, $m) ) {
+                      $max_age = $m[1];
+                      break;
+                    }
+                  }
             }
-          }
-
           $this->_cache->save($response, $this->cache_id(), array(), $max_age);
         }
       }
