@@ -1044,6 +1044,20 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
       
   }
 
+  public function testGetSequenceValues()
+    {
+        $graph = new SimpleGraph();
+        $graph->add_resource_triple('http://some/subject/1', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#_4', 'http://value/4');
+        $graph->add_resource_triple('http://some/subject/1', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#_2', 'http://value/2');
+        $graph->add_resource_triple('http://some/subject/1', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#_3', 'http://value/3');
+        $graph->add_resource_triple('http://some/subject/1', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#_5', 'http://value/5');
+        $graph->add_resource_triple('http://some/subject/1', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#_1', 'http://value/1');
+
+
+        $expectedArray = array('http://value/1', 'http://value/2', 'http://value/3', 'http://value/4', 'http://value/5');
+        $this->assertEquals($expectedArray, $graph->get_sequence_values('http://some/subject/1'));
+    }
+
 
 }
 ?>
