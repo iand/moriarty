@@ -27,6 +27,7 @@ define('RDF_OBJECT', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#object');
 define('RDF_STATEMENT', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement');
 define('RDF_FIRST', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first');
 define('RDF_REST', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#rest');
+define('RDF_NIL', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#nil');
 define('RDF_LIST', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#List');
 define('RDF_VALUE', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value');
 

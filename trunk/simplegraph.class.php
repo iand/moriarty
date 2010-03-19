@@ -1228,5 +1228,14 @@ class SimpleGraph {
       }
     }
   }
+  
+  function get_list_values($listUri) {
+      $array = array();
+      while(!empty($listUri) AND $listUri != RDF_NIL){
+          $array[]=$this->get_first_resource($listUri, RDF_FIRST);
+          $listUri = $this->get_first_resource($listUri, RDF_REST);
+      }
+      return $array;
+  }
 }
 
