@@ -4,6 +4,7 @@ require_once MORIARTY_DIR . 'simplegraph.class.php';
 require_once MORIARTY_TEST_DIR . 'fakerequestfactory.class.php';
 require_once MORIARTY_TEST_DIR . 'fakehttprequest.class.php';
 require_once MORIARTY_TEST_DIR . 'fakehttpresponse.class.php';
+define('exampleNS', 'http://example.com/');
 
 class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     var $_single_triple =  '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ex="http://example.org/">
@@ -1034,6 +1035,14 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( $fake_request3->was_executed() );
   }
 
+
+  function test_get_list_values(){
+      $g = new SimpleGraph(file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'documents'.DIRECTORY_SEPARATOR.'lists-seqs-collections.ttl'));
+      $actual = $g->get_list_values(exampleNS.'#list');
+      $expected = array(exampleNS.'#a', exampleNS.'#b', exampleNS.'#c');
+      $this->assertEquals($expected, $actual, "list should be tranformed into the array");
+      
+  }
 
 
 }
