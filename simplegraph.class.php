@@ -1237,5 +1237,42 @@ class SimpleGraph {
       }
       return $array;
   }
+    
+  function get_sequence_values($sequenceUri) {
+          $triples = $this->get_index();
+          $properties = array();
+
+          if (isset($triples[$sequenceUri]))
+          {
+              foreach ($triples[$sequenceUri] as $property => $objects)
+              {
+                  if (strpos($property, RDF_) !== false)
+                  {
+                      $key = substr($property, strpos($property, '_') + 1  );
+                      $value = $this->get_first_resource($sequenceUri, $property);
+
+
+                      if (empty($value))
+                      {
+                      $value = $this->get_first_literal($sequenceUri, $property);
+                      }
+
+                      $properties[$key] = $value;
+                  }
+              }
+
+              ksort($properties, SORT_NUMERIC);
+          }
+
+          $values = array();
+
+          foreach($properties as $key=>$value)
+          {
+              $values[] = $value;
+          }
+
+          return $values;
+      }  
+  
 }
 

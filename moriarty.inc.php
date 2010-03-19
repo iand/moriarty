@@ -30,6 +30,7 @@ define('RDF_REST', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#rest');
 define('RDF_NIL', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#nil');
 define('RDF_LIST', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#List');
 define('RDF_VALUE', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value');
+define('RDF_', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#_');
 
 define('RDF_PROPERTY', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property');
 define('RDF_XMLLITERAL', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral');
