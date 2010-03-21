@@ -122,7 +122,11 @@ class CurlHttpClient extends HttpClient
       $response->headers = $response_headers;
       $response->body = $response_body;
       $response->info = $response_info;
-      $response->request = $this->requests[$key];
+//ID20100317      $response->request = $this->requests[$key];
+      $response->request_method = $this->requests[$key]->method;
+      $response->request_uri = $this->requests[$key]->uri;
+      $response->request_headers = $this->requests[$key]->headers;
+      $response->request_body = $this->requests[$key]->body;
 
       $this->responses[$key] = $response;
 

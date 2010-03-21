@@ -556,6 +556,32 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( $expected, $actual);
   }
 
+  function test_diff_where_subsequent_array_is_empty(){
+
+    $_1 = array(
+      '#x' => array('#name' => array(array('value'=> 'Keith'),), '#nick'=> array(array('value'=> 'keithA')), '#foo' => array(array('value'=>'foo')) )
+      );
+
+    $_2 = array();
+
+    $actual = SimpleGraph::diff($_1,$_2);
+
+    $this->assertEquals( $_1, $actual);
+  }
+
+  function test_diff_where_orifinal_array_is_empty(){
+
+    $_1 = array();
+
+    $_2 = array(
+        '#x' => array('#name' => array(array('value'=> 'Keith'),), '#nick'=> array(array('value'=> 'keithAlexander')), '#foo' => array(array('value'=>'foo')) )
+        );
+
+    $actual = SimpleGraph::diff($_1,$_2);
+
+    $this->assertEquals( $_1, $actual);
+  }
+
   function test_merge_static(){
 
     $g1 = array(            //uri

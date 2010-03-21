@@ -969,9 +969,6 @@ class SimpleGraph {
       if(count($indices)==1){
         array_unshift($indices, $this->_index);
       }
-      foreach($indices as $no => $index){
-        if(empty($indices[$no])) unset($indices[$no]);
-      }
       $base = array_shift($indices);
       if (count($base) === 0) return array();
       $diff = array();

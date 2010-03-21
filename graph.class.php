@@ -25,7 +25,7 @@ class Graph {
    * Create a new instance of this class
    * @param string uri URI of the graph
    * @param Credentials credentials the credentials to use for authenticated requests (optional)
-   */ 
+   */
   function __construct($uri, $credentials = null, $request_factory = null)  {
     $this->uri = $uri;
     $this->credentials = $credentials;
@@ -40,7 +40,7 @@ class Graph {
   function apply_changeset($cs) {
     return $this->apply_changeset_rdfxml( $cs->to_rdfxml());
   }
-  
+
   /**
    * Apply a changeset in a versioned manner to the graph
    * @param ChangeSet cs the changeset to apply
@@ -49,7 +49,7 @@ class Graph {
   function apply_versioned_changeset($cs) {
     return $this->apply_versioned_changeset_rdfxml( $cs->to_rdfxml());
   }
-  
+
   /**
    * Apply a changeset to the graph
    * @param string rdfxml the changeset to apply, serialised as RDF/XML
@@ -120,7 +120,7 @@ class Graph {
     }
     $uri = $this->uri;
     $request = $this->request_factory->make( 'POST', $uri, $this->credentials);
-    $request->set_content_type("application/x-turtle");
+    $request->set_content_type("text/turtle");
     $request->set_accept("*/*");
     $request->set_body( $turtle );
     return $request->execute();
@@ -193,7 +193,7 @@ class Graph {
 
     return $graph;
   }
-  
+
   /**
    * Tests whether the graph contains a bounded description of a given resource. This uses a conditional GET.
    * @see http://n2.talis.com/wiki/Metabox#Describing_a_Resource
@@ -219,7 +219,7 @@ class Graph {
       return false;
     }
 
-    
+
 
   }
 }
