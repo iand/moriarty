@@ -4,6 +4,12 @@ require_once MORIARTY_DIR . 'store.class.php';
 require_once MORIARTY_DIR . 'credentials.class.php';
 
 class StoreTest extends PHPUnit_Framework_TestCase {
+  var $_rdfxml_doc = '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:foaf="http://xmlns.com/foaf/0.1/">
+  <foaf:Person>
+    <foaf:name>scooby</foaf:name>
+  </foaf:Person>
+</rdf:RDF>';
+
   function test_get_metabox() {
     $store = new Store("http://example.org/store");
     $this->assertEquals( "http://example.org/store/meta", $store->get_metabox()->uri );
@@ -100,14 +106,14 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $store = new Store("http://example.org/store", $credentials);
     $this->assertEquals( $credentials, $store->get_augment_service()->credentials );
   }
-  
+
   function test_describe_single_uri_performs_get_on_metabox() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
     $fake_request_factory->register('GET', "http://example.org/store/meta?about=" . urlencode('http://example.org/scooby') . "&output=rdf", $fake_request );
 
     $store = new Store("http://example.org/store", null, $fake_request_factory);
-    
+
     $response = $store->describe( 'http://example.org/scooby' );
     $this->assertTrue( $fake_request->was_executed() );
   }
@@ -123,7 +129,7 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $response = $store->describe( array( 'http://example.org/scooby', 'http://example.org/shaggy' )  );
     $this->assertTrue( $fake_request->was_executed() );
   }
-  
+
   function test_get_oai_service() {
     $store = new Store("http://example.org/store");
     $this->assertEquals( "http://example.org/store/services/oai-pmh", $store->get_oai_service()->uri );
@@ -147,24 +153,24 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $fake_facet_request = new FakeHttpRequest( $fake_facet_response );
     $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=10&offset=0", $fake_search_request );
     $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
-    
+
     $store = new Store("http://example.org/store", null, $fake_request_factory);
 
     $response = $store->search_and_facet( 'scooby', array( 'foo' ) );
-    
+
     $this->assertEquals(111, $response['searchResponse']->status_code);
     $this->assertEquals(222, $response['facetResponse']->status_code);
     $this->assertEquals($expected_search_body, $response['searchResponse']->body);
     $this->assertEquals($expected_facet_body, $response['facetResponse']->body);
   }
-  
+
   function test_search_and_facet_uses_uri() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_search_request = new FakeHttpRequest( new HttpResponse() );
     $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
     $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=10&offset=0", $fake_search_request );
     $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
-    
+
     $store = new Store("http://example.org/store", null, $fake_request_factory);
 
     $response = $store->search_and_facet( 'scooby', array( 'foo' ) );
@@ -178,7 +184,7 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
     $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=45&offset=0", $fake_search_request );
     $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
-    
+
     $store = new Store("http://example.org/store", null, $fake_request_factory);
 
     $response = $store->search_and_facet( 'scooby', array( 'foo' ), 45 );
@@ -191,7 +197,7 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
     $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=45&offset=0&sort=bar", $fake_search_request );
     $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
-    
+
     $store = new Store("http://example.org/store", null, $fake_request_factory);
 
     $response = $store->search_and_facet( 'scooby', array( 'foo' ), 45, 0, 'bar' );
@@ -204,7 +210,7 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
     $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=45&offset=12", $fake_search_request );
     $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
-    
+
     $store = new Store("http://example.org/store", null, $fake_request_factory);
 
     $response = $store->search_and_facet( 'scooby', array( 'foo' ), 45, 12 );
@@ -217,12 +223,12 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
     $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=10&offset=0", $fake_search_request );
     $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
-    
+
     $store = new Store("http://example.org/store", null, $fake_request_factory);
 
     $response = $store->search_and_facet( 'scooby', array( 'foo' ) );
-  	$this->assertTrue( in_array('Accept: application/rss+xml', $fake_search_request->get_headers() ) );
-  	$this->assertTrue( in_array('Accept: application/xml', $fake_facet_request->get_headers() ) );
+    $this->assertTrue( in_array('Accept: application/rss+xml', $fake_search_request->get_headers() ) );
+    $this->assertTrue( in_array('Accept: application/xml', $fake_facet_request->get_headers() ) );
   }
 
   function test_search_and_facet_uses_credentials() {
@@ -231,42 +237,107 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
     $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=10&offset=0", $fake_search_request );
     $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo&top=10&output=xml", $fake_facet_request );
-    
-  	$store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+
+    $store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
 
     $response = $store->search_and_facet( 'scooby', array( 'foo') );
     $this->assertEquals( "user:pwd", $fake_search_request->get_auth() );
     $this->assertEquals( "user:pwd", $fake_facet_request->get_auth() );
   }
 
-  
+
   function test_search_and_facet_uses_fields() {
-  	$fake_request_factory = new FakeRequestFactory();
+    $fake_request_factory = new FakeRequestFactory();
     $fake_search_request = new FakeHttpRequest( new HttpResponse() );
     $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
     $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=10&offset=0", $fake_search_request );
     $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo%2Cbar%2Cbaz%2Cqux&top=10&output=xml", $fake_facet_request );
-    
-  	$store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+
+    $store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
 
     $response = $store->search_and_facet( 'scooby', array( 'foo', 'bar', 'baz', 'qux' ) );
-  	
+
     $this->assertTrue( $fake_facet_request->was_executed() );
   }
 
   function test_search_and_facet_uses_top() {
-  	$fake_request_factory = new FakeRequestFactory();
+    $fake_request_factory = new FakeRequestFactory();
     $fake_search_request = new FakeHttpRequest( new HttpResponse() );
     $fake_facet_request = new FakeHttpRequest( new HttpResponse() );
     $fake_request_factory->register('GET', "http://example.org/store/items?query=scooby&max=10&offset=0", $fake_search_request );
     $fake_request_factory->register('GET', "http://example.org/store/services/facet?query=scooby&fields=foo%2Cbar%2Cbaz%2Cqux&top=93&output=xml", $fake_facet_request );
-    
-  	$store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+
+    $store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
 
     $response = $store->search_and_facet( 'scooby', array( 'foo', 'bar', 'baz', 'qux' ), 10, 0, null, 93 );
-    
+
     $this->assertTrue( $fake_facet_request->was_executed() );
   }
+
+  function test_store_data_posts_to_metabox_uri() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+    $response = $store->store_data( $this->_rdfxml_doc );
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+
+  function test_store_data_posts_supplied_rdfxml() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+    $response = $store->store_data( $this->_rdfxml_doc );
+    $this->assertEquals( $this->_rdfxml_doc , $fake_request->get_body() );
+  }
+
+  function test_store_data_sets_content_type() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+    $response = $store->store_data( $this->_rdfxml_doc );
+    $this->assertTrue( in_array('Content-Type: application/rdf+xml', $fake_request->get_headers() ) );
+  }
+
+  function test_store_data_sets_accept() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+    $response = $store->store_data( $this->_rdfxml_doc );
+    $this->assertTrue( in_array('Accept: */*', $fake_request->get_headers() ) );
+  }
+
+  function test_store_data_recognises_simple_graph() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $g = new SimpleGraph();
+    $g->from_rdfxml($this->_rdfxml_doc);
+    $store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+    $response = $store->store_data( $g );
+    $this->assertEquals( $g->to_turtle() , $fake_request->get_body() );
+  }
+
+  function test_store_data_sends_simple_graph_as_turtle() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/meta", $fake_request );
+
+    $g = new SimpleGraph();
+    $g->from_rdfxml($this->_rdfxml_doc);
+    $store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+    $response = $store->store_data( $g );
+    $this->assertTrue( in_array('Content-Type: text/turtle', $fake_request->get_headers() ) );
+  }
+
 
 }
 ?>

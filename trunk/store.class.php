@@ -150,29 +150,48 @@ class Store {
     return $cb->search($query, $max, $offset, $sort);
   }
 
-  function search_and_facet($query, $fields, $max=10, $offset=0, $sort=false, $top = 10)
-  {
+  function search_and_facet($query, $fields, $max=10, $offset=0, $sort=false, $top = 10) {
     if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
 
     $search_uri = $this->get_contentbox()->make_search_uri($query, $max, $offset, $sort);
     $facet_uri = $this->get_facet_service()->make_facet_uri($query, $fields, $top);
-      
+
     $search_request = $this->request_factory->make( 'GET', $search_uri, $this->credentials );
     $search_request->set_accept(MIME_RSS);
-      
+
     $facet_request = $this->request_factory->make( 'GET', $facet_uri, $this->credentials );
     $facet_request->set_accept(MIME_XML);
 
     $search_request->execute_async();
     $facet_request->execute_async();
-      
+
     $searchReponse = $search_request->get_async_response();
     $facetResponse = $facet_request->get_async_response();
     return array('facetResponse' => $facetResponse, 'searchResponse' => $searchReponse);
   }
 
+  /**
+   * Store some RDF in the Metabox associated with this store.
+   * @param string or SimpleGraph $data either a string containing RDF/XML or a SimpleGraph
+   * @return HttpResponse
+   **/
+  function store_data($data) {
+    if (empty( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
+
+    $mb = $this->get_metabox();
+
+    if (is_a($data, 'SimpleGraph')) {
+      return $mb->submit_turtle($data->to_turtle());
+    }
+    else {
+      return $mb->submit_rdfxml($data);
+    }
+
+  }
 
 }
 ?>

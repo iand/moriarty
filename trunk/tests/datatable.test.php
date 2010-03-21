@@ -568,7 +568,7 @@ class DataTableTest extends PHPUnit_Framework_TestCase {
     $dt->set('name', 'scooby');
     $dt->insert();
 
-    $this->assertTrue( in_array('Content-Type: application/x-turtle', $fake_request->get_headers() ) );
+    $this->assertTrue( in_array('Content-Type: text/turtle', $fake_request->get_headers() ) );
   }
 
   function test_insert_sets_accept() {

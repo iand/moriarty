@@ -9,82 +9,86 @@ require_once MORIARTY_DIR . 'httpresponse.class.php';
  */
 class PhpHttpClient extends HttpClient
 {
-	private $responses = array();
+  private $responses = array();
 
-	public function send_request($request)
-	{
-		$response_code = '0';
-		$response_info = array();
-		$response_headers = array();
-		$error = '';
+  public function send_request($request)
+  {
+    $response_code = '0';
+    $response_info = array();
+    $response_headers = array();
+    $error = '';
 
-		$http=new http_class;
-		$http->follow_redirect = 1;
-		$http->redirection_limit = 5;
-		$http->prefer_curl = 0;
+    $http=new http_class;
+    $http->follow_redirect = 1;
+    $http->redirection_limit = 5;
+    $http->prefer_curl = 0;
 
-		$error = $http->GetRequestArguments($request->uri, $arguments);
+    $error = $http->GetRequestArguments($request->uri, $arguments);
 
-		if ($request->credentials != null) {
-			$http->authentication_mechanism = "Digest";
-			$arguments['AuthUser'] = $request->credentials->get_username();
-			$arguments['AuthPassword'] = $request->credentials->get_password();
-		}
+    if ($request->credentials != null) {
+      $http->authentication_mechanism = "Digest";
+      $arguments['AuthUser'] = $request->credentials->get_username();
+      $arguments['AuthPassword'] = $request->credentials->get_password();
+    }
 
-		$arguments["RequestMethod"] = $request->method;
+    $arguments["RequestMethod"] = $request->method;
 
-		foreach ($request->headers as $k => $v) {
-			$arguments["Headers"][$k] = $v;
-		}
-		 
-		if ($request->body != null) {
-			$arguments["Body"] = $request->body;
-		}
+    foreach ($request->headers as $k => $v) {
+      $arguments["Headers"][$k] = $v;
+    }
 
-		$error = $http->Open($arguments);
-		if (! $error) {
-			$error = $http->SendRequest($arguments);
-		}
+    if ($request->body != null) {
+      $arguments["Body"] = $request->body;
+    }
 
-		if ( ! $error ) {
-			$error = $http->ReadReplyHeaders($response_headers);
-			$response_code = $http->response_status;
-			$response_body = '';
+    $error = $http->Open($arguments);
+    if (! $error) {
+      $error = $http->SendRequest($arguments);
+    }
 
-			for(;;) {
-				$error=$http->ReadReplyBody($body,1000);
-				if($error!="" || strlen($body)==0)
-				break;
-				$response_body .= $body;
-			}
-		}
-		else {
-			if ( $request->_cache  && $cached_response) {
-				return $cached_response;
-			}
-			$response_body = "Request failed: " . $error;
-		}
+    if ( ! $error ) {
+      $error = $http->ReadReplyHeaders($response_headers);
+      $response_code = $http->response_status;
+      $response_body = '';
 
-		$http->Close();
+      for(;;) {
+        $error=$http->ReadReplyBody($body,1000);
+        if($error!="" || strlen($body)==0)
+        break;
+        $response_body .= $body;
+      }
+    }
+    else {
+      if ( $request->_cache  && $cached_response) {
+        return $cached_response;
+      }
+      $response_body = "Request failed: " . $error;
+    }
 
-		$response = new HttpResponse();
-		$response->status_code = $response_code;
-		$response->headers = $response_headers;
-		$response->body = $response_body;
-		$response->info = $response_info;
-		$response->request = $request;
+    $http->Close();
 
-		$key = spl_object_hash($request);
-		$this->responses[$key] = $response;
-		
-		return $key;
+    $response = new HttpResponse();
+    $response->status_code = $response_code;
+    $response->headers = $response_headers;
+    $response->body = $response_body;
+    $response->info = $response_info;
+//ID20100317    $response->request = $request;
+    $response->request_method = $this->method;
+    $response->request_uri = $this->uri;
+    $response->request_headers = $this->headers;
+    $response->request_body = $this->body;
 
-	}
+    $key = spl_object_hash($request);
+    $this->responses[$key] = $response;
 
-	public function get_response_for($key)
-	{
-		return @$this->responses[$key];
-	}
+    return $key;
+
+  }
+
+  public function get_response_for($key)
+  {
+    return @$this->responses[$key];
+  }
 }
 
 

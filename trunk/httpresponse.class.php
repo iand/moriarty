@@ -31,7 +31,10 @@ class HttpResponse {
    * The request that was responsible for generating this response
    * @var HttpRequest
    */
-  var $request;
+  var $request_uri;
+  var $request_method;
+  var $request_headers;
+  var $request_body;
   /**
    * @access private
    */
@@ -92,23 +95,23 @@ class HttpResponse {
 
     $turtle .= '_:request a ';
 
-    if ($this->request->method == 'GET') {
+    if ($this->request_method == 'GET') {
       $turtle .= 'h:GetRequest';
     }
-    else if ($this->request->method == 'POST') {
+    else if ($this->request_method == 'POST') {
       $turtle .= 'h:PostRequest';
     }
-    else if ($this->request->method == 'DELETE') {
+    else if ($this->request_method == 'DELETE') {
       $turtle .= 'h:DeleteRequest';
     }
-    else if ($this->request->method == 'PUT') {
+    else if ($this->request_method == 'PUT') {
       $turtle .= 'h:PutRequest';
     }
     else {
       $turtle .= 'h:Request';
     }
 
-    $turtle .= ' ; h:requestURI "' . $this->request->uri . '"';
+    $turtle .= ' ; h:requestURI "' . $this->request_uri . '"';
     $turtle .= ' ; h:response _:response';
     $turtle .= ' .';
 

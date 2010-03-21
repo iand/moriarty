@@ -338,7 +338,7 @@ class GraphTest extends PHPUnit_Framework_TestCase {
     $g->request_factory = $fake_request_factory;
 
     $response = $g->submit_turtle( $this->_turtle_doc );
-    $this->assertTrue( in_array('Content-Type: application/x-turtle', $fake_request->get_headers() ) );
+    $this->assertTrue( in_array('Content-Type: text/turtle', $fake_request->get_headers() ) );
   }
 
   function test_submit_turtle_sets_accept() {

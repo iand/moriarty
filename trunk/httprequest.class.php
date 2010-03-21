@@ -110,14 +110,19 @@ class HttpRequest {
 
       $cached_response = $this->_cache->load($this->cache_id(), $this->_use_stale_response_on_failure);
       if ($cached_response) {
+        $cached_response->request_method = $this->method;
+        $cached_response->request_uri = $this->uri;
+        $cached_response->request_headers = $this->headers;
+        $cached_response->request_body = $this->body;
+        $cached_response->headers['x-moriarty-from-cache'] = 'yes';
+        $this->_response_from_cache = $cached_response;
+
         if ($this->_always_validate_cache ) {
           if ( isset($cached_response->headers['etag']) ) {
             $this->set_if_none_match($cached_response->headers['etag']);
           }
         }
         else {
-          $cached_response->request = $this;
-          $this->_response_from_cache = $cached_response;
           return;
         }
       }
@@ -130,8 +135,7 @@ class HttpRequest {
   function get_async_response()
   {
     $response = null;
-    if ($this->_response_from_cache === null)
-    {
+    if ($this->_response_from_cache === null || $this->_always_validate_cache) {
       $response = $this->client->get_response_for($this->_async_key);
     }
 
@@ -154,8 +158,7 @@ class HttpRequest {
      */
 
     if ( $this->_cache ) {
-      if ( $this->_read_from_cache && $this->_response_from_cache && $response_code == 304) {
-        $this->_response_from_cache->request = $this;
+      if ( $this->_read_from_cache && $this->_response_from_cache && $response->status_code == 304) {
         return $this->_response_from_cache;
       }
 
