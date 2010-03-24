@@ -334,7 +334,7 @@ class Labeller {
       while (array_key_exists('ns' . $index, $this->_ns)) {
         $index++;
       }
-      $prefix = 'ns' . $index;
+      $prefix = 'msg' . $index;
       $this->_ns[$prefix] = $ns;
       return $prefix;
 

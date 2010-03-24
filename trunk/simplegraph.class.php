@@ -1205,27 +1205,28 @@ class SimpleGraph {
 
     foreach ($requests as $request) {
       $response = $request->get_async_response();
+
       if ($include_response) {
         $this->add_turtle($response->to_turtle());
       }
       if ($response->is_success()) {
-        if (    $response->headers['content-type'] == 'application/rdf+xml'
-             || $response->headers['content-type'] == 'application/xml') {
+        if (    strpos($response->headers['content-type'], 'application/rdf+xml') === 0
+             || strpos($response->headers['content-type'], 'application/xml') === 0) {
           $this->add_rdfxml($response->body);
         }
-        else if (    $response->headers['content-type'] == 'text/turtle'
-                  || $response->headers['content-type'] == 'text/n3'
-                  || $response->headers['content-type'] == 'text/rdf+n3'
-                  || $response->headers['content-type'] == 'application/x-turtle') {
+        else if (    strpos($response->headers['content-type'], 'text/turtle') === 0
+                  || strpos($response->headers['content-type'], 'text/n3') === 0
+                  || strpos($response->headers['content-type'], 'text/rdf+n3') === 0
+                  || strpos($response->headers['content-type'], 'application/x-turtle') === 0) {
           $this->add_turtle($response->body);
         }
-        else if (    $response->headers['content-type'] == 'application/json') {
+        else if (    strpos($response->headers['content-type'], 'application/json') === 0) {
           $this->add_json($response->body);
         }
       }
     }
   }
-  
+
   function get_list_values($listUri) {
       $array = array();
       while(!empty($listUri) AND $listUri != RDF_NIL){
@@ -1234,7 +1235,7 @@ class SimpleGraph {
       }
       return $array;
   }
-    
+
   function get_sequence_values($sequenceUri) {
           $triples = $this->get_index();
           $properties = array();
@@ -1269,7 +1270,7 @@ class SimpleGraph {
           }
 
           return $values;
-      }  
-  
+      }
+
 }
 
