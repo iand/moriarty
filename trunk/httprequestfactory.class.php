@@ -13,7 +13,7 @@ class HttpRequestFactory {
   var $_proxy = null;
 
   function __construct() {
-    if (defined('MORIARTY_HTTP_CACHE_READ_ONLY') ) {
+    if (defined('MORIARTY_HTTP_CACHE_READ_ONLY') || defined('MORIARTY_ALWAYS_CACHE_EVERYTHING') ) {
       $this->always_validate_cache(FALSE);
     }
     else {
