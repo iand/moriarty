@@ -164,7 +164,7 @@ class HttpRequest {
 
       if (! $this->_response_from_cache ) {
         $max_age = FALSE;
-        if ( defined('MORIARTY_ALWAYS_CACHE_EVERYTHING') || ($this->method == 'GET' && $response->is_cacheable())  ) {
+        if ( (defined('MORIARTY_ALWAYS_CACHE_EVERYTHING') && $response->is_success()) || ($this->method == 'GET' && $response->is_cacheable())  ) {
             if(isset($response->headers['cache-control'])){
                   $cache_control = $response->headers['cache-control'];
                   $cache_control_tokens = split(',', $cache_control);
