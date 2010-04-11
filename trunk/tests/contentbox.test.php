@@ -100,6 +100,20 @@ class ContentboxTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( $fake_request->was_executed() );
   }
 
+  function test_save_item() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/items", $fake_request );
+
+    $cb = new Contentbox("http://example.org/store/items");
+    $cb->request_factory = $fake_request_factory;
+
+    $response = $cb->save_item('some content', 'text/plain');
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+
+
+
   function test_search_passes_max_parameter() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
