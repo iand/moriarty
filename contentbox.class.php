@@ -170,6 +170,20 @@ class Contentbox {
 
     return $resources;
   }
+  
+  /**
+   * save_item
+   *
+   * @return HttpResponse
+   * @author Keith Alexander
+   **/
+  function save_item($document, $content_type)
+  {
+      $request = $this->request_factory->make('POST', $this->uri, $this->credentials);
+      $request->set_body($document);
+      $request->set_content_type($content_type);
+      return $request->execute();
+  }
 
 }
 
