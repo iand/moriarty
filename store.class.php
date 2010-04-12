@@ -192,6 +192,17 @@ class Store {
     }
 
   }
+  
+  /**
+   * store_content
+   *
+   * @return HttpResponse
+   * @author Keith Alexander
+   **/
+  function store_content($content, $content_type)
+  {
+      return $this->get_contentbox()->save_item($content, $content_type);
+  }
 
 }
 ?>

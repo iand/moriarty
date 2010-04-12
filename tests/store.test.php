@@ -338,6 +338,17 @@ class StoreTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( in_array('Content-Type: text/turtle', $fake_request->get_headers() ) );
   }
 
+  function test_store_content() {
+    $fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('POST', "http://example.org/store/items", $fake_request );
+
+    $store = new Store("http://example.org/store", new FakeCredentials(), $fake_request_factory);
+    $response = $store->store_content('some content', 'text/html');
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+
+
 
 }
 ?>
