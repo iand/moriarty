@@ -9,7 +9,7 @@ class Labeller {
 
   protected $_ns = array (
                     'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
-//                    'owl' => 'http://www.w3.org/2002/07/owl#',
+                    'owl' => 'http://www.w3.org/2002/07/owl#',
                     'cs' => 'http://purl.org/vocab/changeset/schema#',
                     'bf' => 'http://schemas.talis.com/2006/bigfoot/configuration#',
                     'frm' => 'http://schemas.talis.com/2006/frame/schema#',

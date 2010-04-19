@@ -18,6 +18,7 @@ if ($__arc->getVersion() < '2008-08-04') {
 // MORIARTY_HTTP_CACHE_DIR - define this to be a valid path to enable automatic HTTP caching
 // MORIARTY_HTTP_CACHE_READ_ONLY - define this if you never perform updates via your application
 // MORIARTY_HTTP_CACHE_USE_STALE_ON_FAILURE - define this if you want your app to use cached results when it cannot contact the platform
+// MORIARTY_ALWAYS_CACHE_EVERYTHING - define this if you want your app to cache even when HTTP response don't allow it
 
 
 define('RDF_TYPE', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type');
