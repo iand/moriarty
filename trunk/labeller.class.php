@@ -47,6 +47,7 @@ class Labeller {
                     'dbpo' => 'http://dbpedia.org/ontology/',
                     'wiki' => 'http://en.wikipedia.org/wiki/',
                     'gn' => 'http://www.geonames.org/ontology#',
+                    'cyc' => 'http://sw.opencyc.org/2009/04/07/concept/en/',
                   );
   var $_labels = array(
       'http://www.w3.org/1999/02/22-rdf-syntax-ns#_1' => array('first', 'first', 'is first member of'),

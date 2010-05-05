@@ -133,7 +133,7 @@ class SimpleGraph {
    * @return boolean true if the triple was new, false if it already existed in the graph
    */
   function add_resource_triple($s, $p, $o) {
-    return $this->_add_triple($s, $p, $this->make_resource_array($o));
+    return $this->_add_triple($s, $p, array('type' => strpos($o, '_:' ) === 0 ? 'bnode' : 'uri', 'value' => $o));
   }
 
   /**
