@@ -26,6 +26,7 @@ class OAIServiceTest extends PHPUnit_Framework_TestCase {
     $response = $oai->list_records();
     $this->assertTrue( in_array('Accept: text/xml', $fake_request->get_headers() ) );
   }
+
   function test_list_records_with_resumption_token() {
     $fake_request_factory = new FakeRequestFactory();
     $fake_request = new FakeHttpRequest( new HttpResponse() );
@@ -34,6 +35,19 @@ class OAIServiceTest extends PHPUnit_Framework_TestCase {
     $oai->request_factory = $fake_request_factory;
 
     $response = $oai->list_records("foobar");
+    $this->assertTrue( $fake_request->was_executed() );
+  }
+
+  function test_list_records_with_from_and_to_dates() {
+  	$from_date = '2010-05-29';
+  	$until_date = '2010-06-05';
+  	$fake_request_factory = new FakeRequestFactory();
+    $fake_request = new FakeHttpRequest( new HttpResponse() );
+    $fake_request_factory->register('GET', "http://example.org/store/services/oai-pmh?verb=ListRecords&metadataPrefix=oai_dc&from=$from_date&until=$until_date", $fake_request );
+    $oai = new OAIService("http://example.org/store/services/oai-pmh");
+    $oai->request_factory = $fake_request_factory;
+
+    $response = $oai->list_records(null, $from_date, $until_date);
     $this->assertTrue( $fake_request->was_executed() );
   }
 
@@ -88,8 +102,11 @@ class OAIServiceTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( 'b2FpX2RjfDUwfDE5NzAtMDEtMDFUMDA6MDA6MDBafDIwMDktMDQtMjhUMTk6NTM6MDZa', $res['token'] );
     $this->assertEquals( 3, count( $res['items'] ) );
     $this->assertEquals( 'http://example.org/757', $res['items'][0]['uri'] );
+    $this->assertEquals( '2009-04-21T12:36:58Z', $res['items'][0]['datestamp'] );
     $this->assertEquals( 'http://example.org/558', $res['items'][1]['uri'] );
+    $this->assertEquals( '2009-04-21T12:36:58Z', $res['items'][1]['datestamp'] );
     $this->assertEquals( 'http://example.org/359', $res['items'][2]['uri'] );
+    $this->assertEquals( '2009-04-21T12:36:58Z', $res['items'][2]['datestamp'] );
 
   }
 

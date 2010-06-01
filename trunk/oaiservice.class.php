@@ -36,25 +36,33 @@ class OAIService {
    * @param string $resumption_token a valid resumption token for paging results
    * @return HttpResponse
    */
-  function list_records($resumption_token = null) {
+  function list_records($resumption_token = null, $from = null, $until = null) {
     if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
-    $uri = $this->make_list_records_uri($resumption_token);
+    $uri = $this->make_list_records_uri($resumption_token, $from, $until);
 
     $request = $this->request_factory->make( 'GET', $uri , $this->credentials );
     $request->set_accept("text/xml");
     return $request->execute();
   }
 
-  function make_list_records_uri($resumption_token = null) {
+  function make_list_records_uri($resumption_token = null, $from = null, $until = null) {
     $uri = $this->uri;
+	$uri .= '?verb=ListRecords';
     if (null == $resumption_token) {
-      $uri .= '?verb=ListRecords&metadataPrefix=oai_dc';
+      $uri .= '&metadataPrefix=oai_dc';
+	  if(!empty($from)) {
+	    $uri .= '&from=' . urlencode($from);
+	  }
+	  if(!empty($until)) {
+	    $uri .= '&until=' . urlencode($until);
+	  }
     }
     else {
-      $uri .= '?verb=ListRecords&resumptionToken=' . urlencode($resumption_token);
+      $uri .= '&resumptionToken=' . urlencode($resumption_token);
     }
+
 
     return $uri;    
   }
@@ -76,6 +84,7 @@ class OAIService {
     $reader->XML($xml);
 
     $items = array();
+    $item = array();
     $status = 'seeking_header';
     while ($reader->read()) {
       if ( $reader->nodeType == XMLReader::ELEMENT) {
@@ -85,6 +94,9 @@ class OAIService {
         elseif ( $reader->name == 'identifier' && $status == 'seeking_identifier') {
           $status = 'reading_identifier';
         }
+        elseif ( $reader->name == 'datestamp' && $status == 'seeking_datestamp') {
+          $status = 'reading_datestamp';
+        }
         elseif ( $reader->name == 'resumptionToken') {
           $status = 'reading_token';
         }
@@ -93,7 +105,12 @@ class OAIService {
       elseif ( $reader->nodeType == XMLReader::TEXT) {
         
         if ($status == 'reading_identifier') {
-          $items[] = array( 'uri' => $reader->value);
+          $item = array( 'uri' => $reader->value);
+          $status = 'seeking_datestamp';        
+        }
+        elseif ($status == 'reading_datestamp') {
+          $item['datestamp'] = $reader->value;
+          $items[] = $item;
           $status = 'seeking_header';        
         }
         elseif ($status == 'reading_token') {
