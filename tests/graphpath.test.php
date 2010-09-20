@@ -7,7 +7,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
 
   function assertPathSelects($gp, $g, $trace = FALSE) {
     $uri='http://example.org/subj';  
-    $matches = $gp->match($g, $trace);
+    $matches = $gp->select($g, $trace);
     $this->assertEquals( 1, count($matches));
     $this->assertTrue( is_array($matches[0]));
     $this->assertEquals('uri', $matches[0]['type']);
@@ -19,7 +19,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g = new SimpleGraph();
     $g->set_namespace_mapping('ex', 'http://example.org/');
     $gp = new GraphPath('ex:subj');
-    $this->assertTrue( is_array($gp->match($g)));
+    $this->assertTrue( is_array($gp->select($g)));
   }
 
   function test_match_single_subject() {
@@ -29,7 +29,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/subj', RDF_TYPE, 'http://example.org/Type');
 
     $gp = new GraphPath('ex:Type');
-    $matches = $gp->match($g);
+    $matches = $gp->select($g);
     $this->assertEquals( 1, count($matches));
     $this->assertTrue( is_array($matches[0]));
     $this->assertEquals('uri', $matches[0]['type']);
@@ -43,7 +43,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/subj', RDF_TYPE, 'http://example.org/Type');
 
     $gp = new GraphPath('ex:Bogus');
-    $this->assertEquals( 0, count($gp->match($g)));
+    $this->assertEquals( 0, count($gp->select($g)));
   }
 
   function test_match_non_existent_type_returns_empty_array() {
@@ -53,7 +53,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/subj', RDF_TYPE, 'http://example.org/Type2');
 
     $gp = new GraphPath('ex:Type');
-    $this->assertEquals( 0, count($gp->match($g)));
+    $this->assertEquals( 0, count($gp->select($g)));
   }
 
 
@@ -66,7 +66,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/subj2', RDF_TYPE, 'http://example.org/Type2');
 
     $gp = new GraphPath('*');
-    $matches = $gp->match($g);
+    $matches = $gp->select($g);
     
     $this->assertEquals( 2, count($matches));
     $this->assertTrue( is_array($matches[0]));
@@ -88,7 +88,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/subj', RDF_TYPE, 'http://example.org/Type');
 
     $gp = new GraphPath('ex:Type/ex:pred');
-    $matches = $gp->match($g);
+    $matches = $gp->select($g);
     
     $this->assertEquals( 1, count($matches));
     $this->assertTrue( is_array($matches[0]));
@@ -103,7 +103,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/subj', RDF_TYPE, 'http://example.org/Type');
 
     $gp = new GraphPath('ex:Type/*');
-    $matches = $gp->match($g);
+    $matches = $gp->select($g);
     $this->assertEquals( 2, count($matches));
     $this->assertTrue( is_array($matches[0]));
     $this->assertEquals('uri', $matches[0]['type']);
@@ -126,7 +126,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/subj', RDF_TYPE, 'http://example.org/Type');
 
     $gp = new GraphPath('ex:Type/ex:pred');
-    $matches = $gp->match($g);
+    $matches = $gp->select($g);
    
     $this->assertEquals( 1, count($matches));
     $this->assertTrue( is_array($matches[0]));
@@ -142,7 +142,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/obj', RDF_TYPE, 'http://example.org/Type2');
 
     $gp = new GraphPath('ex:Type/ex:pred/ex:Type2');
-    $matches = $gp->match($g);
+    $matches = $gp->select($g);
     
     $this->assertEquals( 1, count($matches));
     $this->assertTrue( is_array($matches[0]));
@@ -164,7 +164,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/r5', RDF_TYPE, 'http://example.org/Type');
 
     $gp = new GraphPath('ex:Type/ex:pred/ex:Type/ex:pred/ex:Type/ex:pred/ex:Type/ex:pred/ex:Type');
-    $matches = $gp->match($g);
+    $matches = $gp->select($g);
     
     $this->assertEquals( 1, count($matches));
     $this->assertTrue( is_array($matches[0]));
@@ -184,7 +184,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
     $g->add_resource_triple('http://example.org/obj3', RDF_TYPE, 'http://example.org/Bogus');
 
     $gp = new GraphPath('ex:Type/*/ex:Type2');
-    $matches = $gp->match($g);
+    $matches = $gp->select($g);
     
     $this->assertEquals( 2, count($matches));
     $this->assertTrue( is_array($matches[0]));
@@ -260,7 +260,7 @@ class GraphPathTest extends PHPUnit_Framework_TestCase {
 
     $gp = new GraphPath('*[ex:pred or ex:pred2]');
 //    $this->assertEquals( "*[ex:pred or ex:pred2]", $gp->to_string());
-    $matches = $gp->match($g);
+    $matches = $gp->select($g);
     
     $this->assertEquals( 2, count($matches));
     $this->assertTrue( is_array($matches[0]));

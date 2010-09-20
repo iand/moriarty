@@ -258,21 +258,27 @@ else {
 
 }
 
-$resource_uri = preg_replace('~\.local/~', '/', $resource_uri);
+//$resource_uri = preg_replace('~\.local/~', '/', $resource_uri);
 
 $store_uri = null;
-$template = dirname(__FILE__) . 'plain.tmpl.html';
+$describer_class = null;
+$template = dirname(__FILE__) . '/plain.tmpl.html';
 foreach ($uri_map as $uri_info) {
   if (preg_match('~' . $uri_info['regex'] . '~', $resource_uri)) {
-    $store_uri = $uri_info['store'];
+    if (array_key_exists('store', $uri_info)) {
+      $store_uri = $uri_info['store'];
+    }
     if (array_key_exists('template', $uri_info)) {
       $template = $uri_info['template'];
+    }
+    if (array_key_exists('describer', $uri_info)) {
+      $describer_class = $uri_info['describer'];
     }
     break;
   }
 }
 
-if ($store_uri == null) {
+if ($store_uri == null && $describer_class == null) {
   send_not_found($uri, $template);
 }
 
@@ -280,12 +286,20 @@ $sparql_service_uri = $store_uri . '/services/sparql';
 $search_service_uri = $store_uri . '/items'; 
 
 require_once MORIARTY_DIR . 'moriarty.inc.php';
-require_once MORIARTY_DIR . 'store.class.php';
 require_once MORIARTY_DIR . 'simplegraph.class.php';
 
-$store = new Store($store_uri);
-$response = $store->describe($resource_uri, 'cbd', 'json');
+if ($describer_class) {
+  $describer = new $describer_class();
+}
+else {
+  require_once MORIARTY_DIR . 'store.class.php';
+  $describer = new Store($store_uri);
+}
 
+$response = $describer->describe($resource_uri, 'cbd', 'json');
+$body = '';
+$content_location = '';
+$etag = '';
 if ($response->is_success()) {
   if (array_key_exists('etag', $response->headers)) {
     $etag = $response->headers['etag'];
@@ -393,6 +407,9 @@ if ($response->is_success()) {
       }
     }
   }
+}
+elseif ($response->status_code === 404) {
+  send_not_found($uri, $template);
 }
 else {
   header("HTTP/1.0 500 Internal Server Error");
