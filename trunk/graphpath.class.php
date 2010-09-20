@@ -20,7 +20,7 @@ class GraphPath {
    * @param SimpleGraph g
    * @return array nodes that match the path
    */
-  function match(&$g, $trace = FALSE) {
+  function select(&$g, $trace = FALSE) {
     if ($trace) print "GraphPath: Selecting all subjects in graph\n";
     $candidates = array();
     $index = $g->get_index();
@@ -35,6 +35,21 @@ class GraphPath {
     }
     return $ret;
   }
+  
+  /**
+   * Evaluate the path against a graph from a given context node
+   * @param SimpleGraph g
+   * @return array nodes that match the path
+   */
+  function match(&$g, $subject, $trace = FALSE) {
+    $candidates = array($g->make_resource_array($subject));
+    if (count($this->_path->select($candidates, $g, NULL, TRUE, $trace) > 0) ) {
+      return TRUE;
+    }
+    else {
+      return FALSE;
+    }
+  }  
 
   /**
    * @access private

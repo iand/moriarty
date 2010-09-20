@@ -15,6 +15,7 @@ class SimpleGraph {
   protected $_ns = array (
                     'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
                     'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
+                    'owl' => 'http://www.w3.org/2002/07/owl#',
                     'cs' => 'http://purl.org/vocab/changeset/schema#',
                     'bf' => 'http://schemas.talis.com/2006/bigfoot/configuration#',
                     'frm' => 'http://schemas.talis.com/2006/frame/schema#',
@@ -40,6 +41,7 @@ class SimpleGraph {
                     'skos' => 'http://www.w3.org/2004/02/skos/core#',
                     'bibo' => 'http://purl.org/ontology/bibo/',
                     'ov' => 'http://open.vocab.org/terms/',
+                    'foaf' => 'http://xmlns.com/foaf/0.1/',
                     'void' => 'http://rdfs.org/ns/void#',
                     'xsd' => 'http://www.w3.org/2001/XMLSchema#',
                   );
