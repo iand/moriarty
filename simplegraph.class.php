@@ -1040,7 +1040,7 @@ class SimpleGraph {
           if($old_id != $uri) $old_bnodeids[$old_id] = $uri;
         }
 
-        if ($properties) {
+        if (isset($properties) && is_array($properties)) {
           foreach($properties as $property => $objects)
           {
             foreach($objects as $object)
