@@ -1040,40 +1040,41 @@ class SimpleGraph {
           if($old_id != $uri) $old_bnodeids[$old_id] = $uri;
         }
 
-        foreach($properties as $property => $objects)
-        {
-          foreach($objects as $object)
+        if ($properties) {
+          foreach($properties as $property => $objects)
           {
-            /* make sure that the new bnode is being used*/
-            if($object['type']=='bnode')
+            foreach($objects as $object)
             {
-              $bnode = $object['value'];
-
-              if(isset($old_bnodeids[$bnode])) $object['value'] = $old_bnodeids[$bnode];
-              else //bnode hasn't been transposed
+              /* make sure that the new bnode is being used*/
+              if($object['type']=='bnode')
               {
-                  $old_bnode_id = $bnode;
-                  $count=1;
-                  while(isset($current[$bnode]) OR
-                  ( $object['value']!=$bnode AND isset($newGraph[$bnode]) )
-                  OR isset($old_bnodeids[$uri])
-                  )
-                  {
-                    $bnode.=$count++;
-                  }
+                $bnode = $object['value'];
 
-                  if($old_bnode_id!=$bnode) $old_bnodeids[$old_bnode_id] = $bnode;
-                  $object['value'] = $bnode;
+                if(isset($old_bnodeids[$bnode])) $object['value'] = $old_bnodeids[$bnode];
+                else //bnode hasn't been transposed
+                {
+                    $old_bnode_id = $bnode;
+                    $count=1;
+                    while(isset($current[$bnode]) OR
+                    ( $object['value']!=$bnode AND isset($newGraph[$bnode]) )
+                    OR isset($old_bnodeids[$uri])
+                    )
+                    {
+                      $bnode.=$count++;
+                    }
+
+                    if($old_bnode_id!=$bnode) $old_bnodeids[$old_bnode_id] = $bnode;
+                    $object['value'] = $bnode;
+                }
               }
-            }
 
-            if(!isset($current[$uri][$property]) OR !in_array($object, $current[$uri][$property]))
-            {
-              $current[$uri][$property][]=$object;
+              if(!isset($current[$uri][$property]) OR !in_array($object, $current[$uri][$property]))
+              {
+                $current[$uri][$property][]=$object;
+              }
             }
           }
         }
-
       }
     }
     return $current;
