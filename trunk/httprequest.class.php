@@ -167,7 +167,7 @@ class HttpRequest {
         if ( (defined('MORIARTY_ALWAYS_CACHE_EVERYTHING') && $response->is_success()) || ($this->method == 'GET' && $response->is_cacheable())  ) {
             if(isset($response->headers['cache-control'])){
                   $cache_control = $response->headers['cache-control'];
-                  $cache_control_tokens = split(',', $cache_control);
+                  $cache_control_tokens = preg_split('/,/', $cache_control);
                   foreach ( $cache_control_tokens as $token) {
                     $token = trim($token);
                     if ( preg_match('/max-age=(.+)/', $token, $m) ) {
@@ -252,7 +252,7 @@ class HttpRequest {
       $accept = $this->headers['Accept'];
     }
 
-    $accept_parts = split(',', $accept);
+    $accept_parts = preg_split('/,/', $accept);
     sort($accept_parts);
     $accept = join(',', $accept_parts);
     return md5('<' . $this->uri . '>' . $accept . $this->get_body());
