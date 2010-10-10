@@ -137,7 +137,7 @@ class HttpResponse {
     if (!isset($this->_is_cacheable)) {
       if ( isset($this->headers['cache-control'])) {
         $cache_control = $this->headers['cache-control'];
-        $cache_control_tokens = split(',', $cache_control);
+        $cache_control_tokens = preg_split('/,/', $cache_control);
         foreach ( $cache_control_tokens as $token) {
           $token = trim($token);
           if ( preg_match('/private/', $token, $m) ) {
