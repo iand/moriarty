@@ -134,14 +134,29 @@ class Graph {
    * @return HttpResponse
    */
   function describe( $uri, $output = null ) {
-    if (empty( $this->request_factory) ) {
-      $this->request_factory = new HttpRequestFactory();
-    }
 
+    $request = $this->get_describe_request($uri, $output);
+
+    return $request->execute();
+  }
+
+  function get_describe_uri( $uri, $output = null ) {
     $request_uri = $this->uri . '?about=' . urlencode($uri);
     if ($output) {
       $request_uri .= '&output=' . urlencode($output);
     }
+    return $request_uri;
+  }
+  function get_describe_request( $uri, $output = null ) {
+    if (empty( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
+
+    $request_uri = $this->get_describe_uri($uri, $output);
+    if ($output) {
+      $request_uri .= '&output=' . urlencode($output);
+    }
+  
     $request = $this->request_factory->make( 'GET', $request_uri, $this->credentials);
     if ($output) {
       $request->set_accept("*/*");
@@ -151,7 +166,7 @@ class Graph {
     }
     $request->set_content_type("application/x-www-form-urlencoded");
 
-    return $request->execute();
+    return $request;
   }
 
   /**

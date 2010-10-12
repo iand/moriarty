@@ -247,7 +247,8 @@ class SimpleGraph {
    * Serialise the graph to HTML
    * @return string a HTML version of the graph
    */
-  function to_html($s = null) {
+  function to_html($s = null, $guess_labels = true) {
+    
     $this->update_prefix_mappings();
     $h = '';
 
@@ -282,7 +283,7 @@ class SimpleGraph {
         $properties = array_merge($priority_properties, array_diff($properties, $priority_properties));
 
         foreach ($properties as $p) {
-          $h .= '<tr><th valign="top"><a href="' . htmlspecialchars($p). '">' . htmlspecialchars($this->get_label($p)). '</a></th>';
+          $h .= '<tr><th valign="top"><a href="' . htmlspecialchars($p). '">' . htmlspecialchars($this->get_label($p, true)). '</a></th>';
           $h .= '<td valign="top">';
           for ($i = 0; $i < count($this->_index[$subject][$p]); $i++) {
             if ($i > 0) $h .= '<br />';
@@ -290,7 +291,15 @@ class SimpleGraph {
               $h .= htmlspecialchars($this->_index[$subject][$p][$i]['value'] );
             }
             else {
-              $h .= '<a href="' . htmlspecialchars($this->_index[$subject][$p][$i]['value']). '">' . htmlspecialchars($this->get_label($this->_index[$subject][$p][$i]['value']) ). '</a>';
+              $h .= '<a href="' . htmlspecialchars($this->_index[$subject][$p][$i]['value']). '">';
+              if ($guess_labels) {
+                $h .= htmlspecialchars($this->get_label($this->_index[$subject][$p][$i]['value']) );
+              }
+              else {
+                $h .= htmlspecialchars($this->_index[$subject][$p][$i]['value'] );
+              }
+            
+              $h .= '</a>';
             }
           }
           $h .= '</td>';

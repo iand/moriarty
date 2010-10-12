@@ -273,6 +273,9 @@ class Labeller {
 
       'http://www.geonames.org/ontology#parentFeature' => array('parent feature'),
 
+      'http://purl.org/goodrelations/v1#hasEAN_UCC-13' => array('EAN-13'),
+      'http://purl.org/goodrelations/v1#hasMPN' => array('Manufacturer Part Number'),
+      'http://purl.org/goodrelations/v1#hasGTIN-14' => array('GTIN-14'),
     );
 
 
@@ -323,7 +326,7 @@ class Labeller {
       return $prefix;
     }
     else {
-      $parts = split('[/#]', $ns);
+      $parts = preg_split('/[\/#]/', $ns);
       for ($i = count($parts) - 1; $i >= 0; $i--) {
         if (preg_match('~^[a-zA-Z][a-zA-Z0-9\-]+$~', $parts[$i]) && !array_key_exists($parts[$i], $this->_ns) && $parts[$i] != 'schema' && $parts[$i] != 'ontology' && $parts[$i] != 'vocab' && $parts[$i] != 'terms' && $parts[$i] != 'ns' && $parts[$i] != 'core' && strlen($parts[$i]) > 3) {
           $prefix = strtolower($parts[$i]);
