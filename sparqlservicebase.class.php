@@ -118,15 +118,9 @@ class SparqlServiceBase {
       $this->request_factory = new HttpRequestFactory();
     }
 
-
-    $params = 'query=' . urlencode($query);
-    if ( !empty($mime) && strstr($mime, '/') === FALSE) {
-      $params .= '&output=' . $mime;
-      $mime = '*/*';
-    }
-
-    $get_uri = $this->uri . '?' . $params;
-    if (strlen($get_uri) <= 1024) {
+    $get_uri = $this->get_query_uri($query, $mime);
+    
+    if (strlen($get_uri) <= $this->get_max_uri_length()) {
       $request = $this->request_factory->make( 'GET', $get_uri, $this->credentials );
       if(empty($mime)) $mime = MIME_RDFXML.','.MIME_SPARQLRESULTS;
       $request->set_accept($mime);
@@ -142,6 +136,21 @@ class SparqlServiceBase {
     return $request->execute();
 
   }
+
+  function get_max_uri_length() {
+    return 1024;
+  }
+
+  function get_query_uri($query, $mime = '') {
+    $params = 'query=' . urlencode($query);
+    if ( !empty($mime) && strstr($mime, '/') === FALSE) {
+      $params .= '&output=' . $mime;
+      $mime = '*/*';
+    }
+
+    return $this->uri . '?' . $params;
+  }
+
 
   /**
    * Execute a graph type sparql query, i.e. a describe or a construct
