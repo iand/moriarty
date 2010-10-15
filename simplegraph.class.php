@@ -305,6 +305,41 @@ class SimpleGraph {
           $h .= '</td>';
           $h .= '</tr>' . "\n";
         }
+        
+        $backlinks = array();
+        foreach ($this->_index as $rev_subj => $rev_subj_info) {
+          foreach ($rev_subj_info as $rev_subj_p => $rev_subj_p_list) {
+            foreach ($rev_subj_p_list as $rev_value) {
+              if ( ( $rev_value['type'] == 'uri' || $rev_value['type'] == 'bnode') && $rev_value['value'] === $subject) {
+                if (!isset($backlinks[$rev_subj_p])) {
+                  $backlinks[$rev_subj_p] = array();
+                }
+                $backlinks[$rev_subj_p][] = $rev_subj;
+              }
+            }
+          }
+        }
+        
+        foreach ($backlinks as $backlink_p => $backlink_values) {
+          $h .= '<tr><th valign="top"><a href="' . htmlspecialchars($backlink_p). '">' . htmlspecialchars($this->get_inverse_label($backlink_p, true)). '</a></th>';
+          $h .= '<td valign="top">';
+          for ($i = 0; $i < count($backlink_values); $i++) {
+            if ($i > 0) $h .= '<br />';
+
+            $h .= '<a href="' . htmlspecialchars($backlink_values[$i]). '">';
+            if ($guess_labels) {
+              $h .= htmlspecialchars($this->get_label($backlink_values[$i]) );
+            }
+            else {
+              $h .= htmlspecialchars($backlink_values[$i] );
+            }
+          
+            $h .= '</a>';
+          }
+          $h .= '</td>';
+          $h .= '</tr>' . "\n";
+        }
+        
         $h .= '</table>' . "\n";
       }
     }
@@ -913,6 +948,10 @@ class SimpleGraph {
 
   function get_label($resource_uri, $capitalize = false, $use_qnames = FALSE) {
     return $this->_labeller->get_label($resource_uri, $this, $capitalize, $use_qnames);
+  }
+
+  function get_inverse_label($resource_uri, $capitalize = false, $use_qnames = FALSE) {
+    return $this->_labeller->get_inverse_label($resource_uri, $this, $capitalize, $use_qnames);
   }
 
   function get_description($resource_uri = null) {
