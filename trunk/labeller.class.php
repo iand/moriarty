@@ -477,6 +477,32 @@ class Labeller {
     }
   }
 
+  function get_inverse_label($uri, $g = null, $capitalize = false, $use_qnames = FALSE) {
+    if ($g) {
+      $label = $g->get_first_literal($uri,'http://purl.org/net/vocab/2004/03/label#inverseSingular', '', 'en');
+      if ( strlen($label) != 0) return $label;
+    }
+
+    if (array_key_exists($uri, $this->_labels)) {
+      if (count($this->_labels[$uri]) > 2) {
+        $label = $this->_labels[$uri][2];
+      }
+      else {
+        $label = 'is ' . $this->_labels[$uri][0] . ' of';
+      }
+      if ($capitalize) {
+        return ucfirst($label);
+      }
+      else {
+        return $label;
+      }
+    }
+    else if ($use_qnames == FALSE && preg_match('~^.*[\/\#]([a-z]+)$~', $uri, $m)) {
+      return 'is ' . $m[1] . ' of';
+    }
+
+  }
+
 
   function label_graph(&$graph) {
     $labelled_properties = array();
