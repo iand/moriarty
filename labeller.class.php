@@ -497,10 +497,15 @@ class Labeller {
         return $label;
       }
     }
-    else if ($use_qnames == FALSE && preg_match('~^.*[\/\#]([a-z]+)$~', $uri, $m)) {
-      return 'is ' . $m[1] . ' of';
-    }
 
+    $label = 'is ' . $this->get_label($uri, $g, false, $use_qnames) . ' of';
+    if ($capitalize) {
+      return ucfirst($label);
+    }
+    else {
+      return $label;
+    }
+    
   }
 
 
