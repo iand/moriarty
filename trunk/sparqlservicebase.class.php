@@ -130,7 +130,7 @@ class SparqlServiceBase {
       if(empty($mime)) $mime = MIME_RDFXML.','.MIME_SPARQLRESULTS;
       $request->set_accept($mime);
       $request->set_content_type(MIME_FORMENCODED);
-      $request->set_body( $params );
+      $request->set_body( $this->get_query_params($query, $mime) );
     }
 
     return $request->execute();
@@ -141,14 +141,17 @@ class SparqlServiceBase {
     return 1024;
   }
 
-  function get_query_uri($query, $mime = '') {
+  function get_query_params($query, $mime = '') {
     $params = 'query=' . urlencode($query);
     if ( !empty($mime) && strstr($mime, '/') === FALSE) {
       $params .= '&output=' . $mime;
       $mime = '*/*';
     }
+    return $params;
+  }
 
-    return $this->uri . '?' . $params;
+  function get_query_uri($query, $mime = '') {
+    return $this->uri . '?' . $this->get_query_params($query, $mime);
   }
 
 
