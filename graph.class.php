@@ -153,9 +153,6 @@ class Graph {
     }
 
     $request_uri = $this->get_describe_uri($uri, $output);
-    if ($output) {
-      $request_uri .= '&output=' . urlencode($output);
-    }
   
     $request = $this->request_factory->make( 'GET', $request_uri, $this->credentials);
     if ($output) {
