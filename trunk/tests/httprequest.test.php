@@ -141,5 +141,11 @@ class HttpRequestTest extends PHPUnit_Framework_TestCase {
     
   }
   
+  // The cURL library sends fragments in the request which some servers find confusing
+  function test_request_strips_fragments() {
+    $request = new HttpRequest('GET', 'http://example.org/foo#bar');
+    $this->assertEquals('http://example.org/foo', $request->uri);
+  }
+
 }
 ?>
