@@ -52,6 +52,7 @@ class HttpRequest {
    * @param Credentials credentials the credentials to use for secure requests (optional)
    */
   function __construct($method, $uri, $credentials = null, $cache = null) {
+    $uri = preg_replace("~#.*$~", '', $uri);
     $this->uri = $uri;
     $this->method = strtoupper($method);
     if ( $credentials != null ) {
