@@ -279,7 +279,12 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( 1, count($g->get_triples()));
 
   }
-
+  
+  function test_add_rdf_adds_rdf_json(){
+      $g = new SimpleGraph();
+      $g->add_rdf($this->_single_triple_json);
+      $this->assertEquals( 1, count($g->get_triples()));      
+  }
 
   function test_add_turtle_appends_new_triples() {
     $g = new SimpleGraph();

@@ -513,10 +513,16 @@ class SimpleGraph {
    */
   function add_rdf($rdf=false, $base='') {
     if ($rdf) {
-      $parser = ARC2::getRDFParser();
-      $parser->parse($base, $rdf);
-      $this->_add_arc2_triple_list($parser->getTriples());
-      unset($parser);
+        $trimRdf = trim($rdf);
+     if($trimRdf[0]=='{'){ //lazy is-this-json assessment  - might be better to try json_decode - but more costly
+         $this->add_json($trimRdf);
+         unset($trimRdf);
+     } else {
+          $parser = ARC2::getRDFParser();
+          $parser->parse($base, $rdf);
+          $this->_add_arc2_triple_list($parser->getTriples());
+          unset($parser);
+        }
     }
   }
 
