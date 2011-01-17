@@ -118,20 +118,31 @@ class SparqlServiceBase {
       $this->request_factory = new HttpRequestFactory();
     }
 
-    $get_uri = $this->get_query_uri($query, $mime);
+    // $mime parameter has a dual role, so for clarity let's separate them out :(
+    if ( empty($mime) ) {
+      $output = '';
+      $accept = '*/*';
+    }
+    elseif (strstr($mime, '/') === FALSE) {
+      $output = $mime;
+      $accept = '*/*';
+    }
+    else {
+      $output = '';
+      $accept = $mime;
+    }
+
+    $get_uri = $this->get_query_uri($query, $output);
     
     if (strlen($get_uri) <= $this->get_max_uri_length()) {
       $request = $this->request_factory->make( 'GET', $get_uri, $this->credentials );
-      if ( empty($mime) || strstr($mime, '/') === FALSE) $mime = '*/*'; // In this case the mime arg has already been added as an output parameter
-      $request->set_accept($mime);
+      $request->set_accept($accept);
     }
     else {
       $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
-      if(empty($mime)) $mime = '*/*';
-      if ( empty($mime) || strstr($mime, '/') === FALSE) $mime = '*/*'; // In this case the mime arg has already been added as an output parameter
-      $request->set_accept($mime);
+      $request->set_body( $this->get_query_params($query, $output) );
+      $request->set_accept($accept);
       $request->set_content_type(MIME_FORMENCODED);
-      $request->set_body( $this->get_query_params($query, $mime) );
     }
 
     return $request->execute();
