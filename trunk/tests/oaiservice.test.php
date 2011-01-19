@@ -107,7 +107,8 @@ class OAIServiceTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( '2009-04-21T12:36:58Z', $res['items'][1]['datestamp'] );
     $this->assertEquals( 'http://example.org/359', $res['items'][2]['uri'] );
     $this->assertEquals( '2009-04-21T12:36:58Z', $res['items'][2]['datestamp'] );
-
+    $this->assertEquals( '911011', $res['entities_count'] );
+    
   }
 
 
