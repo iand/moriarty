@@ -99,6 +99,7 @@ class OAIService {
         }
         elseif ( $reader->name == 'resumptionToken') {
           $status = 'reading_token';
+          $res['entities_count'] = $reader->getAttribute('completeListSize');
         }
         
       }
