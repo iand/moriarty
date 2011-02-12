@@ -16,6 +16,9 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     var $_single_triple_turtle =  '@prefix ex: <http://example.org/> .
      <http://example.org/subj> ex:pred "foo" .';
 
+    var $_single_triple_invalid_turtle =  '@prefix ex: <http://example.org/> .
+     <http://example.org/subj> foo:pred "foo" .';
+
     var $_single_triple_json = '{ "http:\/\/example.org\/subj" : {"http:\/\/example.org\/pred" : [ { "value" : "foo", "type" : "literal" } ] } }';
 
 
@@ -1088,7 +1091,17 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
         $expectedArray = array('http://value/1', 'http://value/2', 'http://value/3', 'http://value/4', 'http://value/5');
         $this->assertEquals($expectedArray, $graph->get_sequence_values('http://some/subject/1'));
     }
+  public function testGetParserErrors(){
+    $graph = new SimpleGraph();
+    $graph->add_rdf($this->_single_triple_turtle);
+    $errors = $graph->get_parser_errors();
+    $this->assertTrue(empty($errors), "Errors should be empty");
+    $graph->add_rdf($this->_single_triple_invalid_turtle );
+    $errors = $graph->get_parser_errors();
+    $this->assertFalse(empty($errors), "Errors should not be empty");
+    $this->assertTrue(!empty($errors[0]), "Errors first item should not be empty");
 
+  }
 
 }
 ?>
