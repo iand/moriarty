@@ -12,6 +12,7 @@ class SimpleGraph {
   var $_image_properties =  array( 'http://xmlns.com/foaf/0.1/depiction', 'http://xmlns.com/foaf/0.1/img');
   var $_property_order =  array('http://www.w3.org/2004/02/skos/core#prefLabel', RDFS_LABEL, 'http://purl.org/dc/terms/title', DC_TITLE, FOAF_NAME, 'http://www.w3.org/2004/02/skos/core#definition', RDFS_COMMENT, 'http://purl.org/dc/terms/description', DC_DESCRIPTION, 'http://purl.org/vocab/bio/0.1/olb', RDF_TYPE);
   var $request_factory = false;
+  var $parser_errors = array();
   protected $_ns = array (
                     'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
                     'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
@@ -505,6 +506,9 @@ class SimpleGraph {
     }
   }
 
+  function get_parser_errors(){
+    return $this->parser_errors;
+  }
   /**
    * Add the triples parsed from the supplied RDF to the graph - let ARC guess the input
    * @param string rdf the RDF to parse
@@ -520,6 +524,10 @@ class SimpleGraph {
      } else {
           $parser = ARC2::getRDFParser();
           $parser->parse($base, $rdf);
+          $errors = $parser->getErrors();
+          if(!empty($errors)){
+            $this->parser_errors[]=$errors;
+          }
           $this->_add_arc2_triple_list($parser->getTriples());
           unset($parser);
         }
