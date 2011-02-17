@@ -586,8 +586,22 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
         );
 
     $actual = SimpleGraph::diff($_1,$_2);
-
+    
     $this->assertEquals( $_1, $actual);
+  }
+
+
+  function test_diff_to_ensure_type_insensitive_comparison()
+  {
+      $_1 = array(
+        '#x' => array('#lcn' => array(array('value'=> '1521278'),) )
+      );
+      $_2 = array(
+        '#x' => array('#lcn' => array(array('value'=> '00001521278'),) )
+      );
+     
+     $actual = SimpleGraph::diff($_1,$_2); 
+     $this->assertEquals( $_1, $actual);
   }
 
   function test_merge_static(){
