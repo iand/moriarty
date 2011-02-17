@@ -1075,7 +1075,7 @@ class SimpleGraph {
               }
               else {
                 foreach($base_obs as $base_o){
-                  if(!in_array($base_o, $index[$base_uri][$base_p])) {
+                  if(!in_array($base_o, $index[$base_uri][$base_p], true)) {
                     $diff[$base_uri][$base_p][]=$base_o;
                   }
                 }
