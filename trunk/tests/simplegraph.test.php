@@ -13,6 +13,11 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
   </rdf:Description>
 </rdf:RDF>';
 
+    var $_single_triple_invalid_rdf =  '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ex="http://example.org/">
+  <rdf:Description rdf:about="http://example.org/subj">
+    <ex:pred>foo</ex:pred>
+</rdf:RDF>';
+
     var $_single_triple_turtle =  '@prefix ex: <http://example.org/> .
      <http://example.org/subj> ex:pred "foo" .';
 
@@ -1105,13 +1110,15 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
         $expectedArray = array('http://value/1', 'http://value/2', 'http://value/3', 'http://value/4', 'http://value/5');
         $this->assertEquals($expectedArray, $graph->get_sequence_values('http://some/subject/1'));
     }
-  public function testGetParserErrors(){
+
+    
+    public function testGetParserErrors(){
     $graph = new SimpleGraph();
     $graph->add_rdf($this->_single_triple_turtle);
     $errors = $graph->get_parser_errors();
     $this->assertTrue(empty($errors), "Errors should be empty");
-    $graph->add_rdf($this->_single_triple_invalid_turtle );
-    $errors = $graph->get_parser_errors();
+    $graph->add_rdf($this->_single_triple_invalid_rdf );
+    $errors = $graph->get_parser_errors();    
     $this->assertFalse(empty($errors), "Errors should not be empty");
     $this->assertTrue(!empty($errors[0]), "Errors first item should not be empty");
 
