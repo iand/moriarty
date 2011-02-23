@@ -41,8 +41,7 @@ require_once MORIARTY_TEST_DIR . 'labeller.test.php';
 require_once MORIARTY_TEST_DIR . 'datatable.test.php';
 require_once MORIARTY_TEST_DIR . 'datatableresult.test.php';
 
-
-error_reporting(E_ALL );
+error_reporting(E_ALL && ~E_STRICT);
 function exceptions_error_handler($severity, $message, $filename, $lineno) {
   if (error_reporting() == 0) {
     return;
