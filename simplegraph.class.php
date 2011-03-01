@@ -1075,7 +1075,16 @@ class SimpleGraph {
               }
               else {
                 foreach($base_obs as $base_o){
-                  if(!in_array($base_o, $index[$base_uri][$base_p], true)) {
+                  // because we want to enforce strict type check
+                  // on in_array, we need to ensure that array keys
+                  // are ordered the same
+                  ksort($base_o);
+                  $base_p_values = $index[$base_uri][$base_p];
+                  foreach($base_p_values as &$v)
+                  {
+                      ksort($v);
+                  }
+                  if(!in_array($base_o, $base_p_values, true)) {
                     $diff[$base_uri][$base_p][]=$base_o;
                   }
                 }

@@ -582,7 +582,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( $_1, $actual);
   }
 
-  function test_diff_where_orifinal_array_is_empty(){
+  function test_diff_where_original_array_is_empty(){
 
     $_1 = array();
 
@@ -595,6 +595,21 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( $_1, $actual);
   }
 
+  function test_diff_where_array_key_order_is_different()
+  {
+      $_1 = array(
+          '#x' => array('#name' => array(array('value'=> 'Keith', 'type' => 'literal')))
+          );
+
+      $_2 = array(
+          '#x' => array('#name' => array(array('type' => 'literal', 'value'=> 'Keith')))
+          );
+      
+      $actual = SimpleGraph::diff($_1,$_2);
+      
+      $this->assertEquals(array(), $actual);
+      
+  }
 
   function test_diff_to_ensure_type_insensitive_comparison()
   {
