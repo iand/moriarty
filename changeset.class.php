@@ -234,6 +234,4 @@ class ChangeSet extends SimpleGraph {
   }
 
 }
-
-
 ?>
