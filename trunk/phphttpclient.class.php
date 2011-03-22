@@ -90,6 +90,4 @@ class PhpHttpClient extends HttpClient
     return @$this->responses[$key];
   }
 }
-
-
 ?>

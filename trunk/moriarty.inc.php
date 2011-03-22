@@ -150,5 +150,4 @@ define('OUTPUT_TYPE_NTRIPLES', 'ntriples');
 define('OUTPUT_TYPE_HTML', 'html');
 define('OUTPUT_TYPE_JSON', 'json');
 
-
 ?>
