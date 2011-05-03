@@ -13,11 +13,6 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
   </rdf:Description>
 </rdf:RDF>';
 
-    var $_single_triple_invalid_rdf =  '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ex="http://example.org/">
-  <rdf:Description rdf:about="http://example.org/subj">
-    <ex:pred>foo</ex:pred>
-</rdf:RDF>';
-
     var $_single_triple_turtle =  '@prefix ex: <http://example.org/> .
      <http://example.org/subj> ex:pred "foo" .';
 
@@ -582,7 +577,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals( $_1, $actual);
   }
 
-  function test_diff_where_original_array_is_empty(){
+  function test_diff_where_orifinal_array_is_empty(){
 
     $_1 = array();
 
@@ -591,37 +586,8 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
         );
 
     $actual = SimpleGraph::diff($_1,$_2);
-    
+
     $this->assertEquals( $_1, $actual);
-  }
-
-  function test_diff_where_array_key_order_is_different()
-  {
-      $_1 = array(
-          '#x' => array('#name' => array(array('value'=> 'Keith', 'type' => 'literal')))
-          );
-
-      $_2 = array(
-          '#x' => array('#name' => array(array('type' => 'literal', 'value'=> 'Keith')))
-          );
-      
-      $actual = SimpleGraph::diff($_1,$_2);
-      
-      $this->assertEquals(array(), $actual);
-      
-  }
-
-  function test_diff_to_ensure_type_insensitive_comparison()
-  {
-      $_1 = array(
-        '#x' => array('#lcn' => array(array('value'=> '1521278'),) )
-      );
-      $_2 = array(
-        '#x' => array('#lcn' => array(array('value'=> '00001521278'),) )
-      );
-     
-     $actual = SimpleGraph::diff($_1,$_2); 
-     $this->assertEquals( $_1, $actual);
   }
 
   function test_merge_static(){
@@ -1125,15 +1091,13 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
         $expectedArray = array('http://value/1', 'http://value/2', 'http://value/3', 'http://value/4', 'http://value/5');
         $this->assertEquals($expectedArray, $graph->get_sequence_values('http://some/subject/1'));
     }
-
-    
-    public function testGetParserErrors(){
+  public function testGetParserErrors(){
     $graph = new SimpleGraph();
     $graph->add_rdf($this->_single_triple_turtle);
     $errors = $graph->get_parser_errors();
     $this->assertTrue(empty($errors), "Errors should be empty");
-    $graph->add_rdf($this->_single_triple_invalid_rdf );
-    $errors = $graph->get_parser_errors();    
+    $graph->add_rdf($this->_single_triple_invalid_turtle );
+    $errors = $graph->get_parser_errors();
     $this->assertFalse(empty($errors), "Errors should not be empty");
     $this->assertTrue(!empty($errors[0]), "Errors first item should not be empty");
 

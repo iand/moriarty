@@ -162,4 +162,3 @@ class JobQueue {
     return $response;
   }
 }
-?>

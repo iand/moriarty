@@ -204,5 +204,80 @@ class Store {
       return $this->get_contentbox()->save_item($content, $content_type);
   }
 
+  
+  /**
+   * mirror_from_url
+   *
+   * @return ?
+   * @author Keith Alexander
+   **/
+  function mirror_from_url($url)
+  {
+
+      $return = array(
+        'get_page' => false,
+        'get_copy' => false,
+        'put_page' => false,
+        'update_data' => false,
+        'success' => false,
+      );
+
+    if (empty( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
+
+    $last_cached_page_uri = $this->get_contentbox()->uri.'/mirrors/'.$url;
+    $web_page_request  = $this->request_factory->make('GET', $url); 
+    $web_page_response = $web_page_request->execute();
+    $return['get_page'] = $web_page_response;
+
+    if($web_page_response->is_success()){
+
+    $newGraph = new SimpleGraph();
+    $newGraph->add_rdf($web_page_response->body);
+    $newGraph->add_resource_triple($url, OPEN_LASTCACHEDPAGE, $last_cached_page_uri);
+    $after = $newGraph->get_index();
+    # get previous copy if it exists
+    $cached_page_request = $this->request_factory->make('GET', $last_cached_page_uri, $this->credentials);
+    $cached_page_response = $cached_page_request->execute();
+    $return['get_copy'] = $cached_page_response;
+            if($cached_page_response->status_code == '200'){
+              $before =  $cached_page_response->body;
+            } else if( $cached_page_response->status_code == '404' ) {
+              $before = false;
+            } else {
+                return $return;
+            }
+    $put_page_request = $this->request_factory->make('PUT', $last_cached_page_uri, $this->credentials);
+    $put_page_request->set_body($web_page_response->body);
+    $put_page_request->set_content_type($web_page_response->get_content_type());
+    $put_page_response = $put_page_request->execute();
+    $return['put_page'] = $put_page_response;
+
+    if(!$put_page_response->is_success()){
+      return $return;
+    }
+    # build new changeset
+
+    $Changeset = new ChangeSet(array('before' => $before, 'after' => $after));
+
+    if($Changeset->has_changes()){
+      $return['update_data'] = $this->get_metabox()->apply_changeset($Changeset);
+      if($return['update_data']->is_success()){
+        $return['success'] = true;
+      } 
+      return $return;
+    } else {
+       $return['success'] = true;
+       return $return;
+    }
+
+      
+    } else {
+    
+      return $return;
+    }
+  }
+
 }
 ?>
