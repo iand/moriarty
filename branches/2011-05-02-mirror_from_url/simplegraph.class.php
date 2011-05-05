@@ -1363,5 +1363,38 @@ class SimpleGraph {
           return $values;
       }
 
+  /** Skolemise Bnodes
+   *  replace bnodes in the graph with URIs
+   * @param urispace 
+  **/
+
+      public function skolemise_bnodes($urispace)
+      {
+        $bnodes = $this->get_bnodes();
+        $skolemised_bnodes = array();
+        foreach($bnodes as $no => $bnode){
+          $uri = $urispace.'id-'.++$no;
+          $this->replace_resource($bnode, $uri);
+          $skolemised_bnodes[$bnode] = $uri;
+        }
+        return $skolemised_bnodes; 
+      }
+
+      public function get_bnodes()
+      {
+        $bnodes = array();
+        $index = $this->get_index();
+        foreach($index as $s => $ps){
+          if(strpos($s,'_:')===0) $bnodes[]=$s;
+          foreach($ps as $p => $os){
+            foreach($os as $o){
+              if($o['type']=='bnode'){
+                $bnodes[]=$o['value'];
+              }
+            }
+          }
+        }
+        return array_unique($bnodes);
+      }
 }
 
