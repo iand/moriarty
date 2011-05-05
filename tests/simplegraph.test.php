@@ -1103,5 +1103,59 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
 
   }
 
+
+  public function test_skolemise_bnodes(){
+      
+    $input =  array(
+        '_:a' => array(
+            RDFS_LABEL => array(
+              array(
+                'value' => 'A Bnode',
+                'type' => 'literal',
+              ),
+            ),
+        ),
+    
+      );  
+
+    $expected_output = array(
+        'http://example.org/document/id-1' => array(
+            RDFS_LABEL => array(
+              array(
+                'value' => 'A Bnode',
+                'type' => 'literal',
+              ),
+            ),
+        ),
+      );  
+
+    $graph = new SimpleGraph($input);
+    $graph->skolemise_bnodes('http://example.org/document/');
+    $output = $graph->get_index();
+    $this->assertEquals($expected_output, $output, "bnodes in the graph should be replaced with URIs");
+
+  
+  }
+  
+  function test_get_bnodes(){
+    
+       $input =  array(
+        '_:a' => array(
+            RDFS_SEEALSO => array(
+              array(
+                'value' => '_:b',
+                'type' => 'bnode',
+              ),
+            ),
+        ),
+    
+      );
+
+
+    $graph = new SimpleGraph($input);
+    $actual = $graph->get_bnodes();
+    $expected = array('_:a', '_:b');
+    $this->assertEquals($expected, $actual, "get_bnodes() should return bnodes in subject and object positions");
+  }
 }
 ?>
