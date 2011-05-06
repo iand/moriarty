@@ -236,6 +236,7 @@ class Store {
     $newGraph = new SimpleGraph();
     $newGraph->add_rdf($web_page_response->body);
     $newGraph->add_resource_triple($url, OPEN_LASTCACHEDPAGE, $last_cached_page_uri);
+    $newGraph->skolemise_bnodes($last_cached_page_uri.'/');
     $after = $newGraph->get_index();
     # get previous copy if it exists
     $cached_page_request = $this->request_factory->make('GET', $last_cached_page_uri, $this->credentials);
