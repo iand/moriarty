@@ -237,7 +237,7 @@ class Store {
     } else {
       $web_page_content = $rdf_content;
     }
-    if($web_page_response->is_success() OR $rdf_content){
+    if($rdf_content OR $web_page_response->is_success() ){
 
     $newGraph = new SimpleGraph();
     $newGraph->add_rdf($web_page_response->body);
