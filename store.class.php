@@ -258,7 +258,7 @@ class Store {
             }
     $put_page_request = $this->request_factory->make('PUT', $last_cached_page_uri, $this->credentials);
     $put_page_request->set_body($newGraph->to_json());
-    $put_page_request->set_content_type($web_page_response->get_content_type());
+    $put_page_request->set_content_type('application/json'));
     $put_page_response = $put_page_request->execute();
     $return['put_page'] = $put_page_response;
 
