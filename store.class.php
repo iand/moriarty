@@ -12,7 +12,7 @@ require_once MORIARTY_DIR. 'snapshots.class.php';
 require_once MORIARTY_DIR. 'augmentservice.class.php';
 require_once MORIARTY_DIR. 'oaiservice.class.php';
 require_once MORIARTY_DIR. 'httprequest.class.php';
-
+require_once MORIARTY_DIR. 'changeset.class.php';
 /**
  * Represents a platform store.
  */
@@ -208,10 +208,10 @@ class Store {
   /**
    * mirror_from_url
    *
-   * @return ?
+   * @return array of responses from http requests, and overall success status 
    * @author Keith Alexander
    **/
-  function mirror_from_url($url)
+  function mirror_from_url($url, $rdf_content=false)
   {
 
       $return = array(
@@ -225,13 +225,18 @@ class Store {
     if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
-
-    $last_cached_page_uri = $this->get_contentbox()->uri.'/mirrors/'.$url;
-    $web_page_request  = $this->request_factory->make('GET', $url); 
-    $web_page_response = $web_page_request->execute();
-    $return['get_page'] = $web_page_response;
-
-    if($web_page_response->is_success()){
+    
+    if(!$rdf_content){
+      
+      $last_cached_page_uri = $this->get_contentbox()->uri.'/mirrors/'.$url;
+      $web_page_request  = $this->request_factory->make('GET', $url); 
+      $web_page_response = $web_page_request->execute();
+      $return['get_page'] = $web_page_response;
+      $web_page_content = $web_page_response->body;
+    } else {
+      $web_page_content = $rdf_content;
+    }
+    if($web_page_response->is_success() OR $rdf_content){
 
     $newGraph = new SimpleGraph();
     $newGraph->add_rdf($web_page_response->body);
@@ -250,7 +255,7 @@ class Store {
                 return $return;
             }
     $put_page_request = $this->request_factory->make('PUT', $last_cached_page_uri, $this->credentials);
-    $put_page_request->set_body($web_page_response->body);
+    $put_page_request->set_body($newGraph->to_json());
     $put_page_request->set_content_type($web_page_response->get_content_type());
     $put_page_response = $put_page_request->execute();
     $return['put_page'] = $put_page_response;
