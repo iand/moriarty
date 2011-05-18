@@ -240,7 +240,7 @@ class Store {
     if($rdf_content OR $web_page_response->is_success() ){
 
     $newGraph = new SimpleGraph();
-    $newGraph->add_rdf($web_page_response->body);
+    $newGraph->add_rdf($web_page_content);
     $newGraph->add_resource_triple($url, OPEN_LASTCACHEDPAGE, $last_cached_page_uri);
     $newGraph->skolemise_bnodes($last_cached_page_uri.'/');
     $after = $newGraph->get_index();
