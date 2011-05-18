@@ -230,6 +230,7 @@ class Store {
       
       $last_cached_page_uri = $this->get_contentbox()->uri.'/mirrors/'.$url;
       $web_page_request  = $this->request_factory->make('GET', $url); 
+      $web_page_request->set_accept('application/rdf+xml;q=0.8,text/turtle;q=0.9,*/*;q=0.1');
       $web_page_response = $web_page_request->execute();
       $return['get_page'] = $web_page_response;
       $web_page_content = $web_page_response->body;
