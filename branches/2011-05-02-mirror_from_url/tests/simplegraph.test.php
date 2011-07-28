@@ -1136,6 +1136,16 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
 
   
   }
+
+  function test_number_of_resources_remains_constant_after_skolemise_bnodes(){
+    $graph = new SimpleGraph(file_get_contents(dirname(__FILE__).'/documents/ckan-ds.ttl'));
+    $index = $graph->get_index();
+    $before =  count(array_keys($index));
+    $graph->skolemise_bnodes('http://example.com/test/');
+    $index = $graph->get_index();
+    $after = count(array_keys($index));
+    $this->assertEquals($before, $after, "skolemise_bnodes shouldn't reduce the number of resources");
+  }
   
   function test_get_bnodes(){
     
