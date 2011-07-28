@@ -237,6 +237,7 @@ class Store {
       $web_page_content = $web_page_response->body;
     } else {
       $web_page_content = $rdf_content;
+      $return['rdf_content'] = $rdf_content;
     }
     if($rdf_content OR $web_page_response->is_success() ){
 
@@ -250,7 +251,7 @@ class Store {
     $cached_page_response = $cached_page_request->execute();
     $return['get_copy'] = $cached_page_response;
             if($cached_page_response->status_code == '200'){
-              $before =  $cached_page_response->body;
+              $before =  json_decode($cached_page_response->body, true);
             } else if( $cached_page_response->status_code == '404' ) {
               $before = false;
             } else {
