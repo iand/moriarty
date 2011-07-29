@@ -1113,8 +1113,21 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
                 'value' => 'A Bnode',
                 'type' => 'literal',
               ),
+              array(
+                'value' => '_:b',
+                'type' => 'bnode',
+              ),
             ),
-        ),
+          ),
+
+          '_:b' => array(
+            RDFS_LABEL => array(
+              array(
+                'type' => 'literal',
+                'value' => 'bnode B',
+              )
+            )
+          )
     
       );  
 
@@ -1125,8 +1138,21 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
                 'value' => 'A Bnode',
                 'type' => 'literal',
               ),
+              array(
+                'value' => 'http://example.org/document/id-2',
+                'type' => 'uri',
+              ),
+ 
             ),
         ),
+          'http://example.org/document/id-2' => array(
+            RDFS_LABEL => array(
+              array(
+                'type' => 'literal',
+                'value' => 'bnode B',
+              )
+            )
+          )
       );  
 
     $graph = new SimpleGraph($input);
@@ -1137,13 +1163,17 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
   
   }
 
+
+  function test_graph_pattern_is_unchanged_by_replace_resource(){
+  
+  }
+
   function test_number_of_resources_remains_constant_after_skolemise_bnodes(){
     $graph = new SimpleGraph(file_get_contents(dirname(__FILE__).'/documents/ckan-ds.ttl'));
     $index = $graph->get_index();
-    $before =  count(array_keys($index));
+    $before = count($graph->get_subjects());
     $graph->skolemise_bnodes('http://example.com/test/');
-    $index = $graph->get_index();
-    $after = count(array_keys($index));
+    $after = count($graph->get_subjects());
     $this->assertEquals($before, $after, "skolemise_bnodes shouldn't reduce the number of resources");
   }
   
