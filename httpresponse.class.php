@@ -62,6 +62,20 @@ class HttpResponse {
 
 
   /**
+   *  Gets the content-type sent with the response, if any
+   *  @return string if content-type is set, boolean false otherwise
+   */
+
+  function get_content_type()  {
+    foreach($this->headers as $k => $v){
+      if(stristr($k, 'Content-Type')){
+        return $v;
+      } 
+    }
+    return false;
+  }
+
+  /**
    * Obtain a string representation of this response
    * @return string
    */
@@ -172,4 +186,5 @@ class HttpResponse {
 
 
 }
+
 ?>

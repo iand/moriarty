@@ -56,7 +56,6 @@ class CurlHttpClient extends HttpClient
     switch($request->method) {
       case 'GET'  : break;
       case 'POST' : curl_setopt($curl_handle, CURLOPT_POST, 1); break;
-      case 'HEAD' : curl_setopt($curl_handle, CURLOPT_NOBODY, 1); break;
       default     : curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST,strtoupper($request->method));
     }
 
@@ -198,4 +197,6 @@ class CurlHttpClient extends HttpClient
       return array($response_code,$response_header_array,$response_body);
     }
 }
+
+
 ?>
