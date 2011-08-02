@@ -1139,5 +1139,99 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
 
   }
 
+
+  public function test_skolemise_bnodes(){
+      
+    $input =  array(
+        '_:a' => array(
+            RDFS_LABEL => array(
+              array(
+                'value' => 'A Bnode',
+                'type' => 'literal',
+              ),
+              array(
+                'value' => '_:b',
+                'type' => 'bnode',
+              ),
+            ),
+          ),
+
+          '_:b' => array(
+            RDFS_LABEL => array(
+              array(
+                'type' => 'literal',
+                'value' => 'bnode B',
+              )
+            )
+          )
+    
+      );  
+
+    $expected_output = array(
+        'http://example.org/document/id-1' => array(
+            RDFS_LABEL => array(
+              array(
+                'value' => 'A Bnode',
+                'type' => 'literal',
+              ),
+              array(
+                'value' => 'http://example.org/document/id-2',
+                'type' => 'uri',
+              ),
+ 
+            ),
+        ),
+          'http://example.org/document/id-2' => array(
+            RDFS_LABEL => array(
+              array(
+                'type' => 'literal',
+                'value' => 'bnode B',
+              )
+            )
+          )
+      );  
+
+    $graph = new SimpleGraph($input);
+    $graph->skolemise_bnodes('http://example.org/document/');
+    $output = $graph->get_index();
+    $this->assertEquals($expected_output, $output, "bnodes in the graph should be replaced with URIs");
+
+  
+  }
+
+
+  function test_graph_pattern_is_unchanged_by_replace_resource(){
+  
+  }
+
+  function test_number_of_resources_remains_constant_after_skolemise_bnodes(){
+    $graph = new SimpleGraph(file_get_contents(dirname(__FILE__).'/documents/ckan-ds.ttl'));
+    $index = $graph->get_index();
+    $before = count($graph->get_subjects());
+    $graph->skolemise_bnodes('http://example.com/test/');
+    $after = count($graph->get_subjects());
+    $this->assertEquals($before, $after, "skolemise_bnodes shouldn't reduce the number of resources");
+  }
+  
+  function test_get_bnodes(){
+    
+       $input =  array(
+        '_:a' => array(
+            RDFS_SEEALSO => array(
+              array(
+                'value' => '_:b',
+                'type' => 'bnode',
+              ),
+            ),
+        ),
+    
+      );
+
+
+    $graph = new SimpleGraph($input);
+    $actual = $graph->get_bnodes();
+    $expected = array('_:a', '_:b');
+    $this->assertEquals($expected, $actual, "get_bnodes() should return bnodes in subject and object positions");
+  }
 }
 ?>
