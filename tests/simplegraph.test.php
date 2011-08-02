@@ -1233,5 +1233,20 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $expected = array('_:a', '_:b');
     $this->assertEquals($expected, $actual, "get_bnodes() should return bnodes in subject and object positions");
   }
+  
+  function test_to_html_renders_bnodes_as_anchors() {
+    
+    $g = new SimpleGraph();
+    $g->from_rdfxml($this->_single_triple);
+    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', '_:bn123');
+    $g->add_resource_triple('_:bn123', 'http://example.org/pred', 'http://example.org/obj');
+
+    $html = $g->to_html();
+
+    $this->assertContains('<a href="http://example.org/subj">subj</a>', $html, "html should contain links to bnode anchors");
+    $this->assertContains('<a href="#bn123">_:bn123</a>', $html, "html should contain links to bnode anchors");
+    $this->assertContains('<a id="bn123" href="#bn123">_:bn123</a>', $html, "html should contain anchors for bnodes");
+  }
+
 }
 ?>
