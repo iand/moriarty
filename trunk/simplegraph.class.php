@@ -1075,7 +1075,16 @@ class SimpleGraph {
               }
               else {
                 foreach($base_obs as $base_o){
-                  if(!in_array($base_o, $index[$base_uri][$base_p])) {
+                  // because we want to enforce strict type check
+                  // on in_array, we need to ensure that array keys
+                  // are ordered the same
+                  ksort($base_o);
+                  $base_p_values = $index[$base_uri][$base_p];
+                  foreach($base_p_values as &$v)
+                  {
+                      ksort($v);
+                  }
+                  if(!in_array($base_o, $base_p_values, true)) {
                     $diff[$base_uri][$base_p][]=$base_o;
                   }
                 }
@@ -1363,38 +1372,5 @@ class SimpleGraph {
           return $values;
       }
 
-  /** Skolemise Bnodes
-   *  replace bnodes in the graph with URIs
-   * @param urispace 
-  **/
-
-      public function skolemise_bnodes($urispace)
-      {
-        $bnodes = $this->get_bnodes();
-        $skolemised_bnodes = array();
-        foreach($bnodes as $no => $bnode){
-          $uri = $urispace.'id-'.++$no;
-          $this->replace_resource($bnode, $uri);
-          $skolemised_bnodes[$bnode] = $uri;
-        }
-        return $skolemised_bnodes; 
-      }
-
-      public function get_bnodes()
-      {
-        $bnodes = array();
-        $index = $this->get_index();
-        foreach($index as $s => $ps){
-          if(strpos($s,'_:')===0) $bnodes[]=$s;
-          foreach($ps as $p => $os){
-            foreach($os as $o){
-              if($o['type']=='bnode'){
-                $bnodes[]=$o['value'];
-              }
-            }
-          }
-        }
-        return array_unique($bnodes);
-      }
 }
-
+?>

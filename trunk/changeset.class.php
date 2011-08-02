@@ -50,7 +50,6 @@ class ChangeSet extends SimpleGraph {
     var $_index = array();
   
     function __construct($a = '') {
-      parent::__construct();
     $this->a = $a;
     /* parse the before and after graphs if necessary*/
     foreach(array('before','after', 'before_rdfxml', 'after_rdfxml') as $rdf){
@@ -235,6 +234,4 @@ class ChangeSet extends SimpleGraph {
   }
 
 }
-
-
 ?>
