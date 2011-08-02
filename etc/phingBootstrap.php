@@ -13,6 +13,8 @@ define('MORIARTY_ARC_DIR', $moriarty_arc_dir);
 require_once MORIARTY_DIR . '/tests/fakehttprequest.class.php';
 require_once MORIARTY_DIR . '/tests/fakerequestfactory.class.php';
 
+error_reporting(E_ALL && ~E_STRICT);
+
 ini_set('include_path',
   ini_get('include_path')
   .PATH_SEPARATOR.MORIARTY_DIR

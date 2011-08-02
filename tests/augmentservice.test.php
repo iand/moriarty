@@ -60,57 +60,5 @@ class AugmentServiceTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue( in_array('Content-Type: application/rss+xml', $fake_request->get_headers() ) );
   }
   
-  function test_augment_graph_creates_rss_channel() {
-    $fake_request_factory = new FakeRequestFactory();
-    $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/augment", $fake_request );
-    $ss = new AugmentService("http://example.org/store/services/augment");
-    $ss->request_factory = $fake_request_factory;
-
-    $response = $ss->augment_graph( new SimpleGraph() );
-    
-    $data = new SimpleGraph();
-    $data->from_rdfxml($fake_request->get_body());
-    
-    $this->assertTrue( $data->has_resource_triple('tag:talis.com,2008:moriarty-tmp-augment-channel', RDF_TYPE, 'http://purl.org/rss/1.0/channel'));
-    
-      
-  }
-
-  function test_augment_graph_creates_items_list() {
-    $fake_request_factory = new FakeRequestFactory();
-    $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/augment", $fake_request );
-    $ss = new AugmentService("http://example.org/store/services/augment");
-    $ss->request_factory = $fake_request_factory;
-
-    $response = $ss->augment_graph( new SimpleGraph() );
-    
-    $data = new SimpleGraph();
-    $data->from_rdfxml($fake_request->get_body());
-    
-    $this->assertTrue( $data->has_resource_triple('tag:talis.com,2008:moriarty-tmp-augment-channel', RSS_ITEMS, 'tag:talis.com,2008:moriarty-tmp-augment-channel-items'));
-    $this->assertTrue( $data->has_resource_triple('tag:talis.com,2008:moriarty-tmp-augment-channel-items', RDF_TYPE, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq'));
-  }
-  
-/*  
-  function test_augment_graph_creates_item_for_each_subject_in_graph() {
-    $fake_request_factory = new FakeRequestFactory();
-    $fake_request = new FakeHttpRequest( new HttpResponse() );
-    $fake_request_factory->register('POST', "http://example.org/store/services/augment", $fake_request );
-    $ss = new AugmentService("http://example.org/store/services/augment");
-    $ss->request_factory = $fake_request_factory;
-
-    $g = new SimpleGraph();
-    $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
-    $response = $ss->augment_graph( $g );
-    
-    $data = new SimpleGraph();
-    $data->from_rdfxml($fake_request->get_body());
-    
-    $this->assertTrue( $data->has_resource_triple('tag:talis.com,2008:moriarty-tmp-augment-channel-items', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#_1', 'http://example.org/subj'));
-    $this->assertTrue( $data->has_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj'));
-  }  
-*/
 }
 ?>

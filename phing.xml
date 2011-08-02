@@ -37,6 +37,7 @@
 
           <!-- no tests yet -->
           <exclude name="httpcache.test.php" />
+          <exclude name="storegroup.test.php" />
         </fileset>
       </batchtest>
     </phpunit>
@@ -59,6 +60,7 @@
 
           <!-- no tests yet -->
           <exclude name="httpcache.test.php" />
+          <exclude name="storegroup.test.php" />
         </fileset>
       </batchtest>
     </phpunit>
