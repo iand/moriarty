@@ -204,7 +204,6 @@ class Store {
       return $this->get_contentbox()->save_item($content, $content_type);
   }
 
-
   
   /**
    * mirror_from_url
@@ -258,15 +257,6 @@ class Store {
             } else {
                 return $return;
             }
-    $put_page_request = $this->request_factory->make('PUT', $last_cached_page_uri, $this->credentials);
-    $put_page_request->set_body($newGraph->to_json());
-    $put_page_request->set_content_type('application/json');
-    $put_page_response = $put_page_request->execute();
-    $return['put_page'] = $put_page_response;
-
-    if(!$put_page_response->is_success()){
-      return $return;
-    }
     # build new changeset
 
     $Changeset = new ChangeSet(array('before' => $before, 'after' => $after));
@@ -275,7 +265,14 @@ class Store {
       $return['update_data'] = $this->get_metabox()->apply_changeset($Changeset);
       if($return['update_data']->is_success()){
         $return['success'] = true;
+      } else {
+        return $return;
       } 
+      $put_page_request = $this->request_factory->make('PUT', $last_cached_page_uri, $this->credentials);
+      $put_page_request->set_body($newGraph->to_json());
+      $put_page_request->set_content_type('application/json');
+      $put_page_response = $put_page_request->execute();
+      $return['put_page'] = $put_page_response;
       return $return;
     } else {
        $return['success'] = true;
@@ -291,3 +288,4 @@ class Store {
 
 }
 ?>
+
