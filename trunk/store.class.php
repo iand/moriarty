@@ -242,7 +242,7 @@ class Store {
     if($rdf_content OR $web_page_response->is_success() ){
 
     $newGraph = new SimpleGraph();
-    $newGraph->add_rdf($web_page_content);
+    $newGraph->add_rdf($web_page_content, $url);
     $newGraph->add_resource_triple($url, OPEN_LASTCACHEDPAGE, $last_cached_page_uri);
     $newGraph->skolemise_bnodes($last_cached_page_uri.'/');
     $after = $newGraph->get_index();
@@ -259,7 +259,7 @@ class Store {
             }
     # build new changeset
 
-    $Changeset = new ChangeSet(array('before' => $before, 'after' => $after));
+    $Changeset = new ChangeSet(array('before' => $before, 'after' => $after, 'creatorName' => 'Store::mirror_from_url', 'changeReason' => 'mirroring from '.$url));
 
     if($Changeset->has_changes()){
       $return['update_data'] = $this->get_metabox()->apply_changeset($Changeset);
