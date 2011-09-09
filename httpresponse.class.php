@@ -26,7 +26,7 @@ class HttpResponse {
    * The entity body returned with the response
    * @var string
    */
-  var $body;
+  private $body;
   /**
    * The request that was responsible for generating this response
    * @var HttpRequest
@@ -50,6 +50,27 @@ class HttpResponse {
    */
   function __construct($status_code = null) {
     $this->status_code = $status_code;
+  }
+
+  public function __get($k){
+    return $this->$k;
+  }
+  public function __set($k, $v){
+    if($k=='body' AND $this->content_is_gzip_encoded()){
+      //strip the gzip header
+      if(ord($v[0]) == 0x1f && ord($v[1]) == 0x8b)
+      {
+            $v = substr($v,10);
+            $v = gzinflate($v);
+      }
+    }
+    $this->$k=$v;
+  }
+
+  private function content_is_gzip_encoded(){
+    return (isset($this->headers['content-encoding']) 
+      AND 
+      strpos($this->headers['content-encoding'], 'gzip')!==false);
   }
 
   /**

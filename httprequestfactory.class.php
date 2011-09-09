@@ -15,7 +15,7 @@ class HttpRequestFactory {
   function __construct() {
     if (defined('MORIARTY_HTTP_CACHE_READ_ONLY') || defined('MORIARTY_ALWAYS_CACHE_EVERYTHING') ) {
       $this->always_validate_cache(FALSE);
-    }
+    } 
     else {
       $this->always_validate_cache(TRUE);
     }
@@ -39,6 +39,7 @@ class HttpRequestFactory {
 
   function make( $method, $uri, $credentials = null) {
     $request = new HttpRequest( $method, $uri, $credentials );
+    $request->set_accept_encoding('gzip');
     $request->always_validate_cache($this->_always_validate_cache);
     $request->use_stale_response_on_failure($this->_use_stale_response_on_failure);
     $request->set_proxy($this->_proxy);

@@ -145,8 +145,7 @@ class SparqlServiceBase {
       $request->set_content_type(MIME_FORMENCODED);
     }
 
-    return $request->execute();
-
+   return $request->execute();
   }
 
   function get_max_uri_length() {
