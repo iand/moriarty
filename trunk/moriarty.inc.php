@@ -143,6 +143,7 @@ define('OWL_SYMMETRICPROPERTY', 'http://www.w3.org/2002/07/owl#SymmetricProperty
 define('OWL_ANNOTATIONPROPERTY', 'http://www.w3.org/2002/07/owl#AnnotationProperty');
 define('OWL_DISJOINTWITH', 'http://www.w3.org/2002/07/owl#disjointWith');
 define('OPEN_LASTCACHEDPAGE', 'http://open.vocab.org/terms/lastCachedPage');
+define('OPEN_JSON', 'http://open.vocab.org/terms/json');
 
 define('OUTPUT_TYPE_RDF', 'rdf');
 define('OUTPUT_TYPE_XML', 'xml');

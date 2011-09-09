@@ -35,7 +35,7 @@ class CurlHttpClient extends HttpClient
 
     curl_setopt($curl_handle, CURLOPT_FRESH_CONNECT,TRUE);
     curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER,1);
-
+    curl_setopt($curl_handle, CURLOPT_BINARYTRANSFER, TRUE);
     /**
      * @see http://bugs.typo3.org/view.php?id=4292
      */
