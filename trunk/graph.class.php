@@ -39,7 +39,7 @@ class Graph {
    * @return HttpResponse
    */
   function apply_changeset($cs) {
-    return $this->apply_changeset_rdfxml( $cs->to_rdfxml());
+    return $this->apply_changeset_turtle( $cs->to_turtle());
   }
 
   /**
@@ -50,6 +50,29 @@ class Graph {
   function apply_versioned_changeset($cs) {
     return $this->apply_versioned_changeset_rdfxml( $cs->to_rdfxml());
   }
+
+    /**
+   * Apply a changeset to the graph
+   * @param string rdfxml the changeset to apply, serialised as RDF/XML
+   * @return HttpResponse
+   */
+  function apply_changeset_turtle($turtle) {
+    if (empty( $this->request_factory) ) {
+      $this->request_factory = new HttpRequestFactory();
+    }
+
+    $uri = $this->uri;
+
+    $request = $this->request_factory->make( 'POST', $uri, $this->credentials);
+    $request->set_accept("*/*");
+    $request->set_content_type("application/vnd.talis.changeset+turtle");
+    $request->set_body( $turtle );
+
+    return $request->execute();
+  }
+
+ 
+
 
   /**
    * Apply a changeset to the graph
@@ -115,7 +138,7 @@ class Graph {
    * @param string turtle the RDF to be submitted, serialised as Turtle
    * @return HttpResponse
    */
-  function submit_turtle($turtle) {
+  function submit_turtle($turtle, $gzip_encode=false) {
     if (empty( $this->request_factory) ) {
       $this->request_factory = new HttpRequestFactory();
     }
@@ -123,11 +146,11 @@ class Graph {
     $request = $this->request_factory->make( 'POST', $uri, $this->credentials);
     $request->set_content_type("text/turtle");
     $request->set_accept("*/*");
-    $request->set_body( $turtle );
+    $request->set_body( $turtle, $gzip_encode);
     return $request->execute();
   }
 
-  function submit_ntriples_in_batches_from_file($filename,$no_of_lines=500, $stop_on_failure=true) {
+  function submit_ntriples_in_batches_from_file($filename,$no_of_lines=500, $callback=false) {
     $responses = array();
     $pointer = fopen($filename, 'r');
     $batch = '';
@@ -138,16 +161,23 @@ class Graph {
       if($lineCount==$no_of_lines){
         $response = $this->submit_turtle($batch);
         $responses[] = $response;
-        if($response->is_success()===false AND $stop_on_failure){
+        if(is_callable($callback)){
+          call_user_func($callback, $response);
+        } else if($response->is_success()===false){
           return $responses;
-        } else {
+        } 
+
           $lineCount=0;
           $batch='';
-        }
+        
       }
     }
     if(!empty($batch)){
-      $responses[]=$this->submit_turtle($batch);
+      $response=$this->submit_turtle($batch);
+      if(is_callable($callback)){
+          call_user_func($callback, $response);
+      } 
+      $responses[]=$response;
     }
     return $responses;
   }

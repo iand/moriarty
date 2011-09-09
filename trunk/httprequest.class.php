@@ -133,7 +133,7 @@ class HttpRequest {
     $this->_async_key = $this->client->send_request($this);
   }
 
-  function get_async_response()
+ function get_async_response()
   {
     $response = null;
     if ($this->_response_from_cache === null || $this->_always_validate_cache) {
@@ -202,8 +202,17 @@ class HttpRequest {
    * Set content to be sent with the request
    * @param string val the content to be sent
    */
-  function set_body($val) {
-    $this->body = $val;
+  function set_body($val, $gzip_body=false) {
+    if($gzip_body) {
+      $val = gzencode($val);
+      $this->body = $val;
+      $this->headers['Content-Encoding'] = 'gzip';
+      $this->headers['Content-Length'] = strlen($val);
+    } 
+    else 
+    {
+      $this->body = $val;
+    }
   }
 
   /**
@@ -214,6 +223,14 @@ class HttpRequest {
     return $this->body;
   }
 
+  /**
+   * Set the HTTP accept-encoding header for the request
+   * @param string val the media types to be used as the accept header value
+ */
+  function set_accept_encoding($val) {
+    $this->headers['Accept-Encoding'] = $val;
+  }
+  
   /**
    * Set the HTTP accept header for the request
    * @param string val the media types to be used as the accept header value
