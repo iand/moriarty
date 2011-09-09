@@ -23,7 +23,6 @@ class FakeRequestFactory extends HttpRequestFactory {
 
   function make( $method, $uri, $credentials = null) {
     $this->_received[] = $method . ' ' . $uri;
-    
     if ($request = $this->get_registered_request($method,$uri)) {
      if ( $credentials != null) {
         $request->set_auth( $credentials->get_auth());
