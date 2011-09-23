@@ -17,6 +17,7 @@ require_once MORIARTY_TEST_DIR . 'sparqlservice.test.php';
 require_once MORIARTY_TEST_DIR . 'fieldpredicatemap.test.php';
 require_once MORIARTY_TEST_DIR . 'valuepool.test.php';
 require_once MORIARTY_TEST_DIR . 'httprequest.test.php';
+require_once MORIARTY_TEST_DIR . 'httpresponse.test.php';
 require_once MORIARTY_TEST_DIR . 'credentials.test.php';
 require_once MORIARTY_TEST_DIR . 'privategraph.test.php';
 require_once MORIARTY_TEST_DIR . 'contentbox.test.php';
@@ -42,6 +43,7 @@ require_once MORIARTY_TEST_DIR . 'datatable.test.php';
 require_once MORIARTY_TEST_DIR . 'datatableresult.test.php';
 
 error_reporting(E_ALL && ~E_STRICT);
+
 function exceptions_error_handler($severity, $message, $filename, $lineno) {
   if (error_reporting() == 0) {
     return;
@@ -81,6 +83,7 @@ class Moriarty_AllTests
         $suite->addTestSuite('CredentialsTest');
         $suite->addTestSuite('ValuePoolTest');
         $suite->addTestSuite('HttpRequestTest');
+        $suite->addTestSuite('HttpResponseTest');
         $suite->addTestSuite('PrivateGraphTest');
         $suite->addTestSuite('MetaboxTest');
         $suite->addTestSuite('ContentboxTest');

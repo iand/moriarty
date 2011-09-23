@@ -55,13 +55,14 @@ class HttpResponse {
   public function __get($k){
     return $this->$k;
   }
+  
   public function __set($k, $v){
     if($k=='body' AND $this->content_is_gzip_encoded()){
-      //strip the gzip header
-      if(ord($v[0]) == 0x1f && ord($v[1]) == 0x8b)
-      {
-            $v = substr($v,10);
-            $v = gzinflate($v);
+      //strip the gzip header, explicitly suppressing errors
+	  if(ord(@$v[0]) == 0x1f && ord(@$v[1]) == 0x8b)
+	  {
+	    $v = substr($v,10);
+	    $v = gzinflate($v);
       }
     }
     $this->$k=$v;
