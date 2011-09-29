@@ -1357,37 +1357,30 @@ class SimpleGraph {
 
   function get_sequence_values($sequenceUri) {
           $triples = $this->get_index();
-          $properties = array();
+          $found_values = array();
 
           if (isset($triples[$sequenceUri]))
           {
               foreach ($triples[$sequenceUri] as $property => $objects)
               {
-                  if (strpos($property, RDF_) !== false)
-                  {
-                      $key = substr($property, strpos($property, '_') + 1  );
-                      $value = $this->get_first_resource($sequenceUri, $property);
-
-
-                      if (empty($value))
-                      {
-                      $value = $this->get_first_literal($sequenceUri, $property);
-                      }
-
-                      $properties[$key] = $value;
-                  }
+                 if (strpos($property, RDF_) !== false)
+                 {
+                   $key = substr($property, strpos($property, '_') + 1  );
+                   foreach ($objects as $object)
+                   {
+                     $found_values[$key][] = $object['value'];
+                   }
+                 }
               }
-
-              ksort($properties, SORT_NUMERIC);
+              ksort($found_values, SORT_NUMERIC);
           }
-
-          $values = array();
-
-          foreach($properties as $key=>$value)
+          foreach($found_values as $key_values)
           {
+            foreach($key_values as $value)
+            {
               $values[] = $value;
+            }
           }
-
           return $values;
       }
 
