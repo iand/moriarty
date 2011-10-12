@@ -9,11 +9,11 @@ require_once MORIARTY_DIR . 'httpresponse.class.php';
  */
 class CurlHttpClient extends HttpClient
 {
-  private $curl_handles = array();
-  private $requests = array();
-  private $responses = array();
-  private $multicurl;
-  private $running;
+  protected $curl_handles = array();
+  protected $requests = array();
+  protected $responses = array();
+  protected $multicurl;
+  protected $running;
 
   public function __construct()
   {
@@ -110,7 +110,7 @@ class CurlHttpClient extends HttpClient
 
     }
 
-    private function processCurlMessage($done)
+    protected function processCurlMessage($done)
     {
       $key = (string)$done['handle'];
       $raw_response = curl_multi_getcontent($done['handle']);
