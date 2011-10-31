@@ -162,7 +162,7 @@ class Graph {
         $response = $this->submit_turtle($batch);
         $responses[] = $response;
         if(is_callable($callback)){
-          call_user_func($callback, $response);
+          call_user_func_array($callback, array($response, $batch));
         } else if($response->is_success()===false){
           return $responses;
         } 
