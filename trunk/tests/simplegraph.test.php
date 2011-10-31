@@ -941,7 +941,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $g->set_request_factory($fake_request_factory);
     $g->read_data('http://example.org/thing');
 
-    $this->assertTrue( in_array('Accept: application/json, text/turtle, text/n3, text/rdf+n3, application/x-turtle, application/rdf+xml;q=0.8,application/xml;q=0.6, */*', $fake_request->get_headers() ) );
+    $this->assertTrue( in_array('Accept: application/json, text/turtle, text/n3, text/rdf+n3, application/x-turtle, application/rdf+xml;q=0.8,application/xml;q=0.6, */*;q=0.5', $fake_request->get_headers() ) );
   }
 
   function test_read_data_parses_application_rdfxml() {
