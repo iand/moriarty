@@ -739,6 +739,16 @@ class SimpleGraph {
   }
 
   /**
+   * Tests whether the graph knows the given resource to be of the given type
+   * @param string s the subject of the triple, either a URI or a blank node in the format _:name
+   * @param string t the type to check for, either a URI or a blank node in the format _:name
+   * @return boolean true if a matching type statement exists, false otherwise
+   */
+	function resource_is_of_type($s, $t) {
+		return has_resource_triple($s, $this->_ns['rdf'].'type', $t);
+	}
+
+  /**
    * Tests whether the graph contains the given triple
    * @param string s the subject of the triple, either a URI or a blank node in the format _:name
    * @param string p the predicate URI of the triple
@@ -1356,6 +1366,18 @@ class SimpleGraph {
           $listUri = $this->get_first_resource($listUri, RDF_REST);
       }
       return $array;
+  }
+
+  function get_list_value($list_head) {
+    $values = array();
+    do {
+      $found = $this->get_subject_property_values($list_head, $this->_ns['rdf'].'first');
+      if (count($found) != 1) { throw new Exception("${list_head} had more than 'first' property"); }
+      $values[] = $found[0];
+      $next = $this->get_subject_property_values($list_head, $this->_ns['rdf'].'next');
+      if (count($next) != 1) { throw new Exception("${list_head} had more than 'next' property"); }
+    } while ($list_head = $next[0]['value'] != $this->_ns['rdf'].'nil');
+    return $values;
   }
 
   function get_sequence_values($sequenceUri) {
