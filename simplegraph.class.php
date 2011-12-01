@@ -1359,24 +1359,18 @@ class SimpleGraph {
     }
   }
 
-  function get_list_values($listUri) {
-      $array = array();
-      while(!empty($listUri) AND $listUri != RDF_NIL){
-          $array[]=$this->get_first_resource($listUri, RDF_FIRST);
-          $listUri = $this->get_first_resource($listUri, RDF_REST);
-      }
-      return $array;
-  }
-
-  function get_list_value($list_head) {
+  function get_list_values($list_head) {
     $values = array();
     do {
-      $found = $this->get_subject_property_values($list_head, $this->_ns['rdf'].'first');
-      if (count($found) != 1) { throw new Exception("${list_head} had more than 'first' property"); }
+      $found = $this->get_subject_property_values($list_head, RDF_FIRST);
+      $found_count = count($found);
+      if ($found_count != 1) { throw new Exception("${list_head} had ${found_count} 'first' properties"); }
       $values[] = $found[0];
-      $next = $this->get_subject_property_values($list_head, $this->_ns['rdf'].'next');
-      if (count($next) != 1) { throw new Exception("${list_head} had more than 'next' property"); }
-    } while ($list_head = $next[0]['value'] != $this->_ns['rdf'].'nil');
+      $next = $this->get_subject_property_values($list_head, RDF_REST);
+      $nextCount = count($next);
+      if ($nextCount != 1) { throw new Exception("${list_head} had ${nextCount} 'rest' properties"); }
+      $list_head = $next[0]['value'];
+    } while ($list_head != RDF_NIL);
     return $values;
   }
 
