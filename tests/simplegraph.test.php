@@ -1105,11 +1105,14 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
 
 
   function test_get_list_values(){
-      $g = new SimpleGraph(file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'documents'.DIRECTORY_SEPARATOR.'lists-seqs-collections.ttl'));
-      $actual = $g->get_list_values(exampleNS.'#list');
-      $expected = array(exampleNS.'#a', exampleNS.'#b', exampleNS.'#c');
-      $this->assertEquals($expected, $actual, "list should be tranformed into the array");
-      
+    $g = new SimpleGraph(file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'documents'.DIRECTORY_SEPARATOR.'lists-seqs-collections.ttl'));
+    $actual = $g->get_list_values(exampleNS.'#list');
+    $expected = array(
+      array('value' => exampleNS.'#a', 'type' => 'uri'),
+      array('value' => exampleNS.'#b', 'type' => 'uri'),
+      array('value' => exampleNS.'#c', 'type' => 'uri'),
+    );
+    $this->assertEquals($expected, $actual, "list should be tranformed into the array");
   }
 
   public function testGetSequenceValues()
