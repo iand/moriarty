@@ -258,10 +258,15 @@ class ConfigTest extends PHPUnit_Framework_TestCase {
     $mockRequestFactory = $this->getMock('HttpRequestFactory', array('make'));  
     $mockRequestFactory->expects($this->once())->method('make')->will($this->returnValue($mockRequest));
       
-    $this->setExpectedException('Exception', 'Error determining access status:');
-    
     $config = new Config("http://example.org/store/config", null, $mockRequestFactory);
-    $actual = $config->get_access_status();
+
+    try {
+    	$actual = $config->get_access_status();
+    	$this->fail("Should have got exception thrown by get_access_status");
+    } catch (Exception $ex) {
+		$msg = trim($ex->getMessage());
+		$this->assertEquals('Error determining access status: 500', $msg, 'should get expected exception message');
+    }
   }
 
 }
