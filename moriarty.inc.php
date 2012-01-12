@@ -39,6 +39,7 @@ define('RDF_XMLLITERAL', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral'
 define('RDFS_LABEL', 'http://www.w3.org/2000/01/rdf-schema#label');
 define('RDFS_COMMENT', 'http://www.w3.org/2000/01/rdf-schema#comment');
 define('RDFS_ISDEFINEDBY', 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy');
+define('OV_DEFINES', 'http://open.vocab.org/terms/defines');
 define('RDFS_DOMAIN', 'http://www.w3.org/2000/01/rdf-schema#domain');
 define('RDFS_RANGE', 'http://www.w3.org/2000/01/rdf-schema#range');
 define('RDFS_SEEALSO', 'http://www.w3.org/2000/01/rdf-schema#seeAlso');
@@ -70,6 +71,8 @@ define('DC_CREATOR', 'http://purl.org/dc/elements/1.1/creator');
 define('DC_DATE', 'http://purl.org/dc/elements/1.1/date');
 
 define('DCT_ABSTRACT', 'http://purl.org/dc/terms/abstract');
+define('DCT_HASPART', 'http://purl.org/dc/terms/hasPart');
+define('DCT_ISPARTOF', 'http://purl.org/dc/terms/isPartOf');
 define('DCT_PROVENANCE', 'http://purl.org/dc/terms/provenance');
 
 define('OS_STARTINDEX','http://a9.com/-/spec/opensearch/1.1/startIndex');
@@ -128,22 +131,26 @@ define('ANALYZER_KEYWORD', 'http://schemas.talis.com/2007/bigfoot/analyzers#keyw
 define('ANALYZER_NOSTOPEN', 'http://schemas.talis.com/2007/bigfoot/analyzers#nostop-en');
 define('ANALYZER_NORMEN', 'http://schemas.talis.com/2007/bigfoot/analyzers#norm-en');
 
+define('OWL_ANNOTATIONPROPERTY', 'http://www.w3.org/2002/07/owl#AnnotationProperty');
 define('OWL_CLASS', 'http://www.w3.org/2002/07/owl#Class');
 define('OWL_COMPLEMENTOF', 'http://www.w3.org/2002/07/owl#complementOf');
+define('OWL_DATATYPEPROPERTY', 'http://www.w3.org/2002/07/owl#DatatypeProperty');
+define('OWL_DISJOINTWITH', 'http://www.w3.org/2002/07/owl#disjointWith');
 define('OWL_EQUIVALENTCLASS', 'http://www.w3.org/2002/07/owl#equivalentClass');
 define('OWL_EQUIVALENTPROPERTY', 'http://www.w3.org/2002/07/owl#equivalentProperty');
-define('OWL_SAMEAS', 'http://www.w3.org/2002/07/owl#sameAs');
-define('OWL_INVERSEOF', 'http://www.w3.org/2002/07/owl#inverseOf');
-define('OWL_INVERSEFUNCTIONALPROPERTY', 'http://www.w3.org/2002/07/owl#InverseFunctionalProperty');
 define('OWL_FUNCTIONALPROPERTY', 'http://www.w3.org/2002/07/owl#FunctionalProperty');
+define('OWL_INVERSEFUNCTIONALPROPERTY', 'http://www.w3.org/2002/07/owl#InverseFunctionalProperty');
+define('OWL_INVERSEOF', 'http://www.w3.org/2002/07/owl#inverseOf');
 define('OWL_OBJECTPROPERTY', 'http://www.w3.org/2002/07/owl#ObjectProperty');
-define('OWL_DATATYPEPROPERTY', 'http://www.w3.org/2002/07/owl#DatatypeProperty');
-define('OWL_TRANSITIVEPROPERTY', 'http://www.w3.org/2002/07/owl#TransitiveProperty');
+define('OWL_ONTOLOGY', 'http://www.w3.org/2002/07/owl#Ontology');
+define('OWL_SAMEAS', 'http://www.w3.org/2002/07/owl#sameAs');
 define('OWL_SYMMETRICPROPERTY', 'http://www.w3.org/2002/07/owl#SymmetricProperty');
-define('OWL_ANNOTATIONPROPERTY', 'http://www.w3.org/2002/07/owl#AnnotationProperty');
-define('OWL_DISJOINTWITH', 'http://www.w3.org/2002/07/owl#disjointWith');
+define('OWL_TRANSITIVEPROPERTY', 'http://www.w3.org/2002/07/owl#TransitiveProperty');
 define('OPEN_LASTCACHEDPAGE', 'http://open.vocab.org/terms/lastCachedPage');
 define('OPEN_JSON', 'http://open.vocab.org/terms/json');
+
+define('VANN_PREFERRED_NAMESPACE_PREFIX', 'http://purl.org/vocab/vann/preferredNamespacePrefix');
+define('VANN_PREFERRED_NAMESPACE_URI', 'http://purl.org/vocab/vann/preferredNamespaceUri');
 
 define('OUTPUT_TYPE_RDF', 'rdf');
 define('OUTPUT_TYPE_XML', 'xml');
