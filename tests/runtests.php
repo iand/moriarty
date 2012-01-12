@@ -9,6 +9,7 @@ if(!empty($moriarty_arc_dir)) {
 	define("MORIARTY_ARC_DIR", $moriarty_arc_dir);
 }
 
+require 'PHPUnit/Autoload.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'constants.inc.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
