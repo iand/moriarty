@@ -133,6 +133,7 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
 
     $this->assertEquals( "literal", $g->get_first_literal('http://example.org/subj', 'http://example.org/pred'));
   }
+
   function test_get_first_literal_ignores_resources() {
     $g = new SimpleGraph();
     $g->add_resource_triple('http://example.org/subj', 'http://example.org/pred', 'http://example.org/obj');
