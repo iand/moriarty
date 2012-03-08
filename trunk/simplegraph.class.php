@@ -231,6 +231,32 @@ class SimpleGraph {
   function to_ntriples() {
     $serializer = ARC2::getComponent('NTriplesSerializer', array());
     return $serializer->getSerializedIndex($this->_to_arc_index($this->_index));
+	// $text_inside_quotes = '%^"(.*)"$%';
+	//     $ntriples = "";
+	// foreach ($this->_index as $subject => $properties) {
+	// 	foreach ($properties as $property => $values) {
+	// 		foreach ($values as $index => $value) {
+	// 			$encoded_subject = preg_replace($text_inside_quotes, '$1', str_replace('\/', '/', json_encode($subject)));
+	// 			$ntriples .= "<${encoded_subject}> ";
+	// 			$encoded_property = preg_replace($text_inside_quotes, '$1', str_replace('\/', '/', json_encode($property)));
+	// 			$ntriples .= "<${encoded_property}> ";
+	// 			$encoded_object = preg_replace($text_inside_quotes, '$1', str_replace('\/', '/', json_encode($value['value'])));
+	// 			if ($value['type'] == 'uri') {
+	// 				$ntriples .= "<${encoded_object}>";
+	// 			} else {
+	// 				$ntriples .= "\"${encoded_object}\"";
+	// 				if (isset($value['datatype'])) {
+	// 					$encoded_datatype = preg_replace($text_inside_quotes, '$1', str_replace('\/', '/', json_encode($value['datatype'])));
+	// 					$ntriples .= "^^<${encoded_datatype}>";
+	// 				} else if (isset($value['lang'])) {
+	// 					$ntriples .= '@'.$value['lang'];
+	// 				}
+	// 			}
+	// 			$ntriples .= " .\n";
+	// 		}
+	// 	}
+	// }
+	// return $ntriples;
   }
 
 
