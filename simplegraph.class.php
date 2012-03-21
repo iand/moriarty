@@ -804,7 +804,7 @@ class SimpleGraph {
    * @param string p the predicate to search for
    * @return array list of URIs and blank nodes that are the objects of triples with the supplied subject and predicate
    */
-  function get_resource_triple_values($s, $p) {
+  function get_resource_triple_values($s, $p, $sort_property=false, $sort_order_descending=false) {
     $values = array();
     if (array_key_exists($s, $this->_index) ) {
       if (array_key_exists($p, $this->_index[$s]) ) {
@@ -814,6 +814,9 @@ class SimpleGraph {
           }
         }
       }
+    }
+    if($sort_property){
+      $values = $this->order_uris_by_property($values, $sort_property, $sort_order_descending);
     }
     return $values;
   }
@@ -1435,6 +1438,36 @@ class SimpleGraph {
           }
         }
         return array_unique($bnodes);
+      }
+
+      public function order_uris_by_property($uri_list, $property, $descending=false){
+        $value_uri_map = array();
+        foreach($uri_list as $uri){
+          $vals = $this->get_subject_property_values($uri, $property);
+          foreach($vals as $object){
+            $value_uri_map[$object['value']][] = $uri;
+          }
+          if(empty($vals)){
+            $value_uri_map[null][]=$uri;
+          }
+        }
+        if(!$descending) ksort($value_uri_map);
+        else krsort($value_uri_map);
+        $sorted_uris = array();
+        $uri_arrays = array_values($value_uri_map);
+        while(
+          count($uri_list)>count($sorted_uris)
+          AND
+          $uris = array_shift($uri_arrays)
+        ){
+          foreach($uris as $uri){
+            if(!in_array($uri,$sorted_uris)){
+              $sorted_uris[]=$uri;
+            }
+          }
+        }
+
+        return $sorted_uris;
       }
 }
 ?>

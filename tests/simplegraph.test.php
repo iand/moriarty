@@ -1252,5 +1252,49 @@ class SimpleGraphTest extends PHPUnit_Framework_TestCase {
     $this->assertContains('<a id="bn123" href="#bn123">_:bn123</a>', $html, "html should contain anchors for bnodes");
   }
 
+  function test_order_uris_by_property(){
+    $ex = "http://example.com/";
+    $turtle = <<<_TTL_
+@base <{$ex}> .
+
+<a> <p> 2 .      
+<b> <p> 3 .      
+<c> <p> 1 .      
+
+_TTL_;
+      $graph = new SimpleGraph();
+      $graph->from_turtle($turtle);
+      $uris = array($ex.'a',$ex.'b',$ex.'c');
+      $expected = array($ex.'c',$ex.'a',$ex.'b');
+      $actual = $graph->order_uris_by_property($uris, $ex.'p');
+      $this->assertEquals($expected, $actual, "order_uris_by_property should order the uris in ascending order of the value of the property");
+      $expected_reverse = array($ex.'b',$ex.'a',$ex.'c');
+      $actual = $graph->order_uris_by_property($uris, $ex.'p', 1);
+      $this->assertEquals($expected_reverse, $actual, "order_uris_by_property should order the uris in ascending order of the value of the property");
+  }
+
+  function test_get_resource_property_values(){
+      $ex = "http://example.com/";
+    $turtle = <<<_TTL_
+@base <{$ex}> .
+
+<s> <has> <a> , <b> , <c> , <d> , <e> .
+<a> <p> 2 .      
+<b> <p> 3 .      
+<c> <p> 1 .      
+<e> <p> "!" , "_" .
+
+_TTL_;
+      $graph = new SimpleGraph();
+      $graph->from_turtle($turtle);
+      $expected = array($ex.'d', $ex.'e', $ex.'c',$ex.'a',$ex.'b');
+      $actual = $graph->get_resource_triple_values($ex.'s', $ex.'has', $ex.'p');
+      $actual_r = $graph->get_resource_triple_values($ex.'s', $ex.'has', $ex.'p', true);
+      $actual_unsorted = $graph->get_resource_triple_values($ex.'s', $ex.'has');
+      $this->assertEquals($expected, $actual, "should return the resource values of one property, ordered by a property of those resources");
+      $this->assertEquals(array_reverse($expected), $actual_r, "should return the resource values of one property, ordered by a property of those resources, sorted in descending order");
+      $this->assertEquals(count($actual),count($actual_unsorted), "number of results should be the same whether sorted or not");
+  }
+
 }
 ?>
