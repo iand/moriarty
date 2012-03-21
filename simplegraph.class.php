@@ -802,6 +802,7 @@ class SimpleGraph {
    * Fetch the resource values for a given subject and predicate.
    * @param string s the subject to search for
    * @param string p the predicate to search for
+   * @param string sort_property the predicate/property to sort the results by
    * @return array list of URIs and blank nodes that are the objects of triples with the supplied subject and predicate
    */
   function get_resource_triple_values($s, $p, $sort_property=false, $sort_order_descending=false) {
